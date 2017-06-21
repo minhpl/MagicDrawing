@@ -1,0 +1,5 @@
+1. hiển thị camera như bình thường và có nút chụp lại ảnh
+
+2. chụp lại ảnh sau đó lấy ra biên ảnh theo thuật toán canny
+
+3. overload biên ảnh lên video capture từ camera, camera đã được warpPerspective.

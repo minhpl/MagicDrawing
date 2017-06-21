@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicDrawing", "MagicDrawing.csproj", "{53D3DAB8-81C5-E857-7A21-9ABB71A9249D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicDrawing.Editor", "MagicDrawing.Editor.csproj", "{B510DAF7-6BDB-251B-E018-A011DB467B3B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCV", "OpenCV\OpenCV.vcxproj", "{0970A9C4-D7BA-4F44-A91C-4BC9030731A5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53D3DAB8-81C5-E857-7A21-9ABB71A9249D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53D3DAB8-81C5-E857-7A21-9ABB71A9249D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53D3DAB8-81C5-E857-7A21-9ABB71A9249D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53D3DAB8-81C5-E857-7A21-9ABB71A9249D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B510DAF7-6BDB-251B-E018-A011DB467B3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B510DAF7-6BDB-251B-E018-A011DB467B3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B510DAF7-6BDB-251B-E018-A011DB467B3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B510DAF7-6BDB-251B-E018-A011DB467B3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0970A9C4-D7BA-4F44-A91C-4BC9030731A5}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{0970A9C4-D7BA-4F44-A91C-4BC9030731A5}.Release|Any CPU.ActiveCfg = Release|Win32
+		{0970A9C4-D7BA-4F44-A91C-4BC9030731A5}.Release|Any CPU.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

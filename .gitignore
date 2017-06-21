@@ -1,0 +1,9 @@
+/packages/
+/fmt-3.0.0/
+/Temp/
+/Release/
+/obj/
+/Debug/
+/bin/
+/.vs/
+*.0.0.zip
