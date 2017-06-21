@@ -98,14 +98,17 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Facebook.Unity.Settings">
-      <HintPath>Library\FacebookSDK\Facebook.Unity.Settings.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -272,8 +275,8 @@
     <Compile Include="Assets\OpenCVForUnity\Examples\HoughLinesPExample\HoughLinesPExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\InpaintExample\InpaintExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MSERExample\MSERExample.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\EdgeDetector.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\ComicFilterOriginal.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\EdgeDetector.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\MagicDrawing.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MatchShapesExample\MatchShapesExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MatchTemplateExample\MatchTemplateExample.cs" />
