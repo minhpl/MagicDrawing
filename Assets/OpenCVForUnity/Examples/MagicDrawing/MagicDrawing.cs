@@ -114,7 +114,8 @@ namespace MagicDrawing
         int stage = 1;      //1: hiển thị camera như bình thường và có nút chụp lại ảnh
                             //2: chụp lại ảnh sau đó hiển thị ảnh tĩnh 
                             //3: hiển thị ảnh đã tách biên trên nền video capture từ camera, với điều kiện camera đã
-        Mat EdgeIsolationMat;
+        Mat CannyEdgeIsolationMat;
+        Mat SobelEdgeIsolationMat;
         Mat redChannelMat;
         Mat matTexture1;
         Mat matTexture2;
@@ -464,13 +465,16 @@ namespace MagicDrawing
                 }
                 else if(stage==3)
                 {
-                    EdgeIsolationMat = cannyEdgeDetector.Canny(snapImage);
-                    convertOneChannelMattoRed(EdgeIsolationMat);
+                    CannyEdgeIsolationMat = cannyEdgeDetector.Canny(snapImage);
+                    convertOneChannelMattoRed(CannyEdgeIsolationMat);
                     //Mat rgbaMat = webCamTextureToMatHelper.GetMat();
                     //Imgproc.warpPerspective(rgbaMat, warpPerspectiveResult, perspectiveTransform, size);
                     //Imgproc.resize(warpPerspectiveResult, scaled_height_mat, new Size(rgbaMat.width(), newHeight))1;
                     //Utils.matToTexture2D(EdgeIsolationMat, texture, webCamTextureToMatHelper.GetBufferColors());
-                    Utils.matToTexture2D(EdgeIsolationMat, texture, webCamTextureToMatHelper.GetBufferColors());
+
+                    SobelEdgeIsolationMat = cannyEdgeDetector.SobelEdgeDetector(snapImage);
+                    Imgproc.resize(SobelEdgeIsolationMat, SobelEdgeIsolationMat, new Size((double)texture2.width, (double)texture2.height));
+                    Utils.matToTexture2D(SobelEdgeIsolationMat, texture2);
                 }
                 // CannyEdgeDetector();
                 // if(isRecording)
