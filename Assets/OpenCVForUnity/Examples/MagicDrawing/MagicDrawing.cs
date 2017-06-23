@@ -4,6 +4,7 @@ using OpenCVForUnityExample;
 using UnityEngine.UI;
 using System.IO;
 using System;
+using Assets.OpenCVForUnity.Examples.MagicDrawing;
 
 #if UNITY_5_3 || UNITY_5_3_OR_NEWER
 using UnityEngine.SceneManagement;
@@ -274,21 +275,21 @@ namespace MagicDrawing
             grayPixels = new byte[grayMat.cols() * grayMat.rows() * grayMat.channels()];
             maskPixels = new byte[maskMat.cols() * maskMat.rows() * maskMat.channels()];
 
-            matTexture1 = new Mat();
-            texture1 = new Texture2D(uITexture1.mainTexture.width, uITexture1.mainTexture.height, TextureFormat.RGBA32, false);
-            uITexture1.mainTexture = texture1;
+            //matTexture1 = new Mat();
+            //texture1 = new Texture2D(uITexture1.mainTexture.width, uITexture1.mainTexture.height, TextureFormat.RGBA32, false);
+            //uITexture1.mainTexture = texture1;
 
-            matTexture2 = new Mat();
-            texture2 = new Texture2D(uITexture2.mainTexture.width, uITexture2.mainTexture.height, TextureFormat.RGBA32, false);
-            uITexture2.mainTexture = texture2;
+            //matTexture2 = new Mat();
+            //texture2 = new Texture2D(uITexture2.mainTexture.width, uITexture2.mainTexture.height, TextureFormat.RGBA32, false);
+            //uITexture2.mainTexture = texture2;
 
-            matTexture3 = new Mat();
-            texture3 = new Texture2D(uITexture3.mainTexture.width, uITexture3.mainTexture.height, TextureFormat.RGBA32, false);
-            uITexture3.mainTexture = texture3;
+            //matTexture3 = new Mat();
+            //texture3 = new Texture2D(uITexture3.mainTexture.width, uITexture3.mainTexture.height, TextureFormat.RGBA32, false);
+            //uITexture3.mainTexture = texture3;
 
-            matTexture4 = new Mat();
-            texture4 = new Texture2D(uITexture4.mainTexture.width, uITexture4.mainTexture.height, TextureFormat.RGBA32, false);
-            uITexture4.mainTexture = texture4;
+            //matTexture4 = new Mat();
+            //texture4 = new Texture2D(uITexture4.mainTexture.width, uITexture4.mainTexture.height, TextureFormat.RGBA32, false);
+            //uITexture4.mainTexture = texture4;
         }
 
         /// <summary>
@@ -442,7 +443,6 @@ namespace MagicDrawing
         {
             
         }
-        //xx = new Mat();
 
         void Update()
         {
@@ -450,31 +450,28 @@ namespace MagicDrawing
             {
                 if(stage == 1)
                 {
-                    Mat rgbaMat = webCamTextureToMatHelper.GetMat();
+                    Mat rgbaMat = webCamTextureToMatHelper.GetMat();                    
+                    Debug.Log(rgbaMat.channels());
                     Utils.matToTexture2D(rgbaMat, texture, webCamTextureToMatHelper.GetBufferColors());
-                    Debug.LogFormat("Fuck all: {0}", uITexture1 != null);
-                    Imgproc.resize(rgbaMat, matTexture1, new Size((double)texture1.width, (double)texture1.height));                    
-                    Utils.matToTexture2D(matTexture1, texture1);
-                    Utils.matToTexture2D(matTexture1, texture2);
-                    Utils.matToTexture2D(matTexture1, texture3);
-                    Utils.matToTexture2D(matTexture1, texture4);
                 }
                 else if(stage==2)
                 {
                     Utils.matToTexture2D(snapImage,texture,webCamTextureToMatHelper.GetBufferColors());
                 }
                 else if(stage==3)
-                {
-                    CannyEdgeIsolationMat = cannyEdgeDetector.Canny(snapImage);
-                    convertOneChannelMattoRed(CannyEdgeIsolationMat);
-                    //Mat rgbaMat = webCamTextureToMatHelper.GetMat();
-                    //Imgproc.warpPerspective(rgbaMat, warpPerspectiveResult, perspectiveTransform, size);
-                    //Imgproc.resize(warpPerspectiveResult, scaled_height_mat, new Size(rgbaMat.width(), newHeight))1;
-                    //Utils.matToTexture2D(EdgeIsolationMat, texture, webCamTextureToMatHelper.GetBufferColors());
-
+                {                   
                     SobelEdgeIsolationMat = cannyEdgeDetector.SobelEdgeDetector(snapImage);
-                    Imgproc.resize(SobelEdgeIsolationMat, SobelEdgeIsolationMat, new Size((double)texture2.width, (double)texture2.height));
-                    Utils.matToTexture2D(SobelEdgeIsolationMat, texture2);
+                    Imgproc.resize(SobelEdgeIsolationMat, SobelEdgeIsolationMat, new Size(texture.width, texture.height));
+
+                    Mat redMat = new Mat(SobelEdgeIsolationMat.size(), CvType.CV_8UC3,new Scalar(0,0,0));
+
+                    //Debug.Log(redMat.get(1, 1)[2]);
+                    Utilities u = new Utilities();
+                    u.ConvertGrayMatToRedMat(SobelEdgeIsolationMat, redMat);
+                    //Debug.LogFormat("Channels is {0}", SobelEdgeIsolationMat.channels());
+                    //Imgcodecs.imwrite("E:\\WorkspaceMinh\\MagicDrawing\\a.jpg", redMat);
+
+                    Utils.matToTexture2D(redMat, texture);
                 }
                 // CannyEdgeDetector();
                 // if(isRecording)
