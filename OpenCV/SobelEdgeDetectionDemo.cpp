@@ -149,8 +149,12 @@
 //	int delta = 0;
 //	int ddepth = CV_16S;
 //	int c;
-//	int kSize = 1;
-//	GaussianBlur(inputMat, src, Size(5, 5), 0, 0, BORDER_DEFAULT);
+//	int kSize = 3;
+//	//fastNlMeansDenoisingColored(inputMat, src, 10, 10, 7, 21);
+//
+//	inputMat.copyTo(src);
+//
+//	//GaussianBlur(inputMat, src, Size(3, 3), 0, 0, BORDER_DEFAULT);
 //	/// Convert it to gray
 //	cvtColor(src, src_gray, CV_BGR2GRAY);
 //	
@@ -181,7 +185,7 @@
 //	Mat grad;
 //	// char* window_name = "Sobel Demo - Simple Edge Detector";
 //	int scale = 1;
-//	int delta = 0;
+//	int delta = 200;
 //	int ddepth = CV_16S;
 //	int c;
 //
@@ -203,7 +207,8 @@
 //	convertScaleAbs(grad_y, abs_grad_y);
 //	/// Total Gradient (approximate)
 //	addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, outputMat);
-//	adaptiveThreshold(outputMat, outputMat, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 3, 0);
+//	adaptiveThreshold(outputMat, outputMat, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 3, 1);
+//	//adaptiveThreshold(outputMat, outputMat, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 3, 10);
 //
 //	//threshold(outputMat, outputMat, 30, 255, THRESH_BINARY_INV);
 //
@@ -234,12 +239,13 @@
 //
 //	GaussianBlur(inputMat, src, Size(1, 1), 0, 0, BORDER_DEFAULT);
 //	/// Convert the image to grayscale
+//	//src.copyTo(src_gray);
 //	cvtColor(src, src_gray, CV_BGR2GRAY);
 //	/// Create window
 //	//namedWindow(window_name, CV_WINDOW_FREERATIO);
 //	/// Apply Laplace function
 //	Mat abs_dst;
-//	Laplacian(src_gray, dst, ddepth, 1, scale, delta, BorderTypes::BORDER_DEFAULT);
+//	Laplacian(src_gray, dst, ddepth, 5, scale, delta, BorderTypes::BORDER_DEFAULT);
 //	convertScaleAbs(dst, outputMat);
 //
 //	adaptiveThreshold(outputMat, outputMat, 255, THRESH_BINARY_INV, ADAPTIVE_THRESH_GAUSSIAN_C, 3, -5);
@@ -251,12 +257,52 @@
 //	return 0;
 //}
 //
+//
+//int Threshold(Mat& inputMat, Mat& outputMat)
+//{
+//	//Mat src, src_gray, dst;
+//	//int kernel_size = 3;
+//	//int scale = 3;
+//	//int delta = 0;
+//	//int ddepth = CV_16S;
+//	//char* window_name = "Laplace Demo";
+//	//int c;
+//	///// Load an image
+//	////src = imread(imgPath);
+//	////if (!src.data)
+//	////{
+//	////	return -1;
+//	////}
+//	///// Remove noise by blurring with a Gaussian filter
+//	//inputMat.copyTo(src);
+//
+//	GaussianBlur(inputMat, src, Size(1, 1), 0, 0, BORDER_DEFAULT);
+//	/// Convert the image to grayscale
+//	//src.copyTo(src_gray);
+//	cvtColor(src, src_gray, CV_BGR2GRAY);
+//	/// Create window
+//	//namedWindow(window_name, CV_WINDOW_FREERATIO);
+//	/// Apply Laplace function
+//	//Mat abs_dst;
+//	//Laplacian(src_gray, dst, ddepth, 5, scale, delta, BorderTypes::BORDER_DEFAULT);
+//	//convertScaleAbs(dst, outputMat);
+//
+//	adaptiveThreshold(src_gray, outputMat, 255, THRESH_BINARY, ADAPTIVE_THRESH_GAUSSIAN_C, 3, 1);
+//	//adaptiveThreshold(outputMat, outputMat, 255, THRESH_BINARY_INV, CV_ADAPTIVE_THRESH_MEAN_C, 3, -10);
+//
+//	/// Show what you got
+//	//imshow(window_name, abs_dst);
+//	//waitKey(0);
+//	return 0;
+//}
+//
+//
 //void CannyThreshold(int, void*)
 //{
 //	/// Reduce noise with a kernel 3x3
 //	blur(src_gray, detected_edges, Size(3, 3));
 //	/// Canny detector
-//	Canny(detected_edges, detected_edges, lowThreshold, lowThreshold*ratio, kernel_size);
+//	Canny(detected_edges, detected_edges, lowThreshold, 10, kernel_size);
 //	/// Using Canny's output as a mask, we display our result
 //	dst = Scalar::all(0);
 //	//std::cout << "xin chao " << lowThreshold << std::endl;
@@ -315,8 +361,6 @@
 ////cv::String imgPath = "E:\\WorkspaceMinh\\MagicDrawing\\Test\\anh2.jpg";
 //
 //
-//
-//
 //int Canny(Mat& inputMat, Mat& outputMat)
 //{
 //	/// Load an image
@@ -362,6 +406,8 @@
 //		Canny(frame, edges);
 //		ScharrEdgeDetection(frame, edges);
 //		imshow("Scharr", edges);
+//		Threshold(frame, edges);
+//		imshow("threshold", edges);
 //		//cvtColor(frame, edges, COLOR_BGR2GRAY);
 //		//GaussianBlur(edges, edges, Size(7, 7), 1.5, 1.5);
 //		//Canny(edges, edges, 0, 30, 3);

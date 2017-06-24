@@ -154,11 +154,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddNoise.cpp" />
     <ClCompile Include="CannyEdgeDetectionDemo.cpp" />
     <ClCompile Include="Contour.cpp" />
     <ClCompile Include="DirectEdgeDetector.cpp" />
     <ClCompile Include="HoughLineTransform.cpp" />
     <ClCompile Include="LaplaceEdgeDetectionDemo.cpp" />
+    <ClCompile Include="Morphological.cpp" />
+    <ClCompile Include="Sobel.cpp" />
     <ClCompile Include="SobelEdgeDetectionDemo.cpp" />
     <ClCompile Include="KalmanFilter.cpp" />
     <ClCompile Include="ThreshHoldUsingInRange.cpp" />

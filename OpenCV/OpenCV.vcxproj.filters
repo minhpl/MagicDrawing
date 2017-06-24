@@ -42,6 +42,15 @@
     <ClCompile Include="Threshold.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AddNoise.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sobel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Morphological.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
