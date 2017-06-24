@@ -41,7 +41,7 @@ public class EdgeDetector : MonoBehaviour {
 
     public void Dispose()
     {
-        //src.Dispose();
+        //src.Dispose();ss
         src_gray.Dispose();
         dst.Dispose();
         detected_edges.Dispose();
@@ -101,15 +101,14 @@ public class EdgeDetector : MonoBehaviour {
     int borderType = Core.BORDER_DEFAULT;
     int adaptiveMethod = Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C;
     int thresholdType = Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C;
-    public double c_adaptiveThreshold = -0.5;
+    public double c_adaptiveThreshold = 0.99;
     public int blockSize = 3;
     public int ksize = 3;
 
     public Mat SobelEdgeDetector(Mat inputMat)  
     {
-        
-
-        Imgproc.GaussianBlur(inputMat, tempMat,gausionBlurSize, 0, 0, Core.BORDER_DEFAULT);
+        Debug.LogFormat("blurSize = {0}", blurSize.width);
+        Imgproc.GaussianBlur(inputMat, tempMat, new Size(1, 1), 0, 0, Core.BORDER_DEFAULT);
         Imgproc.cvtColor(tempMat, tempMat, Imgproc.COLOR_BGR2GRAY);
         Imgproc.Sobel(tempMat, grad_x, depth, 1, 0, ksize, scale, delta, borderType);
         Core.convertScaleAbs(grad_x, abs_grad_x);
@@ -117,10 +116,9 @@ public class EdgeDetector : MonoBehaviour {
         Core.convertScaleAbs(grad_y, abs_grad_y);
         Core.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, sobelDetectedEdge);
         Imgproc.adaptiveThreshold(sobelDetectedEdge, sobelDetectedEdge, 255, adaptiveMethod, thresholdType, blockSize, c_adaptiveThreshold);
-
-
         return sobelDetectedEdge;
     }
+
 
 
 }

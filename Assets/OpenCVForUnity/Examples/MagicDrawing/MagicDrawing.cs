@@ -19,6 +19,7 @@ namespace MagicDrawing
     /// </summary>
     [RequireComponent(typeof(WebCamTextureToMatHelper))]
     [RequireComponent(typeof(EdgeDetector))]
+    [RequireComponent(typeof(LaplaceEdgeDetector))]
     public class MagicDrawing : MonoBehaviour
     {
         public UISlider slider_width_perspective;
@@ -84,6 +85,7 @@ namespace MagicDrawing
         WebCamTextureToMatHelper webCamTextureToMatHelper;
 
         EdgeDetector cannyEdgeDetector;
+        LaplaceEdgeDetector laplaceEdgeDetector;
 
         int w;
         int h;
@@ -198,6 +200,8 @@ namespace MagicDrawing
             EventDelegate.Add(slider_heigh_redundancy.onChange, onSliderHeightRedundancyChange);
 
             cannyEdgeDetector = gameObject.GetComponent<EdgeDetector>();
+            laplaceEdgeDetector = gameObject.GetComponent<LaplaceEdgeDetector>();
+
 
             grayMatForCanny = new Mat();
             snapImage = new Mat();            
@@ -448,9 +452,10 @@ namespace MagicDrawing
         {
             if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
             {
-                if(stage == 1)
+                Mat rgbaMat = webCamTextureToMatHelper.GetMat();
+                if (stage == 1)
                 {
-                    Mat rgbaMat = webCamTextureToMatHelper.GetMat();                    
+                                    
                     Debug.Log(rgbaMat.channels());
                     Utils.matToTexture2D(rgbaMat, texture, webCamTextureToMatHelper.GetBufferColors());
                 }
@@ -459,19 +464,18 @@ namespace MagicDrawing
                     Utils.matToTexture2D(snapImage,texture,webCamTextureToMatHelper.GetBufferColors());
                 }
                 else if(stage==3)
-                {                   
+                {
                     SobelEdgeIsolationMat = cannyEdgeDetector.SobelEdgeDetector(snapImage);
+                    //SobelEdgeIsolationMat = laplaceEdgeDetector.laplaceEdgeDetect(snapImage);
                     Imgproc.resize(SobelEdgeIsolationMat, SobelEdgeIsolationMat, new Size(texture.width, texture.height));
-
-                    Mat redMat = new Mat(SobelEdgeIsolationMat.size(), CvType.CV_8UC3,new Scalar(0,0,0));
-
+                    //Mat redMat = new Mat(SobelEdgeIsolationMat.size(), CvType.CV_8UC3, new Scalar(0, 0, 0));
                     //Debug.Log(redMat.get(1, 1)[2]);
-                    Utilities u = new Utilities();
-                    u.ConvertGrayMatToRedMat(SobelEdgeIsolationMat, redMat);
+                    //Utilities u = new Utilities();
+                    //u.OverlayOnRGBMat(SobelEdgeIsolationMat, rgbaMat, redMat);
+                    //u.ConvertGrayMatToRedMat(SobelEdgeIsolationMat, redMat,true);
                     //Debug.LogFormat("Channels is {0}", SobelEdgeIsolationMat.channels());
                     //Imgcodecs.imwrite("E:\\WorkspaceMinh\\MagicDrawing\\a.jpg", redMat);
-
-                    Utils.matToTexture2D(redMat, texture);
+                    Utils.matToTexture2D(SobelEdgeIsolationMat, texture);
                 }
                 // CannyEdgeDetector();
                 // if(isRecording)
@@ -596,7 +600,8 @@ namespace MagicDrawing
         {            
              Mat rgbaMat = webCamTextureToMatHelper.GetMat();
              rgbaMat.copyTo(snapImage);
-             stage = 2;
+            //Photo.fastNlMeansDenoisingColored(snapImage, snapImage, 5, 5, 7, 7);
+            stage = 2;
         }
 
         public void onBackBtnClicked()

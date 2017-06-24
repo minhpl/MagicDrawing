@@ -9,21 +9,58 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
 {
     class Utilities
     {
-        public void ConvertGrayMatToRedMat(Mat inputMat,Mat outputMat)
+        public void CovertGrayMatToRedTransparentMat(Mat inputMat,Mat outputMat,bool inverse = false)
         {
-            int channels = inputMat.channels();
-            if (channels > 1)
-                Debug.LogFormat("This is not the grayImage");
+            if(inverse)
+            {
+                Core.bitwise_not(inputMat, inputMat);
+            }
+
             List<Mat> listMat = new List<Mat>();
-            Core.split(outputMat, listMat);
-            Debug.LogFormat("{0}",listMat[0] == null);
-            Debug.LogFormat("output mat channels = {0}", outputMat.channels());
-            inputMat.copyTo(outputMat);
-            Debug.LogFormat("output mat channels = {0}", outputMat.channels());
-            //Debug.LogFormat("number of mat is {0}", listMat.Count());
+            Mat zeroMat = Mat.zeros(inputMat.size(), CvType.CV_8U);
+            Mat maxValueMat = new Mat(inputMat.size(), CvType.CV_8U,new Scalar(255));
+            Mat red = Mat.zeros(inputMat.size(), CvType.CV_8U);
+            inputMat.copyTo(red);
+            listMat.Add(red);
+            listMat.Add(zeroMat);
+            listMat.Add(zeroMat);
+            listMat.Add(red);
+            Core.merge(listMat, outputMat);
         }
 
+        public void OverlayOnRGBMat(Mat frontMat, Mat backgroudMat, Mat outputMat)
+        {
+            Core.bitwise_not(frontMat, frontMat );
+            //Imgproc.cvtColor(frontMat, frontMat, Imgproc.COLOR_GRAY2RGB);
+            List<Mat> splittedMat = new List<Mat>();
+            Core.split(backgroudMat, splittedMat);
+
+            //Debug.LogFormat("channel number is {0}", frontMat.channels());
+            //Core.bitwise_not(frontMat, frontMat);
+            frontMat.copyTo(splittedMat[0], frontMat);
+
+            //splittedMat[0].setTo(frontMat,frontMat);
+            splittedMat[1].setTo(new Scalar(0),frontMat);
+            splittedMat[2].setTo(new Scalar(0),frontMat);
+            Core.merge(splittedMat, outputMat);
+            //List<Mat> listMat = new List<Mat>();
+            //Mat zeroMat = Mat.zeros(inputMat.size(), CvType.CV_8U);
+            //Mat maxValueMat = new Mat(inputMat.size(), CvType.CV_8U, new Scalar(255));
+            //Mat red = Mat.zeros(inputMat.size(), CvType.CV_8U);
+            //inputMat.copyTo(red);
+            //listMat.Add(red);
+            //listMat.Add(zeroMat);
+            //listMat.Add(zeroMat);
+            //listMat.Add(red);
+            //Core.merge(listMat, outputMat);
 
 
+
+            //List<Mat> listMat = new List<Mat>();
+            //Core.split(m, listMat);           
+            //listMat[1].setTo(new Scalar(0));
+            //listMat[2].setTo(new Scalar(0));
+            //Core.merge(listMat, m);
+        }
     }
 }
