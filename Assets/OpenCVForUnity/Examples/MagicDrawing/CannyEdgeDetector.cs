@@ -16,7 +16,7 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
         }
         Mat edgeDetected;
         Mat tempMat;
-        public int KSizeGaussBlur = 1;
+        public int KSizeGaussBlur = 0;
         public double sigmaX = 0;
         public double sigmaY = 0;
         public double lowThreshold = 1;
@@ -24,7 +24,8 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
         public int KSizeCanny = 3;
         public Mat edgeDetect(Mat inputMat)
         {
-            Imgproc.GaussianBlur(inputMat, tempMat, new Size(KSizeGaussBlur, KSizeGaussBlur), sigmaX, sigmaY, Core.BORDER_DEFAULT);
+            inputMat.copyTo(tempMat);
+            Imgproc.GaussianBlur(tempMat, tempMat, new Size(KSizeGaussBlur * 2 + 1, KSizeGaussBlur * 2 + 1), sigmaX, sigmaY, Core.BORDER_DEFAULT);
             if (inputMat.channels() < 2)
             {
                 //Debug.LogFormat("The input Image is the gray mat");

@@ -17,18 +17,20 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
         Mat edgeDetected;
         Mat tempMat;
         int depth = CvType.CV_16S;
-        public int KSizeGaussBlur = 1;
+        public int KSizeGaussBlur = 0;
         public double sigmaX = 0;
         public double sigmaY = 0;
-        public int kSizeLaplcae = 1;
-        public int scale = 3;
+        public int kSizeLaplcae = 0;
+        public double scale = 3;
         public double delta = 0;
         public Mat laplaceEdgeDetect(Mat inputMat)
         {
             //int operation = morph_operator + 2;
             //Mat element = Imgproc.getStructuringElement(morph_elem, new Size(2 * morph_size + 1, 2 * morph_size + 1), new Point(morph_size, morph_size));
             //Imgproc.morphologyEx(inputMat, matResult, operation, element);
-            Imgproc.GaussianBlur(inputMat, tempMat, new Size(KSizeGaussBlur, KSizeGaussBlur), sigmaX, sigmaX, Core.BORDER_DEFAULT);
+
+            inputMat.copyTo(tempMat);
+            Imgproc.GaussianBlur(tempMat, tempMat, new Size(KSizeGaussBlur * 2 + 1, KSizeGaussBlur * 2 + 1), sigmaX, sigmaX, Core.BORDER_DEFAULT);
             ////inputMat.copyTo(tempMat);
             if (inputMat.channels() < 2)
             {
@@ -37,10 +39,10 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
             else
             {
                 Imgproc.cvtColor(tempMat, tempMat, Imgproc.COLOR_BGR2GRAY);
-            }            
+            }
             ////Core.subtract(tempMat, new Scalar(reduceValue), tempMat);
             ////Imgproc.Laplacian(tempMat, matResult, ddepth);
-            Imgproc.Laplacian(tempMat, edgeDetected, depth, kSizeLaplcae, scale, delta, Core.BORDER_DEFAULT);
+            Imgproc.Laplacian(tempMat, edgeDetected, depth, kSizeLaplcae * 2 + 1, scale, delta, Core.BORDER_ISOLATED);
             ////Core.subtract(matResult, new Scalar(reduceValue), matResult);
             Core.convertScaleAbs(edgeDetected, edgeDetected);
             //////Mat a = new Mat();
@@ -55,7 +57,7 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
         int adaptiveMethod = Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C;
         int thresholdType = Imgproc.THRESH_BINARY_INV;
         public int blockSizeAdaptive = 1;
-        public double c_adaptiveThreshold = 0.99;
+        public double c_adaptiveThreshold = -7.5;
         public void adapTiveThreshold(Mat inputMat, Mat outputMat)
         {
             Imgproc.adaptiveThreshold(inputMat, outputMat, 255, adaptiveMethod, thresholdType, 2 * blockSizeAdaptive + 1, c_adaptiveThreshold);

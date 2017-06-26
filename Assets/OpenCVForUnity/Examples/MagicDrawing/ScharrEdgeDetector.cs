@@ -26,19 +26,23 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
             tempMat.Dispose();
         }
         int depth = CvType.CV_16S;
-        public int KSizeGaussBlur = 1;
+        public int KSizeGaussBlur = 0;
         public double sigmaX = 0;
-        public double sigmaY = 0;
-        public int KSizeSobel = 1;
+        public double sigmaY = 0;        
         public double scaleScharr = 1;
         public double deltaScharr = 0;
+        public int dxX = 1;
+        public int dyX = 0;
+        public int dxY = 0;
+        public int dyY = 1;
         Mat grad_x;
         Mat grad_y;
         Mat abs_grad_x, abs_grad_y;
-        int borderType = Core.BORDER_DEFAULT;
+        int borderType = Core.BORDER_REPLICATE;
         public Mat scharrEdgeDetect(Mat inputMat)
         {
-            Imgproc.GaussianBlur(inputMat, tempMat, new Size(KSizeGaussBlur, KSizeGaussBlur), sigmaX, sigmaY, Core.BORDER_DEFAULT);
+            inputMat.copyTo(tempMat);
+            Imgproc.GaussianBlur(tempMat, tempMat, new Size(KSizeGaussBlur * 2 + 1, KSizeGaussBlur * 2 + 1), sigmaX, sigmaY, Core.BORDER_DEFAULT);
             if (inputMat.channels() < 2)
             {
                 //Debug.LogFormat("The input Image is the gray mat");
@@ -47,10 +51,10 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
             {
                 Imgproc.cvtColor(tempMat, tempMat, Imgproc.COLOR_BGR2GRAY);
             }
-            Imgproc.Scharr(tempMat, grad_x, depth, 1, 0, scaleScharr, deltaScharr, borderType);
+            Imgproc.Scharr(tempMat, grad_x, depth, dxX, dyX, scaleScharr, deltaScharr, borderType);
             //Imgproc.Sobel(tempMat, grad_x, depth, 1, 0, KSizeSobel, scaleSobel, deltaSobel, borderType);
             Core.convertScaleAbs(grad_x, abs_grad_x);
-            Imgproc.Scharr(tempMat, grad_y, depth, 0, 1, scaleScharr, deltaScharr, borderType);
+            Imgproc.Scharr(tempMat, grad_y, depth, dxY, dyY, scaleScharr, deltaScharr, borderType);
             //Imgproc.Sobel(tempMat, grad_y, depth, 0, 1, KSizeSobel, scaleSobel, deltaSobel, borderType);
             Core.convertScaleAbs(grad_y, abs_grad_y);
             Core.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, edgeDetected);
