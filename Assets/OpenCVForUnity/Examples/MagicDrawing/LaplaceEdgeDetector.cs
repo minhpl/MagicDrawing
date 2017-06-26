@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Assets.OpenCVForUnity.Examples.MagicDrawing
 {
+    //ds
     class LaplaceEdgeDetector : MonoBehaviour
     {
         private void Start()
