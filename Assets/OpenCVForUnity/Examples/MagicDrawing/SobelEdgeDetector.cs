@@ -4,13 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.OpenCVForUnity.Examples.MagicDrawing
 {
     class SobelEdgeDetector : MonoBehaviour
     {
+        public InputField inputField;
+        public InputField inputField1;
+        public InputField inputField2;
+        public InputField inputField3;
+
         private void Start()
         {
+            inputField.onValueChange.AddListener(delegate { ValueChangeCheck(); });
+            inputField1.onValueChange.AddListener(delegate { ValueChangeCheck1(); });
+            inputField2.onValueChange.AddListener(delegate { ValueChangeCheck2(); });
+            inputField3.onValueChange.AddListener(delegate { ValueChangeCheck3(); });
+
             edgeDetected = new Mat();
             tempMat = new Mat();
             grad_x = new Mat();
@@ -18,6 +29,40 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
             abs_grad_x = new Mat();
             abs_grad_y = new Mat();
         }
+
+        public void ValueChangeCheck()
+        {
+            KSizeSobel = int.Parse(inputField.text);
+            Debug.LogFormat("Value Changed {0}", KSizeSobel);
+        }
+
+        public void ValueChangeCheck1()
+        {
+            scaleSobel = double.Parse(inputField1.text);
+        }
+
+        public void ValueChangeCheck2()
+        {
+            blockSizeAdaptive = int.Parse(inputField2.text);
+        }
+
+        public void ValueChangeCheck3()
+        {
+            c_adaptiveThreshold = double.Parse(inputField3.text);
+        }
+
+        void LockInput(InputField input)
+        {
+            if (input.text.Length > 0)
+            {
+                Debug.Log("Text has been entered");
+            }
+            else if (input.text.Length == 0)
+            {
+                Debug.Log("Main Input Empty");
+            }
+        }
+
         Mat edgeDetected;
         Mat tempMat;
         public void Dispose()

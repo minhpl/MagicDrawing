@@ -223,7 +223,7 @@ namespace MagicDrawing
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();
                 if (stage == 1)
                 {                                    
-                    Debug.Log(rgbaMat.channels());
+                    //Debug.Log(rgbaMat.channels());
                     Utils.matToTexture2D(rgbaMat, texture, webCamTextureToMatHelper.GetBufferColors());
                 }
                 else if(stage==2)
