@@ -18,8 +18,11 @@ namespace MagicDrawing
     /// referring to the http://dev.classmethod.jp/smartphone/opencv-manga-2/.
     /// </summary>
     [RequireComponent(typeof(WebCamTextureToMatHelper))]
-    [RequireComponent(typeof(EdgeDetector))]
+    //[RequireComponent(typeof(EdgeDetector))]
     [RequireComponent(typeof(LaplaceEdgeDetector))]
+    [RequireComponent(typeof(SobelEdgeDetector))]
+    [RequireComponent(typeof(ScharrEdgeDetector))]
+    [RequireComponent(typeof(CannyEdgeDetector))]
     public class MagicDrawing : MonoBehaviour
     {
         public UISlider slider_width_perspective;
