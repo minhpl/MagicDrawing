@@ -9,13 +9,16 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
 {
     class Utilities
     {
-
         List<Mat> listMat;
         Mat zeroMat;
-
+        Mat tempMat;
+        List<Mat> splittedMat;
+        Mat maxValueMat;
         public Utilities()
         {
             listMat = new List<Mat>();
+            tempMat = new Mat();
+            splittedMat = new List<Mat>();
         }
 
         public void CovertGrayMatToRedTransparentMat(Mat inputMat, Mat outputMat, bool inverse = false)
@@ -37,12 +40,12 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
             
         public void OverlayOnRGBMat(Mat frontMat, Mat backgroudMat, Mat outputMat)
         {
-            Core.bitwise_not(frontMat, frontMat );            
-            List<Mat> splittedMat = new List<Mat>();
+            Core.bitwise_not(frontMat, tempMat);            
             Core.split(backgroudMat, splittedMat);
-            frontMat.copyTo(splittedMat[0], frontMat);           
-            splittedMat[1].setTo(new Scalar(0),frontMat);
-            splittedMat[2].setTo(new Scalar(0),frontMat);
+            tempMat.copyTo(splittedMat[0], tempMat);
+            Debug.Log(splittedMat[1] == null);
+            splittedMat[1].setTo(new Scalar(0), tempMat);
+            splittedMat[2].setTo(new Scalar(0), tempMat);
             Core.merge(splittedMat, outputMat);
         }
     }

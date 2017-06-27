@@ -43,15 +43,11 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
 
         void slider_onValueChanged()
         {
-            float sliderValue = slider.value;
-            setParameter(sliderValue);
-
-            EdgeDetectedMat = sobelEdgeDetector.sobelEdgeDetect(snapImage);
-            sobelEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
-
+            //float sliderValue = slider.value;
+            //setParameter(sliderValue);
         }
 
-        void setParameter(float sliderValue)
+        public void setParameter(float sliderValue)
         {
             if (sliderValue < 50)
             {
