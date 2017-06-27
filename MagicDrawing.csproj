@@ -274,6 +274,14 @@
     <Compile Include="Assets\OpenCVForUnity\Examples\HandPoseEstimationExample\HandPoseEstimationExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\HoughLinesPExample\HoughLinesPExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\InpaintExample\InpaintExample.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\CannyEdgeDetector.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\LaplaceEdgeDetector.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\MagicDrawing2.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\ScharrEdgeDetector.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\SobelEdgeDetector.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\Threshold.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\Utilities.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\WarpPerspective.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MSERExample\MSERExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\ComicFilterOriginal.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\EdgeDetector.cs" />
