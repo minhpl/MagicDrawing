@@ -15,12 +15,17 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
         public InputField inputField2;
         public InputField inputField3;
 
+        public Slider slider;
+
         private void Start()
         {
             inputField.onValueChange.AddListener(delegate { ValueChangeCheck(); });
             inputField1.onValueChange.AddListener(delegate { ValueChangeCheck1(); });
             inputField2.onValueChange.AddListener(delegate { ValueChangeCheck2(); });
             inputField3.onValueChange.AddListener(delegate { ValueChangeCheck3(); });
+
+            slider.onValueChanged.AddListener(delegate { slider_onValueChanged(); });
+            setParameter(slider.value);
 
             edgeDetected = new Mat();
             tempMat = new Mat();
@@ -29,6 +34,42 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
             abs_grad_x = new Mat();
             abs_grad_y = new Mat();
         }
+
+        int KSizeSobel1 = 0, KSizeSobel2 = 0, KSizeSobel3 = 0;
+        double ScaleSobel1 = 4, ScaleSobel2 = 4, ScaleSobel3 = 4;
+        int BlockSizeAdaptive1 = 2, BlockSizeAdaptive2 = 3, BlockSizeAdaptive3 = 4;
+        double c_adaptive_threshold1 = -10, c_adaptive_threshold2 = -5, c_adaptive_threshold3 = -1;
+
+
+        void slider_onValueChanged()
+        {
+            float sliderValue = slider.value;
+            setParameter(sliderValue);
+
+            EdgeDetectedMat = sobelEdgeDetector.sobelEdgeDetect(snapImage);
+            sobelEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
+
+        }
+
+        void setParameter(float sliderValue)
+        {
+            if (sliderValue < 50)
+            {
+                KSizeSobel = (int)Math.Round(KSizeSobel1 + (KSizeSobel2 - KSizeSobel1) * (sliderValue / 50f));
+                scaleSobel = (ScaleSobel1 + (ScaleSobel2 - ScaleSobel1) * (sliderValue / 50f));
+                blockSizeAdaptive = (int)Math.Round(BlockSizeAdaptive1 + (BlockSizeAdaptive2 - BlockSizeAdaptive1) * (sliderValue / 50f));
+                c_adaptiveThreshold = (c_adaptive_threshold1 + (c_adaptive_threshold2 - c_adaptive_threshold1) * (sliderValue / 50f));
+            }
+            else
+            {
+                sliderValue = sliderValue - 50;         
+                KSizeSobel = (int)Math.Round(KSizeSobel2 + (KSizeSobel3 - KSizeSobel2) * (sliderValue / 50f));
+                scaleSobel = (ScaleSobel2 + (ScaleSobel3 - ScaleSobel2) * (sliderValue / 50f));
+                blockSizeAdaptive = (int)Math.Round(BlockSizeAdaptive2 + (BlockSizeAdaptive3 - BlockSizeAdaptive2) * (sliderValue / 50f));
+                c_adaptiveThreshold = (c_adaptive_threshold2 + (c_adaptive_threshold3 - c_adaptive_threshold2) * (sliderValue / 50f));
+            }
+        }
+
 
         public void ValueChangeCheck()
         {
@@ -116,6 +157,29 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
             Core.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, edgeDetected);           
             return edgeDetected;
         }
+
+        public Mat sobelEdgeDetect2(Mat inputMat)
+        {
+            inputMat.copyTo(tempMat);
+            Imgproc.GaussianBlur(tempMat, tempMat, new Size(KSizeGaussBlur * 2 + 1, KSizeGaussBlur * 2 + 1), sigmaX, sigmaY, Core.BORDER_DEFAULT);
+            Imgproc.cvtColor(tempMat, tempMat, Imgproc.COLOR_BGR2GRAY);
+            //if (inputMat.channels() < 2)
+            //{
+            //    //Debug.LogFormat("The input Image is the gray mat");
+            //}
+            //else
+            //{
+            //    Imgproc.cvtColor(tempMat, tempMat, Imgproc.COLOR_BGR2GRAY);
+            //}
+            Imgproc.Sobel(tempMat, grad_x, depth, 1, 1, 2 * KSizeSobel + 1, scaleSobel, deltaSobel, borderType);
+            Core.convertScaleAbs(grad_x, edgeDetected);
+            //Imgproc.Sobel(tempMat, grad_y, depth, 0, 1, 2 * KSizeSobel + 1, scaleSobel, deltaSobel, borderType);
+            //Core.convertScaleAbs(grad_y, abs_grad_y);
+            //Core.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, edgeDetected);
+            return edgeDetected;
+        }
+
+
 
         int adaptiveMethod = Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C;
         int thresholdType = Imgproc.THRESH_BINARY_INV;
