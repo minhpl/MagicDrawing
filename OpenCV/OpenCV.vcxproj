@@ -158,6 +158,7 @@
     <ClCompile Include="CannyEdgeDetectionDemo.cpp" />
     <ClCompile Include="Contour.cpp" />
     <ClCompile Include="DirectEdgeDetector.cpp" />
+    <ClCompile Include="Eroding and Dilating.cpp" />
     <ClCompile Include="HoughLineTransform.cpp" />
     <ClCompile Include="LaplaceEdgeDetectionDemo.cpp" />
     <ClCompile Include="Morphological.cpp" />

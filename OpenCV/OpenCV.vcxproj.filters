@@ -51,6 +51,9 @@
     <ClCompile Include="Morphological.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Eroding and Dilating.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
