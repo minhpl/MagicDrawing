@@ -24,6 +24,7 @@ namespace MagicDrawing
     [RequireComponent(typeof(CannyEdgeDetector))]
     [RequireComponent(typeof(Threshold))]
     [RequireComponent(typeof(WarpPerspective))]
+    [RequireComponent(typeof(AdaptiveThreshold))]
     public class MagicDrawing : MonoBehaviour
     {
         public Slider slider;
@@ -78,8 +79,9 @@ namespace MagicDrawing
         ScharrEdgeDetector scharrEdgeDetector;
         CannyEdgeDetector cannyEdgeDetector;
         Threshold threshold;
+        AdaptiveThreshold aDaptiveThreshold;
         WarpPerspective warpPerspective;
-
+        
         Mat snapImage;
         int stage = 1;      //1: hiển thị camera như bình thường và có nút chụp lại ảnh
                             //2: chụp lại ảnh sau đó hiển thị ảnh tĩnh 
@@ -101,7 +103,8 @@ namespace MagicDrawing
             cannyEdgeDetector = gameObject.GetComponent<CannyEdgeDetector>();
             threshold = gameObject.GetComponent<Threshold>();
             warpPerspective = gameObject.GetComponent<WarpPerspective>();
-                       
+            aDaptiveThreshold = gameObject.GetComponent<AdaptiveThreshold>();
+
             snapImage = new Mat();            
             EdgeDetectedMat = new Mat();
             //thresholdMat = new Mat();
@@ -246,16 +249,20 @@ namespace MagicDrawing
                     Utils.matToTexture2D(snapImage,texture,webCamTextureToMatHelper.GetBufferColors());
                 }
                 else if(stage==3)
-                {                                   
+                {
                     Mat warpPerspectiveResult = warpPerspective.warpPerspective(rgbaMat);
                     //Debug.LogFormat("width2 is {0}", warpPerspectiveResult.size().width);
-                    //Utils.matToTexture2D(warpPerspectiveResult, texture);
+                    //Utils.matToTexture2D(warpPerspectiveResult, texture);                    
                     //EdgeDetectedMat = laplaceEdgeDetector.laplaceEdgeDetect(snapImage);
-                    //laplaceEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);                    
+                    //laplaceEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);      
+                    //EdgeDetectedMat = sobelEdgeDetector.sobelEdgeDetect(snapImage);
+                    //sobelEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
                     //EdgeDetectedMat = scharrEdgeDetector.scharrEdgeDetect(snapImage);
                     //scharrEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
                     //EdgeDetectedMat = cannyEdgeDetector.edgeDetect(snapImage);
                     //cannyEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);                            
+                    //EdgeDetectedMat = aDaptiveThreshold.adapTiveThreshold(snapImage);
+                    //EdgeDetectedMat = threshold.threshold(snapImage);
                     utilities.OverlayOnRGBMat(EdgeDetectedMat, warpPerspectiveResult, mergedMat);
                     Utils.matToTexture2D(mergedMat, texture);   
                 }

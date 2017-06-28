@@ -140,6 +140,9 @@ namespace OpenCVForUnityExample
             Debug.Log ("OnWebCamTextureToMatHelperErrorOccurred " + errorCode);
         }
 
+        public int kSizeAdaptiveThreshold = 0;
+        public double cAdaptiveThreshold = 0;
+
         // Update is called once per frame
         void Update ()
         {
@@ -147,54 +150,55 @@ namespace OpenCVForUnityExample
             if (webCamTextureToMatHelper.IsPlaying () && webCamTextureToMatHelper.DidUpdateThisFrame ()) {
             
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat ();
-
                 Imgproc.cvtColor (rgbaMat, grayMat, Imgproc.COLOR_RGBA2GRAY);
-            
-                //                      Utils.webCamTextureToMat (webCamTexture, grayMat, colors);
-            
-                bgMat.copyTo (dstMat);
 
-                Imgproc.GaussianBlur (grayMat, lineMat, new Size (3, 3), 0);
+                ////                      Utils.webCamTextureToMat (webCamTexture, grayMat, colors);
+
+                //bgMat.copyTo (dstMat);
+
+                //Imgproc.GaussianBlur (grayMat, lineMat, new Size (3, 3), 0);
 
 
-                grayMat.get (0, 0, grayPixels);
-            
-                for (int i = 0; i < grayPixels.Length; i++) {
-            
-                    maskPixels [i] = 0;
-                        
-                    if (grayPixels [i] < 70) {
-                        grayPixels [i] = 0;
-            
-                        maskPixels [i] = 1;
-                    } else if (70 <= grayPixels [i] && grayPixels [i] < 120) {
-                        grayPixels [i] = 100;
+                //grayMat.get (0, 0, grayPixels);
 
-                    } else {
-                        grayPixels [i] = 255;
-                        maskPixels [i] = 1;
-                    }
-                }
-                    
-                grayMat.put (0, 0, grayPixels);
-                maskMat.put (0, 0, maskPixels);
-                grayMat.copyTo (dstMat, maskMat);
-            
-            
-                Imgproc.Canny (lineMat, lineMat, 20, 120);
-                    
-                lineMat.copyTo (maskMat);
-                    
-                Core.bitwise_not (lineMat, lineMat);
-            
-                lineMat.copyTo (dstMat, maskMat);
+                //for (int i = 0; i < grayPixels.Length; i++) {
 
-                //          Imgproc.putText (dstMat, "W:" + dstMat.width () + " H:" + dstMat.height () + " SO:" + Screen.orientation, new Point (5, dstMat.rows () - 10), Core.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar (0), 2, Imgproc.LINE_AA, false);
-            
-                //      Imgproc.cvtColor(dstMat,rgbaMat,Imgproc.COLOR_GRAY2RGBA);
-                //              Utils.matToTexture2D (rgbaMat, texture);
-            
-                Utils.matToTexture2D (dstMat, texture, webCamTextureToMatHelper.GetBufferColors());
+                //    maskPixels [i] = 0;
+
+                //    if (grayPixels [i] < 70) {
+                //        grayPixels [i] = 0;
+
+                //        maskPixels [i] = 1;
+                //    } else if (70 <= grayPixels [i] && grayPixels [i] < 120) {
+                //        grayPixels [i] = 100;
+
+                //    } else {
+                //        grayPixels [i] = 255;
+                //        maskPixels [i] = 1;
+                //    }
+                //}
+
+                //grayMat.put (0, 0, grayPixels);
+                //maskMat.put (0, 0, maskPixels);
+                //grayMat.copyTo (dstMat, maskMat);
+
+
+                //Imgproc.Canny (lineMat, lineMat, 20, 120);
+
+                //lineMat.copyTo (maskMat);
+
+                //Core.bitwise_not (lineMat, lineMat);
+
+                //lineMat.copyTo (dstMat, maskMat);
+
+                ////          Imgproc.putText (dstMat, "W:" + dstMat.width () + " H:" + dstMat.height () + " SO:" + Screen.orientation, new Point (5, dstMat.rows () - 10), Core.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar (0), 2, Imgproc.LINE_AA, false);
+
+                ////      Imgproc.cvtColor(dstMat,rgbaMat,Imgproc.COLOR_GRAY2RGBA);
+                ////              Utils.matToTexture2D (rgbaMat, texture);
+
+                Imgproc.adaptiveThreshold(grayMat, dstMat, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,
+                Imgproc.THRESH_BINARY_INV, 2 * kSizeAdaptiveThreshold + 1, cAdaptiveThreshold);
+                Utils.matToTexture2D (dstMat, texture, webCamTextureToMatHelper.GetBufferColors());                
             }
         }
 
