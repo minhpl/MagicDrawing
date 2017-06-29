@@ -54,5 +54,11 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
             splittedMat[2].setTo(new Scalar(0), tempMat);
             Core.merge(splittedMat, outputMat);
         }
+
+        public static void Log(string msgFormat,params object[] args)
+        {
+            Debug.LogFormat("mlogcat " + msgFormat, args);
+        }
+
     }
 }

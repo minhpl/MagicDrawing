@@ -28,6 +28,8 @@ namespace MagicDrawing
     public class MagicDrawing : MonoBehaviour
     {
         public Slider slider;
+        public Button BtnViRec;
+        public Button BtnStopRec;
 
         /// <summary>
         /// The gray mat.
@@ -86,9 +88,16 @@ namespace MagicDrawing
         int stage = 1;      //1: hiển thị camera như bình thường và có nút chụp lại ảnh
                             //2: chụp lại ảnh sau đó hiển thị ảnh tĩnh 
                             //3: hiển thị ảnh đã tách biên trên nền video capture từ camera, với điều kiện camera đã
+        int mode = 1;       // mode = 1: line
+                            // mode = 2: Ink
+                            // mode = 3:  Blend Snapped Image
+        int ViRec = 0;      // ViRec = 0, not record video
+                            // ViRec = 1, record video
+
         Mat EdgeDetectedMat;
         Mat mergedMat;
         Utilities utilities;
+        WebcamVideoCapture webcamVideoCapture;
             
         // Use this for initialization
         void Start()
@@ -238,6 +247,9 @@ namespace MagicDrawing
         {
             if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
             {
+
+                //Debug.Log("xin chao the gioi ");
+
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();
                 if (stage == 1)
                 {                                    
@@ -266,6 +278,11 @@ namespace MagicDrawing
                     utilities.OverlayOnRGBMat(EdgeDetectedMat, warpPerspectiveResult, mergedMat);
                     Utils.matToTexture2D(mergedMat, texture);   
                 }
+
+                if(ViRec==1)
+                {                    
+                    webcamVideoCapture.write(rgbaMat);
+                }                
             }
         }
 
@@ -342,5 +359,19 @@ namespace MagicDrawing
             sobelEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
             stage = 3;
         }
+
+        public void BtnViRec_Clicked()
+        {
+            Mat webCamTextureMat = webCamTextureToMatHelper.GetMat();
+            webcamVideoCapture = new WebcamVideoCapture(webCamTextureMat.size());
+            ViRec = 1;
+        }
+
+        public void BtnStopRec_Clicked()
+        {            
+            ViRec = 0;
+            webcamVideoCapture.writer.release();
+        }
+
     }
 }
