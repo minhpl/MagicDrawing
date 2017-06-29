@@ -98,17 +98,14 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.Unity.Settings">
+      <HintPath>Library\FacebookSDK\Facebook.Unity.Settings.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -274,18 +271,20 @@
     <Compile Include="Assets\OpenCVForUnity\Examples\HandPoseEstimationExample\HandPoseEstimationExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\HoughLinesPExample\HoughLinesPExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\InpaintExample\InpaintExample.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MSERExample\MSERExample.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\AdaptiveThreshold.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\CannyEdgeDetector.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\ComicFilterOriginal.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\EdgeDetector.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\LaplaceEdgeDetector.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\MagicDrawing.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\MagicDrawing2.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\ScharrEdgeDetector.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\SobelEdgeDetector.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\Threshold.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\Utilities.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\WarpPerspective.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MSERExample\MSERExample.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\ComicFilterOriginal.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\EdgeDetector.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\MagicDrawing.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\WebcamVideoCapture.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MatchShapesExample\MatchShapesExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MatchTemplateExample\MatchTemplateExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MultiObjectTrackingBasedOnColorExample\ColorObject.cs" />
@@ -570,6 +569,7 @@
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed 2.shader" />
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed 3.shader" />
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed.shader" />
+    <None Include="Assets\OpenCVForUnity\Examples\MagicDrawing\cong viec.txt" />
     <None Include="Assets\OpenCVForUnity\Examples\MagicDrawing\flow.txt" />
     <None Include="Assets\OpenCVForUnity\Examples\MagicDrawing\thuattoantachbien.txt" />
     <None Include="Assets\OpenCVForUnity\OpenCV_LICENSE.txt" />
