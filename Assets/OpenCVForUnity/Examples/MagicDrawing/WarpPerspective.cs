@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MagicDrawing
 {
     class WarpPerspective : MonoBehaviour
     {
+        public Slider slider;
+
         Mat sourceImage;
         Mat src_mat;
         Mat dst_mat;
@@ -49,6 +52,12 @@ namespace MagicDrawing
             //Debug.LogFormat("here1 = {0}", widthScale);
             //if (sourceImage != null)
             //    Init(sourceImage);
+        }
+
+        public void setParam(float heightScale, float widthScale = 1)
+        {
+            this.heightScale = heightScale;
+            this.widthScale = widthScale;            
         }
 
         public void Init(Mat image)
@@ -102,7 +111,7 @@ namespace MagicDrawing
                 Imgproc.resize(roi, result, sizeOriginal);
             }
             else
-            {                
+            {
                 Imgproc.warpPerspective(inputMat, tempMat, perspectiveTransform, sizeOriginal);
                 Imgproc.resize(tempMat, tempMat2, sizeNew);
                 Mat roi = tempMat2.submat(myROI);

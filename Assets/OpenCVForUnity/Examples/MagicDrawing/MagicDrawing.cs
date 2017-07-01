@@ -28,6 +28,7 @@ namespace MagicDrawing
     public class MagicDrawing : MonoBehaviour
     {
         public Slider slider;
+        public Slider sliderPerspective;
         public Button BtnViRec;
         public Button BtnStopRec;
 
@@ -275,7 +276,7 @@ namespace MagicDrawing
                     //cannyEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);                            
                     //EdgeDetectedMat = aDaptiveThreshold.adapTiveThreshold(snapImage);
                     //EdgeDetectedMat = threshold.threshold(snapImage);
-                    utilities.OverlayOnRGBMat(EdgeDetectedMat, warpPerspectiveResult, mergedMat);
+                    utilities.OverlayOnRGBAMat(EdgeDetectedMat, warpPerspectiveResult, mergedMat);
                     Utils.matToTexture2D(mergedMat, texture);   
                 }
 
@@ -371,6 +372,19 @@ namespace MagicDrawing
         {            
             ViRec = 0;
             webcamVideoCapture.writer.release();
+        }
+
+        public void sliderWarpPerspective_valueChaned()
+        {
+            float sliderValue = sliderPerspective.value;
+            sliderValue = sliderValue / 100;
+            float heightScale = 1 + sliderValue;
+
+            warpPerspective.setParam(heightScale);
+            Mat rgbaMat = webCamTextureToMatHelper.GetMat();
+            warpPerspective.Init(rgbaMat);
+
+            Debug.LogFormat("Xin chao {0}", sliderValue);
         }
 
     }

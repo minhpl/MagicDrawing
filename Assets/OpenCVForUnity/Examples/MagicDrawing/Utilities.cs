@@ -15,6 +15,7 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
         Mat tempMat;
         List<Mat> splittedMat;
         Mat maxValueMat;
+        public const int transparent = 200;
 
         public Utilities()
         {
@@ -53,6 +54,18 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
             splittedMat[1].setTo(new Scalar(0), tempMat);
             splittedMat[2].setTo(new Scalar(0), tempMat);
             Core.merge(splittedMat, outputMat);
+        }
+
+        public void OverlayOnRGBMat(Mat frontMat, Mat backgroudMat, Mat outputMat)
+        {
+            Debug.LogFormat("channels is {0}", backgroudMat.channels());
+            Core.bitwise_not(frontMat, tempMat);
+            Core.split(backgroudMat, splittedMat);
+            tempMat.copyTo(splittedMat[0], tempMat);
+            splittedMat[1].setTo(new Scalar(0), tempMat);
+            splittedMat[2].setTo(new Scalar(0), tempMat);
+            //splittedMat[3].setTo(new Scalar(0), tempMat);
+            //Core.merge(splittedMat, outputMat);
         }
 
         public static void Log(string msgFormat,params object[] args)

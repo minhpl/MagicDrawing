@@ -10,8 +10,6 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
 {
     class WebcamVideoCapture 
     {
-
-        
         int codec;
         double fps;
         public VideoWriter writer;
