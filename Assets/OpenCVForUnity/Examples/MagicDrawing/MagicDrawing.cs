@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.IO;
 using System;
 using Assets.OpenCVForUnity.Examples.MagicDrawing;
+//using UnityEditor;
 
 #if UNITY_5_3 || UNITY_5_3_OR_NEWER
 using UnityEngine.SceneManagement;
@@ -276,7 +277,7 @@ namespace MagicDrawing
                     //cannyEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);                            
                     //EdgeDetectedMat = aDaptiveThreshold.adapTiveThreshold(snapImage);
                     //EdgeDetectedMat = threshold.threshold(snapImage);
-                    utilities.OverlayOnRGBAMat(EdgeDetectedMat, warpPerspectiveResult, mergedMat);
+                    utilities.OverlayTransparentOnRGBMat(EdgeDetectedMat, warpPerspectiveResult, mergedMat);
                     Utils.matToTexture2D(mergedMat, texture);   
                 }
 
@@ -372,6 +373,18 @@ namespace MagicDrawing
         {            
             ViRec = 0;
             webcamVideoCapture.writer.release();
+
+            utilities.test();
+        }
+
+        public int drawImageGalary = 1;
+
+        public void BtnGalary_Clicked()
+        {
+            Texture2D myGUITexture = (Texture2D)Resources.Load("ImageLineArt\1.png");
+
+
+
         }
 
         public void sliderWarpPerspective_valueChaned()
