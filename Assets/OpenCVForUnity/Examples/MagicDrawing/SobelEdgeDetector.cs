@@ -158,20 +158,19 @@ namespace Assets.OpenCVForUnity.Examples.MagicDrawing
         {
             inputMat.copyTo(tempMat);
             Imgproc.GaussianBlur(tempMat, tempMat, new Size(KSizeGaussBlur * 2 + 1, KSizeGaussBlur * 2 + 1), sigmaX, sigmaY, Core.BORDER_DEFAULT);
-            Imgproc.cvtColor(tempMat, tempMat, Imgproc.COLOR_BGR2GRAY);
-            //if (inputMat.channels() < 2)
-            //{
-            //    //Debug.LogFormat("The input Image is the gray mat");
-            //}
-            //else
-            //{
-            //    Imgproc.cvtColor(tempMat, tempMat, Imgproc.COLOR_BGR2GRAY);
-            //}
-            Imgproc.Sobel(tempMat, grad_x, depth, 1, 1, 2 * KSizeSobel + 1, scaleSobel, deltaSobel, borderType);
-            Core.convertScaleAbs(grad_x, edgeDetected);
-            //Imgproc.Sobel(tempMat, grad_y, depth, 0, 1, 2 * KSizeSobel + 1, scaleSobel, deltaSobel, borderType);
-            //Core.convertScaleAbs(grad_y, abs_grad_y);
-            //Core.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, edgeDetected);
+            if (inputMat.channels() < 2)
+            {
+                //Debug.LogFormat("The input Image is the gray mat");
+            }
+            else
+            {
+                Imgproc.cvtColor(tempMat, tempMat, Imgproc.COLOR_BGR2GRAY);
+            }
+            Imgproc.Sobel(tempMat, grad_x, depth, 1, 0, 2 * KSizeSobel + 1, scaleSobel, deltaSobel, borderType);
+            Core.convertScaleAbs(grad_x, abs_grad_x);
+            Imgproc.Sobel(tempMat, grad_y, depth, 0, 1, 2 * KSizeSobel + 1, scaleSobel, deltaSobel, borderType);
+            Core.convertScaleAbs(grad_y, abs_grad_y);
+            Core.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, edgeDetected);
             return edgeDetected;
         }
 

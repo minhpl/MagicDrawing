@@ -6,6 +6,7 @@ using System.IO;
 using System;
 using Assets.OpenCVForUnity.Examples.MagicDrawing;
 //using UnityEditor;
+//using UnityEditor;
 
 #if UNITY_5_3 || UNITY_5_3_OR_NEWER
 using UnityEngine.SceneManagement;
@@ -32,6 +33,7 @@ namespace MagicDrawing
         public Slider sliderPerspective;
         public Button BtnViRec;
         public Button BtnStopRec;
+        public Text txtDbg;
 
         /// <summary>
         /// The gray mat.
@@ -90,11 +92,15 @@ namespace MagicDrawing
         int stage = 1;      //1: hiển thị camera như bình thường và có nút chụp lại ảnh
                             //2: chụp lại ảnh sau đó hiển thị ảnh tĩnh 
                             //3: hiển thị ảnh đã tách biên trên nền video capture từ camera, với điều kiện camera đã
-        int mode = 1;       // mode = 1: line
-                            // mode = 2: Ink
-                            // mode = 3:  Blend Snapped Image
+        int modeLineInkBlend = 1;       // modeLineInkBlend = 1: line
+                            // modeLineInkBlend = 2: Ink
+                            // modeLineInkBlend = 3:  Blend Snapped Image
         int ViRec = 0;      // ViRec = 0, not record video
                             // ViRec = 1, record video
+
+        int modeImage = 2;  // modeImage = 1 : capture image
+                            // modeImage = 2 : galary image  // Dung chuc nang thresh hold de loc bien, dieu chinh tham so kSizeGaussBlur = 1     
+                                                              // Block Size Adapter 33+
 
         Mat EdgeDetectedMat;
         Mat mergedMat;
@@ -249,8 +255,10 @@ namespace MagicDrawing
         {
             if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
             {
+                if(modeImage == 2)
+                {
 
-                //Debug.Log("xin chao the gioi ");
+                }
 
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();
                 if (stage == 1)
@@ -273,8 +281,8 @@ namespace MagicDrawing
                     //sobelEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
                     //EdgeDetectedMat = scharrEdgeDetector.scharrEdgeDetect(snapImage);
                     //scharrEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
-                    //EdgeDetectedMat = cannyEdgeDetector.edgeDetect(snapImage);
-                    //cannyEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);                            
+                    //EdgeDetectedMat = cannyEdgeDetector.edgeDetect(snapImage);    
+                    //cannyEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
                     //EdgeDetectedMat = aDaptiveThreshold.adapTiveThreshold(snapImage);
                     //EdgeDetectedMat = threshold.threshold(snapImage);
                     utilities.OverlayTransparentOnRGBMat(EdgeDetectedMat, warpPerspectiveResult, mergedMat);
@@ -381,10 +389,16 @@ namespace MagicDrawing
 
         public void BtnGalary_Clicked()
         {
-            Texture2D myGUITexture = (Texture2D)Resources.Load("ImageLineArt\1.png");
-
-
-
+            Mat rgbaMat = webCamTextureToMatHelper.GetMat();
+            Texture2D myGUITexture = (Texture2D)Resources.Load("ImageLineArt/11");
+            //Debug.LogFormat("w:{0} - h:{1}",myGUITexture.width,myGUITexture.height);
+            Mat a = new Mat(myGUITexture.height, myGUITexture.width, CvType.CV_8UC1);
+            //Debug.LogFormat("aw:{0} ah:{1}", a.cols(), a.rows());
+            Utils.texture2DToMat(myGUITexture, a);            
+            Imgproc.resize(a,snapImage,rgbaMat.size());
+            txtDbg.text = a.cols().ToString();
+            stage = 2;
+            modeImage = 2;
         }
 
         public void sliderWarpPerspective_valueChaned()
