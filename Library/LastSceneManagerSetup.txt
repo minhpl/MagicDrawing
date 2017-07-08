@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/OpenCVForUnity/Examples/MagicDrawing/MagicDrawing.unity
+- path: Assets/Scenes/M/ResultScene.unity
   isLoaded: 1
   isActive: 1
