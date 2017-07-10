@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/M/ResultScene.unity
+- path: Assets/Scenes/M/GalleryScene.unity
   isLoaded: 1
   isActive: 1
