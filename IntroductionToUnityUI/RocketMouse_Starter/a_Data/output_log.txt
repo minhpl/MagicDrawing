@@ -2,34 +2,51 @@ Initialize engine version: 5.6.1f1 (2860b30f0b54)
 GfxDevice: creating device client; threaded=1
 Direct3D:
     Version:  Direct3D 11.0 [level 11.0]
-    Renderer: NVIDIA Quadro K620 (ID=0x13bb)
+    Renderer: NVIDIA GeForce 940M (ID=0x1347)
     Vendor:   NVIDIA
-    VRAM:     2017 MB
-    Driver:   21.21.13.6939
+    VRAM:     2020 MB
+    Driver:   22.21.13.8205
 Begin MonoManager ReloadAssembly
-Platform assembly: E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
-Loading E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
-Platform assembly: E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
-Loading E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.016 seconds
-Platform assembly: E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: E:\WorkspaceMinh\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\System.dll (this message is harmless)
-desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+Platform assembly: E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+- Completed reload, in  0.027 seconds
+Platform assembly: E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: E:\WorkspaceMinh\MagicDrawing\IntroductionToUnityUI\RocketMouse_Starter\a_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 3286x1080 at -1366,0
 <RI> Initializing input.
-XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 0.970215 ms
+UnloadTime: 4.095978 ms
 Setting up 4 worker threads for Enlighten.
-  Thread -> id: 4fe4 -> priority: 1 
-  Thread -> id: fd0 -> priority: 1 
-  Thread -> id: 4ee8 -> priority: 1 
-  Thread -> id: d08 -> priority: 1 
+  Thread -> id: 43d4 -> priority: 1 
+  Thread -> id: 3fe8 -> priority: 1 
+  Thread -> id: 1b78 -> priority: 1 
+  Thread -> id: 2de8 -> priority: 1 
+Scene 'RocketMouse' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
+To add a scene to the build settings use the menu File->Build Settings...
+ 
+(Filename:  Line: 137)
+
+Scene 'RocketMouse' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
+To add a scene to the build settings use the menu File->Build Settings...
+ 
+(Filename:  Line: 137)
+
+Scene 'RocketMouse' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
+To add a scene to the build settings use the menu File->Build Settings...
+ 
+(Filename:  Line: 137)
+
+Scene 'RocketMouse' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
+To add a scene to the build settings use the menu File->Build Settings...
+ 
+(Filename:  Line: 137)
+
