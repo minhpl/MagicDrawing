@@ -23,7 +23,7 @@ public class UIManagerScript : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("RocketMouse", LoadSceneMode.Single);
+        SceneManager.LoadScene("RocketMouse", LoadSceneMode.Additive);
     }
 
     public void CloseSettings()
