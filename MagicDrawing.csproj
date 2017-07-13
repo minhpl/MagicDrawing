@@ -90,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\IMGUI.cs" />
     <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\EquipItems.cs" />
     <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\EquipRandomItem.cs" />
     <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\UICursor.cs" />
@@ -230,7 +231,6 @@
     <Compile Include="Assets\NGUI\Scripts\UI\UITexture.cs" />
     <Compile Include="Assets\NGUI\Scripts\UI\UITooltip.cs" />
     <Compile Include="Assets\NGUI\Scripts\UI\UIViewport.cs" />
-    <Compile Include="Assets\NewBehaviourScript.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\BackgroundSubtractorMOG2Example\BackgroundSubtractorMOG2Example.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\CamShiftExample\CamShiftExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\ComicFilterExample\ComicFilterExample.cs" />
@@ -508,9 +508,21 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\SimpleWB.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\WhiteBalancer.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\Xphoto.cs" />
-    <Compile Include="Assets\Scenes\M\ScrollScript.cs" />
+    <Compile Include="Assets\Scripts\DrawingTemplateModel.cs" />
+    <Compile Include="Assets\Scripts\GFs.cs" />
+    <Compile Include="Assets\Scripts\GVs.cs" />
     <Compile Include="Assets\Scripts\GalaryScript.cs" />
     <Compile Include="Assets\Scripts\HomeController.cs" />
+    <Compile Include="Assets\Scripts\LibraryScripts.cs" />
+    <Compile Include="Assets\Scripts\Net\HTTPRequest.cs" />
+    <Compile Include="Assets\Scripts\Net\NET.cs" />
+    <Compile Include="Assets\Scripts\SceneManagerScript.cs" />
+    <Compile Include="Assets\Scripts\ScrollViewScript.cs" />
+    <Compile Include="Assets\Scripts\TextureScale.cs" />
+    <Compile Include="Assets\Scripts\models\AvataModel.cs" />
+    <Compile Include="Assets\Scripts\models\DownloadModel.cs" />
+    <Compile Include="Assets\Scripts\models\ReqModel.cs" />
+    <Compile Include="Assets\Scripts\security\AesEncryptor.cs" />
     <Compile Include="Assets\Zip\Plugins\Zip.cs" />
   </ItemGroup>
   <ItemGroup>
