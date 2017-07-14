@@ -508,7 +508,7 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\SimpleWB.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\WhiteBalancer.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\Xphoto.cs" />
-    <Compile Include="Assets\Scripts\DrawingTemplateModel.cs" />
+    <Compile Include="Assets\Scripts\DataBind.cs" />
     <Compile Include="Assets\Scripts\GFs.cs" />
     <Compile Include="Assets\Scripts\GVs.cs" />
     <Compile Include="Assets\Scripts\GalaryScript.cs" />
@@ -519,8 +519,10 @@
     <Compile Include="Assets\Scripts\SceneManagerScript.cs" />
     <Compile Include="Assets\Scripts\ScrollViewScript.cs" />
     <Compile Include="Assets\Scripts\TextureScale.cs" />
+    <Compile Include="Assets\Scripts\UIEventScripts.cs" />
     <Compile Include="Assets\Scripts\models\AvataModel.cs" />
     <Compile Include="Assets\Scripts\models\DownloadModel.cs" />
+    <Compile Include="Assets\Scripts\models\DrawingTemplateModel.cs" />
     <Compile Include="Assets\Scripts\models\ReqModel.cs" />
     <Compile Include="Assets\Scripts\security\AesEncryptor.cs" />
     <Compile Include="Assets\Zip\Plugins\Zip.cs" />
