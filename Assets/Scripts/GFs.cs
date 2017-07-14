@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using UnityEngine;
-
+using Assets.OpenCVForUnity.Examples.MagicDrawing;
 
 class GFs
 {
@@ -29,7 +29,7 @@ class GFs
 
         Texture2D tex = null;
         byte[] fileData;
-        Debug.Log(GVs.APP_PATH + "/" + filePath);
+        //Utilities.Log(GVs.APP_PATH + "/" + filePath);
         if (File.Exists(GVs.APP_PATH + "/" + filePath))
         {
             fileData = File.ReadAllBytes(GVs.APP_PATH + "/" + filePath);

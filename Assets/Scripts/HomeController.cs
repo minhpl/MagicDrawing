@@ -16,7 +16,7 @@ public class HomeController : MonoBehaviour {
             GVs.APP_PATH = Application.persistentDataPath;
         }
         GFs.LoadTemplateList();
-        if(NET.NetWorkIsAvaiable())
+        if (NET.NetWorkIsAvaiable())
             HTTPRequest.Instance.Request(GVs.GET_ALL_TEMPLATE_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
             {
                 Debug.Log("data: " + data);
@@ -29,18 +29,18 @@ public class HomeController : MonoBehaviour {
             });
     }
     private bool downloaded = false;
-	void Update () {
+    void Update () {
 		
 	}
     public void loadHistory1Scene()
     {
-        //Debug.Log("click");
+        Debug.Log("click");
         if (downloaded)
             GVs.SCENE_MANAGER.loadHistory1Scene();
     }
     public void loadLibrary()
     {
-        if(downloaded)
-        GVs.SCENE_MANAGER.loadLibraryScene();
+        if (downloaded)
+            GVs.SCENE_MANAGER.loadLibraryScene();
     }
 }

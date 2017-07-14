@@ -59,4 +59,9 @@ public class SceneManagerScript : MonoBehaviour {
     public void loadTutorialScene(){
     	SceneManager.LoadScene("Tutorial");
     }
+
+    public void loadCollectionScene()
+    {
+        SceneManager.LoadScene("CollectionScene");
+    }
 }

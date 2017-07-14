@@ -22,7 +22,13 @@ public class GVs {
     public static int PROFILE_ADD = 2;
     public static int PROFILE_CHANGE_AVATA = 3;
 
-    public static DrawingTemplateListModel DRAWING_TEMPLATE_LIST_MODEL =new DrawingTemplateListModel();
+    public static DrawingTemplateListModel DRAWING_TEMPLATE_LIST_MODEL = new DrawingTemplateListModel();
+
+    //-----------------------
 
 
+    public static DrawingTemplateModel CURRENT_MODEL;
+    // 1: all catergories
+    // 2: in category
+    public static int LIBRARYSCENE = 1;     
 }

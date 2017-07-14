@@ -19,12 +19,7 @@ public class ScrollViewScript : MonoBehaviour {
             go.transform.localScale = imageItem.transform.localScale;           
             go.SetActive(true);            
             go.transform.localPosition = v3;
-
         }
-
-
-
-
     }
 	
 	// Update is called once per frame

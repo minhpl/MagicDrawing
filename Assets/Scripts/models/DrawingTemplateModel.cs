@@ -9,6 +9,7 @@ public class DrawingTemplateModel
     public string _id;
     public string name;
     public string image;
+    public string thumb;
     public string _v;
 }
 

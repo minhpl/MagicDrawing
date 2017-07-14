@@ -26,11 +26,9 @@ public class GalaryScript : MonoBehaviour {
         Debug.LogFormat("width = {0}", widthOri);
         imageCount = GVs.DRAWING_TEMPLATE_LIST_MODEL.Count();
 
-
         Vector3  v3 = imageItem.transform.localPosition;
         v3.y += 340;
         float x = v3.x;
-
 
         var watch = System.Diagnostics.Stopwatch.StartNew();
               
@@ -52,7 +50,7 @@ public class GalaryScript : MonoBehaviour {
                 go.GetComponent<UIButton>().tweenTarget = null;
 
                 UITexture rimage = go.transform.Find("image").GetComponent<UITexture>();
-                Texture2D texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i).image);
+                Texture2D texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i).thumb);
                 float width = texture.width;
                 float height = texture.height;
                 float ratio = width / height;
