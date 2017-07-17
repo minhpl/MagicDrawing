@@ -26,9 +26,14 @@ public class GVs {
 
     //-----------------------
 
+    //public int 
+
+    //Save scene build index.
+    public static List<int> PREV_SCENE = new List<int>();
+    public static Stack<int> TRACE_SCENE = new Stack<int>();
 
     public static DrawingTemplateModel CURRENT_MODEL;
     // 1: all catergories
     // 2: in category
-    public static int LIBRARYSCENE = 1;     
+    //public static int LIBRARYSCENE = 1;     
 }

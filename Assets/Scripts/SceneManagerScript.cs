@@ -3,17 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneManagerScript : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+public class SceneManagerScript  {
 
 	public void loadHomeScne()
 	{
@@ -63,5 +53,10 @@ public class SceneManagerScript : MonoBehaviour {
     public void loadCollectionScene()
     {
         SceneManager.LoadScene("CollectionScene");
+    }
+
+    public void loadDrawingScene()
+    {
+        SceneManager.LoadScene("DrawingScene");
     }
 }

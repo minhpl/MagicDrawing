@@ -109,18 +109,23 @@ namespace MagicDrawing
             
         // Use this for initialization
         void Start()
-        {            
+        {
+            Debug.LogFormat("Xin chao magicdrawing start");
             webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
             webCamTextureToMatHelper.Init();
             Mat rgbaMat = webCamTextureToMatHelper.GetMat();           
             
             laplaceEdgeDetector = gameObject.GetComponent<LaplaceEdgeDetector>();
             sobelEdgeDetector = gameObject.GetComponent<SobelEdgeDetector>();
+            Debug.LogFormat("xin chao ham start {0}", laplaceEdgeDetector == null);
+
             scharrEdgeDetector = gameObject.GetComponent<ScharrEdgeDetector>();
             cannyEdgeDetector = gameObject.GetComponent<CannyEdgeDetector>();
             threshold = gameObject.GetComponent<Threshold>();
             warpPerspective = gameObject.GetComponent<WarpPerspective>();
             aDaptiveThreshold = gameObject.GetComponent<AdaptiveThreshold>();
+            Debug.LogFormat("is null ? {0}", aDaptiveThreshold == null);
+
 
             snapImage = new Mat();            
             EdgeDetectedMat = new Mat();
@@ -135,7 +140,7 @@ namespace MagicDrawing
         {
             float sliderValue = slider.value;
             sobelEdgeDetector.setParameter(sliderValue);
-
+            Debug.LogFormat("Xin chao the gioi tuoi dep");
             EdgeDetectedMat = sobelEdgeDetector.sobelEdgeDetect(snapImage);
             sobelEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
         }
@@ -262,8 +267,8 @@ namespace MagicDrawing
 
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();
                 if (stage == 1)
-                {                                    
-                    //Debug.Log(rgbaMat.channels());
+                {
+                    //Debug.LogFormat("Xin chao ham  update {0}",texture==null);
                     Utils.matToTexture2D(rgbaMat, texture, webCamTextureToMatHelper.GetBufferColors());
                 }
                 else if(stage==2)
@@ -276,14 +281,15 @@ namespace MagicDrawing
                     //Debug.LogFormat("width2 is {0}", warpPerspectiveResult.size().width);
                     //Utils.matToTexture2D(warpPerspectiveResult, texture);                    
                     //EdgeDetectedMat = laplaceEdgeDetector.laplaceEdgeDetect(snapImage);
-                    //laplaceEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);      
+                    //laplaceEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
                     //EdgeDetectedMat = sobelEdgeDetector.sobelEdgeDetect(snapImage);
                     //sobelEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
                     //EdgeDetectedMat = scharrEdgeDetector.scharrEdgeDetect(snapImage);
                     //scharrEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
-                    //EdgeDetectedMat = cannyEdgeDetector.edgeDetect(snapImage);    
+                    //EdgeDetectedMat = cannyEdgeDetector.edgeDetect(snapImage);
                     //cannyEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
-                    //EdgeDetectedMat = aDaptiveThreshold.adapTiveThreshold(snapImage);
+                    Debug.LogFormat("update function");
+                    EdgeDetectedMat = aDaptiveThreshold.adapTiveThreshold(snapImage);
                     //EdgeDetectedMat = threshold.threshold(snapImage);
                     utilities.OverlayTransparentOnRGBMat(EdgeDetectedMat, warpPerspectiveResult, mergedMat);
                     Utils.matToTexture2D(mergedMat, texture);   
@@ -364,7 +370,9 @@ namespace MagicDrawing
         }        
 
         public void OnEdgeIsolationBtnClicked()
-        {                        
+        {
+            Debug.LogFormat("xin chao noi day {0}", sobelEdgeDetector == null);
+
             EdgeDetectedMat = sobelEdgeDetector.sobelEdgeDetect(snapImage);
             sobelEdgeDetector.adapTiveThreshold(EdgeDetectedMat, EdgeDetectedMat);
             stage = 3;
@@ -390,7 +398,15 @@ namespace MagicDrawing
         public void BtnGalary_Clicked()
         {
             Mat rgbaMat = webCamTextureToMatHelper.GetMat();
-            Texture2D myGUITexture = (Texture2D)Resources.Load("ImageLineArt/11");
+            Texture2D myGUITexture = (Texture2D)Resources.Load("ImageLineArt/16");
+
+            float width = myGUITexture.width;
+            float height = myGUITexture.height;
+
+            gameObject.transform.localScale = new Vector3(width, height, 1);
+
+
+
             //Debug.LogFormat("w:{0} - h:{1}",myGUITexture.width,myGUITexture.height);
             Mat a = new Mat(myGUITexture.height, myGUITexture.width, CvType.CV_8UC1);
             //Debug.LogFormat("aw:{0} ah:{1}", a.cols(), a.rows());
