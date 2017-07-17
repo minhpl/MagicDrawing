@@ -6,8 +6,7 @@ public class TrackScene : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        GVs.TRACE_SCENE.Push(this.gameObject.scene.buildIndex);
-        Debug.LogFormat("Xin chao, day la Scene {0}", this.gameObject.scene.name);
+        GVs.TRACE_SCENE.Push(this.gameObject.scene.buildIndex);        
     }
 	
 	// Update is called once per frame

@@ -47,7 +47,11 @@ public class LibraryScripts : MonoBehaviour
         StartCoroutine(Load());        
         watch.Stop();
         var elapsedMs = watch.ElapsedMilliseconds;
-        Utilities.Log("Time pass Load function: {0}", elapsedMs);
+        //Utilities.Log("Time pass Load function: {0}", elapsedMs);
+
+        Debug.LogFormat("gameobject dont destroy have the name is {0}", imageItem.transform.parent.transform.parent);
+        DontDestroyOnLoad(imageItem.transform.parent.transform.parent);
+
     }
 
     IEnumerator Load()
@@ -109,11 +113,10 @@ public class LibraryScripts : MonoBehaviour
                 //go.SetActive(true);                          
             }
 
-        Destroy(imageItem);
+        //Destroy(imageItem);
         watch.Stop();
         var elapsedMs = watch.ElapsedMilliseconds;
-        Utilities.Log("Time excution: {0}", elapsedMs);
-
+        //Utilities.Log("Time excution: {0}", elapsedMs);        
         //imageItem.GetComponent<Button>().onClick.AddListener(() =>
         //{
         //    OnClickedGameObject(imageItem);

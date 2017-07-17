@@ -29,7 +29,7 @@ class GFs
 
         Texture2D tex = null;
         byte[] fileData;
-        Utilities.Log(GVs.APP_PATH + "/" + filePath);
+        //Utilities.Log(GVs.APP_PATH + "/" + filePath);
         if (File.Exists(GVs.APP_PATH + "/" + filePath))
         {
             fileData = File.ReadAllBytes(GVs.APP_PATH + "/" + filePath);
