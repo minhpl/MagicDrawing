@@ -130,6 +130,18 @@
     <Reference Include="Ionic.Zip">
       <HintPath>Assets\Zip\Plugins\Ionic.Zip.dll</HintPath>
     </Reference>
+    <Reference Include="Google.JarResolver">
+      <HintPath>Assets\PlayServicesResolver\Editor\Google.JarResolver.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.IOSResolver">
+      <HintPath>Assets\PlayServicesResolver\Editor\Google.IOSResolver.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.PackageManager">
+      <HintPath>Assets\PlayServicesResolver\Editor\Google.PackageManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.VersionHandler">
+      <HintPath>Assets\PlayServicesResolver\Editor\Google.VersionHandler.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="MagicDrawing.csproj">
@@ -272,10 +284,11 @@
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed.shader" />
     <None Include="Assets\OpenCVForUnity\Examples\MagicDrawing\cong viec.txt" />
     <None Include="Assets\OpenCVForUnity\Examples\MagicDrawing\flow.txt" />
-    <None Include="Assets\OpenCVForUnity\Examples\MagicDrawing\thuattoantachbien.txt" />
+    <None Include="Assets\OpenCVForUnity\Examples\thuattoantachbien.txt" />
     <None Include="Assets\OpenCVForUnity\OpenCV_LICENSE.txt" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
+    <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

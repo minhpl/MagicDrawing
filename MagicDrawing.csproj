@@ -254,19 +254,10 @@
     <Compile Include="Assets\OpenCVForUnity\Examples\HoughLinesPExample\HoughLinesPExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\InpaintExample\InpaintExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MSERExample\MSERExample.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\AdaptiveThreshold.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\CannyEdgeDetector.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\ComicFilterOriginal.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\EdgeDetector.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\LaplaceEdgeDetector.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\MagicDrawing.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\MagicDrawing2.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\ScharrEdgeDetector.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\SobelEdgeDetector.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\Threshold.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\Utilities.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\WarpPerspective.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MagicDrawing\WebcamVideoCapture.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MatchShapesExample\MatchShapesExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MatchTemplateExample\MatchTemplateExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MultiObjectTrackingBasedOnColorExample\ColorObject.cs" />
@@ -508,7 +499,9 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\SimpleWB.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\WhiteBalancer.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\Xphoto.cs" />
+    <Compile Include="Assets\Scripts\BackButton.cs" />
     <Compile Include="Assets\Scripts\DataBind.cs" />
+    <Compile Include="Assets\Scripts\DrawingScripts.cs" />
     <Compile Include="Assets\Scripts\GFs.cs" />
     <Compile Include="Assets\Scripts\GVs.cs" />
     <Compile Include="Assets\Scripts\GalaryScript.cs" />
@@ -516,15 +509,29 @@
     <Compile Include="Assets\Scripts\LibraryScripts.cs" />
     <Compile Include="Assets\Scripts\Net\HTTPRequest.cs" />
     <Compile Include="Assets\Scripts\Net\NET.cs" />
+    <Compile Include="Assets\Scripts\OpenCV\AdaptiveThreshold.cs" />
+    <Compile Include="Assets\Scripts\OpenCV\CannyEdgeDetector.cs" />
+    <Compile Include="Assets\Scripts\OpenCV\ComicFilterOriginal.cs" />
+    <Compile Include="Assets\Scripts\OpenCV\EdgeDetector.cs" />
+    <Compile Include="Assets\Scripts\OpenCV\LaplaceEdgeDetector.cs" />
+    <Compile Include="Assets\Scripts\OpenCV\ScharrEdgeDetector.cs" />
+    <Compile Include="Assets\Scripts\OpenCV\SobelEdgeDetector.cs" />
+    <Compile Include="Assets\Scripts\OpenCV\Threshold.cs" />
+    <Compile Include="Assets\Scripts\OpenCV\Utilities.cs" />
+    <Compile Include="Assets\Scripts\OpenCV\WarpPerspective.cs" />
+    <Compile Include="Assets\Scripts\OpenCV\WebcamVideoCapture.cs" />
     <Compile Include="Assets\Scripts\SceneManagerScript.cs" />
     <Compile Include="Assets\Scripts\ScrollViewScript.cs" />
     <Compile Include="Assets\Scripts\TextureScale.cs" />
+    <Compile Include="Assets\Scripts\ToggleScript.cs" />
+    <Compile Include="Assets\Scripts\TrackScene.cs" />
     <Compile Include="Assets\Scripts\UIEventScripts.cs" />
     <Compile Include="Assets\Scripts\models\AvataModel.cs" />
     <Compile Include="Assets\Scripts\models\DownloadModel.cs" />
     <Compile Include="Assets\Scripts\models\DrawingTemplateModel.cs" />
     <Compile Include="Assets\Scripts\models\ReqModel.cs" />
     <Compile Include="Assets\Scripts\security\AesEncryptor.cs" />
+    <Compile Include="Assets\Scripts\testin.cs" />
     <Compile Include="Assets\Zip\Plugins\Zip.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -571,10 +578,11 @@
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed.shader" />
     <None Include="Assets\OpenCVForUnity\Examples\MagicDrawing\cong viec.txt" />
     <None Include="Assets\OpenCVForUnity\Examples\MagicDrawing\flow.txt" />
-    <None Include="Assets\OpenCVForUnity\Examples\MagicDrawing\thuattoantachbien.txt" />
+    <None Include="Assets\OpenCVForUnity\Examples\thuattoantachbien.txt" />
     <None Include="Assets\OpenCVForUnity\OpenCV_LICENSE.txt" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
+    <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
