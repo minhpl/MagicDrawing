@@ -41,7 +41,6 @@ public class DrawingScripts : MonoBehaviour {
         texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
 
         threshold = GetComponent<Threshold>();
-        Debug.LogFormat("Threshold value is {0}", threshold.thresholdValue);
  
         if (Application.platform == RuntimePlatform.Android)
         {
@@ -191,6 +190,6 @@ public class DrawingScripts : MonoBehaviour {
 
     private void OnValidate()
     {
-        Debug.Log("Xin chao validator");
+        //Debug.Log("Xin chao validator");
     }
 }

@@ -47,11 +47,7 @@ public class LibraryScripts : MonoBehaviour
         StartCoroutine(Load());        
         watch.Stop();
         var elapsedMs = watch.ElapsedMilliseconds;
-        //Utilities.Log("Time pass Load function: {0}", elapsedMs);
-
-        Debug.LogFormat("gameobject dont destroy have the name is {0}", imageItem.transform.parent.transform.parent);
-        DontDestroyOnLoad(imageItem.transform.parent.transform.parent);
-
+        //Utilities.Log("Time pass Load function: {0}", elapsedMs);        
     }
 
     IEnumerator Load()

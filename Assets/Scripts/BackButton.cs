@@ -17,12 +17,10 @@ public class BackButton : MonoBehaviour {
 	}
 
     public void onBackButtonClicked()
-    {
-        Debug.LogFormat("Back button clicked");
+    {        
         if(GVs.TRACE_SCENE.Count > 1)
         {
             GVs.TRACE_SCENE.Pop();
-            //Debug.LogFormat("Scene build index is {0}", GVs.TRACE_SCENE.Peek());
             SceneManager.LoadScene(GVs.TRACE_SCENE.Pop());            
         }
         

@@ -6,6 +6,7 @@ public class TrackScene : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Debug.LogFormat("TrackScene: Xin chao Scene Name {0}, Scene Index {1}", this.gameObject.scene.name, this.gameObject.scene.buildIndex);
         GVs.TRACE_SCENE.Push(this.gameObject.scene.buildIndex);        
     }
 	

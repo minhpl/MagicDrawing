@@ -142,6 +142,12 @@
     <Reference Include="Ionic.Zip">
       <HintPath>Assets\Zip\Plugins\Ionic.Zip.dll</HintPath>
     </Reference>
+    <Reference Include="TexturePacker">
+      <HintPath>Assets\Extensions\TexturePacker\Lib\TexturePacker.dll</HintPath>
+    </Reference>
+    <Reference Include="TexturePackerImporter">
+      <HintPath>Assets\codeandweb.com\Editor\TexturePackerImporter.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="MagicDrawing.csproj">
@@ -150,6 +156,24 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Components\TPBaseAnimationEditor.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Components\TPHelperEditor.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Components\TPMeshAnimationEditor.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Components\TPSpriteAnimationEditor.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Components\TPSpriteEditor.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Components\TPSpriteTextureEditor.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Components\TPStaticSpriteEditor.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Config\TexturePackerEditorConfig.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Data\TPAssetPostprocessor.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Data\TPEditorData.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Menu\ComponentMenu.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Menu\GameObjectMenu.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\PropertyDrawers\TPFlagsPropertyDrawer.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\Styles\TexturePackerStyles.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\TexturePackerEditor\TextureNodeRenderer.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\TexturePackerEditor\TexturePackerAtlasEditor.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\TexturePackerEditor\TexturePackerEditor.cs" />
+    <Compile Include="Assets\Extensions\TexturePacker\TPCore\Editor\TexturePackerEditor\TexturePackerMenuItem.cs" />
     <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Editor\InvDatabaseInspector.cs" />
     <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Editor\InvFindItem.cs" />
     <Compile Include="Assets\NGUI\Scripts\Editor\ActiveAnimationEditor.cs" />
@@ -241,6 +265,8 @@
     <Compile Include="Assets\OpenCVForUnity\Editor\iOS_BuildPostprocessor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Extensions\TexturePacker\Tutorial\Resources\TutorialAtlas_data.txt" />
+    <None Include="Assets\Extensions\TexturePacker\Tutorial\Resources\example_data.txt" />
     <None Include="Assets\NGUI\Examples\Atlases\Fantasy\Fantasy Font - Normal.txt" />
     <None Include="Assets\NGUI\Examples\Atlases\Refractive\Refractive Font - Header.txt" />
     <None Include="Assets\NGUI\Examples\Atlases\Refractive\Refractive Font - Normal.txt" />
@@ -289,6 +315,8 @@
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
     <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
+    <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
+    <None Include="Assets\codeandweb.com\Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

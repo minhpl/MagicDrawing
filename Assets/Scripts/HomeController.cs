@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HomeController : MonoBehaviour {
     void Start () {
@@ -27,6 +28,10 @@ public class HomeController : MonoBehaviour {
         //            if (process == 1) downloaded = true;
         //        });
         //    });
+
+        if(MakePersistentObject.Instance)
+            MakePersistentObject.Instance.gameObject.SetActive(false);
+
     }
     private bool downloaded = false;
     void Update () {
