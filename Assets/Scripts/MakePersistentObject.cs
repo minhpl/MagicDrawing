@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MakePersistentObject : MonoBehaviour {
 
@@ -14,7 +15,7 @@ public class MakePersistentObject : MonoBehaviour {
 
     private void Start()
     {
-        //Debug.LogFormat("Xin chao dong chi");
+        Debug.LogFormat("Xin chao, Active Scene name is {0}", SceneManager.GetActiveScene().name);
     }
 
     private void InstantiateController()

@@ -11,9 +11,9 @@ public class TestTextureUVCoordinate : MonoBehaviour {
         Image a = GetComponent<Image>();
         var name = a.gameObject.name;
         var uv = a.sprite.uv;
-        Debug.LogFormat("texture name is {0} have length uv is {1}", name, a.sprite.rect.ToString());
-        for (int i = 0; i < uv.Length; i++)
-            Debug.LogFormat(uv[i].ToString());
+        //Debug.LogFormat("texture name is {0} have length uv is {1}", name, a.sprite.rect.ToString());
+        //for (int i = 0; i < uv.Length; i++)
+            //Debug.LogFormat(uv[i].ToString());
     }
 	// Update is called once per frame
 	void Update () {

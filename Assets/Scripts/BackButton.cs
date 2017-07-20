@@ -22,17 +22,6 @@ public class BackButton : MonoBehaviour {
         {
             GVs.TRACE_SCENE.Pop();
             SceneManager.LoadScene(GVs.TRACE_SCENE.Pop());            
-        }
-        
-
-
-        //if (GVs.PREV_SCENE.Count > 0)
-        //{
-        //    int temp = GVs.PREV_SCENE.Count - 1;
-        //    int SceneIndex = GVs.PREV_SCENE[temp];
-        //    Debug.LogFormat("Previous Scene index is {0}", SceneIndex);
-        //    GVs.PREV_SCENE.RemoveAt(temp);
-        //    SceneManager.LoadScene(SceneIndex);
-        //}            
+        }                 
     }
 }

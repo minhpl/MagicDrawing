@@ -152,12 +152,11 @@ namespace MagicDrawing2
         void VideoRecorder()
         {
             // VideoCapture vc = new VideoCapture(0);
-            Mat rgbaMat = webCamTextureToMatHelper.GetMat();            
+            //Mat rgbaMat = webCamTextureToMatHelper.GetMat();            
             string filename = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\out.avi";
             int codec = VideoWriter.fourcc('M', 'J', 'P', 'G');
             double fps = 25.0;
-            VideoWriter writer = new VideoWriter(filename, codec, fps, rgbaMat.size());
-
+            //VideoWriter writer = new VideoWriter(filename, codec, fps, rgbaMat.size());
             // select desired codec (must be available at runtime)
             // framerate of the created video stream
             // name of the output video file

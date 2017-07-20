@@ -23,6 +23,12 @@ public class DrawingScripts : MonoBehaviour {
     bool loaded = false;
     WebcamVideoCapture webcamCapture;
 
+    private void Awake()
+    {
+        if (MakePersistentObject.Instance)
+            MakePersistentObject.Instance.gameObject.SetActive(false);
+    }
+
     // Use this for initialization
     void Start () {        
         webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
@@ -33,8 +39,7 @@ public class DrawingScripts : MonoBehaviour {
             int heigh = (int)goCam.GetComponent<RawImage>().rectTransform.rect.height;
             Debug.LogFormat("{0}{1}", width, heigh);
             webCamTextureToMatHelper.Init(null, 640, 480, webCamTextureToMatHelper.requestIsFrontFacing);
-            warpPerspective.Init(webCamTextureToMatHelper.GetMat());
-            //webCamTextureToMatHelper.Init(null, webCamTextureToMatHelper.requestWidth, width, webCamTextureToMatHelper.requestIsFrontFacing);           
+            warpPerspective.Init(webCamTextureToMatHelper.GetMat());                    
         }       
 
         Mat camMat = webCamTextureToMatHelper.GetMat();
@@ -77,8 +82,9 @@ public class DrawingScripts : MonoBehaviour {
         }
         else
         {
-            imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0005.png";
-            texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0005.png");
+            imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0027.jpg";
+            texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0027.jpg");
+            Debug.LogFormat("");
         }
 
         var rimgmodel = goModel.GetComponent<RawImage>();
@@ -102,7 +108,7 @@ public class DrawingScripts : MonoBehaviour {
         else
         {
             rimgmodel.rectTransform.localScale = new Vector3((modelAreaHeight / modelAreaWidth) * ratio, 1, 1);
-        }
+        }       
 
         imgPath = GVs.APP_PATH + "/" + imgPath;
         image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
@@ -153,20 +159,19 @@ public class DrawingScripts : MonoBehaviour {
     }
 
     // Update is called once per frame
+    //void Update()
     void Update()
     {
         if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
         {
             Mat rgbaMat = webCamTextureToMatHelper.GetMat();
-            if (isRecording && webcamCapture!=null)
-            {
-                webcamCapture.write(rgbaMat);
-            }
-            Mat a = warpPerspective.warpPerspective(rgbaMat);
-            Utils.matToTexture2D(a, texCam, webCamTextureToMatHelper.GetBufferColors());
-            goCam.GetComponent<RawImage>().texture = texCam;            
-
-            
+            //if (isRecording && webcamCapture != null)
+            //{
+            //    webcamCapture.write(rgbaMat);
+            //}
+            //Mat a = warpPerspective.warpPerspective(rgbaMat);
+            Utils.matToTexture2D(rgbaMat, texCam, webCamTextureToMatHelper.GetBufferColors());
+            goCam.GetComponent<RawImage>().texture = texCam;
         }
     }
 

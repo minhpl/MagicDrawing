@@ -82,6 +82,9 @@ class WarpPerspective : MonoBehaviour
                 w, h,
                 0, h);
         perspectiveTransform = Imgproc.getPerspectiveTransform(src_mat, dst_mat);
+
+        Debug.LogFormat("Perspective Transform is {0}", perspectiveTransform.size().ToString());
+
         sizeOriginal = image.size();
         sizeNew = new Size(sizeOriginal.width, newHeight);
         myROI = new OpenCVForUnity.Rect((int)needWidthInDe, heightRedundancy, (int)(topWidthAfter), newHeight - heightRedundancy);
@@ -109,17 +112,17 @@ class WarpPerspective : MonoBehaviour
     {
         if (heightScale == 1)
         {
-            Imgproc.warpPerspective(inputMat, tempMat, perspectiveTransform, sizeOriginal);
-            Mat roi = tempMat.submat(myROI);
-            Imgproc.resize(roi, result, sizeOriginal);
+            Imgproc.warpPerspective(inputMat, tempMat, perspectiveTransform, sizeOriginal,Imgproc.INTER_NEAREST);
+            //Mat roi = tempMat.submat(myROI);
+            //Imgproc.resize(roi, result, sizeOriginal);
         }
         else
         {
-            Imgproc.warpPerspective(inputMat, tempMat, perspectiveTransform, sizeOriginal);
-            Imgproc.resize(tempMat, tempMat2, sizeNew);
-            Mat roi = tempMat2.submat(myROI);
-            Imgproc.resize(roi, result, sizeOriginal);
+            Imgproc.warpPerspective(inputMat, tempMat, perspectiveTransform, sizeOriginal, Imgproc.INTER_NEAREST);
+            //Imgproc.resize(tempMat, tempMat2, sizeNew);
+            //Mat roi = tempMat2.submat(myROI);
+            //Imgproc.resize(roi, result, sizeOriginal);
         }
-        return result;
+        return tempMat;
     }
 }
