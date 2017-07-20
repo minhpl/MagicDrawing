@@ -29,7 +29,7 @@ public class HomeController : MonoBehaviour {
         //        });
         //    });
 
-        if(MakePersistentObject.Instance)
+        if (MakePersistentObject.Instance)
             MakePersistentObject.Instance.gameObject.SetActive(false);
 
     }
@@ -38,7 +38,7 @@ public class HomeController : MonoBehaviour {
 		
 	}
     public void loadHistory1Scene()
-    {                
+    {
         //if (downloaded)
         {
             GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);

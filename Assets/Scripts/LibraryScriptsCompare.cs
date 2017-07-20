@@ -9,17 +9,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LibraryScripts : MonoBehaviour
+public class LibraryScriptsCompare : MonoBehaviour
 {
     public GameObject imageItem;
     public int imageCount = 9;
     const int deScale = 1;
-    //Mat tempMat;
-    public static LibraryScripts Instance;
+    //Mat tempMat;    
 
     void Awake()
-    {
-        Instance = this;
+    {        
     }
     // Use this for initialization
     void Start()
@@ -89,27 +87,17 @@ public class LibraryScripts : MonoBehaviour
                     //rimage.rectTransform.localScale = new Vector3(ratio, 1, 1);
                     rimage.rectTransform.sizeDelta = new Vector2(widthOri * width / height, widthOri);
                 }
-
                 texture.Compress(true);
                 rimage.texture = texture;
-                go.SetActive(true);
-                //var offsetWidth = 1 / 2048;
-                //var offsetHeight = 1 / 2048;
-                //var a = rimage.uvRect;
-                //a.x += offsetWidth;
-                //a.y += offsetHeight;
-                //a.width -= 2 * offsetWidth;
-                //a.height -= 2 * offsetHeight;
-
                 LstTexture.Add(texture);
                 
-
+                
                 go.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     OnItemClicked(go);
                 });
 
-                
+                go.SetActive(true);
                 //var filePath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i).image;
                 //Mat a = Imgcodecs.imread(filePath);
                 //float width = a.width();
@@ -126,36 +114,30 @@ public class LibraryScripts : MonoBehaviour
             }
 
 
-        Texture2D atlas = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-        var LstRect = atlas.PackTextures(LstTexture.ToArray(), 3, 2048, false);
-        Debug.LogFormat("Listrect size is {0}, listTexture size is {1}", LstRect.Length, LstTexture.Count);
-        for (int i = 0; i < LstRect.Length; i++)
-        {
-            Debug.LogFormat("Texture Size is ({0} , {1}), rect size is ({2} , {3})", LstTexture[i].width, LstTexture[i].height, LstRect[i].width * atlas.width, LstRect[i].height * atlas.height);
-        }
-        //System.IO.File.WriteAllBytes(Application.dataPath + "/" + "picture5886.png", atlas.EncodeToPNG());
-        atlas.Compress(true);
-        Debug.LogFormat("atlas: width = {0}, height  {1}", atlas.width, atlas.height);
+        //Texture2D atlas = new Texture2D(1, 1,TextureFormat.Alpha8,false);
+        //var LstRect = atlas.PackTextures(LstTexture.ToArray(), 3, 2048, false);
+        //Debug.LogFormat("Listrect size is {0}, listTexture size is {1}", LstRect.Length, LstTexture.Count);
+        //for (int i = 0; i < LstRect.Length; i++)
+        //{
+        //    Debug.LogFormat("Texture Size is ({0} , {1}), rect size is ({2} , {3})", LstTexture[i].width, LstTexture[i].height, LstRect[i].width * atlas.width, LstRect[i].height * atlas.height);
+        //}
+        ////System.IO.File.WriteAllBytes(Application.dataPath + "/" + "picture5886.png", atlas.EncodeToPNG());
+        //atlas.Compress(true);
+        //Debug.LogFormat("atlas: width = {0}, height  {1}", atlas.width, atlas.height);
 
-        Component[] LstRawImage = imageItem.transform.parent.GetComponentsInChildren(typeof(RawImage));
-        for (int i = 0; i < LstRawImage.Length; i++)
-        {
-            RawImage RawImage = (RawImage)LstRawImage[i];
-            Destroy(RawImage.texture);
-            RawImage.texture = atlas;
+        //Component[] LstRawImage = imageItem.transform.parent.GetComponentsInChildren(typeof(RawImage));
+        //for (int i = 0; i < LstRawImage.Length; i++)
+        //{
+        //    RawImage RawImage = (RawImage)LstRawImage[i];
+        //    Destroy(RawImage.texture);
+        //    RawImage.texture = atlas;
+        //    RawImage.uvRect = LstRect[i];
+        //}
 
-
-            //var offset = 1 / 2048f;
-            //LstRect[i].x += offset;
-            //LstRect[i].y += offset;
-            //LstRect[i].width -= 2 * offset;
-            //LstRect[i].height -= 2 * offset;
-
-            RawImage.uvRect = LstRect[i];
-        }
-
-        Debug.Log(Application.dataPath);
+        //Debug.Log(Application.dataPath);
         
+
+
         Destroy(imageItem);
         watch.Stop();
         var elapsedMs = watch.ElapsedMilliseconds;
@@ -174,9 +156,10 @@ public class LibraryScripts : MonoBehaviour
         GVs.SCENE_MANAGER.loadDrawingScene();
     }    
 
-    public void OnAppBtnClicked()
+
+    public void onAppBtnClicked()
     {
         Destroy(GameObject.Find("Canvas"));
-        SceneManager.LoadScene("LibrarySceneCompare");
+        GVs.SCENE_MANAGER.loadLibraryScene();
     }
 }
