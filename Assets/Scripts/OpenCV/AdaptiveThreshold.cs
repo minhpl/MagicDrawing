@@ -47,7 +47,6 @@ public class AdaptiveThreshold : MonoBehaviour
         }
     }
 
-
     public Mat adapTiveThreshold(Mat inputMat)
     {
         inputMat.copyTo(tempMat);

@@ -44,7 +44,6 @@ public class DrawingScripts : MonoBehaviour {
         Debug.LogFormat("Slider value is {0}", slider.value);
     }
 
-
     // Use this for initialization
     void Start () {        
         webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
@@ -54,7 +53,8 @@ public class DrawingScripts : MonoBehaviour {
             int width = (int)goCam.GetComponent<RawImage>().rectTransform.rect.width;
             int heigh = (int)goCam.GetComponent<RawImage>().rectTransform.rect.height;            
             webCamTextureToMatHelper.Init(null, 640, 480, webCamTextureToMatHelper.requestIsFrontFacing);
-            warpPerspective.Init(webCamTextureToMatHelper.GetMat());                    
+            warpPerspective.Init(webCamTextureToMatHelper.GetMat());
+            ScaleGoCam(warpPerspective.scaleX);
         }
         utilities = new Utilities();
 
@@ -150,6 +150,16 @@ public class DrawingScripts : MonoBehaviour {
         job.image = image;
         job.rimgmodel = rimgmodel;
         job.texEdges = texEdges;
+
+
+
+
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        warpPerspective.warpPerspective(image);
+        watch.Stop();
+        var elapsedMs = watch.ElapsedMilliseconds;
+        Debug.LogFormat("time warperspective is :{0}", elapsedMs);
+
     }
 
     bool updateAble = true;
@@ -200,6 +210,8 @@ public class DrawingScripts : MonoBehaviour {
             StartCoroutine(DelayUpdate());
     }
 
+
+
     IEnumerator Worker()
     {
         while (true)
@@ -216,7 +228,8 @@ public class DrawingScripts : MonoBehaviour {
                 //{
                 //    webcamCapture.write(rgbaMat);
                 //}
-                Mat a = warpPerspective.warpPerspective(rgbaMat);
+
+                Mat a = warpPerspective.warpPerspective(rgbaMat);                
                 Utils.matToTexture2D(a, texCam, webCamTextureToMatHelper.GetBufferColors());
                 goCam.GetComponent<RawImage>().texture = texCam;
             }
@@ -242,8 +255,15 @@ public class DrawingScripts : MonoBehaviour {
         }
     }
 
-    private void OnValidate()
+
+    public void ScaleGoCam(float scaleX)
     {
-        //Debug.Log("Xin chao validator");
+        RawImage a = goCam.GetComponent<RawImage>();
+        //a.rectTransform.localScale = new Vector3(scaleX, 1, 1);
+
+        var w = a.rectTransform.rect.width;
+        var needw = w * scaleX;       
+        Debug.Log(a.rectTransform.rect.ToString());  
+        a.rectTransform.sizeDelta = new Vector2(needw-w, 0);
     }
 }
