@@ -3,6 +3,7 @@ using OpenCVForUnityExample;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -27,7 +28,54 @@ public class DrawingScripts : MonoBehaviour {
     {
         if (MakePersistentObject.Instance)
             MakePersistentObject.Instance.gameObject.SetActive(false);
+
+        int delayTime = 100;
+        var onSliderValueStream = slider.onValueChanged.AsObservable();
+        //onSliderValueStream.Buffer(onSliderValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
+        //    .Subscribe(list => Debug.LogFormat("list count is {0}", list[list.Count - 1]));
+        onSliderValueStream.Buffer(onSliderValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
+            .Subscribe(delegate { ValueChangeCheck(slider); });
+        //onSliderValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe(list => Debug.Log(list));        
+        //slider.onValueChanged.AddListener(delegate { ValueChangeCheck(slider); });
+
+
+
+
+
+
+        var heavyMethod = Observable.Start(() =>
+        {
+            // heavy method...
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
+            return 10;
+        });
+
+        var heavyMethod2 = Observable.Start(() =>
+        {
+            // heavy method...
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
+            return 30;
+        });
+
+        // Join and await two other thread values
+        Observable.WhenAll(heavyMethod, heavyMethod2)
+            .ObserveOnMainThread() // return to main thread
+            .Subscribe(xs =>
+            {
+                // Unity can't touch GameObject from other thread
+                // but use ObserveOnMainThread, you can touch GameObject naturally.
+                Debug.Log(xs[0] + ":" + xs[1]);
+            });
+
+
+        Debug.LogFormat("hiiiiiiiiiiiiiiiiiiiiiiiiii");
     }
+
+    void OnSliderValueChaned(Slider slider)
+    {
+        Debug.LogFormat("Slider value is {0}", slider.value);
+    }
+
 
     // Use this for initialization
     void Start () {        
@@ -61,6 +109,7 @@ public class DrawingScripts : MonoBehaviour {
         GFs.LoadTemplateList();
         StartCoroutine(loadModel());
     }
+    Job job;
 
     void OnDestroy()
     {
@@ -120,19 +169,38 @@ public class DrawingScripts : MonoBehaviour {
         //colorsBuffer = new Color32[edges.width() * edges.height()];
         //Utils.matToTexture2D(edges, texEdges, colorsBuffer);
 
-        rimgmodel.texture = texture;        
-        slider.onValueChanged.AddListener(delegate { ValueChangeCheck(slider); });
+        rimgmodel.texture = texture;                
         utilities = new Utilities();        
         goModel.SetActive(true);
         loaded = true;
+
+
+        job = new Job();
+        job.rimgmodel = goModel.GetComponent<RawImage>();
+        job.athreshold = athreshold;
+        job.utilities = utilities;
+        job.image = image;
+        job.rimgmodel = rimgmodel;
+        job.texEdges = texEdges;
+
         ValueChangeCheck(slider);
     }
 
-    public void ValueChangeCheck(Slider slider)
+    bool updateAble = true;
+    IEnumerator DelayUpdate()
     {
+        yield return new WaitForSeconds(0.1f);
+        updateAble = true;
+    }
+    private float currentSliderValue = 0;
+    public void ValueChangeCheck(Slider slider)
+    {        
         if (loaded)
         {
+            currentSliderValue = slider.value;
+            if (!updateAble) return;
             Debug.LogFormat("slider {0}", slider == null);
+            /*
             if (slider)
                 athreshold.setParameter(slider.value);
             Mat edges = athreshold.adapTiveThreshold(image);
@@ -155,13 +223,49 @@ public class DrawingScripts : MonoBehaviour {
             var rimgmodel = goModel.GetComponent<RawImage>();
             rimgmodel.texture = texEdges;
             redMat.Dispose();
+            */
+            if (job != null)
+            {
+                updateAble = false;
+                job.athreshold.setParameter(slider.value);
+                job.Start(( redMat) =>
+                {
+                    _redMat = redMat;
+                    finishJob = true;
+                });
+            }
         }
+    }
+    bool finishJob = false;
+    Mat  _redMat;
+
+    public void AfterProcess(Mat redMat)
+    {
+
+        Debug.LogFormat("Xin chao tat ca");
+        finishJob = false;
+        
+        Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
+        var rimgmodel = goModel.GetComponent<RawImage>(); ;
+        rimgmodel.texture = texEdges;
+        redMat.Dispose();
+        if (currentSliderValue != job.athreshold._sliderValue)
+        {
+            updateAble = true;
+            ValueChangeCheck(slider);
+        }
+        else
+            StartCoroutine(DelayUpdate());
     }
 
     // Update is called once per frame
     //void Update()
     void Update()
     {
+        if (finishJob)
+        {
+            AfterProcess( _redMat);
+        }
         if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
         {
             Mat rgbaMat = webCamTextureToMatHelper.GetMat();

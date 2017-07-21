@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-class Utilities
+public class Utilities
 {
     List<Mat> listMat;
     Mat zeroMat;

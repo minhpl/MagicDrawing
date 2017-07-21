@@ -27,9 +27,10 @@ public class AdaptiveThreshold : MonoBehaviour
 
     int blockSizeAdaptive1 = 3, blockSizeAdaptive2 = 3, blockSizeAdaptive3 = 5;
     float c_adaptive_threshold1 = 15f, c_adaptive_threshold2 = 3f, c_adaptive_threshold3 = 1f;
-
+    public float _sliderValue;
     public void setParameter(float sliderValue)
     {
+        _sliderValue = sliderValue;
         int head = 50;
         int maxValue = 100;
         if (sliderValue < head)
@@ -45,6 +46,7 @@ public class AdaptiveThreshold : MonoBehaviour
             c_adaptiveThreshold = (c_adaptive_threshold2 + (c_adaptive_threshold3 - c_adaptive_threshold2) * (sliderValue / (float)tail));
         }
     }
+
 
     public Mat adapTiveThreshold(Mat inputMat)
     {

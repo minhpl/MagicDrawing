@@ -93,6 +93,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="MagicDrawing.Plugins.csproj">
+      <Project>{463AC359-E175-9C81-9A2C-4BC0D84B6D01}</Project>
+      <Name>MagicDrawing.Plugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\IMGUI.cs" />
     <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\EquipItems.cs" />
     <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Game\EquipRandomItem.cs" />
@@ -505,10 +511,12 @@
     <Compile Include="Assets\Scripts\BackButton.cs" />
     <Compile Include="Assets\Scripts\DataBind.cs" />
     <Compile Include="Assets\Scripts\DrawingScripts.cs" />
+    <Compile Include="Assets\Scripts\DrawingScripts2.cs" />
     <Compile Include="Assets\Scripts\GFs.cs" />
     <Compile Include="Assets\Scripts\GVs.cs" />
     <Compile Include="Assets\Scripts\GalaryScript.cs" />
     <Compile Include="Assets\Scripts\HomeController.cs" />
+    <Compile Include="Assets\Scripts\Job.cs" />
     <Compile Include="Assets\Scripts\LibraryScripts.cs" />
     <Compile Include="Assets\Scripts\LibraryScriptsCompare.cs" />
     <Compile Include="Assets\Scripts\MakePersistentObject.cs" />
@@ -529,6 +537,7 @@
     <Compile Include="Assets\Scripts\ScrollViewScript.cs" />
     <Compile Include="Assets\Scripts\TestTextureUVCoordinate.cs" />
     <Compile Include="Assets\Scripts\TextureScale.cs" />
+    <Compile Include="Assets\Scripts\ThreadedJob.cs" />
     <Compile Include="Assets\Scripts\ToggleScript.cs" />
     <Compile Include="Assets\Scripts\TrackScene.cs" />
     <Compile Include="Assets\Scripts\UIEventScripts.cs" />
@@ -588,6 +597,7 @@
     <None Include="Assets\OpenCVForUnity\OpenCV_LICENSE.txt" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
+    <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

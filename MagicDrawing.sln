@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicDrawing.Plugins", "MagicDrawing.Plugins.csproj", "{463AC359-E175-9C81-9A2C-4BC0D84B6D01}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicDrawing", "MagicDrawing.csproj", "{53D3DAB8-81C5-E857-7A21-9ABB71A9249D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicDrawing.Editor", "MagicDrawing.Editor.csproj", "{B510DAF7-6BDB-251B-E018-A011DB467B3B}"
@@ -11,6 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{463AC359-E175-9C81-9A2C-4BC0D84B6D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{463AC359-E175-9C81-9A2C-4BC0D84B6D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{463AC359-E175-9C81-9A2C-4BC0D84B6D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{463AC359-E175-9C81-9A2C-4BC0D84B6D01}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53D3DAB8-81C5-E857-7A21-9ABB71A9249D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{53D3DAB8-81C5-E857-7A21-9ABB71A9249D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53D3DAB8-81C5-E857-7A21-9ABB71A9249D}.Release|Any CPU.ActiveCfg = Release|Any CPU

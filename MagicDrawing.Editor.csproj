@@ -150,6 +150,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="MagicDrawing.Plugins.csproj">
+      <Project>{463AC359-E175-9C81-9A2C-4BC0D84B6D01}</Project>
+      <Name>MagicDrawing.Plugins</Name>
+    </ProjectReference>
     <ProjectReference Include="MagicDrawing.csproj">
       <Project>{53D3DAB8-81C5-E857-7A21-9ABB71A9249D}</Project>
       <Name>MagicDrawing</Name>
@@ -294,6 +298,7 @@
     <None Include="Assets\OpenCVForUnity\OpenCV_LICENSE.txt" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
+    <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
