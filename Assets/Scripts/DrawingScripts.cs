@@ -38,23 +38,18 @@ public class DrawingScripts : MonoBehaviour {
         //onSliderValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe(list => Debug.Log(list));        
         //slider.onValueChanged.AddListener(delegate { ValueChangeCheck(slider); });
 
-
-
-
-
-
         var heavyMethod = Observable.Start(() =>
         {
             // heavy method...
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
-            return 10;
+            return "abc";
         });
 
         var heavyMethod2 = Observable.Start(() =>
         {
             // heavy method...
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
-            return 30;
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
+            return "ffdfd";
         });
 
         // Join and await two other thread values
@@ -165,9 +160,9 @@ public class DrawingScripts : MonoBehaviour {
         athreshold = GetComponent<AdaptiveThreshold>();
         texEdges = new Texture2D(image.width(), image.height(),TextureFormat.ARGB32,false);
 
-        //Mat edges = athreshold.adapTiveThreshold(image);                
-        //colorsBuffer = new Color32[edges.width() * edges.height()];
-        //Utils.matToTexture2D(edges, texEdges, colorsBuffer);
+        Mat edges = athreshold.adapTiveThreshold(image);
+        colorsBuffer = new Color32[edges.width() * edges.height()];
+        Utils.matToTexture2D(edges, texEdges, colorsBuffer);
 
         rimgmodel.texture = texture;                
         utilities = new Utilities();        
@@ -183,7 +178,7 @@ public class DrawingScripts : MonoBehaviour {
         job.rimgmodel = rimgmodel;
         job.texEdges = texEdges;
 
-        ValueChangeCheck(slider);
+        //ValueChangeCheck(slider);
     }
 
     bool updateAble = true;
@@ -199,7 +194,6 @@ public class DrawingScripts : MonoBehaviour {
         {
             currentSliderValue = slider.value;
             if (!updateAble) return;
-            Debug.LogFormat("slider {0}", slider == null);
             /*
             if (slider)
                 athreshold.setParameter(slider.value);
