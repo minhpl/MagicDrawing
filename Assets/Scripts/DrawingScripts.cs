@@ -36,34 +36,7 @@ public class DrawingScripts : MonoBehaviour {
         onSliderValueStream.Buffer(onSliderValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
             .Subscribe(delegate { ValueChangeCheck(slider); });
         //onSliderValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe(list => Debug.Log(list));        
-        //slider.onValueChanged.AddListener(delegate { ValueChangeCheck(slider); });
-
-        var heavyMethod = Observable.Start(() =>
-        {
-            // heavy method...
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
-            return "abc";
-        });
-
-        var heavyMethod2 = Observable.Start(() =>
-        {
-            // heavy method...
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
-            return "ffdfd";
-        });
-
-        // Join and await two other thread values
-        Observable.WhenAll(heavyMethod, heavyMethod2)
-            .ObserveOnMainThread() // return to main thread
-            .Subscribe(xs =>
-            {
-                // Unity can't touch GameObject from other thread
-                // but use ObserveOnMainThread, you can touch GameObject naturally.
-                Debug.Log(xs[0] + ":" + xs[1]);
-            });
-
-
-        Debug.LogFormat("hiiiiiiiiiiiiiiiiiiiiiiiiii");
+        //slider.onValueChanged.AddListener(delegate { ValueChangeCheck(slider); });       
     }
 
     void OnSliderValueChaned(Slider slider)
@@ -79,11 +52,11 @@ public class DrawingScripts : MonoBehaviour {
         if(!webCamTextureToMatHelper.IsInited())
         {
             int width = (int)goCam.GetComponent<RawImage>().rectTransform.rect.width;
-            int heigh = (int)goCam.GetComponent<RawImage>().rectTransform.rect.height;
-            Debug.LogFormat("{0}{1}", width, heigh);
+            int heigh = (int)goCam.GetComponent<RawImage>().rectTransform.rect.height;            
             webCamTextureToMatHelper.Init(null, 640, 480, webCamTextureToMatHelper.requestIsFrontFacing);
             warpPerspective.Init(webCamTextureToMatHelper.GetMat());                    
-        }       
+        }
+        utilities = new Utilities();
 
         Mat camMat = webCamTextureToMatHelper.GetMat();
         texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
@@ -102,7 +75,8 @@ public class DrawingScripts : MonoBehaviour {
         threshold = GetComponent<Threshold>();
 
         GFs.LoadTemplateList();
-        StartCoroutine(loadModel());
+        MainThreadDispatcher.StartUpdateMicroCoroutine(loadModel());
+        MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
     }
     Job job;
 
@@ -112,33 +86,32 @@ public class DrawingScripts : MonoBehaviour {
         webCamTextureToMatHelper.Dispose();
     }
 
-
     IEnumerator loadModel()
     {
         yield return null;
-        var model = GVs.CURRENT_MODEL;
-        Texture2D texture;
+        var model = GVs.CURRENT_MODEL;        
         string imgPath;
         if (model != null)
         {
-            imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + model.image;
-            texture = GFs.LoadPNG(imgPath);            
+            imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + model.image;            
         }
         else
         {
-            imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0027.jpg";
-            texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0027.jpg");
-            Debug.LogFormat("");
-        }
+            imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0027.jpg";            
+        }               
+        imgPath = GVs.APP_PATH + "/" + imgPath;
+        image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
 
         var rimgmodel = goModel.GetComponent<RawImage>();
         var rimgCam = goModel.GetComponent<RawImage>();
-        
-        float width = texture.width;
-        float heigh = texture.height;
+
+        float width = image.width();
+        float heigh = image.height();
+
         float modelAreaWidth = rimgmodel.rectTransform.rect.width;
         float modelAreaHeight = rimgmodel.rectTransform.rect.height;
-        
+        Debug.LogFormat("ModelAreaWidth = {0}, ModelAreaHeight = {1}", modelAreaWidth, modelAreaHeight);
+
         float ratio = width / heigh;
         float ratioDisplay = modelAreaWidth / modelAreaHeight;
 
@@ -147,25 +120,25 @@ public class DrawingScripts : MonoBehaviour {
 
         if (ratio > ratioDisplay)
         {
-            rimgmodel.rectTransform.localScale = new Vector3(1, (modelAreaWidth / modelAreaHeight) *(heigh/width), 1);
+            rimgmodel.rectTransform.localScale = new Vector3(1, (modelAreaWidth / modelAreaHeight) * (heigh / width), 1);
         }
         else
         {
             rimgmodel.rectTransform.localScale = new Vector3((modelAreaHeight / modelAreaWidth) * ratio, 1, 1);
-        }       
-
-        imgPath = GVs.APP_PATH + "/" + imgPath;
-        image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
+        }
+        
         Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
         athreshold = GetComponent<AdaptiveThreshold>();
-        texEdges = new Texture2D(image.width(), image.height(),TextureFormat.ARGB32,false);
-
+        athreshold.setParameter(slider.value);
+        texEdges = new Texture2D(image.width(), image.height(), TextureFormat.ARGB32, false);
         Mat edges = athreshold.adapTiveThreshold(image);
+        Mat redMat = new Mat();
+        utilities.makeMonoAlphaMat(edges, redMat);
         colorsBuffer = new Color32[edges.width() * edges.height()];
-        Utils.matToTexture2D(edges, texEdges, colorsBuffer);
+        Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
 
-        rimgmodel.texture = texture;                
-        utilities = new Utilities();        
+        rimgmodel.texture = texEdges;
+        utilities = new Utilities();
         goModel.SetActive(true);
         loaded = true;
 
@@ -177,8 +150,6 @@ public class DrawingScripts : MonoBehaviour {
         job.image = image;
         job.rimgmodel = rimgmodel;
         job.texEdges = texEdges;
-
-        //ValueChangeCheck(slider);
     }
 
     bool updateAble = true;
@@ -192,36 +163,15 @@ public class DrawingScripts : MonoBehaviour {
     {        
         if (loaded)
         {
+            if (slider)
             currentSliderValue = slider.value;
             if (!updateAble) return;
-            /*
-            if (slider)
-                athreshold.setParameter(slider.value);
-            Mat edges = athreshold.adapTiveThreshold(image);
-
-            Mat tempMat = new Mat();
-            Core.bitwise_not(edges, tempMat);
-            List<Mat> listMat = new List<Mat>();
-            Mat zeroMat = Mat.zeros(tempMat.size(), CvType.CV_8U);
-            listMat.Add(tempMat);
-            listMat.Add(zeroMat);
-            listMat.Add(zeroMat);
-            listMat.Add(tempMat);
-            Mat redMat = new Mat();
-            Core.merge(listMat, redMat);
-
-
-            utilities.set(edges);
-            colorsBuffer = new Color32[edges.width() * edges.height()];
-            Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
-            var rimgmodel = goModel.GetComponent<RawImage>();
-            rimgmodel.texture = texEdges;
-            redMat.Dispose();
-            */
+            
             if (job != null)
             {
                 updateAble = false;
-                job.athreshold.setParameter(slider.value);
+                if (slider)
+                    job.athreshold.setParameter(slider.value);
                 job.Start(( redMat) =>
                 {
                     _redMat = redMat;
@@ -234,9 +184,7 @@ public class DrawingScripts : MonoBehaviour {
     Mat  _redMat;
 
     public void AfterProcess(Mat redMat)
-    {
-
-        Debug.LogFormat("Xin chao tat ca");
+    {        
         finishJob = false;
         
         Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
@@ -252,26 +200,29 @@ public class DrawingScripts : MonoBehaviour {
             StartCoroutine(DelayUpdate());
     }
 
-    // Update is called once per frame
-    //void Update()
-    void Update()
+    IEnumerator Worker()
     {
-        if (finishJob)
-        {
-            AfterProcess( _redMat);
-        }
-        if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
-        {
-            Mat rgbaMat = webCamTextureToMatHelper.GetMat();
-            //if (isRecording && webcamCapture != null)
-            //{
-            //    webcamCapture.write(rgbaMat);
-            //}
-            //Mat a = warpPerspective.warpPerspective(rgbaMat);
-            Utils.matToTexture2D(rgbaMat, texCam, webCamTextureToMatHelper.GetBufferColors());
-            goCam.GetComponent<RawImage>().texture = texCam;
+        while (true)
+        {    
+            yield return null;
+            if (finishJob)
+            {
+                AfterProcess(_redMat);
+            }
+            if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
+            {
+                Mat rgbaMat = webCamTextureToMatHelper.GetMat();
+                //if (isRecording && webcamCapture != null)
+                //{
+                //    webcamCapture.write(rgbaMat);
+                //}
+                Mat a = warpPerspective.warpPerspective(rgbaMat);
+                Utils.matToTexture2D(a, texCam, webCamTextureToMatHelper.GetBufferColors());
+                goCam.GetComponent<RawImage>().texture = texCam;
+            }
         }
     }
+
 
     public bool isRecording = false;
     public void StartRecordVideo()

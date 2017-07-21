@@ -25,6 +25,7 @@ public class HomeController : MonoBehaviour {
                 GFs.SaveTemplateList();
                 HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_TEMPLATE))), (d, process) =>
                 {
+                    //Utilities.Log("Hererererererere");
                     if (process == 1) downloaded = true;
                 });
             });

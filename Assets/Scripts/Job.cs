@@ -27,19 +27,19 @@ public class Job : ThreadedJob
         Mat edges = athreshold.adapTiveThreshold(image);
 
         Mat tempMat = new Mat();
-        Core.bitwise_not(edges, tempMat);
+        //Core.bitwise_not(edges, tempMat);
 
         Mat redMat = new Mat();
 
         List<Mat> listMat = new List<Mat>();
-        Mat zeroMat = Mat.zeros(tempMat.size(), CvType.CV_8U);
-        listMat.Add(tempMat);
+        Mat zeroMat = Mat.zeros(edges.size(), CvType.CV_8U);
+        listMat.Add(edges);
         listMat.Add(zeroMat);
         listMat.Add(zeroMat);
-        listMat.Add(tempMat);
-        Core.merge(listMat, redMat);
+        listMat.Add(edges);
+        Core.merge(listMat, redMat);        
 
-        utilities.set(edges);
+        
         colorsBuffer = new Color32[edges.width() * edges.height()];
 
         handle(redMat);

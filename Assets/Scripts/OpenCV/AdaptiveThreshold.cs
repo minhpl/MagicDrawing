@@ -14,7 +14,7 @@ public class AdaptiveThreshold : MonoBehaviour
     public double sigmaX = 0;
     public double sigmaY = 0;
     public int adaptiveMethod = Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C;    
-    public int thresholdType = Imgproc.THRESH_BINARY;
+    public int thresholdType = Imgproc.THRESH_BINARY_INV;
 
     public Mat outputMat;
     public Mat tempMat;

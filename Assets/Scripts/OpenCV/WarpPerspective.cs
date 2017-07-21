@@ -83,7 +83,7 @@ class WarpPerspective : MonoBehaviour
                 0, h);
         perspectiveTransform = Imgproc.getPerspectiveTransform(src_mat, dst_mat);
 
-        Debug.LogFormat("Perspective Transform is {0}", perspectiveTransform.size().ToString());
+        //Debug.LogFormat("Perspective Transform is {0}", perspectiveTransform.size().ToString());
 
         sizeOriginal = image.size();
         sizeNew = new Size(sizeOriginal.width, newHeight);
