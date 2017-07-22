@@ -260,7 +260,6 @@ public class DrawingScripts : MonoBehaviour {
     {
         RawImage a = goCam.GetComponent<RawImage>();
         //a.rectTransform.localScale = new Vector3(scaleX, 1, 1);
-
         var w = a.rectTransform.rect.width;
         var needw = w * scaleX;       
         Debug.Log(a.rectTransform.rect.ToString());  
