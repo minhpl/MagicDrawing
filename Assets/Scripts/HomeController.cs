@@ -35,9 +35,7 @@ public class HomeController : MonoBehaviour {
 
     }
     private bool downloaded = false;
-    void Update () {
-		
-	}
+
     public void loadHistory1Scene()
     {
         //if (downloaded)

@@ -19,10 +19,12 @@ public class DrawingScripts : MonoBehaviour {
     private Color32[] colorsBuffer;
     private Texture2D texEdges;
     private Texture2D texCam;
+    RawImage rawImageCam;
     Utilities utilities;
     WebCamTextureToMatHelper webCamTextureToMatHelper;
     bool loaded = false;
     WebcamVideoCapture webcamCapture;
+    
 
     private void Awake()
     {
@@ -45,7 +47,8 @@ public class DrawingScripts : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {        
+    void Start () {
+        rawImageCam = goCam.GetComponent<RawImage>();
         webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
         warpPerspective = gameObject.GetComponent<WarpPerspective>();        
         if(!webCamTextureToMatHelper.IsInited())
@@ -115,8 +118,8 @@ public class DrawingScripts : MonoBehaviour {
         float ratio = width / heigh;
         float ratioDisplay = modelAreaWidth / modelAreaHeight;
 
-        var ratioWidth = width / modelAreaWidth;
-        var ratioHeight = heigh / modelAreaHeight;
+        //var ratioWidth = width / modelAreaWidth;
+        //var ratioHeight = heigh / modelAreaHeight;
 
         if (ratio > ratioDisplay)
         {
@@ -150,16 +153,6 @@ public class DrawingScripts : MonoBehaviour {
         job.image = image;
         job.rimgmodel = rimgmodel;
         job.texEdges = texEdges;
-
-
-
-
-        var watch = System.Diagnostics.Stopwatch.StartNew();
-        warpPerspective.warpPerspective(image);
-        watch.Stop();
-        var elapsedMs = watch.ElapsedMilliseconds;
-        Debug.LogFormat("time warperspective is :{0}", elapsedMs);
-
     }
 
     bool updateAble = true;
@@ -210,8 +203,6 @@ public class DrawingScripts : MonoBehaviour {
             StartCoroutine(DelayUpdate());
     }
 
-
-
     IEnumerator Worker()
     {
         while (true)
@@ -228,15 +219,12 @@ public class DrawingScripts : MonoBehaviour {
                 //{
                 //    webcamCapture.write(rgbaMat);
                 //}
-
                 Mat a = warpPerspective.warpPerspective(rgbaMat);                
                 Utils.matToTexture2D(a, texCam, webCamTextureToMatHelper.GetBufferColors());
-                goCam.GetComponent<RawImage>().texture = texCam;
+                rawImageCam.texture = texCam;
             }
         }
     }
-
-
     public bool isRecording = false;
     public void StartRecordVideo()
     {        
@@ -244,7 +232,6 @@ public class DrawingScripts : MonoBehaviour {
         webcamCapture = new WebcamVideoCapture(m.size());
         isRecording = true;
     }    
-
     public void StopVideoRecording()
     {
         if(isRecording)
@@ -254,8 +241,6 @@ public class DrawingScripts : MonoBehaviour {
             webcamCapture.writer.release();
         }
     }
-
-
     public void ScaleGoCam(float scaleX)
     {
         RawImage a = goCam.GetComponent<RawImage>();

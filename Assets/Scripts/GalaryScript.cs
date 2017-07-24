@@ -82,8 +82,4 @@ public class GalaryScript : MonoBehaviour {
 
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

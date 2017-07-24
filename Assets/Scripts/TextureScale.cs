@@ -21,7 +21,7 @@ public class TextureScale
     private static int w2;
     private static int finishCount;
     private static Mutex mutex;
- 
+
 	public static void Point (Texture2D tex, int newWidth, int newHeight)
     {
 		ThreadedScale (tex, newWidth, newHeight, false);

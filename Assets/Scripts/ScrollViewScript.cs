@@ -21,9 +21,5 @@ public class ScrollViewScript : MonoBehaviour {
             go.transform.localPosition = v3;
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 }

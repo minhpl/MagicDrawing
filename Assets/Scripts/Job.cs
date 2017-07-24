@@ -20,7 +20,6 @@ public class Job : ThreadedJob
 
     private Color32[] colorsBuffer;
 
-
     protected override void ThreadFunction(Handler handle)
     {
 
@@ -38,12 +37,10 @@ public class Job : ThreadedJob
         listMat.Add(zeroMat);
         listMat.Add(edges);
         Core.merge(listMat, redMat);        
-
         
         colorsBuffer = new Color32[edges.width() * edges.height()];
 
-        handle(redMat);
-        
+        handle(redMat);        
         //redMat.Dispose();
     }
 }

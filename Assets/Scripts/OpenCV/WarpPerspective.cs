@@ -98,7 +98,7 @@ class WarpPerspective : MonoBehaviour
         transformation_x = new Mat(sourceImage.size(),CvType.CV_16SC2);
         transformation_y = new Mat(sourceImage.size(), CvType.CV_16UC1);
 
-        Imgproc.convertMaps(map_x, map_y, transformation_x, transformation_y, CvType.CV_16SC2, true);
+        Imgproc.convertMaps(map_x, map_y, transformation_x, transformation_y, CvType.CV_16SC2, false);
 
         //map_x.Dispose();
         //map_y.Dispose();
@@ -128,9 +128,7 @@ class WarpPerspective : MonoBehaviour
     {
         if (heightScale == 1)
         {
-            Imgproc.remap(inputMat, tempMat, transformation_x, transformation_y, Imgproc.INTER_NEAREST);
-
-
+            Imgproc.remap(inputMat, tempMat, transformation_x, transformation_y, Imgproc.INTER_LINEAR);
             //Imgproc.warpPerspective(inputMat, tempMat, transformationMatrix, sizeOriginal,Imgproc.INTER_NEAREST);
             //Mat roi = tempMat.submat(myROI);
             //Imgproc.resize(roi, result, sizeOriginal);
@@ -145,10 +143,4 @@ class WarpPerspective : MonoBehaviour
         }
         return tempMat;
     }
-
-    private void OnValidate()
-    {
-        
-    }
-
 }

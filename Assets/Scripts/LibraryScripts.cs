@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -44,7 +45,7 @@ public class LibraryScripts : MonoBehaviour
         }
         GFs.LoadTemplateList();
         var watch = System.Diagnostics.Stopwatch.StartNew();        
-        StartCoroutine(Load());        
+        MainThreadDispatcher.StartUpdateMicroCoroutine(Load());        
         watch.Stop();
         var elapsedMs = watch.ElapsedMilliseconds;
         //Utilities.Log("Time pass Load function: {0}", elapsedMs);        
@@ -79,7 +80,8 @@ public class LibraryScripts : MonoBehaviour
         for (int j = 0; j < clone; j++)
             for (int i = 0; i < imageCount; i++)
             {
-                yield return new WaitForEndOfFrame();
+                //yield return new WaitForEndOfFrame();
+                yield return null;
                 GameObject go = Instantiate(imageItem) as GameObject;
                 go.transform.SetParent(imageItem.transform.parent.transform);
                 go.transform.localScale = imageItem.transform.localScale;
@@ -251,5 +253,10 @@ public class LibraryScripts : MonoBehaviour
     {
         Destroy(GameObject.Find("Canvas"));
         SceneManager.LoadScene("LibrarySceneCompare");
+    }
+
+    public void OnCamBtnClicked()
+    {
+        GVs.SCENE_MANAGER.loadSnapImageScene();
     }
 }

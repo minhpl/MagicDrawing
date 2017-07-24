@@ -8,20 +8,18 @@ public class BackButton : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+        Debug.LogFormat(this.gameObject.scene.name);
 	}
 
     public void onBackButtonClicked()
-    {        
+    {
+        Debug.LogFormat("hello");
         if(GVs.TRACE_SCENE.Count > 1)
         {
             GVs.TRACE_SCENE.Pop();
-            SceneManager.LoadScene(GVs.TRACE_SCENE.Pop());            
+            int i = GVs.TRACE_SCENE.Pop();
+            Debug.LogFormat("index scene back is {0}", i);
+            SceneManager.LoadScene(i);
         }                 
     }
 }

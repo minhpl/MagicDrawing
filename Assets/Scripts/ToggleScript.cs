@@ -12,8 +12,8 @@ public class ToggleScript : MonoBehaviour {
     // Use this for initialization
     public Button Record;
     public Button Recording;
-    void Start () {          
-
+    void Start () {
+        
         BtnSlider.onClick.AddListener(() =>
         {
             BtnSlider.gameObject.SetActive(false);
@@ -56,11 +56,6 @@ public class ToggleScript : MonoBehaviour {
             Record.gameObject.SetActive(true);
             GetComponent<DrawingScripts>().StopVideoRecording();
         });
+
     }
-
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
 }
