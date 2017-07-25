@@ -542,6 +542,7 @@
     <Compile Include="Assets\Scripts\ThreadedJob.cs" />
     <Compile Include="Assets\Scripts\ToggleScript.cs" />
     <Compile Include="Assets\Scripts\TrackScene.cs" />
+    <Compile Include="Assets\Scripts\WebcamTexture.cs" />
     <Compile Include="Assets\Scripts\models\AvataModel.cs" />
     <Compile Include="Assets\Scripts\models\DownloadModel.cs" />
     <Compile Include="Assets\Scripts\models\DrawingTemplateModel.cs" />
