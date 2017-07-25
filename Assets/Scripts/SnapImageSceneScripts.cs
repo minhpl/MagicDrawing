@@ -14,7 +14,7 @@ public class SnapImageSceneScripts : MonoBehaviour {
     private bool camAvailable;
     private WebCamTexture webcamTex;
     private WebCamDevice webCamDevice;
-    private bool isFronFacing = true;
+    private bool isFronFacing = false;
     private int requestWidth = 4800;
     private int requestHeight = 6400;
     // Use this for initialization
@@ -123,7 +123,8 @@ public class SnapImageSceneScripts : MonoBehaviour {
         webcamTex = null;
         WebCamDevice[] devices = WebCamTexture.devices;
         rawImgCam.rectTransform.sizeDelta = new Vector2(0, 0);
-        rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, 0);
+        rawImgCam.transform.localScale = new Vector3(1, 1, 1);
+        //rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, 0);
 
         isFronFacing = !isFronFacing;
         for (int i = 0; i < devices.Length; i++)
@@ -159,8 +160,6 @@ public class SnapImageSceneScripts : MonoBehaviour {
         int orient = webcamTex.videoRotationAngle;
         Utilities.Log("orient is {0}", orient);
 
-
-        if (isFronFacing == false)
         {
             if (orient == 90 || orient == 270)
             {
@@ -188,6 +187,10 @@ public class SnapImageSceneScripts : MonoBehaviour {
 
 
         rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, -orient);
+        if(isFronFacing && (orient == 270 || orient == 90))
+        {
+            rawImgCam.transform.localScale = new Vector3(1, -1, 1);
+        }
         rawImgCam.texture = webcamTex;
     }       
 }
