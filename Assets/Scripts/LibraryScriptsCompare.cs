@@ -56,7 +56,7 @@ public class LibraryScriptsCompare : MonoBehaviour
         int widthOri = (int)rimageOri.rectTransform.rect.width;
         imageCount = GVs.DRAWING_TEMPLATE_LIST_MODEL.Count();
         var watch = System.Diagnostics.Stopwatch.StartNew();
-        for (int j = 0; j < 20; j++)
+        for (int j = 0; j < 1; j++)
             for (int i = 0; i < imageCount; i++)
             {
                 yield return new WaitForEndOfFrame();

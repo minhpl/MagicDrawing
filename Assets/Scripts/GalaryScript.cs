@@ -9,6 +9,7 @@ public class GalaryScript : MonoBehaviour {
     public UIScrollView uiScrollView;
     public int imageCount = 800;
     const int deScale = 1;
+    const int clone = 5;
 	// Use this for initialization
 	void Start () {
 
@@ -21,18 +22,25 @@ public class GalaryScript : MonoBehaviour {
             GVs.APP_PATH = Application.persistentDataPath;
         }
         GFs.LoadTemplateList();
+
+        StartCoroutine(load());
+    }
+
+    private IEnumerator load()
+    {
+        yield return null;
         UITexture rimageOri = imageItem.transform.Find("image").GetComponent<UITexture>();
         int widthOri = rimageOri.width;
         Debug.LogFormat("width = {0}", widthOri);
         imageCount = GVs.DRAWING_TEMPLATE_LIST_MODEL.Count();
 
-        Vector3  v3 = imageItem.transform.localPosition;
+        Vector3 v3 = imageItem.transform.localPosition;
         v3.y += 340;
         float x = v3.x;
 
         var watch = System.Diagnostics.Stopwatch.StartNew();
-              
-        for (int j = 0; j < 5; j++)
+
+        for (int j = 0; j < clone; j++)
             for (int i = 0; i < imageCount; i++)
             {
                 if (i % 3 == 0)
@@ -51,10 +59,15 @@ public class GalaryScript : MonoBehaviour {
 
                 UITexture rimage = go.transform.Find("image").GetComponent<UITexture>();
                 Texture2D texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i).thumb);
+
+
+                var drawTemplateModel = GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i);
+                go.GetComponent<DataBind>().drawingTemplateModel = drawTemplateModel;
+
                 float width = texture.width;
                 float height = texture.height;
                 float ratio = width / height;
-                rimage.mainTexture = texture;                
+                rimage.mainTexture = texture;
                 if (ratio > 1)
                 {
                     //TextureScale.Bilinear(texture, widthOri >> deScale, (int)(widthOri * height / width) >> deScale);
@@ -72,14 +85,27 @@ public class GalaryScript : MonoBehaviour {
                     //rimage.rectTransform.sizeDelta = new Vector2(widthOri * width / height, widthOri);
                 }
 
-                go.SetActive(true);
+                EventDelegate.Set(go.GetComponent<UIButton>().onClick, delegate () { OnItemClicked(go); }); 
                 uiScrollView.Scroll(20);
+                go.SetActive(true);
             }
 
         watch.Stop();
         var elapsedMs = watch.ElapsedMilliseconds;
         Debug.LogFormat("Time excution: {0}", elapsedMs);
-
     }
-	
+
+    void OnItemClicked(GameObject go)
+    {
+        //Debug.LogFormat("name is {0}", go.GetComponent<DataBind>().drawingTemplateModel.thumb);
+        GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
+        GVs.CURRENT_MODEL = go.GetComponent<DataBind>().drawingTemplateModel;
+        GVs.SCENE_MANAGER.loadDrawingScene();
+    }
+
+
+    public void onAppBtnClicked()
+    {
+        GVs.SCENE_MANAGER.loadLibraryScene();
+    }
 }

@@ -17,6 +17,14 @@ public class HomeController : MonoBehaviour {
             GVs.APP_PATH = Application.persistentDataPath;
         }
         GFs.LoadTemplateList();
+        var imageCount = GVs.DRAWING_TEMPLATE_LIST_MODEL.Count();
+        if (imageCount > 0)
+        {
+            Utilities.Log("Ready");
+            ready = true;
+            return;
+        }
+
         if (NET.NetWorkIsAvaiable())
             HTTPRequest.Instance.Request(GVs.GET_ALL_TEMPLATE_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
             {
@@ -25,8 +33,12 @@ public class HomeController : MonoBehaviour {
                 GFs.SaveTemplateList();
                 HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_TEMPLATE))), (d, process) =>
                 {
-                    //Utilities.Log("Hererererererere");
-                    if (process == 1) downloaded = true;
+                    Utilities.Log("downloading");
+                    if (process == 1)
+                    {
+                        ready = true;
+                        Utilities.Log("Downloaded");
+                    }
                 });
             });
 
@@ -34,11 +46,11 @@ public class HomeController : MonoBehaviour {
             MakePersistentObject.Instance.gameObject.SetActive(false);
 
     }
-    private bool downloaded = false;
+    private bool ready = false;
 
     public void loadHistory1Scene()
     {
-        //if (downloaded)
+        if (ready)
         {
             GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
             GVs.SCENE_MANAGER.loadHistory1Scene();
@@ -46,7 +58,7 @@ public class HomeController : MonoBehaviour {
     }
     public void loadLibrary()
     {
-        //if (downloaded)
+        if (ready)
         {
             GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
             GVs.SCENE_MANAGER.loadLibraryScene();

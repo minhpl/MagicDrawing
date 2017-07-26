@@ -13,11 +13,12 @@ using UnityEngine.UI;
 public class LibraryScripts : MonoBehaviour
 {
     public GameObject imageItem;
-    public int imageCount = 9;
     const int deScale = 1;
+    const bool USE_PACK = true;
+    const int clone = 5;
     //Mat tempMat;
     public static LibraryScripts Instance;
-
+    IEnumerator coroutine;
     void Awake()
     {
         Instance = this;
@@ -44,8 +45,9 @@ public class LibraryScripts : MonoBehaviour
             GVs.APP_PATH = Application.persistentDataPath;
         }
         GFs.LoadTemplateList();
-        var watch = System.Diagnostics.Stopwatch.StartNew();        
-        MainThreadDispatcher.StartUpdateMicroCoroutine(Load());        
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        coroutine = Load();
+        MainThreadDispatcher.StartUpdateMicroCoroutine(coroutine);        
         watch.Stop();
         var elapsedMs = watch.ElapsedMilliseconds;
         //Utilities.Log("Time pass Load function: {0}", elapsedMs);        
@@ -64,7 +66,7 @@ public class LibraryScripts : MonoBehaviour
         RawImage rimageOri = imageItem.transform.Find("RImage").GetComponent<RawImage>();
         int widthOri = (int)rimageOri.rectTransform.rect.width;
 
-        imageCount = GVs.DRAWING_TEMPLATE_LIST_MODEL.Count();
+        var imageCount = GVs.DRAWING_TEMPLATE_LIST_MODEL.Count();
         var watch = System.Diagnostics.Stopwatch.StartNew();
         var area2048 = (1 << 22) - deviant2048;
         var area1024 = (1 << 20) - deviant1024;
@@ -75,13 +77,15 @@ public class LibraryScripts : MonoBehaviour
         var num512 = 0;                
         int tempArea = area2048;
         int tempNumPacked = 0;
-        int clone = 1;
+        
 
         for (int j = 0; j < clone; j++)
             for (int i = 0; i < imageCount; i++)
             {
                 //yield return new WaitForEndOfFrame();
                 yield return null;
+
+                if (imageItem == null) break;
                 GameObject go = Instantiate(imageItem) as GameObject;
                 go.transform.SetParent(imageItem.transform.parent.transform);
                 go.transform.localScale = imageItem.transform.localScale;
@@ -157,81 +161,90 @@ public class LibraryScripts : MonoBehaviour
                 //go.SetActive(true);                          
             }
 
-        int freeArea = 0;
-        freeArea = Area - area2048 * num2048;
+        if(USE_PACK && imageItem!=null)
+        {
+            int freeArea = 0;
+            freeArea = Area - area2048 * num2048;
 
-        if (freeArea > area1024)
-        {
-            //Debug.LogFormat("here");
-            num2048 += 1;
-            numRectIn2048.Add(imageCount * clone - tempNumPacked);
-            //numRectIn2048 = clone * imageCount - numRectInOther;
-        }
-        else
-        {
-            numRectInOther = clone * imageCount - tempNumPacked;
-            if (freeArea > area512) num1024 += 1;
-            else num512 += 1;
-        }
-
-        int padding = 0;
-        int index = 0;
-        var atlasSize = 2048;
-        var offset = (1f / atlasSize);
-        for (int i=0;i<numRectIn2048.Count;i++)
-        {
-            var count = numRectIn2048[i];
-            Debug.LogFormat("Count is {0}", count);
-            var subTextures = LstTexture.GetRange(index, count);
-            var subGameObjects = LstGameObject.GetRange(index, count);   
-            
-            var atlas = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-            var rects = atlas.PackTextures(subTextures.ToArray(), padding, 2048, false);
-            atlas.Compress(true);
-            for (int j=0;j<rects.Length;j++)
+            if (freeArea > area1024)
             {
-                GameObject go = subGameObjects[j];
-                var rect = rects[j];                
-                rect.x += offset;
-                rect.y += offset;
-                rect.width -= 2 * offset;
-                rect.height -= 2 * offset;
-                RawImage rimg = go.GetComponentInChildren<RawImage>(true);
-                Destroy(rimg.texture);
-                rimg.texture = atlas;
-                rimg.uvRect = rect;
+                //Debug.LogFormat("here");
+                num2048 += 1;
+                numRectIn2048.Add(imageCount * clone - tempNumPacked);
+                //numRectIn2048 = clone * imageCount - numRectInOther;
             }
-            index = count;
-        }
-
-        {
-            var subTextures = LstTexture.GetRange(LstTexture.Count - numRectInOther, numRectInOther);
-            var subGameObjects = LstGameObject.GetRange(LstTexture.Count - numRectInOther, numRectInOther);
-            atlasSize = num1024 > 0 ? 1024 : 512;
-            offset = (1f / atlasSize);
-
-            var atlas = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-            var rects = atlas.PackTextures(subTextures.ToArray(), padding, atlasSize, false);
-            //atlas.Compress(true);
-            Debug.LogFormat("Atlas size is {0}", atlasSize);
-            Debug.LogFormat("Leng of rect array is {0}", rects.Length);
-            for (int i = 0; i < rects.Length; i++)
+            else
             {
-                GameObject go = subGameObjects[i];
-                var rect = rects[i];
-                rect.x += offset;
-                rect.y += offset;
-                rect.width -= 2 * offset;
-                rect.height -= 2 * offset;
-                RawImage rimg = go.GetComponentInChildren<RawImage>(true);
-                Destroy(rimg.texture);
-                rimg.texture = atlas;
-                rimg.uvRect = rect;
+                numRectInOther = clone * imageCount - tempNumPacked;
+                if (freeArea > area512) num1024 += 1;
+                else num512 += 1;
             }
+
+            int padding = 0;
+            int index = 0;
+            var atlasSize = 2048;
+            var offset = (1f / atlasSize);
+            for (int i = 0; i < numRectIn2048.Count; i++)
+            {
+                var count = numRectIn2048[i];
+                //Debug.LogFormat("Count is {0}", count);
+                var subTextures = LstTexture.GetRange(index, count);
+                var subGameObjects = LstGameObject.GetRange(index, count);
+
+                var atlas = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+                var rects = atlas.PackTextures(subTextures.ToArray(), padding, 2048, false);
+                atlas.Compress(true);
+                for (int j = 0; j < rects.Length; j++)
+                {
+                    GameObject go = subGameObjects[j];
+                    var rect = rects[j];
+                    rect.x += offset;
+                    rect.y += offset;
+                    rect.width -= 2 * offset;
+                    rect.height -= 2 * offset;
+                    RawImage rimg = go.GetComponentInChildren<RawImage>(true);
+                    Destroy(rimg.texture);
+                    rimg.texture = atlas;
+                    rimg.uvRect = rect;
+                }
+                index = count;
+            }
+
+            {
+                var subTextures = LstTexture.GetRange(LstTexture.Count - numRectInOther, numRectInOther);
+                var subGameObjects = LstGameObject.GetRange(LstTexture.Count - numRectInOther, numRectInOther);
+                atlasSize = num1024 > 0 ? 1024 : 512;
+                offset = (1f / atlasSize);
+
+                var atlas = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+                var rects = atlas.PackTextures(subTextures.ToArray(), padding, atlasSize, false);
+                //atlas.Compress(true);
+                //Debug.LogFormat("Atlas size is {0}", atlasSize);
+                //Debug.LogFormat("Leng of rect array is {0}", rects.Length);
+                for (int i = 0; i < rects.Length; i++)
+                {
+                    GameObject go = subGameObjects[i];
+                    var rect = rects[i];
+                    rect.x += offset;
+                    rect.y += offset;
+                    rect.width -= 2 * offset;
+                    rect.height -= 2 * offset;
+                    RawImage rimg = go.GetComponentInChildren<RawImage>(true);
+                    Destroy(rimg.texture);
+                    rimg.texture = atlas;
+                    rimg.uvRect = rect;
+                }
+            }
+
+            //Debug.LogFormat("Number Area2048 need is {0}, Area1024 need is {1}, Area512 need is {2}", num2048, num1024, num512);            
         }
 
-        Debug.LogFormat("Number Area2048 need is {0}, Area1024 need is {1}, Area512 need is {2}", num2048, num1024, num512);
+        //Destroy(imageItem.transform.parent.GetComponent<ContentSizeFitter>());
+        //Destroy(imageItem.transform.parent.GetComponent<GridLayoutGroup>());
+
         Destroy(imageItem);
+
+        
         //watch.Stop();
         //var elapsedMs = watch.ElapsedMilliseconds;
         //Utilities.Log("Time excution: {0}", elapsedMs);
@@ -243,7 +256,7 @@ public class LibraryScripts : MonoBehaviour
 
     void OnItemClicked(GameObject go)
     {
-        Debug.LogFormat("name is {0}", go.GetComponent<DataBind>().drawingTemplateModel.thumb);
+        //Debug.LogFormat("name is {0}", go.GetComponent<DataBind>().drawingTemplateModel.thumb);
         GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
         GVs.CURRENT_MODEL = go.GetComponent<DataBind>().drawingTemplateModel;
         GVs.SCENE_MANAGER.loadDrawingScene();
@@ -251,8 +264,10 @@ public class LibraryScripts : MonoBehaviour
 
     public void OnAppBtnClicked()
     {
+        StopCoroutine(coroutine);
         Destroy(GameObject.Find("Canvas"));
-        SceneManager.LoadScene("LibrarySceneCompare");
+        GVs.SCENE_MANAGER.loadCollectionScene();
+        //SceneManager.LoadScene("LibrarySceneCompare");
     }
 
     public void OnCamBtnClicked()

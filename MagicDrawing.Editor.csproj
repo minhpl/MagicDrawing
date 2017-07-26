@@ -112,47 +112,38 @@
     <Reference Include="UnityEditor.iOS.Extensions">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.AppleTV.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.AppleTV.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.WSA.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.WSA.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Tizen.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Tizen.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.SamsungTV.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.SamsungTV.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.WebGL.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.WebGL.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.LinuxStandalone.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.LinuxStandalone.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>Library\UnityAssemblies\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.OSXStandalone.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.OSXStandalone.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Facebook.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Facebook.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.Unity.Settings">
+      <HintPath>Library\FacebookSDK\Facebook.Unity.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="TexturePackerImporter">
+      <HintPath>Assets\codeandweb.com\Editor\TexturePackerImporter.dll</HintPath>
+    </Reference>
+    <Reference Include="TexturePacker">
+      <HintPath>Assets\Extensions\TexturePacker\Lib\TexturePacker.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.IOSResolver">
+      <HintPath>Assets\PlayServicesResolver\Editor\Google.IOSResolver.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.JarResolver">
+      <HintPath>Assets\PlayServicesResolver\Editor\Google.JarResolver.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.PackageManager">
+      <HintPath>Assets\PlayServicesResolver\Editor\Google.PackageManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.VersionHandler">
+      <HintPath>Assets\PlayServicesResolver\Editor\Google.VersionHandler.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>Assets\Zip\Plugins\Ionic.Zip.dll</HintPath>
@@ -255,9 +246,9 @@
     <Compile Include="Assets\NGUI\Scripts\Editor\UIWidgetContainerEditor.cs" />
     <Compile Include="Assets\NGUI\Scripts\Editor\UIWidgetInspector.cs" />
     <Compile Include="Assets\NGUI\Scripts\Editor\UIWrapContentEditor.cs" />
-    <Compile Include="Assets\Scripts\OpenCVForUnity\Editor\OpenCVForUnityMenuItem.cs" />
-    <Compile Include="Assets\Scripts\OpenCVForUnity\Editor\WSA_BuildPostprocessor.cs" />
-    <Compile Include="Assets\Scripts\OpenCVForUnity\Editor\iOS_BuildPostprocessor.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Editor\OpenCVForUnityMenuItem.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Editor\WSA_BuildPostprocessor.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Editor\iOS_BuildPostprocessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\NGUI\Examples\Atlases\Fantasy\Fantasy Font - Normal.txt" />
@@ -301,13 +292,13 @@
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed 2.shader" />
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed 3.shader" />
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed.shader" />
+    <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
+    <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
     <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
     <None Include="Assets\Scripts\OpenCVForUnity\Examples\MagicDrawing\cong viec.txt" />
     <None Include="Assets\Scripts\OpenCVForUnity\Examples\MagicDrawing\flow.txt" />
     <None Include="Assets\Scripts\OpenCVForUnity\Examples\thuattoantachbien.txt" />
     <None Include="Assets\Scripts\OpenCVForUnity\OpenCV_LICENSE.txt" />
-    <None Include="Assets\Scripts\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
-    <None Include="Assets\Scripts\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

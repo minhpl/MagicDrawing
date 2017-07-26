@@ -10,12 +10,13 @@ public class MakePersistentObject : MonoBehaviour {
 
     private void Awake()
     {
-        this.InstantiateController();
+        
     }
 
     private void Start()
     {
-        Debug.LogFormat("Xin chao, Active Scene name is {0}", SceneManager.GetActiveScene().name);
+        this.InstantiateController();
+        //Debug.LogFormat("Xin chao, Active Scene name is {0}", SceneManager.GetActiveScene().name);
     }
 
     private void InstantiateController()
