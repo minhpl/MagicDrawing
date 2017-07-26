@@ -15,8 +15,8 @@ public class SnapImageSceneScripts : MonoBehaviour {
     private WebCamTexture webcamTex;
     private WebCamDevice webCamDevice;
     private bool isFronFacing = false;
-    private int requestWidth = 4800;
-    private int requestHeight = 6400;
+    private int requestWidth = 480;
+    private int requestHeight = 640;
     // Use this for initialization
     private WebCamTextureToMatHelper webcamTextureTomat;
     void Start () {
@@ -96,7 +96,10 @@ public class SnapImageSceneScripts : MonoBehaviour {
         }        
         rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, -orient);
         camAvailable = true;
-        //MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
+
+      
+
+        MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
     }
 
     IEnumerator Worker()
@@ -106,7 +109,20 @@ public class SnapImageSceneScripts : MonoBehaviour {
             yield return null;
             if (camAvailable)
             {
-                               
+
+                webcamTex.Stop();
+
+                webcamTex.requestedWidth = 480;
+                webcamTex.requestedHeight = 640;
+
+                webcamTex.Play();
+
+                var widthCam = webcamTex.width;
+                var heightCam = webcamTex.height;
+
+                var ratioWH = widthCam / (float)heightCam;
+                var ratioHW = heightCam / (float)widthCam;
+                Utilities.Log("Webcam here have width is {0}, webcam height is {1}", widthCam, heightCam);
             }
         }
     }
