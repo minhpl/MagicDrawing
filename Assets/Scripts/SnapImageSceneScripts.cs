@@ -258,35 +258,45 @@ public class SnapImageSceneScripts : MonoBehaviour
     {
         try
         {
+            webcamTex.Stop();
+            webcamTex = null;
 
-            Mat a = webcamTextureTomat.GetMat();            
-            Texture2D texture = new Texture2D(a.width(), a.height(), TextureFormat.RGBA32, false);
+
+            webcamTextureTomat.Init(null, 1080, 1920, isFronFacing);
+            webcamTextureTomat.Play();
+            webcamTex = webcamTextureTomat.GetWebCamTexture();
+            rawImgCam.texture = webcamTex;
+
+            Color32[] buffer = new Color32[webcamTex.width * webcamTex.height];
+
+            Utilities.Log("Webcam width is {0}, Mat height is {1}", webcamTex.width, webcamTex.height);
+
+            Mat a = new Mat(webcamTex.height, webcamTex.width, CvType.CV_8UC4);
+            Utils.webCamTextureToMat(webcamTex, a, buffer);
 
             Utilities.Log("Mat width is {0}, Mat height is {1}", a.width(), a.height());
+            Texture2D texture = new Texture2D(a.width(), a.height(), TextureFormat.RGBA32, false);
+            Utils.matToTexture2D(a, texture, buffer);
+
+            
             Utilities.Log("Texture width is {0}, height is {1}", texture.width, texture.height);
 
-            Utils.matToTexture2D(a, texture, webcamTextureTomat.GetBufferColors());
-            Utilities.Log("xin chao noi day");
-            Utilities.Log("here 1: is null ? {0}", rawImgCam.texture == null);
 
-            webcamTex.Stop();
+            
+            //Destroy(webcamTex);
 
-            Utilities.Log("here 2: is null ? {0}", rawImgCam.texture == null);
-
-            webcamTex = null;
-            Destroy(webcamTex);
-            rawImgCam.texture = null;
+            //rawImgCam.texture = texture;
 
             Utilities.Log("is null ? {0}", rawImgCam.texture == null);
         }catch(Exception e)
         {
             Utilities.Log("error : {0}", e.ToString());
+            Utilities.Log(e.StackTrace.ToString());
         }
-        //Color32[] buffer = new Color32[webcamTex.width * webcamTex.height];
+        
 
 
-        //Mat a = new Mat(webcamTex.height, webcamTex.width, CvType.CV_8UC4);
-        //Utils.webCamTextureToMat(webcamTex, a, buffer);
+        
 
         //Debug.LogFormat("mat width is {0}, height is {1}", a.width(), a.height());
 

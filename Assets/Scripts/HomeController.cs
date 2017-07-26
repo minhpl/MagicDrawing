@@ -25,6 +25,8 @@ public class HomeController : MonoBehaviour {
             return;
         }
 
+        Utilities.Log("Waiting for downloading");
+
         if (NET.NetWorkIsAvaiable())
             HTTPRequest.Instance.Request(GVs.GET_ALL_TEMPLATE_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
             {
