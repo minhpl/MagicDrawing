@@ -7,21 +7,26 @@ using OpenCVForUnity;
 using UnityEngine.UI;
 using System;
 
-public class SnapImageSceneScripts : MonoBehaviour {
+public class SnapImageSceneScripts : MonoBehaviour
+{
 
     public GameObject goCam;
     private RawImage rawImgCam;
     private bool camAvailable;
     private WebCamTexture webcamTex;
     private WebCamDevice webCamDevice;
-    private bool isFronFacing = false;
-    private int requestWidth = 480;
-    private int requestHeight = 640;
+    private bool isFronFacing = true;
+    private int requestWidth = 4800;
+    private int requestHeight = 6400;
     // Use this for initialization
     private WebCamTextureToMatHelper webcamTextureTomat;
-    void Start () {
+    void Start()
+    {
+        if (MakePersistentObject.Instance)
+            MakePersistentObject.Instance.gameObject.SetActive(false);
+
         rawImgCam = goCam.GetComponent<RawImage>();
-        webcamTextureTomat = goCam.GetComponent<WebCamTextureToMatHelper>();
+        //webcamTextureTomat = goCam.GetComponent<WebCamTextureToMatHelper>();
         //webcamTextureTomat.Init(null, webcamTextureTomat.requestWidth, webcamTextureTomat.requestHeight, webcamTextureTomat.requestIsFrontFacing);
 
         Screen.autorotateToLandscapeLeft = false;
@@ -36,8 +41,6 @@ public class SnapImageSceneScripts : MonoBehaviour {
             camAvailable = false;
             return;
         }
-
-        //Utilities.Log("how many camera {0}", devices.Length);
 
         for (int i = 0; i < devices.Length; i++)
         {
@@ -59,7 +62,6 @@ public class SnapImageSceneScripts : MonoBehaviour {
         webcamTex.Play();
         rawImgCam.texture = webcamTex;
 
-
         var widthCam = webcamTex.width;
         var heightCam = webcamTex.height;
 
@@ -70,10 +72,16 @@ public class SnapImageSceneScripts : MonoBehaviour {
         var widthDisplay = rawImgCam.rectTransform.rect.width;
         var heightDisplay = rawImgCam.rectTransform.rect.height;
         var ratioDisplay = widthDisplay / (float)heightDisplay;
+        Utilities.Log("Display Initial width is {0}, height is {1}", widthDisplay, heightDisplay);
+
 
         int orient = webcamTex.videoRotationAngle;
+        rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, -orient);
         Utilities.Log("orient here is {0}", orient);
-        if(orient==90 || orient==270)
+        bool isVerticalMirror = webcamTex.videoVerticallyMirrored;
+        Utilities.Log("is vertical mirror {0}", isVerticalMirror);
+
+        if (orient == 90 || orient == 270)
         {
             if (ratioHW < ratioDisplay)
             {
@@ -93,13 +101,39 @@ public class SnapImageSceneScripts : MonoBehaviour {
                 var widthDelta = newWidth - widthDisplay;
                 rawImgCam.rectTransform.sizeDelta = new Vector2(widthDelta, heightDelta);
             }
-        }        
-        rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, -orient);
+        }
+        else
+        {
+            if (ratioWH < ratioDisplay)
+            {
+                var newWidth = widthDisplay;
+                var newHeight = newWidth * ratioHW;
+
+                rawImgCam.rectTransform.sizeDelta = new Vector2(newWidth - widthDisplay, newHeight - heightDisplay);
+            }
+            else
+            {
+                var newHeight = heightDisplay;
+                var newWidth = newHeight * ratioWH;
+
+                rawImgCam.rectTransform.sizeDelta = new Vector2(newWidth - widthDisplay, newHeight - heightDisplay);
+            }
+        }
+
+        widthDisplay = rawImgCam.rectTransform.rect.width;
+        heightDisplay = rawImgCam.rectTransform.rect.height;
+
+        Utilities.Log("Display later in start function have width is {0}, height is {1}", widthDisplay, heightDisplay);
+
+
+        if (isFronFacing && (orient == 90 || orient == 270))
+        {
+            rawImgCam.rectTransform.localScale = new Vector3(1, -1, 1);
+        }
+
+
         camAvailable = true;
-
-      
-
-        MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
+        //MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
     }
 
     IEnumerator Worker()
@@ -109,28 +143,14 @@ public class SnapImageSceneScripts : MonoBehaviour {
             yield return null;
             if (camAvailable)
             {
-
-                webcamTex.Stop();
-
-                webcamTex.requestedWidth = 480;
-                webcamTex.requestedHeight = 640;
-
-                webcamTex.Play();
-
-                var widthCam = webcamTex.width;
-                var heightCam = webcamTex.height;
-
-                var ratioWH = widthCam / (float)heightCam;
-                var ratioHW = heightCam / (float)widthCam;
-                Utilities.Log("Webcam here have width is {0}, webcam height is {1}", widthCam, heightCam);
             }
         }
     }
 
     private void OnDisable()
     {
-        //webcamTex.Stop();
-        //webcamTex = null;
+        webcamTex.Stop();
+        webcamTex = null;
     }
 
     public void OnChangeCameraButton()
@@ -141,7 +161,6 @@ public class SnapImageSceneScripts : MonoBehaviour {
         rawImgCam.rectTransform.sizeDelta = new Vector2(0, 0);
         rawImgCam.transform.localScale = new Vector3(1, 1, 1);
         //rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, 0);
-
         isFronFacing = !isFronFacing;
         for (int i = 0; i < devices.Length; i++)
         {
@@ -149,7 +168,6 @@ public class SnapImageSceneScripts : MonoBehaviour {
             {
                 webCamDevice = devices[i];
                 webcamTex = new WebCamTexture(devices[i].name, requestWidth, requestHeight);
-
                 break;
             }
         }
@@ -173,40 +191,84 @@ public class SnapImageSceneScripts : MonoBehaviour {
         var heightDisplay = rawImgCam.rectTransform.rect.height;
         var ratioDisplay = widthDisplay / (float)heightDisplay;
 
+        Utilities.Log("Display in change function have width is {0}, height is {1}", widthDisplay, heightDisplay);
+
         int orient = webcamTex.videoRotationAngle;
         Utilities.Log("orient is {0}", orient);
+        bool isVerticalMirror = webcamTex.videoVerticallyMirrored;
+        Utilities.Log("is vertical mirror {0}", isVerticalMirror);
 
+        if (orient == 90 || orient == 270)
         {
-            if (orient == 90 || orient == 270)
+            if (ratioHW < ratioDisplay)
             {
-                if (ratioHW < ratioDisplay)
-                {
-                    var newHeight = widthDisplay;
-                    var newWidth = newHeight * ratioWH;
+                var newHeight = widthDisplay;
+                var newWidth = newHeight * ratioWH;
 
-                    var heightDelta = newHeight - heightDisplay;
-                    var widthDelta = newWidth - widthDisplay;
-                    rawImgCam.rectTransform.sizeDelta = new Vector2(widthDelta, heightDelta);
-                }
-                else
-                {
-                    var newWidth = heightDisplay;
-                    var newHeight = newWidth * ratioHW;
+                var heightDelta = newHeight - heightDisplay;
+                var widthDelta = newWidth - widthDisplay;
+                rawImgCam.rectTransform.sizeDelta = new Vector2(widthDelta, heightDelta);
+            }
+            else
+            {
+                var newWidth = heightDisplay;
+                var newHeight = newWidth * ratioHW;
 
-                    var heightDelta = newHeight - heightDisplay;
-                    var widthDelta = newWidth - widthDisplay;
-                    rawImgCam.rectTransform.sizeDelta = new Vector2(widthDelta, heightDelta);
-                }
-                
+                var heightDelta = newHeight - heightDisplay;
+                var widthDelta = newWidth - widthDisplay;
+                rawImgCam.rectTransform.sizeDelta = new Vector2(widthDelta, heightDelta);
+            }
+        }
+        else
+        {
+            if (ratioWH < ratioDisplay)
+            {
+                var newWidth = widthDisplay;
+                var newHeight = newWidth * ratioHW;
+
+                rawImgCam.rectTransform.sizeDelta = new Vector2(newWidth - widthDisplay, newHeight - heightDisplay);
+            }
+            else
+            {
+                var newHeight = heightDisplay;
+                var newWidth = newHeight * ratioWH;
+
+                rawImgCam.rectTransform.sizeDelta = new Vector2(newWidth - widthDisplay, newHeight - heightDisplay);
             }
         }
 
 
+        widthDisplay = rawImgCam.rectTransform.rect.width;
+        heightDisplay = rawImgCam.rectTransform.rect.height;
+
+        Utilities.Log("Display later in change function have width is {0}, height is {1}", widthDisplay, heightDisplay);
+
         rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, -orient);
-        if(isFronFacing && (orient == 270 || orient == 90))
+        if (isFronFacing && (orient == 270 || orient == 90))
         {
             rawImgCam.transform.localScale = new Vector3(1, -1, 1);
         }
         rawImgCam.texture = webcamTex;
-    }       
+    }
+
+    public void OnSnapBtnClicked()
+    {
+        Color32[] buffer = new Color32[webcamTex.width * webcamTex.height];
+       
+
+        Mat a = new Mat(webcamTex.height, webcamTex.width, CvType.CV_8UC4);
+        Utils.webCamTextureToMat(webcamTex, a, buffer);
+
+        Debug.LogFormat("mat width is {0}, height is {1}", a.width(), a.height());
+        Texture2D texture = new Texture2D(webcamTex.width, webcamTex.height);
+
+        Imgcodecs.imwrite("E:\\a.png", a);
+
+
+        //Debug.LogFormat("texture width is {0}, height is {1}", texture.width, texture.height);
+        
+
+        //rawImgCam.texture = texture;
+    }
+
 }
