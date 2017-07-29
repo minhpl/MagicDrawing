@@ -15,7 +15,7 @@ public class DrawingScripts : MonoBehaviour {
     public Threshold threshold;
     public AdaptiveThreshold athreshold;
     WarpPerspective warpPerspective;
-    public Mat image;
+    public static Mat image;
     private Color32[] colorsBuffer;
     private Texture2D texEdges;
     private Texture2D texCam;
@@ -24,7 +24,9 @@ public class DrawingScripts : MonoBehaviour {
     WebCamTextureToMatHelper webCamTextureToMatHelper;
     bool loaded = false;
     WebcamVideoCapture webcamCapture;
-    
+
+    public enum DRAWMODE { DRAW_MODEL, DRAW_IMAGE};
+    public static DRAWMODE drawMode = DRAWMODE.DRAW_MODEL;
 
     private void Awake()
     {
@@ -51,18 +53,8 @@ public class DrawingScripts : MonoBehaviour {
         rawImageCam = goCam.GetComponent<RawImage>();
         webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
         warpPerspective = gameObject.GetComponent<WarpPerspective>();        
-        if(!webCamTextureToMatHelper.IsInited())
-        {
-            int width = (int)goCam.GetComponent<RawImage>().rectTransform.rect.width;
-            int heigh = (int)goCam.GetComponent<RawImage>().rectTransform.rect.height;            
-            webCamTextureToMatHelper.Init(null, 640, 480, webCamTextureToMatHelper.requestIsFrontFacing);
-            warpPerspective.Init(webCamTextureToMatHelper.GetMat());
-            ScaleGoCam(warpPerspective.scaleX);
-        }
-        utilities = new Utilities();
 
-        Mat camMat = webCamTextureToMatHelper.GetMat();
-        texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
+        utilities = new Utilities();
 
         threshold = GetComponent<Threshold>();
  
@@ -76,8 +68,8 @@ public class DrawingScripts : MonoBehaviour {
         }
 
         threshold = GetComponent<Threshold>();
-
         GFs.LoadTemplateList();
+
         MainThreadDispatcher.StartUpdateMicroCoroutine(loadModel());
         MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
     }
@@ -92,21 +84,41 @@ public class DrawingScripts : MonoBehaviour {
     IEnumerator loadModel()
     {
         yield return null;
-        var model = GVs.CURRENT_MODEL;        
-        string imgPath;
-        if (model != null)
+
+        if (!webCamTextureToMatHelper.IsInited())
         {
-            imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + model.image;            
+            int w = (int)goCam.GetComponent<RawImage>().rectTransform.rect.width;
+            int h = (int)goCam.GetComponent<RawImage>().rectTransform.rect.height;
+            webCamTextureToMatHelper.Init(null, 640, 480, webCamTextureToMatHelper.requestIsFrontFacing);
+            warpPerspective.Init(webCamTextureToMatHelper.GetMat());
+            ScaleGoCam(warpPerspective.scaleX);
         }
-        else
-        {
-            imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0027.jpg";            
-        }               
-        imgPath = GVs.APP_PATH + "/" + imgPath;
-        image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
+        Mat camMat = webCamTextureToMatHelper.GetMat();
+        texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
 
         var rimgmodel = goModel.GetComponent<RawImage>();
         var rimgCam = goModel.GetComponent<RawImage>();
+
+        if (drawMode == DRAWMODE.DRAW_MODEL)
+        {
+            var model = GVs.CURRENT_MODEL;
+            string imgPath;
+            if (model != null)
+            {
+                imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + model.image;
+            }
+            else
+            {
+                imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0027.jpg";
+            }
+            imgPath = GVs.APP_PATH + "/" + imgPath;
+            image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
+
+        }
+        else
+        {
+            
+        }
 
         float width = image.width();
         float heigh = image.height();
@@ -118,18 +130,20 @@ public class DrawingScripts : MonoBehaviour {
         float ratio = width / heigh;
         float ratioDisplay = modelAreaWidth / modelAreaHeight;
 
-        //var ratioWidth = width / modelAreaWidth;
-        //var ratioHeight = heigh / modelAreaHeight;
-
         if (ratio > ratioDisplay)
         {
-            rimgmodel.rectTransform.localScale = new Vector3(1, (modelAreaWidth / modelAreaHeight) * (heigh / width), 1);
+            var newWidth = modelAreaWidth;
+            var newHeight = modelAreaWidth * (heigh / width);
+            rimgmodel.rectTransform.sizeDelta = new Vector2(newWidth - modelAreaWidth, newHeight - modelAreaHeight);
+
         }
         else
         {
-            rimgmodel.rectTransform.localScale = new Vector3((modelAreaHeight / modelAreaWidth) * ratio, 1, 1);
+            var newHeight = modelAreaHeight;
+            var newWidth = modelAreaHeight * ratio;
+            rimgmodel.rectTransform.sizeDelta = new Vector2(newWidth - modelAreaWidth, newHeight - modelAreaHeight);
         }
-        
+
         Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
         athreshold = GetComponent<AdaptiveThreshold>();
         athreshold.setParameter(slider.value);
@@ -188,8 +202,7 @@ public class DrawingScripts : MonoBehaviour {
 
     public void AfterProcess(Mat redMat)
     {        
-        finishJob = false;
-        
+        finishJob = false;        
         Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
         var rimgmodel = goModel.GetComponent<RawImage>(); ;
         rimgmodel.texture = texEdges;
@@ -215,10 +228,6 @@ public class DrawingScripts : MonoBehaviour {
             if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
             {
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();
-                //if (isRecording && webcamCapture != null)
-                //{
-                //    webcamCapture.write(rgbaMat);
-                //}
                 Mat a = warpPerspective.warpPerspective(rgbaMat);                
                 Utils.matToTexture2D(a, texCam, webCamTextureToMatHelper.GetBufferColors());
                 rawImageCam.texture = texCam;
@@ -249,5 +258,16 @@ public class DrawingScripts : MonoBehaviour {
         var needw = w * scaleX;       
         Debug.Log(a.rectTransform.rect.ToString());  
         a.rectTransform.sizeDelta = new Vector2(needw-w, 0);
+    }
+
+    private void OnDisable()
+    {
+        image.release();
+        image.Dispose();
+        Utilities.Log("Is image == null ? {0}", image == null);
+        image = null;
+        Destroy(texCam);
+        Destroy(texEdges);
+        Destroy(webCamTextureToMatHelper);
     }
 }

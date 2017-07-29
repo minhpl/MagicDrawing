@@ -457,10 +457,12 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\SimpleWB.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\WhiteBalancer.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\Xphoto.cs" />
+    <Compile Include="Assets\Scenes\Test\OpenCVFaceDetection.cs" />
     <Compile Include="Assets\Scenes\Test\PhotoCaptureExample.cs" />
     <Compile Include="Assets\Scripts\BackButton.cs" />
     <Compile Include="Assets\Scripts\CheckFPS.cs" />
     <Compile Include="Assets\Scripts\DataBind.cs" />
+    <Compile Include="Assets\Scripts\DontShowPersistantScene.cs" />
     <Compile Include="Assets\Scripts\DrawingScripts.cs" />
     <Compile Include="Assets\Scripts\DrawingScripts2.cs" />
     <Compile Include="Assets\Scripts\FPSs.cs" />
@@ -597,6 +599,9 @@
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed.shader" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
+    <None Include="Assets\Plugins\Android\armeabi-v7a\lbpcascade_frontalface.xml" />
+    <None Include="Assets\Plugins\Android\armeabi\lbpcascade_frontalface.xml" />
+    <None Include="Assets\Plugins\Android\x86\lbpcascade_frontalface.xml" />
     <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
     <None Include="Assets\Scripts\OpenCVForUnity\Examples\MagicDrawing\cong viec.txt" />
     <None Include="Assets\Scripts\OpenCVForUnity\Examples\MagicDrawing\flow.txt" />

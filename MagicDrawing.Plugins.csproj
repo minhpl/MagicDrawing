@@ -381,6 +381,9 @@
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed.shader" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
+    <None Include="Assets\Plugins\Android\armeabi-v7a\lbpcascade_frontalface.xml" />
+    <None Include="Assets\Plugins\Android\armeabi\lbpcascade_frontalface.xml" />
+    <None Include="Assets\Plugins\Android\x86\lbpcascade_frontalface.xml" />
     <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
     <None Include="Assets\Scripts\OpenCVForUnity\Examples\MagicDrawing\cong viec.txt" />
     <None Include="Assets\Scripts\OpenCVForUnity\Examples\MagicDrawing\flow.txt" />

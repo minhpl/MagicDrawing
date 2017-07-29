@@ -7,6 +7,12 @@ using UnityEngine.SceneManagement;
 
 public class HomeController : MonoBehaviour {
     void Start () {
+
+        if (MakePersistentObject.Instance)
+        {
+            MakePersistentObject.Instance.gameObject.SetActive(false);
+        }
+
         if (Application.platform == RuntimePlatform.Android)
         {
             GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
@@ -42,11 +48,7 @@ public class HomeController : MonoBehaviour {
                         Utilities.Log("Downloaded");
                     }
                 });
-            });
-
-        if (MakePersistentObject.Instance)
-            MakePersistentObject.Instance.gameObject.SetActive(false);
-
+            });        
     }
     private bool ready = false;
 
@@ -54,17 +56,14 @@ public class HomeController : MonoBehaviour {
     {
         if (ready)
         {
-            GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
             GVs.SCENE_MANAGER.loadHistory1Scene();
         }         
     }
     public void loadLibrary()
     {
         if (ready)
-        {
-            GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
+        {         
             GVs.SCENE_MANAGER.loadLibraryScene();
-        }
-            
+        }            
     }
 }

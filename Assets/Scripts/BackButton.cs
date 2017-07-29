@@ -8,12 +8,11 @@ public class BackButton : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //Debug.LogFormat(this.gameObject.scene.name);
+
 	}
 
     public void onBackButtonClicked()
     {
-        Debug.LogFormat("hello");
         if(GVs.TRACE_SCENE.Count > 1)
         {
             GVs.TRACE_SCENE.Pop();

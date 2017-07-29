@@ -18,9 +18,7 @@ public class SnapImageSceneScripts : MonoBehaviour
     private bool isFronFacing = false;
     private int requestWidth = 1920;
     private int requestHeight = 1920;
-    // Use this for initialization
     private WebCamTextureToMatHelper webcamTextureTomat;
-    Texture2D texture;
     Mat snapMat;
 
     private void Awake()
@@ -45,28 +43,6 @@ public class SnapImageSceneScripts : MonoBehaviour
     {
         webcamTextureTomat = goCam.GetComponent<WebCamTextureToMatHelper>();
         webcamTextureTomat.Init(null, requestWidth, requestHeight, isFronFacing);
-        //WebCamDevice[] devices = WebCamTexture.devices;
-        //if (devices.Length == 0)
-        //{
-        //    Utilities.Log("No camera detected");
-        //    camAvailable = false;
-        //    return;
-        //}
-        //for (int i = 0; i < devices.Length; i++)
-        //{
-        //    if (devices[i].isFrontFacing == isFronFacing)
-        //    {
-        //        webcamTex = new WebCamTexture(devices[i].name, requestWidth, requestHeight);
-        //        webCamDevice = devices[i];
-        //        break;
-        //    }
-        //}
-        //if (webcamTex == null)
-        //{
-        //    Utilities.Log("Unable to find back camera");
-        //    webcamTex = new WebCamTexture(devices[0].name, requestWidth, requestHeight);
-        //    webCamDevice = devices[0];
-        //}
         webcamTex = webcamTextureTomat.GetWebCamTexture();
         webcamTex.Play();
         rawImgCam.texture = webcamTex;
@@ -134,21 +110,6 @@ public class SnapImageSceneScripts : MonoBehaviour
         camAvailable = true;
     }
 
-    IEnumerator Worker()
-    {
-        while (true)
-        {
-            yield return null;
-            if (camAvailable && webcamTextureTomat.IsPlaying() && webcamTextureTomat.DidUpdateThisFrame())
-            {
-                Mat a = webcamTextureTomat.GetMat();
-                texture = new Texture2D(a.width(), a.height(), TextureFormat.RGBA32, false);
-
-                Utils.fastMatToTexture2D(a, texture);
-                rawImgCam.texture = texture;
-            }
-        }
-    }
 
     private void OnDisable()
     {
@@ -210,10 +171,10 @@ public class SnapImageSceneScripts : MonoBehaviour
             webcamTex.Play();
         }
 
-        Mat rgbaMat = webcamTextureTomat.GetMat();
+        singleChannel.Dispose();
+        snapMat.Dispose();
 
-        Texture2D texture2d = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.RGBA32, false);
-        Utils.matToTexture2D(snapMat, texture2d);
+        Mat rgbaMat = webcamTextureTomat.GetMat();
 
         rawImgCam.rectTransform.localScale = new Vector3(1, 1, 1);
         rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, 0);
@@ -248,10 +209,24 @@ public class SnapImageSceneScripts : MonoBehaviour
         var matDisplayHeight = heightCam - deltaHeightMat;
 
         var rect = new OpenCVForUnity.Rect(deltaWidthMat / 2, deltaHeightMat / 2, matDisplayWidth, matDisplayHeight);
-        Mat subMat = rgbaMat.submat(rect);
+        snapMat = rgbaMat.submat(rect);
 
-        Texture2D texRgbaMat = new Texture2D(subMat.width(), subMat.height(), TextureFormat.RGBA32, false);
-        Utils.matToTexture2D(subMat, texRgbaMat);
-        rawImgCam.texture = texRgbaMat;
+        Utilities.Log("snap image width = {0}, height = {1}", snapMat.width(), snapMat.height());
+
+        Texture2D texRgbaMat = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.RGBA32, false);
+        Utils.matToTexture2D(snapMat, texRgbaMat);
+        rawImgCam.texture = texRgbaMat;        
+    }
+
+    public void OnDrawBtnClicked()
+    {
+        webcamTextureTomat.Stop();
+        webcamTextureTomat = null;
+        if (snapMat != null)
+        {
+            DrawingScripts.image = snapMat;
+            DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
+            GVs.SCENE_MANAGER.loadDrawingScene();
+        }            
     }
 }

@@ -98,7 +98,7 @@ public class GalaryScript : MonoBehaviour {
     void OnItemClicked(GameObject go)
     {
         //Debug.LogFormat("name is {0}", go.GetComponent<DataBind>().drawingTemplateModel.thumb);
-        GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
+        //GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
         GVs.CURRENT_MODEL = go.GetComponent<DataBind>().drawingTemplateModel;
         GVs.SCENE_MANAGER.loadDrawingScene();
     }

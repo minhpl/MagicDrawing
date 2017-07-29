@@ -243,7 +243,6 @@ public class LibraryScripts : MonoBehaviour
         //Destroy(imageItem.transform.parent.GetComponent<GridLayoutGroup>());
 
         Destroy(imageItem);
-
         
         //watch.Stop();
         //var elapsedMs = watch.ElapsedMilliseconds;
@@ -257,8 +256,9 @@ public class LibraryScripts : MonoBehaviour
     void OnItemClicked(GameObject go)
     {
         //Debug.LogFormat("name is {0}", go.GetComponent<DataBind>().drawingTemplateModel.thumb);
-        GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
+        //GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
         GVs.CURRENT_MODEL = go.GetComponent<DataBind>().drawingTemplateModel;
+        DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;
         GVs.SCENE_MANAGER.loadDrawingScene();
     }    
 
