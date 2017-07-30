@@ -10,37 +10,43 @@ using UnityEngine.UI;
 public class DrawingScripts : MonoBehaviour {
     public GameObject goCam;
     public GameObject goModel;
-    public Slider slider;    
-
+    public Slider sliderLine;
+    public Slider sliderContrast;
     public Threshold threshold;
     public AdaptiveThreshold athreshold;
     WarpPerspective warpPerspective;
     public static Mat image;
     private Color32[] colorsBuffer;
     private Texture2D texEdges;
+    public static Texture2D texModel;
     private Texture2D texCam;
-    RawImage rawImageCam;
+    RawImage rimgcam;
+    RawImage rimgmodel;
     Utilities utilities;
     WebCamTextureToMatHelper webCamTextureToMatHelper;
     bool loaded = false;
     WebcamVideoCapture webcamCapture;
+    Mat warp;
 
     public enum DRAWMODE { DRAW_MODEL, DRAW_IMAGE};
     public static DRAWMODE drawMode = DRAWMODE.DRAW_MODEL;
-
+    public enum FILTERMODE { LINE,BLEND};
+    public static FILTERMODE filtermode = FILTERMODE.LINE;
     private void Awake()
     {
         if (MakePersistentObject.Instance)
             MakePersistentObject.Instance.gameObject.SetActive(false);
-
         int delayTime = 100;
-        var onSliderValueStream = slider.onValueChanged.AsObservable();
+        var onSliderLineValueStream = sliderLine.onValueChanged.AsObservable();
         //onSliderValueStream.Buffer(onSliderValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
         //    .Subscribe(list => Debug.LogFormat("list count is {0}", list[list.Count - 1]));
-        onSliderValueStream.Buffer(onSliderValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
-            .Subscribe(delegate { ValueChangeCheck(slider); });
+        onSliderLineValueStream.Buffer(onSliderLineValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
+            .Subscribe(delegate (IList<float> i) { OnLineSliderValueChange(sliderLine); });
         //onSliderValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe(list => Debug.Log(list));        
         //slider.onValueChanged.AddListener(delegate { ValueChangeCheck(slider); });       
+        var onSliderContrastValueStream = sliderContrast.onValueChanged.AsObservable();
+        onSliderContrastValueStream.Buffer(onSliderContrastValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
+            .Subscribe(delegate (IList<float> i) { OnContrastSliderValueChange(sliderContrast); });
     }
 
     void OnSliderValueChaned(Slider slider)
@@ -50,7 +56,8 @@ public class DrawingScripts : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        rawImageCam = goCam.GetComponent<RawImage>();
+        rimgcam = goCam.GetComponent<RawImage>();
+        rimgmodel = goModel.GetComponent<RawImage>();
         webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
         warpPerspective = gameObject.GetComponent<WarpPerspective>();        
 
@@ -90,14 +97,16 @@ public class DrawingScripts : MonoBehaviour {
             int w = (int)goCam.GetComponent<RawImage>().rectTransform.rect.width;
             int h = (int)goCam.GetComponent<RawImage>().rectTransform.rect.height;
             webCamTextureToMatHelper.Init(null, 640, 480, webCamTextureToMatHelper.requestIsFrontFacing);
+
+            var rgbaMat = webCamTextureToMatHelper.GetMat();
+            var aspectRatioFitter = goCam.GetComponent<AspectRatioFitter>();
+            aspectRatioFitter.aspectRatio = (float)rgbaMat.width() / (float)rgbaMat.height();
+            aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;           
             warpPerspective.Init(webCamTextureToMatHelper.GetMat());
-            ScaleGoCam(warpPerspective.scaleX);
+            //ScaleGoCam(warpPerspective.scaleX);
         }
         Mat camMat = webCamTextureToMatHelper.GetMat();
-        texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
-
-        var rimgmodel = goModel.GetComponent<RawImage>();
-        var rimgCam = goModel.GetComponent<RawImage>();
+        texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);        
 
         if (drawMode == DRAWMODE.DRAW_MODEL)
         {
@@ -113,7 +122,8 @@ public class DrawingScripts : MonoBehaviour {
             }
             imgPath = GVs.APP_PATH + "/" + imgPath;
             image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
-
+            texModel = new Texture2D(image.width(), image.height(), TextureFormat.RGBA32, false);
+            Utils.matToTexture2D(image, texModel);
         }
         else
         {
@@ -146,7 +156,7 @@ public class DrawingScripts : MonoBehaviour {
 
         Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
         athreshold = GetComponent<AdaptiveThreshold>();
-        athreshold.setParameter(slider.value);
+        athreshold.setParameter(sliderLine.value);
         texEdges = new Texture2D(image.width(), image.height(), TextureFormat.ARGB32, false);
         Mat edges = athreshold.adapTiveThreshold(image);
         Mat redMat = new Mat();
@@ -175,8 +185,17 @@ public class DrawingScripts : MonoBehaviour {
         yield return new WaitForSeconds(0.1f);
         updateAble = true;
     }
+
+    public void OnContrastSliderValueChange(Slider slider)
+    {
+        
+        float percent = slider.value / 100f;
+        var c = rimgmodel.color;
+        rimgmodel.color = new Color(c.r, c.g, c.b, percent);
+    }
+
     private float currentSliderValue = 0;
-    public void ValueChangeCheck(Slider slider)
+    public void OnLineSliderValueChange(Slider slider)
     {        
         if (loaded)
         {
@@ -210,12 +229,12 @@ public class DrawingScripts : MonoBehaviour {
         if (currentSliderValue != job.athreshold._sliderValue)
         {
             updateAble = true;
-            ValueChangeCheck(slider);
+            OnLineSliderValueChange(sliderLine);
         }
         else
             StartCoroutine(DelayUpdate());
     }
-
+   
     IEnumerator Worker()
     {
         while (true)
@@ -226,17 +245,23 @@ public class DrawingScripts : MonoBehaviour {
                 AfterProcess(_redMat);
             }
             if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
-            {
+            {                
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();
-                Mat a = warpPerspective.warpPerspective(rgbaMat);                
-                Utils.matToTexture2D(a, texCam, webCamTextureToMatHelper.GetBufferColors());
-                rawImageCam.texture = texCam;
+                warp = warpPerspective.warpPerspective(rgbaMat);
+                Utils.matToTexture2D(warp, texCam, webCamTextureToMatHelper.GetBufferColors());                
+                rimgcam.texture = texCam;
+                if(isRecording)
+                {
+                    //Utilities.Log("Mat width = {0}, warp width = {1}, Mat height = {2}, ward height = {3}",rgbaMat.width(), warp.width(), rgbaMat.height(),warp.height());
+                    webcamCapture.write(warp);
+                }
             }
         }
     }
     public bool isRecording = false;
     public void StartRecordVideo()
-    {        
+    {
+        Utilities.Log("Start video recording");
         Mat m = webCamTextureToMatHelper.GetMat();
         webcamCapture = new WebcamVideoCapture(m.size());
         isRecording = true;
@@ -253,21 +278,59 @@ public class DrawingScripts : MonoBehaviour {
     public void ScaleGoCam(float scaleX)
     {
         RawImage a = goCam.GetComponent<RawImage>();
-        //a.rectTransform.localScale = new Vector3(scaleX, 1, 1);
+        a.rectTransform.localScale = new Vector3(scaleX, 1, 1);
         var w = a.rectTransform.rect.width;
         var needw = w * scaleX;       
-        Debug.Log(a.rectTransform.rect.ToString());  
-        a.rectTransform.sizeDelta = new Vector2(needw-w, 0);
+        Debug.Log(a.rectTransform.rect.ToString());      
     }
 
     private void OnDisable()
     {
         image.release();
         image.Dispose();
-        Utilities.Log("Is image == null ? {0}", image == null);
         image = null;
-        Destroy(texCam);
+        if (!TickBtnClicked) {
+            Destroy(texCam);
+        }            
         Destroy(texEdges);
+        Destroy(texModel);
         Destroy(webCamTextureToMatHelper);
+        StopVideoRecording();
+    }
+
+    public void OnContrastBtnClicked()
+    {
+        if (filtermode == FILTERMODE.LINE)
+            filtermode = FILTERMODE.BLEND;
+        else if (filtermode == FILTERMODE.BLEND)
+            filtermode = FILTERMODE.LINE;
+
+        if (filtermode == FILTERMODE.LINE)
+        {
+            rimgmodel.color = new Color(255, 255, 255, 1);
+            rimgmodel.texture = texEdges;
+        }
+        else if (filtermode == FILTERMODE.BLEND)
+        {
+            OnContrastSliderValueChange(sliderContrast);
+            rimgmodel.texture = texModel;
+        }        
+    }
+
+
+    public void OnSliderBtnClicked()
+    {
+        filtermode = FILTERMODE.LINE;
+        rimgmodel.color = new Color(255, 255, 255, 1);
+        rimgmodel.texture = texEdges;
+    }
+
+    bool TickBtnClicked = false;
+    public void OnTickBtnClicked()
+    {
+        TickBtnClicked = true;
+        GVs.SCENE_MANAGER.loadPreviewResultScene();        
+        PreviewResultScripts.texture = texCam;
+        ResultScripts.videoname = webcamCapture.filename;
     }
 }

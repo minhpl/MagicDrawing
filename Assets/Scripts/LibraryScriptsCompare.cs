@@ -1,5 +1,4 @@
-﻿using Assets.OpenCVForUnity.Examples.MagicDrawing;
-using OpenCVForUnity;
+﻿using OpenCVForUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;

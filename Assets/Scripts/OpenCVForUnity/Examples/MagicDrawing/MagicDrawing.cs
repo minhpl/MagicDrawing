@@ -4,7 +4,6 @@ using OpenCVForUnityExample;
 using UnityEngine.UI;
 using System.IO;
 using System;
-using Assets.OpenCVForUnity.Examples.MagicDrawing;
 //using UnityEditor;
 //using UnityEditor;
 

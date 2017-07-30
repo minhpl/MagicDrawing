@@ -110,7 +110,6 @@ public class SnapImageSceneScripts : MonoBehaviour
         camAvailable = true;
     }
 
-
     private void OnDisable()
     {
         if (webcamTex)
@@ -122,12 +121,10 @@ public class SnapImageSceneScripts : MonoBehaviour
     {
         webcamTextureTomat.Stop();
         webcamTextureTomat = null;
-
         rawImgCam.rectTransform.sizeDelta = new Vector2(0, 0);
         rawImgCam.transform.localScale = new Vector3(1, 1, 1);
         rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, 0);
         isFronFacing = !isFronFacing;
-
         ShowCam();
     }
 
@@ -225,8 +222,12 @@ public class SnapImageSceneScripts : MonoBehaviour
         if (snapMat != null)
         {
             DrawingScripts.image = snapMat;
+            Texture2D texture = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.BGRA32, false);
+            Utils.matToTexture2D(snapMat, texture);
+            DrawingScripts.texModel = texture;
             DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
             GVs.SCENE_MANAGER.loadDrawingScene();
         }            
     }
+
 }

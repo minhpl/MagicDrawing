@@ -16,29 +16,30 @@ class WebcamVideoCapture
     string iphoneDir = "\\";
 
     string customFmts = "yyyyMMd_HHmmss";
-    string filename = "";
+    public string filename = "";
 
     public WebcamVideoCapture(Size size)
     {
         string name = String.Format("video_{0}.avi", DateTime.Now.ToString(customFmts));
 
-//#if UNITY_IPHONE
-//                    Debug.Log("file name is 3" + filename);
-//                                filename = iphoneDir + name;
-//#endif
+        //#if UNITY_IPHONE
+        //                    Debug.Log("file name is 3" + filename);
+        //                                filename = iphoneDir + name;
+        //#endif
 
-//#if UNITY_ANDROID
+        //#if UNITY_ANDROID
         //filename = androidDir + name;
-//        if (!Directory.Exists(androidDir))
-//        {
-//            Directory.CreateDirectory(androidDir);
-//        }
-//        Utilities.Log("filename is 2{0}", "hello");
-//#else
-//                //PC here                
-//                filename = pcDir + name;
-//#endif
+        //        if (!Directory.Exists(androidDir))
+        //        {
+        //            Directory.CreateDirectory(androidDir);
+        //        }
+        //        Utilities.Log("filename is 2{0}", "hello");
+        //#else
+        //                //PC here                
+        //                filename = pcDir + name;
+        //#endif
 
+        Utilities.Log("xin chao noi day {0}",name);
 
         if (Application.platform == RuntimePlatform.Android)
         {
@@ -47,7 +48,7 @@ class WebcamVideoCapture
             {
                 Directory.CreateDirectory(androidDir);
             }
-            //Utilities.Log("filename is ", filename);
+            Utilities.Log("filename is {0}", filename);
         }
         else
         {
@@ -56,7 +57,7 @@ class WebcamVideoCapture
             {
                 Directory.CreateDirectory(pcDir);
             }
-            //Utilities.Log("filename is {0}", filename);
+            Utilities.Log("filename is {0}", filename);
         }
 
 

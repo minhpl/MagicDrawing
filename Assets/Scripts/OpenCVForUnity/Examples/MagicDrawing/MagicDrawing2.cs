@@ -4,7 +4,6 @@ using OpenCVForUnityExample;
 using UnityEngine.UI;
 using System.IO;
 using System;
-using Assets.OpenCVForUnity.Examples.MagicDrawing;
 
 #if UNITY_5_3 || UNITY_5_3_OR_NEWER
 using UnityEngine.SceneManagement;

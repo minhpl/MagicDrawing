@@ -60,7 +60,7 @@ public class AdaptiveThreshold : MonoBehaviour
     {
         var a = GetComponent<DrawingScripts>();
         if (a != null)
-            a.ValueChangeCheck(null);
+            a.OnLineSliderValueChange(null);
     }
 }
 

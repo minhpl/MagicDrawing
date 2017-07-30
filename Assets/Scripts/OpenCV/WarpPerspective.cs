@@ -8,8 +8,6 @@ using UnityEngine.UI;
 
 class WarpPerspective : MonoBehaviour
 {
-    public Slider slider;
-
     Mat sourceImage;
     Mat transformationMatrix;
     public float widthScale = 1;
@@ -22,6 +20,18 @@ class WarpPerspective : MonoBehaviour
     Mat transformation_x;
     Mat transformation_y;
 
+    Mat tempMat;
+    Mat tempMat2;
+    Mat result;
+
+    private void Awake()
+    {
+        tempMat = new Mat();
+        tempMat2 = new Mat();
+        result = new Mat();
+    }
+
+
     public void setParam(float heightScale, float widthScale = 1)
     {
         this.heightScale = heightScale;
@@ -33,9 +43,9 @@ class WarpPerspective : MonoBehaviour
     public void Init(Mat image)
     {
         sourceImage = image;
-        int w = image.cols();
-        int h = image.rows();
-        int topWidth = 400;
+        int w = image.width();
+        int h = image.height();
+        int topWidth = 500;
         int botWidth = 272;
         topWidth = (int)(topWidth / widthScale);
         int differWidth = topWidth - botWidth;
@@ -58,14 +68,14 @@ class WarpPerspective : MonoBehaviour
                 w, h,
                 0, h);
         transformationMatrix = Imgproc.getPerspectiveTransform(src_corner, dst_corner);
-        //src_corner.Dispose();
-        //dst_corner.Dispose();
-       
+
         Mat map_x = new Mat(), map_y = new Mat(), srcTM = new Mat();
         Core.invert(transformationMatrix, srcTM);
         
         map_x.create(sourceImage.size(), CvType.CV_32FC1);
         map_y.create(sourceImage.size(), CvType.CV_32FC1);
+
+        Utilities.Log("Width = {0}, height = {1}", map_x.width(), map_x.height());
 
         double M11, M12, M13, M21, M22, M23, M31, M32, M33;
         M11 = srcTM.get(0, 0)[0];
@@ -94,7 +104,7 @@ class WarpPerspective : MonoBehaviour
                 map_y.put(y, x, new_y);
             }
         }
-
+        // This creates a fixed-point representation of the mapping resulting in ~4% CPU savings
         transformation_x = new Mat(sourceImage.size(),CvType.CV_16SC2);
         transformation_y = new Mat(sourceImage.size(), CvType.CV_16UC1);
 
@@ -110,32 +120,21 @@ class WarpPerspective : MonoBehaviour
         myROI = new OpenCVForUnity.Rect((int)needWidthInDe, heightRedundancy, (int)(topWidthAfter), newHeight - heightRedundancy);
 
         scaleX = (float)w / topWidthAfter;
-
-    }
-
-    Mat tempMat;
-    Mat tempMat2;
-    Mat result;
-
-    private void Awake()
-    {
-        tempMat = new Mat();
-        tempMat2 = new Mat();
-        result = new Mat();
     }
 
     public Mat warpPerspective(Mat inputMat)
     {
+        Imgproc.remap(inputMat, tempMat, transformation_x, transformation_y, Imgproc.INTER_LINEAR);
         if (heightScale == 1)
         {
-            Imgproc.remap(inputMat, tempMat, transformation_x, transformation_y, Imgproc.INTER_LINEAR);
+            //Imgproc.remap(inputMat, tempMat, transformation_x, transformation_y, Imgproc.INTER_LINEAR);   
             //Imgproc.warpPerspective(inputMat, tempMat, transformationMatrix, sizeOriginal,Imgproc.INTER_NEAREST);
             //Mat roi = tempMat.submat(myROI);
             //Imgproc.resize(roi, result, sizeOriginal);
         }
         else
         {
-            Imgproc.remap(inputMat, tempMat, transformation_x, transformation_y, Imgproc.INTER_LINEAR);
+            //Imgproc.remap(inputMat, tempMat, transformation_x, transformation_y, Imgproc.INTER_LINEAR);
             //Imgproc.warpPerspective(inputMat, tempMat, transformationMatrix, sizeOriginal, Imgproc.INTER_NEAREST);
             //Imgproc.resize(tempMat, tempMat2, sizeNew);
             //Mat roi = tempMat2.submat(myROI);

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using UnityEngine;
-using Assets.OpenCVForUnity.Examples.MagicDrawing;
 
 class GFs
 {
