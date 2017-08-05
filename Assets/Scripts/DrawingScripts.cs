@@ -164,7 +164,7 @@ public class DrawingScripts : MonoBehaviour {
         colorsBuffer = new Color32[edges.width() * edges.height()];
         Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
 
-        rimgmodel.texture = texEdges;
+        //rimgmodel.texture = texEdges;
         utilities = new Utilities();
         goModel.SetActive(true);
         loaded = true;
@@ -246,15 +246,15 @@ public class DrawingScripts : MonoBehaviour {
             }
             if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
             {                
-                Mat rgbaMat = webCamTextureToMatHelper.GetMat();
-                warp = warpPerspective.warpPerspective(rgbaMat);
-                Utils.matToTexture2D(warp, texCam, webCamTextureToMatHelper.GetBufferColors());                
-                rimgcam.texture = texCam;
-                if(isRecording)
-                {
-                    //Utilities.Log("Mat width = {0}, warp width = {1}, Mat height = {2}, ward height = {3}",rgbaMat.width(), warp.width(), rgbaMat.height(),warp.height());
-                    webcamCapture.write(warp);
-                }
+                //Mat rgbaMat = webCamTextureToMatHelper.GetMat();
+                //warp = warpPerspective.warpPerspective(rgbaMat);
+                //Utils.matToTexture2D(warp, texCam, webCamTextureToMatHelper.GetBufferColors());                
+                //rimgcam.texture = texCam;
+                //if(isRecording)
+                //{
+                //    //Utilities.Log("Mat width = {0}, warp width = {1}, Mat height = {2}, ward height = {3}",rgbaMat.width(), warp.width(), rgbaMat.height(),warp.height());
+                //    webcamCapture.write(warp);
+                //}
             }
         }
     }

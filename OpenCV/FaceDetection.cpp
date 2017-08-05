@@ -3,17 +3,15 @@
 #include "opencv2/imgproc.hpp"
 #include <iostream>
 #include <stdio.h>
-#include <string.h>
 
 using namespace std;
 using namespace cv;
 
-// Declare structure to be used to pass data from C++ to Mono.
+// Declare structure to be used to pass data from c++ to Mono
 struct Circle
 {
-	Circle() {}
-	Circle(int x, int y, int radius) : X(x), Y(y), Radius(radius) {}
-	int X, Y, Radius;
+	Circle(int x, int y, int radius): X(x), Y(y), radius(radius){}
+	int X, Y, radius;
 };
 
 CascadeClassifier _faceCascade;
@@ -21,19 +19,15 @@ String _windowName = "Unity OpenCV Interop Sample";
 VideoCapture _capture;
 int _scale = 1;
 
-extern "C" int __declspec(dllexport) __stdcall  Init(int& outCameraWidth, int& outCameraHeight)
+extern "C" int __declspec(dllexport) __stdcall Init(int& outCameraWidth, int& outCameraHeight)
 {
 	// Load LBP face cascade.
-	if (!_faceCascade.load("lbpcascade_frontalface.xml"))
-	{
-		outCameraWidth = -100;
-		outCameraHeight = -100;
+	if(!_faceCascade.load("lbpcascade_frontalface.xml"))
 		return -1;
-	}
 
-	// Open the stream.
+	// Open the stream
 	_capture.open(0);
-	if (!_capture.isOpened())
+	if(!_capture.isOpened())
 		return -2;
 
 	outCameraWidth = _capture.get(CAP_PROP_FRAME_WIDTH);
@@ -42,7 +36,7 @@ extern "C" int __declspec(dllexport) __stdcall  Init(int& outCameraWidth, int& o
 	return 0;
 }
 
-extern "C" void __declspec(dllexport) __stdcall  Close()
+extern "C" void __declspec(dllexport) __stdcall Close()
 {
 	_capture.release();
 }
@@ -54,14 +48,14 @@ extern "C" void __declspec(dllexport) __stdcall SetScale(int scale)
 
 extern "C" void __declspec(dllexport) __stdcall Detect(Circle* outFaces, int maxOutFacesCount, int& outDetectedFacesCount)
 {
+
+	outDetectedFacesCount = outFaces[4].X;
+	return;
+
 	Mat frame;
 	_capture >> frame;
-	if (frame.empty())
-	{
-		std::cout << "???";	
+	if(frame.empty())
 		return;
-	}
-		
 
 	std::vector<Rect> faces;
 	// Convert the frame to grayscale for cascade detection.
@@ -69,40 +63,28 @@ extern "C" void __declspec(dllexport) __stdcall Detect(Circle* outFaces, int max
 	cvtColor(frame, grayscaleFrame, COLOR_BGR2GRAY);
 	Mat resizedGray;
 	// Scale down for better performance.
-	resize(grayscaleFrame, resizedGray, Size(frame.cols / _scale, frame.rows / _scale));
+
+	resize(grayscaleFrame, resizedGray, Size(frame.cols/_scale, frame.rows/_scale));
 	equalizeHist(resizedGray, resizedGray);
 
 	// Detect faces.
 	_faceCascade.detectMultiScale(resizedGray, faces);
-	std::cout << "here" << faces.size();
-	// Draw faces.
-	for (size_t i = 0; i < faces.size(); i++)
-	{
-		std::cout << "hello";
 
-		Point center(_scale * (faces[i].x + faces[i].width / 2), _scale * (faces[i].y + faces[i].height / 2));
-		ellipse(frame, center, Size(_scale * faces[i].width / 2, _scale * faces[i].height / 2), 0, 0, 360, Scalar(0, 0, 255), 4, 8, 0);
+	// Draw faces.
+	for(size_t i=0; i < faces.size(); i++)
+	{
+		Point center(_scale*(faces[i].x + faces[i].width/2),_scale*(faces[i].y+faces[i].height/2));
+		ellipse(frame, center, Size(_scale*faces[i].width / 2, _scale*faces[i].height / 2), 0, 0, 360, Scalar(0, 255, 0), 4, 8, 0);
 
 		// Send to application.
 		outFaces[i] = Circle(faces[i].x, faces[i].y, faces[i].width / 2);
 		outDetectedFacesCount++;
 
-		if (outDetectedFacesCount == maxOutFacesCount)
+		if(outDetectedFacesCount == maxOutFacesCount)
 			break;
 	}
 
-	// Display debug output.
-	imshow(_windowName, frame);
-}
+	// Display debug output
+	imshow(_windowName,frame);
 
-//void main()
-//{
-//	std::cout << "xin chao the gioi tuoi dep" << std::endl;
-//	int outCameraWidth, outCameraHeight;
-//	string currentDirectory = "";
-//	Init(outCameraWidth, outCameraHeight, currentDirectory);
-//	int outDetectedFacesCount;
-//	std::vector<Circle> outFaces(10);
-//	Detect(outFaces.data(), 10, outDetectedFacesCount);
-//	std::cout << outCameraWidth << std::endl;
-//}
+}

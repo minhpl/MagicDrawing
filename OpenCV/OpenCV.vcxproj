@@ -86,6 +86,7 @@
     <Linkage-fmt_greedy>ltcg</Linkage-fmt_greedy>
     <TargetExt>.dll</TargetExt>
     <TargetName>UnityOpenCVSample</TargetName>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -155,6 +156,9 @@
       <AdditionalLibraryDirectories>E:\WorkspaceMinh\MagicDrawing\lib\opencv\build\x64\vc14\lib;E:\WorkspaceMinh\MagicDrawing\packages\fmt.greedy.3.0.0.1\build\native\lib\v140_xp\x64\static\MultiThreaded;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world320.lib;fmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /D  /Y "$(SolutionDir)$(Platform)\$(Configuration)\*.dll"  "E:\WorkspaceMinh\MagicDrawing\Assets\Plugins"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AddNoise.cpp" />

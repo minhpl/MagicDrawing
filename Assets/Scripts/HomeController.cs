@@ -23,11 +23,11 @@ public class HomeController : MonoBehaviour {
         }
         GFs.LoadTemplateList();
         var imageCount = GVs.DRAWING_TEMPLATE_LIST_MODEL.Count();
-        if (imageCount > 0)
+        if (imageCount > 0) 
         {
             Utilities.Log("Ready");
             ready = true;
-            return;
+            //return;
         }
 
         Utilities.Log("Waiting for downloading");
@@ -47,9 +47,11 @@ public class HomeController : MonoBehaviour {
                         Utilities.Log("Downloaded");
                     }
                 });
-            });        
+            });
+        else
+            Utilities.Log("Why network not available");
     }
-    private bool ready = false;
+    private bool ready = true;
 
     public void loadHistory1Scene()
     {

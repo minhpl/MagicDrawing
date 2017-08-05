@@ -459,6 +459,7 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\Xphoto.cs" />
     <Compile Include="Assets\Scenes\Test\OpenCVFaceDetection.cs" />
     <Compile Include="Assets\Scenes\Test\PhotoCaptureExample.cs" />
+    <Compile Include="Assets\Scenes\Test\PositionAtFaceScreenSpace.cs" />
     <Compile Include="Assets\Scenes\Test\TestCallSO.cs" />
     <Compile Include="Assets\Scripts\BackButton.cs" />
     <Compile Include="Assets\Scripts\CheckFPS.cs" />
