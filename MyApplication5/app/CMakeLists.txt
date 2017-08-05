@@ -11,7 +11,7 @@ cmake_minimum_required(VERSION 3.4.1)
 # Gradle automatically packages shared libraries with your APK.
 
 
-set(pathToOpenCV E:/WorkspaceMinh/opencv-3.2.0-android-sdk/OpenCV-android-sdk/sdk/native)
+set(pathToOpenCV E:\\WorkspaceMinh\\MagicDrawing\\OpenCV-android-sdk\\sdk\\native)
 include_directories(${pathToOpenCV}/jni/include)
 
 set(testPath src/main/)
