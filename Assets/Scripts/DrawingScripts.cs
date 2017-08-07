@@ -34,6 +34,7 @@ public class DrawingScripts : MonoBehaviour {
     public static FILTERMODE filtermode = FILTERMODE.LINE;
     private void Awake()
     {
+        filtermode = FILTERMODE.LINE;
         if (MakePersistentObject.Instance)
             MakePersistentObject.Instance.gameObject.SetActive(false);
         int delayTime = 100;
@@ -49,6 +50,13 @@ public class DrawingScripts : MonoBehaviour {
         //    .Subscribe(delegate (IList<float> i) { OnContrastSliderValueChange(sliderContrast); });
         onSliderContrastValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) => {
             OnContrastSliderValueChange(sliderContrast);
+        });        
+
+        var heavyMethod2 = Observable.Start(() =>
+        {
+            // heavy method...
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
+            return 10;
         });
     }
 
@@ -82,8 +90,15 @@ public class DrawingScripts : MonoBehaviour {
 
         MainThreadDispatcher.StartUpdateMicroCoroutine(loadModel());
         MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
-    }
-    Job job;
+
+
+        //var heavyMethod = Observable.Start(() =>
+        //{
+        //    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
+        //    sliderLine.value = 1;
+        //    return 10;
+        //});
+    }    
 
     void OnDestroy()
     {
@@ -95,11 +110,11 @@ public class DrawingScripts : MonoBehaviour {
     {
         yield return null;
 
-        if (!webCamTextureToMatHelper.IsInited())
+        if (!webCamTextureToMatHelper.IsInitialized())
         {
             int w = (int)goCam.GetComponent<RawImage>().rectTransform.rect.width;
             int h = (int)goCam.GetComponent<RawImage>().rectTransform.rect.height;
-            webCamTextureToMatHelper.Init(null, 640, 480, webCamTextureToMatHelper.requestIsFrontFacing);
+            webCamTextureToMatHelper.Initialize(null, 640, 480, webCamTextureToMatHelper.requestedIsFrontFacing);
 
             var rgbaMat = webCamTextureToMatHelper.GetMat();
             var aspectRatioFitter = goCam.GetComponent<AspectRatioFitter>();
@@ -186,26 +201,14 @@ public class DrawingScripts : MonoBehaviour {
         athreshold.setParameter(sliderLine.value);
         texEdges = new Texture2D(image.width(), image.height(), TextureFormat.ARGB32, false);
         Mat edges = athreshold.adapTiveThreshold(image);
-        Mat redMat = new Mat();
-        utilities.makeMonoAlphaMat(edges, redMat);
+        Mat redMat = utilities.makeMonoAlphaMat(edges);         
         colorsBuffer = new Color32[edges.width() * edges.height()];
         Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
 
         rimgmodel.texture = texEdges;
         utilities = new Utilities();
         goModel.SetActive(true);
-        loaded = true;
-
-        job = new Job();        
-        job.athreshold = athreshold;       
-        job.image = image;   
-    }
-
-    bool updateAble = true;
-    IEnumerator DelayUpdate()
-    {
-        yield return new WaitForSeconds(0.1f);
-        updateAble = true;
+        loaded = true;  
     }
 
     public void OnContrastSliderValueChange(Slider slider)
@@ -221,45 +224,15 @@ public class DrawingScripts : MonoBehaviour {
         if (loaded)
         {
             if (slider)
-                currentSliderValue = slider.value;
-            if (!updateAble) return;
-
-            if (job != null)
             {
-                updateAble = false;
-                if (slider)
-                    job.athreshold.setParameter(slider.value);
-                job.Start((redMat) =>
-                {
-                    _redMat = redMat;
-                    finishJob = true;
-                });
-            }
+                currentSliderValue = slider.value;
+                athreshold.setParameter(slider.value);
+                Mat edges = athreshold.adapTiveThreshold(image);
+                Mat redMat = utilities.makeMonoAlphaMat(edges);
+                Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
+                rimgmodel.texture = texEdges;
+            }            
         }
-    }
-
-    bool finishJob = false;
-    Mat  _redMat;
-
-    public void AfterProcess(Mat redMat)
-    {        
-        finishJob = false;        
-        Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
-     
-        //var rimgmodel = goModel.GetComponent<RawImage>(); ;        
-        rimgmodel.texture = texEdges;
-        redMat.Dispose();
-        if (currentSliderValue != job.athreshold._sliderValue)
-        {
-            updateAble = true;
-            OnLineSliderValueChange(sliderLine);
-        }
-        else
-        {
-            updateAble = true;            
-            //StartCoroutine(DelayUpdate());
-        }
-            
     }
    
     IEnumerator Worker()
@@ -267,10 +240,6 @@ public class DrawingScripts : MonoBehaviour {
         while (true)
         {    
             yield return null;
-            if (finishJob)
-            {
-                AfterProcess(_redMat);
-            }
             if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
             {
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();

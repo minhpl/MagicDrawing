@@ -292,13 +292,10 @@
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed 2.shader" />
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed 3.shader" />
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed.shader" />
+    <None Include="Assets\OpenCVForUnity\OpenCV_LICENSE.txt" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
     <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
-    <None Include="Assets\Scripts\OpenCVForUnity\Examples\MagicDrawing\cong viec.txt" />
-    <None Include="Assets\Scripts\OpenCVForUnity\Examples\MagicDrawing\flow.txt" />
-    <None Include="Assets\Scripts\OpenCVForUnity\Examples\thuattoantachbien.txt" />
-    <None Include="Assets\Scripts\OpenCVForUnity\OpenCV_LICENSE.txt" />
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

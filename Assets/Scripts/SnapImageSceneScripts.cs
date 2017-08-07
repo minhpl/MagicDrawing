@@ -42,7 +42,7 @@ public class SnapImageSceneScripts : MonoBehaviour
     void ShowCam()
     {
         webcamTextureTomat = goCam.GetComponent<WebCamTextureToMatHelper>();
-        webcamTextureTomat.Init(null, requestWidth, requestHeight, isFronFacing);
+        webcamTextureTomat.Initialize(null, requestWidth, requestHeight, isFronFacing);
         webcamTex = webcamTextureTomat.GetWebCamTexture();
         webcamTex.Play();
         rawImgCam.texture = webcamTex;

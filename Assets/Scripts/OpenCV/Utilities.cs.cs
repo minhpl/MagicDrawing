@@ -10,15 +10,17 @@ public class Utilities
     Mat zeroMat;
     Mat tempMat;
     List<Mat> splittedMat;
+    List<Mat> listMat;
 
     public Utilities()
     {
-      
+        listMat = new List<Mat>(new Mat[] { null, null, null, null });
     }
     public void Dispose()
     {
         zeroMat.Dispose();
         tempMat.Dispose();
+        monoAlphaMat.Dispose();
         splittedMat = null;
     }
 
@@ -36,9 +38,9 @@ public class Utilities
         Core.merge(splittedMat, outputMat);
     }
 
-    public void makeMonoAlphaMat(Mat inputMat, Mat outPutMat, bool invertColor = false)
-    {
-        List<Mat> listMat = new List<Mat> ( new Mat[] { null, null, null, null } );
+    Mat monoAlphaMat;
+    public Mat makeMonoAlphaMat(Mat inputMat, bool invertColor = false)
+    {        
         if (tempMat == null) tempMat = new Mat();
         if (invertColor)
             Core.bitwise_not(inputMat, tempMat);
@@ -50,7 +52,10 @@ public class Utilities
         listMat[1] = zeroMat;
         listMat[2] = zeroMat;
         listMat[3] = tempMat;
-        Core.merge(listMat, outPutMat);
+        if (monoAlphaMat == null)
+            monoAlphaMat = new Mat();
+        Core.merge(listMat, monoAlphaMat);
+        return monoAlphaMat;
     }
 
     public static void Log(string msgFormat, params object[] args)

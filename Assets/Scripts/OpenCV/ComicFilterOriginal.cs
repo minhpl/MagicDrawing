@@ -63,7 +63,7 @@ public class ComicFilterExample : MonoBehaviour
     void Start()
     {
         webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
-        webCamTextureToMatHelper.Init();
+        webCamTextureToMatHelper.Initialize();
     }
 
     /// <summary>
@@ -255,6 +255,6 @@ public class ComicFilterExample : MonoBehaviour
     /// </summary>
     public void OnChangeCameraButton()
     {
-        webCamTextureToMatHelper.Init(null, webCamTextureToMatHelper.requestWidth, webCamTextureToMatHelper.requestHeight, !webCamTextureToMatHelper.requestIsFrontFacing);
+        webCamTextureToMatHelper.Initialize(null, webCamTextureToMatHelper.requestedWidth, webCamTextureToMatHelper.requestedHeight, !webCamTextureToMatHelper.requestedIsFrontFacing);
     }
 }
