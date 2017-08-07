@@ -40,13 +40,16 @@ public class DrawingScripts : MonoBehaviour {
         var onSliderLineValueStream = sliderLine.onValueChanged.AsObservable();
         //onSliderValueStream.Buffer(onSliderValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
         //    .Subscribe(list => Debug.LogFormat("list count is {0}", list[list.Count - 1]));
-        onSliderLineValueStream.Buffer(onSliderLineValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
-            .Subscribe(delegate (IList<float> i) { OnLineSliderValueChange(sliderLine); });
-        //onSliderValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe(list => Debug.Log(list));        
+        //onSliderLineValueStream.Buffer(onSliderLineValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
+        //    .Subscribe(delegate (IList<float> i) { OnLineSliderValueChange(sliderLine); });
+        onSliderLineValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) => { OnLineSliderValueChange(sliderLine); });
         //slider.onValueChanged.AddListener(delegate { ValueChangeCheck(slider); });       
         var onSliderContrastValueStream = sliderContrast.onValueChanged.AsObservable();
-        onSliderContrastValueStream.Buffer(onSliderContrastValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
-            .Subscribe(delegate (IList<float> i) { OnContrastSliderValueChange(sliderContrast); });
+        //onSliderContrastValueStream.Buffer(onSliderContrastValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
+        //    .Subscribe(delegate (IList<float> i) { OnContrastSliderValueChange(sliderContrast); });
+        onSliderContrastValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) => {
+            OnContrastSliderValueChange(sliderContrast);
+        });
     }
 
     void OnSliderValueChaned(Slider slider)
@@ -106,7 +109,7 @@ public class DrawingScripts : MonoBehaviour {
             //ScaleGoCam(warpPerspective.scaleX);
         }
         Mat camMat = webCamTextureToMatHelper.GetMat();
-        texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);        
+        texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
 
         if (drawMode == DRAWMODE.DRAW_MODEL)
         {
@@ -121,14 +124,38 @@ public class DrawingScripts : MonoBehaviour {
                 imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0027.jpg";
             }
             imgPath = GVs.APP_PATH + "/" + imgPath;
+            Debug.LogFormat("image path is {0}", imgPath);
             image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
+            Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
+
+            float w = image.width();
+            float h = image.height();
+            var rat = w / h;
+            var restrictMaxSize = 640;
+            if (rat > 1)
+            {
+                w = restrictMaxSize;
+                h = w / rat;
+            }
+            else
+            {
+                h = restrictMaxSize;
+                w = h * rat;
+            }
+            Utilities.Log("img loaded have width is {0}, height is {1}", image.width(), image.height());
+            Imgproc.resize(image, image, new Size(w, h), 0, 0, Imgproc.INTER_AREA);
+            Utilities.Log("img loaded have width is {0}, height is {1}", image.width(), image.height());
             texModel = new Texture2D(image.width(), image.height(), TextureFormat.RGBA32, false);
+            //texModel = new Texture2D(image.width(), image.height());            
             Utils.matToTexture2D(image, texModel);
+            texModel.Compress(true);
         }
         else
         {
-            
+
         }
+
+        Utilities.Log("img loaded have width is {0}, height is {1}", image.width(), image.height());
 
         float width = image.width();
         float heigh = image.height();
@@ -164,19 +191,14 @@ public class DrawingScripts : MonoBehaviour {
         colorsBuffer = new Color32[edges.width() * edges.height()];
         Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
 
-        //rimgmodel.texture = texEdges;
+        rimgmodel.texture = texEdges;
         utilities = new Utilities();
         goModel.SetActive(true);
         loaded = true;
 
-
-        job = new Job();
-        job.rimgmodel = goModel.GetComponent<RawImage>();
-        job.athreshold = athreshold;
-        job.utilities = utilities;
-        job.image = image;
-        job.rimgmodel = rimgmodel;
-        job.texEdges = texEdges;
+        job = new Job();        
+        job.athreshold = athreshold;       
+        job.image = image;   
     }
 
     bool updateAble = true;
@@ -188,7 +210,6 @@ public class DrawingScripts : MonoBehaviour {
 
     public void OnContrastSliderValueChange(Slider slider)
     {
-        
         float percent = slider.value / 100f;
         var c = rimgmodel.color;
         rimgmodel.color = new Color(c.r, c.g, c.b, percent);
@@ -196,19 +217,19 @@ public class DrawingScripts : MonoBehaviour {
 
     private float currentSliderValue = 0;
     public void OnLineSliderValueChange(Slider slider)
-    {        
+    {
         if (loaded)
         {
             if (slider)
-            currentSliderValue = slider.value;
+                currentSliderValue = slider.value;
             if (!updateAble) return;
-            
+
             if (job != null)
             {
                 updateAble = false;
                 if (slider)
                     job.athreshold.setParameter(slider.value);
-                job.Start(( redMat) =>
+                job.Start((redMat) =>
                 {
                     _redMat = redMat;
                     finishJob = true;
@@ -216,6 +237,7 @@ public class DrawingScripts : MonoBehaviour {
             }
         }
     }
+
     bool finishJob = false;
     Mat  _redMat;
 
@@ -223,7 +245,8 @@ public class DrawingScripts : MonoBehaviour {
     {        
         finishJob = false;        
         Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
-        var rimgmodel = goModel.GetComponent<RawImage>(); ;
+     
+        //var rimgmodel = goModel.GetComponent<RawImage>(); ;        
         rimgmodel.texture = texEdges;
         redMat.Dispose();
         if (currentSliderValue != job.athreshold._sliderValue)
@@ -232,7 +255,11 @@ public class DrawingScripts : MonoBehaviour {
             OnLineSliderValueChange(sliderLine);
         }
         else
-            StartCoroutine(DelayUpdate());
+        {
+            updateAble = true;            
+            //StartCoroutine(DelayUpdate());
+        }
+            
     }
    
     IEnumerator Worker()
@@ -245,16 +272,16 @@ public class DrawingScripts : MonoBehaviour {
                 AfterProcess(_redMat);
             }
             if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
-            {                
-                //Mat rgbaMat = webCamTextureToMatHelper.GetMat();
-                //warp = warpPerspective.warpPerspective(rgbaMat);
-                //Utils.matToTexture2D(warp, texCam, webCamTextureToMatHelper.GetBufferColors());                
-                //rimgcam.texture = texCam;
-                //if(isRecording)
-                //{
-                //    //Utilities.Log("Mat width = {0}, warp width = {1}, Mat height = {2}, ward height = {3}",rgbaMat.width(), warp.width(), rgbaMat.height(),warp.height());
-                //    webcamCapture.write(warp);
-                //}
+            {
+                Mat rgbaMat = webCamTextureToMatHelper.GetMat();
+                warp = warpPerspective.warpPerspective(rgbaMat);
+                Utils.matToTexture2D(warp, texCam, webCamTextureToMatHelper.GetBufferColors());
+                rimgcam.texture = texCam;
+                if(isRecording)
+                {
+                    //Utilities.Log("Mat width = {0}, warp width = {1}, Mat height = {2}, ward height = {3}",rgbaMat.width(), warp.width(), rgbaMat.height(),warp.height());
+                    webcamCapture.write(warp);
+                }
             }
         }
     }
@@ -312,7 +339,7 @@ public class DrawingScripts : MonoBehaviour {
         }
         else if (filtermode == FILTERMODE.BLEND)
         {
-            OnContrastSliderValueChange(sliderContrast);
+            OnContrastSliderValueChange(sliderContrast);            
             rimgmodel.texture = texModel;
         }        
     }

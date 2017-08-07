@@ -27,7 +27,7 @@ public class HomeController : MonoBehaviour {
         {
             Utilities.Log("Ready");
             ready = true;
-            //return;
+            return;
         }
 
         Utilities.Log("Waiting for downloading");
