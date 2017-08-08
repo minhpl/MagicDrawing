@@ -9,7 +9,6 @@ using System;
 
 public class SnapImageSceneScripts : MonoBehaviour
 {
-
     public GameObject goCam;
     private RawImage rawImgCam;
     private bool camAvailable;
@@ -41,73 +40,77 @@ public class SnapImageSceneScripts : MonoBehaviour
 
     void ShowCam()
     {
-        webcamTextureTomat = goCam.GetComponent<WebCamTextureToMatHelper>();
+        if(webcamTextureTomat==null)
+            webcamTextureTomat = goCam.GetComponent<WebCamTextureToMatHelper>();
+        webcamTextureTomat.onInitialized.RemoveAllListeners();
+        webcamTextureTomat.onInitialized.AddListener(()=>{            
+            webcamTex = webcamTextureTomat.GetWebCamTexture();
+            webcamTex.Play();
+            rawImgCam.texture = webcamTex;
+
+            var widthCam = webcamTex.width;
+            var heightCam = webcamTex.height;
+            var ratioWH = widthCam / (float)heightCam;
+            var ratioHW = heightCam / (float)widthCam;
+            var widthDisplay = rawImgCam.rectTransform.rect.width;
+            var heightDisplay = rawImgCam.rectTransform.rect.height;
+            var ratioDisplay = widthDisplay / (float)heightDisplay;
+
+            int orient = webcamTex.videoRotationAngle;
+
+            rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, -orient);
+            if (orient == 90 || orient == 270)
+            {
+                if (ratioHW < ratioDisplay)
+                {
+                    var newHeight = widthDisplay;
+                    var newWidth = newHeight * ratioWH;
+
+                    var heightDelta = newHeight - heightDisplay;
+                    var widthDelta = newWidth - widthDisplay;
+                    rawImgCam.rectTransform.sizeDelta = new Vector2(widthDelta, heightDelta);
+                }
+                else
+                {
+                    var newWidth = heightDisplay;
+                    var newHeight = newWidth * ratioHW;
+
+                    var heightDelta = newHeight - heightDisplay;
+                    var widthDelta = newWidth - widthDisplay;
+                    rawImgCam.rectTransform.sizeDelta = new Vector2(widthDelta, heightDelta);
+                }
+            }
+            else
+            {
+                if (ratioWH < ratioDisplay)
+                {
+                    var newWidth = widthDisplay;
+                    var newHeight = newWidth * ratioHW;
+
+                    rawImgCam.rectTransform.sizeDelta = new Vector2(newWidth - widthDisplay, newHeight - heightDisplay);
+                }
+                else
+                {
+                    var newHeight = heightDisplay;
+                    var newWidth = newHeight * ratioWH;
+
+                    rawImgCam.rectTransform.sizeDelta = new Vector2(newWidth - widthDisplay, newHeight - heightDisplay);
+                }
+            }
+
+            if (isFronFacing && (orient == 90 || orient == 270))
+            {
+                rawImgCam.rectTransform.localScale = new Vector3(1, -1, 1);
+            }
+
+            if (WebCamTexture.devices.Length == 1 && WebCamTexture.devices[0].isFrontFacing == true && orient == 0)
+            {
+                rawImgCam.rectTransform.localScale = new Vector3(-1, 1, 1);
+            }
+
+            camAvailable = true;
+        });
         webcamTextureTomat.Initialize(null, requestWidth, requestHeight, isFronFacing);
-        webcamTex = webcamTextureTomat.GetWebCamTexture();
-        webcamTex.Play();
-        rawImgCam.texture = webcamTex;
-
-        var widthCam = webcamTex.width;
-        var heightCam = webcamTex.height;
-        var ratioWH = widthCam / (float)heightCam;
-        var ratioHW = heightCam / (float)widthCam;
-        var widthDisplay = rawImgCam.rectTransform.rect.width;
-        var heightDisplay = rawImgCam.rectTransform.rect.height;
-        var ratioDisplay = widthDisplay / (float)heightDisplay;
-
-        int orient = webcamTex.videoRotationAngle;
-
-        rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, -orient);
-        if (orient == 90 || orient == 270)
-        {
-            if (ratioHW < ratioDisplay)
-            {
-                var newHeight = widthDisplay;
-                var newWidth = newHeight * ratioWH;
-
-                var heightDelta = newHeight - heightDisplay;
-                var widthDelta = newWidth - widthDisplay;
-                rawImgCam.rectTransform.sizeDelta = new Vector2(widthDelta, heightDelta);
-            }
-            else
-            {
-                var newWidth = heightDisplay;
-                var newHeight = newWidth * ratioHW;
-
-                var heightDelta = newHeight - heightDisplay;
-                var widthDelta = newWidth - widthDisplay;
-                rawImgCam.rectTransform.sizeDelta = new Vector2(widthDelta, heightDelta);
-            }
-        }
-        else
-        {
-            if (ratioWH < ratioDisplay)
-            {
-                var newWidth = widthDisplay;
-                var newHeight = newWidth * ratioHW;
-
-                rawImgCam.rectTransform.sizeDelta = new Vector2(newWidth - widthDisplay, newHeight - heightDisplay);
-            }
-            else
-            {
-                var newHeight = heightDisplay;
-                var newWidth = newHeight * ratioWH;
-
-                rawImgCam.rectTransform.sizeDelta = new Vector2(newWidth - widthDisplay, newHeight - heightDisplay);
-            }
-        }
-
-        if (isFronFacing && (orient == 90 || orient == 270))
-        {
-            rawImgCam.rectTransform.localScale = new Vector3(1, -1, 1);
-        }
-
-        if (WebCamTexture.devices.Length == 1 && WebCamTexture.devices[0].isFrontFacing == true && orient == 0)
-        {
-            rawImgCam.rectTransform.localScale = new Vector3(-1, 1, 1);
-        }
-
-        camAvailable = true;
     }
 
     private void OnDisable()

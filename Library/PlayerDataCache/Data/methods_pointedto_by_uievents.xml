@@ -1,0 +1,61 @@
+<linker>
+	<assembly fullname="Assembly-CSharp">
+		<type fullname="TouchScript.Examples.Photos.Container">
+			<method name="Add"/>
+		</type>
+		<type fullname="TouchScript.Examples.UI.SetColor">
+			<method name="Set"/>
+			<method name="Set"/>
+			<method name="Set"/>
+			<method name="Set"/>
+		</type>
+		<type fullname="BackButton">
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+			<method name="onBackButtonClicked"/>
+		</type>
+		<type fullname="SnapImageSceneScripts">
+			<method name="OnDrawBtnClicked"/>
+			<method name="OnChangeCameraButton"/>
+			<method name="OnSnapBtnClicked"/>
+		</type>
+		<type fullname="LibraryScripts">
+			<method name="OnAppBtnClicked"/>
+			<method name="OnCamBtnClicked"/>
+		</type>
+		<type fullname="DrawingScripts">
+			<method name="OnSliderBtnClicked"/>
+			<method name="OnTickBtnClicked"/>
+			<method name="OnContrastBtnClicked"/>
+		</type>
+		<type fullname="PreviewResultScripts">
+			<method name="OnOkBtnClicked"/>
+		</type>
+		<type fullname="ResultScripts">
+			<method name="OnPlayBtnClicked"/>
+		</type>
+		<type fullname="LibraryScriptsCompare">
+			<method name="onAppBtnClicked"/>
+		</type>
+	</assembly>
+	<assembly fullname="UnityEngine">
+		<type fullname="UnityEngine.Behaviour">
+			<method name="set_enabled"/>
+			<method name="set_enabled"/>
+			<method name="set_enabled"/>
+			<method name="set_enabled"/>
+			<method name="set_enabled"/>
+			<method name="set_enabled"/>
+		</type>
+	</assembly>
+</linker>

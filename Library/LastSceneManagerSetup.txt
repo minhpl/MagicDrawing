@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/M/HomeScene.unity
+- path: Assets/TouchScript/Examples/Checkers/Checkers.unity
   isLoaded: 1
   isActive: 1

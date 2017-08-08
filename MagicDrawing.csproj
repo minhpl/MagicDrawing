@@ -16,7 +16,7 @@
     <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
-    <UnityVersion>5.6.1f1</UnityVersion>
+    <UnityVersion>2017.1.0f3</UnityVersion>
     <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
@@ -27,7 +27,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_1;UNITY_5_6;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_ANDROID;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0_SUBSET;DEVELOPMENT_BUILD;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_HAS_GOOGLEVR</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;PLATFORM_ANDROID;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0_SUBSET;DEVELOPMENT_BUILD;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;TOUCHSCRIPT_DEBUG;UNITY_HAS_GOOGLEVR</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -37,7 +37,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_1;UNITY_5_6;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_ANDROID;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0_SUBSET;DEVELOPMENT_BUILD;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_HAS_GOOGLEVR</DefineConstants>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;PLATFORM_ANDROID;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0_SUBSET;DEVELOPMENT_BUILD;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;TOUCHSCRIPT_DEBUG;UNITY_HAS_GOOGLEVR</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
@@ -49,6 +49,9 @@
     <Reference Include="UnityScript.Lang" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
@@ -64,23 +67,14 @@
     <Reference Include="nunit.framework">
       <HintPath>Library\UnityAssemblies\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Timeline">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Timeline.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.Analytics">
       <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.VR">
-      <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor">
-      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
     <Reference Include="Facebook.Unity.Settings">
       <HintPath>Library\FacebookSDK\Facebook.Unity.Settings.dll</HintPath>
@@ -90,6 +84,12 @@
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>Assets\Zip\Plugins\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="OSCsharp">
+      <HintPath>Assets\TouchScript\Modules\TUIO\Libraries\OSCsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="TUIOsharp">
+      <HintPath>Assets\TouchScript\Modules\TUIO\Libraries\TUIOsharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -148,10 +148,10 @@
     <Compile Include="Assets\NGUI\Scripts\Interaction\UIDragDropContainer.cs" />
     <Compile Include="Assets\NGUI\Scripts\Interaction\UIDragDropItem.cs" />
     <Compile Include="Assets\NGUI\Scripts\Interaction\UIDragDropRoot.cs" />
+    <Compile Include="Assets\NGUI\Scripts\Interaction\UIDraggableCamera.cs" />
     <Compile Include="Assets\NGUI\Scripts\Interaction\UIDragObject.cs" />
     <Compile Include="Assets\NGUI\Scripts\Interaction\UIDragResize.cs" />
     <Compile Include="Assets\NGUI\Scripts\Interaction\UIDragScrollView.cs" />
-    <Compile Include="Assets\NGUI\Scripts\Interaction\UIDraggableCamera.cs" />
     <Compile Include="Assets\NGUI\Scripts\Interaction\UIEventTrigger.cs" />
     <Compile Include="Assets\NGUI\Scripts\Interaction\UIForwardEvents.cs" />
     <Compile Include="Assets\NGUI\Scripts\Interaction\UIGrid.cs" />
@@ -177,10 +177,10 @@
     <Compile Include="Assets\NGUI\Scripts\Interaction\UIWrapContent.cs" />
     <Compile Include="Assets\NGUI\Scripts\Internal\ActiveAnimation.cs" />
     <Compile Include="Assets\NGUI\Scripts\Internal\AnimationOrTween.cs" />
+    <Compile Include="Assets\NGUI\Scripts\Internal\BetterList.cs" />
     <Compile Include="Assets\NGUI\Scripts\Internal\BMFont.cs" />
     <Compile Include="Assets\NGUI\Scripts\Internal\BMGlyph.cs" />
     <Compile Include="Assets\NGUI\Scripts\Internal\BMSymbol.cs" />
-    <Compile Include="Assets\NGUI\Scripts\Internal\BetterList.cs" />
     <Compile Include="Assets\NGUI\Scripts\Internal\ByteReader.cs" />
     <Compile Include="Assets\NGUI\Scripts\Internal\EventDelegate.cs" />
     <Compile Include="Assets\NGUI\Scripts\Internal\Localization.cs" />
@@ -206,8 +206,8 @@
     <Compile Include="Assets\NGUI\Scripts\Tweening\SpringPosition.cs" />
     <Compile Include="Assets\NGUI\Scripts\Tweening\TweenAlpha.cs" />
     <Compile Include="Assets\NGUI\Scripts\Tweening\TweenColor.cs" />
-    <Compile Include="Assets\NGUI\Scripts\Tweening\TweenFOV.cs" />
     <Compile Include="Assets\NGUI\Scripts\Tweening\TweenFill.cs" />
+    <Compile Include="Assets\NGUI\Scripts\Tweening\TweenFOV.cs" />
     <Compile Include="Assets\NGUI\Scripts\Tweening\TweenHeight.cs" />
     <Compile Include="Assets\NGUI\Scripts\Tweening\TweenLetters.cs" />
     <Compile Include="Assets\NGUI\Scripts\Tweening\TweenOrthoSize.cs" />
@@ -244,10 +244,10 @@
     <Compile Include="Assets\OpenCVForUnity\Examples\CamShiftExample\CamShiftExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\ComicFilterExample\ComicFilterExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\ConnectedComponentsExample\ConnectedComponentsExample.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\Contrib\ArUcoExample\ARUtils.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\Contrib\ArUcoExample\ArUcoCreateMarkerExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\Contrib\ArUcoExample\ArUcoTexture2DExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\Contrib\ArUcoExample\ArUcoWebCamTextureExample.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\Contrib\ArUcoExample\ARUtils.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\Contrib\FaceRecognizerExample\FaceRecognizerExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\Contrib\PlotExample\PlotExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\Contrib\TrackingExample\TrackingExample.cs" />
@@ -257,14 +257,14 @@
     <Compile Include="Assets\OpenCVForUnity\Examples\Feature2DExample\Feature2DExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\GrabCutExample\GrabCutExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\GreenScreenExample\GreenScreenExample.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\HOGDescriptorExample\HOGDescriptorExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\HandPoseEstimationExample\ColorBlobDetector.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\HandPoseEstimationExample\HandPoseEstimationExample.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\HOGDescriptorExample\HOGDescriptorExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\HoughLinesPExample\HoughLinesPExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\InpaintExample\InpaintExample.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\MSERExample\MSERExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MatchShapesExample\MatchShapesExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MatchTemplateExample\MatchTemplateExample.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\MSERExample\MSERExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MultiObjectTrackingBasedOnColorExample\ColorObject.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\MultiObjectTrackingBasedOnColorExample\MultiObjectTrackingBasedOnColorExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\OpenCVForUnityExample.cs" />
@@ -272,11 +272,11 @@
     <Compile Include="Assets\OpenCVForUnity\Examples\OptimizationWebCamTextureToMatHelper.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\PCAExample\PCAExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\PolygonFilterExample\PolygonFilterExample.cs" />
-    <Compile Include="Assets\OpenCVForUnity\Examples\SVMExample\SVMExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\SeamlessCloneExample\SeamlessCloneExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\ShowLicense.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\SimpleBlobExample\SimpleBlobExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\StereoBMExample\StereoBMExample.cs" />
+    <Compile Include="Assets\OpenCVForUnity\Examples\SVMExample\SVMExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\Texture2DToMatExample\Texture2DToMatExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\ThresholdExample\ThresholdExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\TouchController.cs" />
@@ -288,8 +288,6 @@
     <Compile Include="Assets\OpenCVForUnity\Examples\WebCamTextureToMatHelper.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\WebCamTextureToMatHelperExample\WebCamTextureToMatHelperExample.cs" />
     <Compile Include="Assets\OpenCVForUnity\Examples\WrapPerspectiveExample\WrapPerspectiveExample.cs" />
-    <Compile Include="Assets\OpenCVForUnity\org\opencv\DisposableObject.cs" />
-    <Compile Include="Assets\OpenCVForUnity\org\opencv\DisposableOpenCVObject.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\calib3d\Calib3d.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\calib3d\StereoBM.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\calib3d\StereoMatcher.cs" />
@@ -326,8 +324,10 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv\core\Size.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\core\TermCriteria.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\core\TickMeter.cs" />
-    <Compile Include="Assets\OpenCVForUnity\org\opencv\features2d\AKAZE.cs" />
+    <Compile Include="Assets\OpenCVForUnity\org\opencv\DisposableObject.cs" />
+    <Compile Include="Assets\OpenCVForUnity\org\opencv\DisposableOpenCVObject.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\features2d\AgastFeatureDetector.cs" />
+    <Compile Include="Assets\OpenCVForUnity\org\opencv\features2d\AKAZE.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\features2d\BFMatcher.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\features2d\BOWImgDescriptorExtractor.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\features2d\BOWKMeansTrainer.cs" />
@@ -360,9 +360,9 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv\ml\Ml.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\ml\NormalBayesClassifier.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\ml\RTrees.cs" />
+    <Compile Include="Assets\OpenCVForUnity\org\opencv\ml\StatModel.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\ml\SVM.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\ml\SVMSGD.cs" />
-    <Compile Include="Assets\OpenCVForUnity\org\opencv\ml\StatModel.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\ml\TrainData.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\objdetect\BaseCascadeClassifier.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\objdetect\CascadeClassifier.cs" />
@@ -408,8 +408,8 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv\video\SparsePyrLKOpticalFlow.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\video\Video.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\videoio\VideoCapture.cs" />
-    <Compile Include="Assets\OpenCVForUnity\org\opencv\videoio\VideoWriter.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv\videoio\Videoio.cs" />
+    <Compile Include="Assets\OpenCVForUnity\org\opencv\videoio\VideoWriter.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\aruco\Aruco.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\aruco\Board.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\aruco\CharucoBoard.cs" />
@@ -424,8 +424,8 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\bioinspired\RetinaFastToneMapping.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\bioinspired\TransientAreasSegmentationModule.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\ccalib\Ccalib.cs" />
-    <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\face\BIF.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\face\BasicFaceRecognizer.cs" />
+    <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\face\BIF.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\face\Face.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\face\FaceRecognizer.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\face\LBPHFaceRecognizer.cs" />
@@ -443,8 +443,8 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\optflow\PCAPrior.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\optflow\VariationalRefinement.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\phase_unwrapping\HistogramPhaseUnwrapping.cs" />
-    <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\phase_unwrapping\PhaseUnwrapping.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\phase_unwrapping\Phase_unwrapping.cs" />
+    <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\phase_unwrapping\PhaseUnwrapping.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\plot\Plot.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\plot\Plot2d.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\saliency\MotionSaliency.cs" />
@@ -457,8 +457,8 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\saliency\StaticSaliencySpectralResidual.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\structured_light\GrayCodePattern.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\structured_light\SinusoidalPattern.cs" />
-    <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\structured_light\StructuredLightPattern.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\structured_light\Structured_light.cs" />
+    <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\structured_light\StructuredLightPattern.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\tracking\MultiTracker.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\tracking\Tracker.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\tracking\Tracking.cs" />
@@ -473,14 +473,14 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xfeatures2d\PCTSignatures.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xfeatures2d\PCTSignaturesSQFD.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xfeatures2d\SIFT.cs" />
-    <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xfeatures2d\SURF.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xfeatures2d\StarDetector.cs" />
+    <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xfeatures2d\SURF.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xfeatures2d\VGG.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xfeatures2d\Xfeatures2d.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\ximgproc\AdaptiveManifoldFilter.cs" />
-    <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\ximgproc\DTFilter.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\ximgproc\DisparityFilter.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\ximgproc\DisparityWLSFilter.cs" />
+    <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\ximgproc\DTFilter.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\ximgproc\EdgeAwareInterpolator.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\ximgproc\FastGlobalSmootherFilter.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\ximgproc\FastLineDetector.cs" />
@@ -516,15 +516,19 @@
     <Compile Include="Assets\Scripts\DrawingScripts.cs" />
     <Compile Include="Assets\Scripts\DrawingScripts2.cs" />
     <Compile Include="Assets\Scripts\FPSs.cs" />
+    <Compile Include="Assets\Scripts\GalaryScript.cs" />
     <Compile Include="Assets\Scripts\GFs.cs" />
     <Compile Include="Assets\Scripts\GVs.cs" />
-    <Compile Include="Assets\Scripts\GalaryScript.cs" />
     <Compile Include="Assets\Scripts\HomeController.cs" />
     <Compile Include="Assets\Scripts\Job.cs" />
     <Compile Include="Assets\Scripts\LibraryScripts.cs" />
     <Compile Include="Assets\Scripts\LibraryScriptsCompare.cs" />
     <Compile Include="Assets\Scripts\MainToolsScripts.cs" />
     <Compile Include="Assets\Scripts\MakePersistentObject.cs" />
+    <Compile Include="Assets\Scripts\models\AvataModel.cs" />
+    <Compile Include="Assets\Scripts\models\DownloadModel.cs" />
+    <Compile Include="Assets\Scripts\models\DrawingTemplateModel.cs" />
+    <Compile Include="Assets\Scripts\models\ReqModel.cs" />
     <Compile Include="Assets\Scripts\Net\HTTPRequest.cs" />
     <Compile Include="Assets\Scripts\Net\NET.cs" />
     <Compile Include="Assets\Scripts\OpenCV\AdaptiveThreshold.cs" />
@@ -542,18 +546,133 @@
     <Compile Include="Assets\Scripts\ResultScripts.cs" />
     <Compile Include="Assets\Scripts\SceneManagerScript.cs" />
     <Compile Include="Assets\Scripts\ScrollViewScript.cs" />
+    <Compile Include="Assets\Scripts\security\AesEncryptor.cs" />
     <Compile Include="Assets\Scripts\SnapImageSceneScripts.cs" />
+    <Compile Include="Assets\Scripts\testin.cs" />
     <Compile Include="Assets\Scripts\TextureScale.cs" />
     <Compile Include="Assets\Scripts\ThreadedJob.cs" />
     <Compile Include="Assets\Scripts\ToggleScript.cs" />
     <Compile Include="Assets\Scripts\TrackScene.cs" />
     <Compile Include="Assets\Scripts\WebcamTexture.cs" />
-    <Compile Include="Assets\Scripts\models\AvataModel.cs" />
-    <Compile Include="Assets\Scripts\models\DownloadModel.cs" />
-    <Compile Include="Assets\Scripts\models\DrawingTemplateModel.cs" />
-    <Compile Include="Assets\Scripts\models\ReqModel.cs" />
-    <Compile Include="Assets\Scripts\security\AesEncryptor.cs" />
-    <Compile Include="Assets\Scripts\testin.cs" />
+    <Compile Include="Assets\TestTourchScripts.cs" />
+    <Compile Include="Assets\TouchScript\Examples\_misc\Scripts\Checker.cs" />
+    <Compile Include="Assets\TouchScript\Examples\_misc\Scripts\ExamplesList.cs" />
+    <Compile Include="Assets\TouchScript\Examples\_misc\Scripts\Highlight.cs" />
+    <Compile Include="Assets\TouchScript\Examples\_misc\Scripts\KillMe.cs" />
+    <Compile Include="Assets\TouchScript\Examples\_misc\Scripts\Runner.cs" />
+    <Compile Include="Assets\TouchScript\Examples\_misc\Scripts\ShowMe.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Camera\Scripts\CameraController.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Checkers\Scripts\Board.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Checkers\Scripts\Exclusive.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Colors\Scripts\Circle.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Colors\Scripts\Colors.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Cube\Scripts\CustomPointerProxy.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Cube\Scripts\Init.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Cube\Scripts\LayerDelegate.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Cube\Scripts\RedirectInput.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Multiuser\Scripts\Logo.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Photos\Scripts\Container.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Photos\Scripts\SetColor.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Portal\Scripts\Planet.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Portal\Scripts\Rotator.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Portal\Scripts\Spawner.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Portal\Scripts\Vortex.cs" />
+    <Compile Include="Assets\TouchScript\Examples\RawInput\Scripts\Ball.cs" />
+    <Compile Include="Assets\TouchScript\Examples\RawInput\Scripts\Spawner.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Taps\Scripts\Break.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Taps\Scripts\Kick.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Taps\Scripts\Spawn.cs" />
+    <Compile Include="Assets\TouchScript\Modules\TUIO\Scripts\InputSources\TuioInput.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Behaviors\Cursors\CursorManager.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Behaviors\Cursors\MouseCursor.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Behaviors\Cursors\ObjectCursor.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Behaviors\Cursors\PenCursor.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Behaviors\Cursors\PointerCursor.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Behaviors\Cursors\TouchCursor.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Behaviors\Cursors\UI\GradientTexture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Behaviors\Cursors\UI\TextureSwitch.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Behaviors\Transformer.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Behaviors\UI\OverHelper.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Clusters\Clusters2D.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Core\DebuggableMonoBehaviour.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Core\GestureManagerInstance.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Core\LayerManagerInstance.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Core\TouchManagerInstance.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Debugging\Filters\IPointerDataFilter.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Debugging\Filters\IPointerLogFilter.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Debugging\Filters\PointerLogFilter.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Debugging\GL\DebugHelper.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Debugging\GL\GLDebug.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Debugging\Loggers\FileReaderLogger.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Debugging\Loggers\FileWriterLogger.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Debugging\Loggers\IPointerLogger.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Debugging\Loggers\PointerLogger.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Debugging\TouchScriptDebugger.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Devices\Display\DisplayDevice.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Devices\Display\GenericDisplayDevice.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Devices\Display\IDisplayDevice.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\GestureManager.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\FlickGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\Gesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\IGestureDelegate.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\LongPressGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\MetaGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\PressGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\ReleaseGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\TapGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\TransformGestures\Base\OnePointTrasformGestureBase.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\TransformGestures\Base\TransformGestureBase.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\TransformGestures\Base\TwoPointTransformGestureBase.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\TransformGestures\Clustered\ClusteredPinnedTransformGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\TransformGestures\Clustered\ClusteredScreenTransformGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\TransformGestures\Clustered\ClusteredTransformGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\TransformGestures\ITransformGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\TransformGestures\PinnedTransformGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\TransformGestures\ScreenTransformGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Gestures\TransformGestures\TransformGesture.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Hit\HitData.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Hit\HitTest.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Hit\RaycastHitUI.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Hit\Untouchable.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\IDebuggable.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\IGestureManager.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\ILayerManager.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\InputSources\ICoordinatesRemapper.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\InputSources\IInputSource.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\InputSources\InputHandlers\MouseHandler.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\InputSources\InputHandlers\TouchHandler.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\InputSources\InputHandlers\WindowsPointerHandlers.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\InputSources\InputSource.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\InputSources\StandardInput.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\ITouchManager.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\LayerManager.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Layers\FullscreenLayer.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Layers\ILayerDelegate.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Layers\ProjectionParams.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Layers\StandardLayer.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Layers\TouchLayer.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Layers\UI\TouchScriptInputModule.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Pointers\FakePointer.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Pointers\IPointer.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Pointers\MousePointer.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Pointers\ObjectPointer.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Pointers\PenPointer.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Pointers\Pointer.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Pointers\PointerFactory.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Pointers\TouchPointer.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\TouchManager.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\Attributes\NullToggleAttribute.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\Attributes\ToggleLeftAttribute.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\BinaryUtils.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\ClusterUtils.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\EventHandlerExtensions.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\Geom\ProjectionUtils.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\Geom\TwoD.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\ObjectPool.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\Platform\WindowsUtils.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\PointerUtils.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\TimedSequence.cs" />
+    <Compile Include="Assets\TouchScript\Scripts\Utils\TransformUtils.cs" />
     <Compile Include="Assets\Zip\Plugins\Zip.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -602,6 +721,14 @@
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
     <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
+    <None Include="Assets\TouchScript\Examples\_misc\Shaders\BorderDiffuse.shader" />
+    <None Include="Assets\TouchScript\Examples\_misc\Shaders\UnlitColor.shader" />
+    <None Include="Assets\TouchScript\Shaders\Cursor.shader" />
+    <None Include="Assets\TouchScript\Shaders\DebugDepthTest.shader" />
+    <None Include="Assets\TouchScript\Shaders\DebugMultiplyDepthTest.shader" />
+    <None Include="Assets\TouchScript\Shaders\DebugMultiplyNoDepthTest.shader" />
+    <None Include="Assets\TouchScript\Shaders\DebugNoDepthTest.shader" />
+    <None Include="Assets\TouchScript\license.txt" />
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

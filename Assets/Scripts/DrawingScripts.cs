@@ -52,12 +52,12 @@ public class DrawingScripts : MonoBehaviour {
             OnContrastSliderValueChange(sliderContrast);
         });        
 
-        var heavyMethod2 = Observable.Start(() =>
-        {
-            // heavy method...
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
-            return 10;
-        });
+        //var heavyMethod2 = Observable.Start(() =>
+        //{
+        //    // heavy method...
+        //    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
+        //    return 10;
+        //});
     }
 
     void OnSliderValueChaned(Slider slider)
@@ -90,8 +90,6 @@ public class DrawingScripts : MonoBehaviour {
 
         MainThreadDispatcher.StartUpdateMicroCoroutine(loadModel());
         MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
-
-
         //var heavyMethod = Observable.Start(() =>
         //{
         //    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
@@ -114,17 +112,19 @@ public class DrawingScripts : MonoBehaviour {
         {
             int w = (int)goCam.GetComponent<RawImage>().rectTransform.rect.width;
             int h = (int)goCam.GetComponent<RawImage>().rectTransform.rect.height;
-            webCamTextureToMatHelper.Initialize(null, 640, 480, webCamTextureToMatHelper.requestedIsFrontFacing);
+            
+            webCamTextureToMatHelper.onInitialized.AddListener(() => {
+                var rgbaMat = webCamTextureToMatHelper.GetMat();
+                var aspectRatioFitter = goCam.GetComponent<AspectRatioFitter>();
+                aspectRatioFitter.aspectRatio = (float)rgbaMat.width() / (float)rgbaMat.height();
+                aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+                warpPerspective.Init(webCamTextureToMatHelper.GetMat());
+                Mat camMat = webCamTextureToMatHelper.GetMat();
+                texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
+            });
 
-            var rgbaMat = webCamTextureToMatHelper.GetMat();
-            var aspectRatioFitter = goCam.GetComponent<AspectRatioFitter>();
-            aspectRatioFitter.aspectRatio = (float)rgbaMat.width() / (float)rgbaMat.height();
-            aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;           
-            warpPerspective.Init(webCamTextureToMatHelper.GetMat());
-            //ScaleGoCam(warpPerspective.scaleX);
+            webCamTextureToMatHelper.Initialize(null, 640, 480, webCamTextureToMatHelper.requestedIsFrontFacing);
         }
-        Mat camMat = webCamTextureToMatHelper.GetMat();
-        texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
 
         if (drawMode == DRAWMODE.DRAW_MODEL)
         {
@@ -327,6 +327,7 @@ public class DrawingScripts : MonoBehaviour {
         TickBtnClicked = true;
         GVs.SCENE_MANAGER.loadPreviewResultScene();        
         PreviewResultScripts.texture = texCam;
-        ResultScripts.videoname = webcamCapture.filename;
+        if(webcamCapture!=null)
+            ResultScripts.videoname = webcamCapture.filename;
     }
 }

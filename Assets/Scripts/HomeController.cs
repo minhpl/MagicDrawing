@@ -26,8 +26,8 @@ public class HomeController : MonoBehaviour {
         if (imageCount > 0) 
         {
             Utilities.Log("Ready");
-            ready = true;
-            return;
+            //ready = true;
+            //return;
         }
 
         Utilities.Log("Waiting for downloading");

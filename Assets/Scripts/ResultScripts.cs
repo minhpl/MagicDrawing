@@ -14,8 +14,6 @@ public class ResultScripts : MonoBehaviour {
     public RawImage rimg;
 
 	void Start () {
-
-        
         MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
     }
 
@@ -37,7 +35,6 @@ public class ResultScripts : MonoBehaviour {
 
         if (!cap.isOpened())
         {
-            Utilities.Log("Xin chao sai lam");
             isPlayable = false;
         }
 
@@ -51,15 +48,15 @@ public class ResultScripts : MonoBehaviour {
                 cap.read(frame);                
                 if (frame.empty())
                 {
-                    Utilities.Log("Xin chao sai lam blank frame");
                     break;
                 }
 
                 if (texture == null) { 
-                    texture = new Texture2D(frame.width(), frame.height(), TextureFormat.RGBA32, false);
+                    texture = new Texture2D(frame.width(), frame.height(), TextureFormat.BGRA32, false);
                     buffer = new Color32[frame.width() * frame.height()];
                 }
 
+                Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGRA2RGBA);
                 Utils.matToTexture2D(frame, texture,buffer);
                 rimg.texture = texture;
                 //Utilities.Log("Mat width is {0}, height is {1}", frame.width(), frame.height());
@@ -77,5 +74,4 @@ public class ResultScripts : MonoBehaviour {
         if (isPlaying) return;
         MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
     }
-
 }
