@@ -1,13 +1,11 @@
 <linker>
 	<assembly fullname="Assembly-CSharp">
-		<type fullname="TouchScript.Examples.Photos.Container">
-			<method name="Add"/>
-		</type>
-		<type fullname="TouchScript.Examples.UI.SetColor">
-			<method name="Set"/>
-			<method name="Set"/>
-			<method name="Set"/>
-			<method name="Set"/>
+		<type fullname="DrawingScripts">
+			<method name="OnPushActiveBtnClicked"/>
+			<method name="OnSliderBtnClicked"/>
+			<method name="OnPushBtnClicked"/>
+			<method name="OnTickBtnClicked"/>
+			<method name="OnContrastBtnClicked"/>
 		</type>
 		<type fullname="BackButton">
 			<method name="onBackButtonClicked"/>
@@ -24,6 +22,15 @@
 			<method name="onBackButtonClicked"/>
 			<method name="onBackButtonClicked"/>
 		</type>
+		<type fullname="TouchScript.Examples.Photos.Container">
+			<method name="Add"/>
+		</type>
+		<type fullname="TouchScript.Examples.UI.SetColor">
+			<method name="Set"/>
+			<method name="Set"/>
+			<method name="Set"/>
+			<method name="Set"/>
+		</type>
 		<type fullname="SnapImageSceneScripts">
 			<method name="OnDrawBtnClicked"/>
 			<method name="OnChangeCameraButton"/>
@@ -32,11 +39,6 @@
 		<type fullname="LibraryScripts">
 			<method name="OnAppBtnClicked"/>
 			<method name="OnCamBtnClicked"/>
-		</type>
-		<type fullname="DrawingScripts">
-			<method name="OnSliderBtnClicked"/>
-			<method name="OnTickBtnClicked"/>
-			<method name="OnContrastBtnClicked"/>
 		</type>
 		<type fullname="PreviewResultScripts">
 			<method name="OnOkBtnClicked"/>

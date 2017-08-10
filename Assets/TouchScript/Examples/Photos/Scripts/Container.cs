@@ -43,8 +43,8 @@ namespace TouchScript.Examples.Photos
 
         private void pressedHandler(object sender, System.EventArgs e)
         {
-            //var child = (sender as Gesture).transform;
-            //child.SetAsLastSibling();
+            var child = (sender as Gesture).transform;
+            child.SetAsLastSibling();
         }
     }
 }

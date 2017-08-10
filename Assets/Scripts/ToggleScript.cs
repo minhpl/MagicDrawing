@@ -9,11 +9,13 @@ public class ToggleScript : MonoBehaviour {
     public Button btnContract;
     public GameObject panel_line;
     public GameObject panel_constract;
+    public GameObject line;
+    public GameObject contrast;
     // Use this for initialization
     public Button Record;
     public Button Recording;
-    public Button push;
-    public Button pushActive;
+    public Button BtnPush;
+    public Button BtnPushActive;
     void Start() {
 
         BtnSlider.onClick.AddListener(() =>
@@ -23,7 +25,11 @@ public class ToggleScript : MonoBehaviour {
             btnContract.gameObject.SetActive(true);
             btnContract.gameObject.transform.Find("contrast").gameObject.SetActive(false);
             btnContract.gameObject.transform.Find("line").gameObject.SetActive(true);
+            line.SetActive(true);
+            contrast.SetActive(false);
             panel_line.SetActive(true);
+            BtnPushActive.gameObject.SetActive(false);
+            BtnPush.gameObject.SetActive(true);
         });
 
         BtnSlider_active.onClick.AddListener(() =>
@@ -38,12 +44,13 @@ public class ToggleScript : MonoBehaviour {
         btnContract.onClick.AddListener(() =>
         {
             bool stateLine = panel_line.activeSelf;
-            btnContract.gameObject.transform.Find("line").gameObject.SetActive(!stateLine);
-            btnContract.gameObject.transform.Find("contrast").gameObject.SetActive(stateLine);
+            //btnContract.gameObject.transform.Find("line").gameObject.SetActive(!stateLine);
+            //btnContract.gameObject.transform.Find("contrast").gameObject.SetActive(stateLine);            
+            line.SetActive(!stateLine);
+            contrast.SetActive(stateLine);
             panel_line.SetActive(!stateLine);
             panel_constract.SetActive(stateLine);
         });
-
 
         Record.onClick.AddListener(() =>
         {
@@ -59,16 +66,21 @@ public class ToggleScript : MonoBehaviour {
             GetComponent<DrawingScripts>().StopVideoRecording();
         });
 
-        push.onClick.AddListener(() =>
+        BtnPush.onClick.AddListener(() =>
         {
-            push.gameObject.SetActive(false);
-            pushActive.gameObject.SetActive(true);
+            BtnPush.gameObject.SetActive(false);
+            BtnPushActive.gameObject.SetActive(true);
+            BtnSlider_active.gameObject.SetActive(false);
+            BtnSlider.gameObject.SetActive(true);
+            panel_line.SetActive(false);
+            panel_constract.SetActive(false);
+            btnContract.gameObject.SetActive(false);
         });
 
-        pushActive.onClick.AddListener(() =>
+        BtnPushActive.onClick.AddListener(() =>
         {
-            pushActive.gameObject.SetActive(false);
-            push.gameObject.SetActive(true);
+            BtnPushActive.gameObject.SetActive(false);
+            BtnPush.gameObject.SetActive(true);
         });
     }
 }

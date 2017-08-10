@@ -9,6 +9,7 @@ public class Utilities
 {
     Mat zeroMat;
     Mat tempMat;
+    Mat tempMat2;
     List<Mat> splittedMat;
     List<Mat> listMat;
 
@@ -39,18 +40,40 @@ public class Utilities
     }
 
     Mat monoAlphaMat;
-    public Mat makeMonoAlphaMat(Mat inputMat, bool invertColor = false)
-    {        
-        if (tempMat == null) tempMat = new Mat();
-        if (invertColor)
-            Core.bitwise_not(inputMat, tempMat);
-        else
-            inputMat.copyTo(tempMat);        
+    public enum MonoColor {RED, GREEN, BLUE};
+    public Mat makeMonoAlphaMat(Mat inputMat, MonoColor color,int alpha = 100, bool invertColor = false)
+    {
+        if (tempMat == null)
+        {
+            tempMat = new Mat();            
+        }
+        if (invertColor) Core.bitwise_not(inputMat, tempMat);
+        else inputMat.copyTo(tempMat);
         if (zeroMat == null || zeroMat.width() != inputMat.width() || zeroMat.height() != inputMat.height())
+        {
             zeroMat = Mat.zeros(inputMat.size(), CvType.CV_8U);
-        listMat[0] = tempMat;
-        listMat[1] = zeroMat;
-        listMat[2] = zeroMat;
+            tempMat2 = Mat.zeros(inputMat.size(), CvType.CV_8U);
+        }
+        if (color == MonoColor.RED)
+        {
+            listMat[0] = tempMat;
+            listMat[1] = zeroMat;
+            listMat[2] = zeroMat;
+        }
+        else if(color==MonoColor.GREEN)
+        {
+            listMat[0] = zeroMat;
+            listMat[1] = tempMat;            
+            listMat[2] = zeroMat;
+        }
+        else if(color==MonoColor.BLUE)
+        {
+            listMat[0] = zeroMat;
+            listMat[1] = zeroMat;
+            listMat[2] = tempMat;
+        }
+        //tempMat2.setTo(new Scalar(alpha), tempMat);
+        //listMat[3] = tempMat2;
         listMat[3] = tempMat;
         if (monoAlphaMat == null)
             monoAlphaMat = new Mat();

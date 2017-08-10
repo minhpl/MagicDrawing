@@ -26,8 +26,8 @@ public class HomeController : MonoBehaviour {
         if (imageCount > 0) 
         {
             Utilities.Log("Ready");
-            //ready = true;
-            //return;
+            ready = true;
+            return;
         }
 
         Utilities.Log("Waiting for downloading");
@@ -51,7 +51,7 @@ public class HomeController : MonoBehaviour {
         else
             Utilities.Log("Why network not available");
     }
-    private bool ready = true;
+    private bool ready = false;
 
     public void loadHistory1Scene()
     {

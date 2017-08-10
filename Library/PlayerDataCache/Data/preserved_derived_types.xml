@@ -243,12 +243,15 @@
 <type fullname="Threshold" preserve="all"/>
 <type fullname="WarpPerspective" preserve="all"/>
 <type fullname="PreviewResultScripts" preserve="all"/>
+<type fullname="TouchScript.Examples.RawInput.Ball" preserve="all"/>
+<type fullname="TouchScript.Examples.RawInput.Spawner" preserve="all"/>
 <type fullname="ResultScripts" preserve="all"/>
 <type fullname="ScrollViewScript" preserve="all"/>
 <type fullname="SnapImageSceneScripts" preserve="all"/>
 <type fullname="testin" preserve="all"/>
 <type fullname="ToggleScript" preserve="all"/>
 <type fullname="TrackScene" preserve="all"/>
+<type fullname="TestTourchScripts" preserve="all"/>
 <type fullname="TouchScript.Examples.Checker" preserve="all"/>
 <type fullname="ExamplesList" preserve="all"/>
 <type fullname="Highlight" preserve="all"/>
@@ -271,8 +274,6 @@
 <type fullname="TouchScript.Examples.Portal.Rotator" preserve="all"/>
 <type fullname="TouchScript.Examples.Portal.Spawner" preserve="all"/>
 <type fullname="TouchScript.Examples.Portal.Vortex" preserve="all"/>
-<type fullname="TouchScript.Examples.RawInput.Ball" preserve="all"/>
-<type fullname="TouchScript.Examples.RawInput.Spawner" preserve="all"/>
 <type fullname="TouchScript.Examples.Tap.Break" preserve="all"/>
 <type fullname="TouchScript.Examples.Tap.Kick" preserve="all"/>
 <type fullname="TouchScript.Examples.Tap.Spawn" preserve="all"/>

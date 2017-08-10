@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/TouchScript/Examples/Checkers/Checkers.unity
+- path: Assets/Scenes/M/DrawingScene.unity
   isLoaded: 1
   isActive: 1
