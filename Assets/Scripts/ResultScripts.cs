@@ -6,42 +6,58 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ResultScripts : MonoBehaviour {
-
     public static string videoname = null;
-    VideoCapture cap;
-    bool isPlayable = false;
-    bool isPlaying = true;
+    public static Texture2D texture;
+    VideoCapture cap;    
+    private bool isPlaying = false;
+    private Color32[] buffer;
     public RawImage rimg;
-
-	void Start () {
-        MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
+    public GameObject panel;
+    public GameObject btnPlay;
+    public Canvas canvas;
+    private Texture2D texVideo;
+    void Start () {               
+        var canvasRect = canvas.GetComponent<RectTransform>().rect;
+        var ratioDisplay = (float)canvasRect.width / canvasRect.height;
+        var panelAspect = panel.GetComponent<AspectRatioFitter>();
+        panelAspect.aspectMode = AspectRatioFitter.AspectMode.WidthControlsHeight;
+        panelAspect.aspectRatio = ratioDisplay;
+        if(texture!=null)
+        {
+            float ratio = (float)texture.width /(float) texture.height;
+            var rawImageAspect = rimg.GetComponent<AspectRatioFitter>();
+            rawImageAspect.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+            rawImageAspect.aspectRatio = ratio;
+            rimg.texture = texture;
+        }
+        if (videoname != null)
+        {
+            btnPlay.SetActive(true);
+        }
+        else btnPlay.SetActive(false);     
     }
-
-    Texture2D texture;
-    Color32[] buffer;
-
+    private void OnDisable()
+    {
+        videoname = null;
+        Destroy(texture);
+        Destroy(texVideo);
+    }
 
     IEnumerator Worker()
     {
         isPlaying = true;
-
-        isPlayable = true;
+        bool isPlayable = true;
         if (videoname == null) isPlayable = false;
-
         cap = new VideoCapture(videoname);
         cap.open(videoname);
-
-        Utilities.Log("video name is {0}", videoname);
-
         if (!cap.isOpened())
         {
             isPlayable = false;
         }
-
         if (isPlayable)
         {
+            btnPlay.SetActive(false);
             Mat frame = new Mat();
-
             for (;;)
             {
                 yield return null;
@@ -50,25 +66,21 @@ public class ResultScripts : MonoBehaviour {
                 {
                     break;
                 }
-
-                if (texture == null) { 
-                    texture = new Texture2D(frame.width(), frame.height(), TextureFormat.BGRA32, false);
+                if (texVideo == null) {
+                    texVideo = new Texture2D(frame.width(), frame.height(), TextureFormat.BGRA32, false);
                     buffer = new Color32[frame.width() * frame.height()];
                 }
-
                 Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGRA2RGBA);
-                Utils.matToTexture2D(frame, texture,buffer);
-                rimg.texture = texture;
-                //Utilities.Log("Mat width is {0}, height is {1}", frame.width(), frame.height());
+                Utils.matToTexture2D(frame, texVideo, buffer);
+                rimg.texture = texVideo;                
             }
         }
-        isPlaying = false;
-        //isPlayable = true;
         cap.release();
+        isPlaying = false;
+        btnPlay.SetActive(true);        
+        rimg.texture = texture;
         yield return null;
     }
-
-
     public void OnPlayBtnClicked()
     {
         if (isPlaying) return;

@@ -9,7 +9,7 @@ using TouchScript.Gestures.TransformGestures;
 using TouchScript.Behaviors;
 using TouchScript.Layers;
 using TouchScript.Layers.UI;
-
+using TouchScript;
 public class DrawingScripts : MonoBehaviour {
     public GameObject goCam;
     public GameObject goModel;
@@ -18,6 +18,7 @@ public class DrawingScripts : MonoBehaviour {
     public Threshold threshold;
     public AdaptiveThreshold athreshold;
     public GameObject eventSystem;
+    public TouchManager touchManager;
     WarpPerspective warpPerspective;
     public static Mat image;
     private Color32[] colorsBuffer;
@@ -32,8 +33,7 @@ public class DrawingScripts : MonoBehaviour {
     bool loaded = false;
     WebcamVideoCapture webcamCapture;
     Mat warp;
-    private float opaque = 0.25f;
-
+    private float opaque = 0.25f;    
     public enum DRAWMODE { DRAW_MODEL, DRAW_IMAGE};
     public static DRAWMODE drawMode = DRAWMODE.DRAW_MODEL;
     public enum FILTERMODE { LINE,BLEND};
@@ -65,12 +65,10 @@ public class DrawingScripts : MonoBehaviour {
         //    return 10;
         //});
     }
-
     void OnSliderValueChaned(Slider slider)
     {
-        Debug.LogFormat("Slider value is {0}", slider.value);
+        //Debug.LogFormat("Slider value is {0}", slider.value);
     }
-
     // Use this for initialization
     void Start () {
         rimgcam = goCam.GetComponent<RawImage>();
@@ -78,11 +76,8 @@ public class DrawingScripts : MonoBehaviour {
         rimgmodel.color = new Color(255, 255, 255, opaque);
         webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
         warpPerspective = gameObject.GetComponent<WarpPerspective>();        
-
         utilities = new Utilities();
-
         threshold = GetComponent<Threshold>();
- 
         if (Application.platform == RuntimePlatform.Android)
         {
             GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
@@ -91,10 +86,8 @@ public class DrawingScripts : MonoBehaviour {
         {
             GVs.APP_PATH = Application.persistentDataPath;
         }
-
         threshold = GetComponent<Threshold>();
         GFs.LoadTemplateList();
-
         MainThreadDispatcher.StartUpdateMicroCoroutine(loadModel());
         MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
         //var heavyMethod = Observable.Start(() =>
@@ -104,17 +97,14 @@ public class DrawingScripts : MonoBehaviour {
         //    return 10;
         //});
     }    
-
     void OnDestroy()
     {
         webCamTextureToMatHelper.Stop();
         webCamTextureToMatHelper.Dispose();
     }
-
     IEnumerator loadModel()
     {
         yield return null;
-
         if (!webCamTextureToMatHelper.IsInitialized())
         {
             int w = (int)goCam.GetComponent<RawImage>().rectTransform.rect.width;
@@ -130,7 +120,6 @@ public class DrawingScripts : MonoBehaviour {
             });
             webCamTextureToMatHelper.Initialize(null, 640, 480,true,60);
         }
-
         if (drawMode == DRAWMODE.DRAW_MODEL)
         {
             var model = GVs.CURRENT_MODEL;
@@ -144,10 +133,9 @@ public class DrawingScripts : MonoBehaviour {
                 imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0027.jpg";
             }
             imgPath = GVs.APP_PATH + "/" + imgPath;
-            Debug.LogFormat("image path is {0}", imgPath);
+            //Debug.LogFormat("image path is {0}", imgPath);
             image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
             Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
-
             float w = image.width();
             float h = image.height();
             var rat = w / h;
@@ -162,9 +150,9 @@ public class DrawingScripts : MonoBehaviour {
                 h = restrictMaxSize;
                 w = h * rat;
             }
-            Utilities.Log("img loaded have width is {0}, height is {1}", image.width(), image.height());
+            //Utilities.Log("img loaded have width is {0}, height is {1}", image.width(), image.height());
             Imgproc.resize(image, image, new Size(w, h), 0, 0, Imgproc.INTER_AREA);
-            Utilities.Log("img loaded have width is {0}, height is {1}", image.width(), image.height());
+            //Utilities.Log("img loaded have width is {0}, height is {1}", image.width(), image.height());
             texModel = new Texture2D(image.width(), image.height(), TextureFormat.RGBA32, false);
             //texModel = new Texture2D(image.width(), image.height());            
             Utils.matToTexture2D(image, texModel);
@@ -174,25 +162,19 @@ public class DrawingScripts : MonoBehaviour {
         {
 
         }
-
-        Utilities.Log("img loaded have width is {0}, height is {1}", image.width(), image.height());
-
+        //Utilities.Log("img loaded have width is {0}, height is {1}", image.width(), image.height());
         float width = image.width();
         float heigh = image.height();
-
         float modelAreaWidth = rimgmodel.rectTransform.rect.width;
         float modelAreaHeight = rimgmodel.rectTransform.rect.height;
-        Debug.LogFormat("ModelAreaWidth = {0}, ModelAreaHeight = {1}", modelAreaWidth, modelAreaHeight);
-
+        //Debug.LogFormat("ModelAreaWidth = {0}, ModelAreaHeight = {1}", modelAreaWidth, modelAreaHeight);
         float ratio = width / heigh;
         float ratioDisplay = modelAreaWidth / modelAreaHeight;
-
         if (ratio > ratioDisplay)
         {
             var newWidth = modelAreaWidth;
             var newHeight = modelAreaWidth * (heigh / width);
             rimgmodel.rectTransform.sizeDelta = new Vector2(newWidth - modelAreaWidth, newHeight - modelAreaHeight);
-
         }
         else
         {
@@ -200,7 +182,6 @@ public class DrawingScripts : MonoBehaviour {
             var newWidth = modelAreaHeight * ratio;
             rimgmodel.rectTransform.sizeDelta = new Vector2(newWidth - modelAreaWidth, newHeight - modelAreaHeight);
         }
-
         Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
         athreshold = GetComponent<AdaptiveThreshold>();
         athreshold.setParameter(sliderLine.value);
@@ -209,19 +190,16 @@ public class DrawingScripts : MonoBehaviour {
         Mat redMat = utilities.makeMonoAlphaMat(edges,Utilities.MonoColor.RED);         
         colorsBuffer = new Color32[edges.width() * edges.height()];
         Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
-
         rimgmodel.texture = texEdges;
         utilities = new Utilities();
         goModel.SetActive(true);
         loaded = true;
-        
-        while(eventSystem.GetComponent<TouchScriptInputModule>()==null)
+        while (eventSystem && eventSystem.GetComponent<TouchScriptInputModule>() == null)
         {
             yield return new WaitForEndOfFrame();
         }
         eventSystem.GetComponent<TouchScriptInputModule>().enabled = false;
     }
-
     public void OnContrastSliderValueChange(Slider slider)
     {
         float percent = slider.value / 100f;
@@ -268,21 +246,19 @@ public class DrawingScripts : MonoBehaviour {
     public bool isRecording = false;
     public void StartRecordVideo()
     {
-        Utilities.Log("Start video recording");
+        //Utilities.Log("Start video recording");
         Mat m = webCamTextureToMatHelper.GetMat();
         if (webcamCapture == null)
-            webcamCapture = new WebcamVideoCapture(m.size());
-        else
-            webcamCapture = new WebcamVideoCapture(m.size(), false);
+            webcamCapture = new WebcamVideoCapture(m.size());        
         isRecording = true;
     }    
-    public void StopVideoRecording()
-    {
+    public void PauseVideoRecording()
+    {        
         if(isRecording)
         {
-            Utilities.Log("Stop recording video");
-            isRecording = false;            
-            webcamCapture.writer.release();
+            //Debug.Log("Pausing video");
+            isRecording = false;
+            //webcamCapture.writer.release();
         }
     }
     public void ScaleGoCam(float scaleX)
@@ -291,21 +267,23 @@ public class DrawingScripts : MonoBehaviour {
         a.rectTransform.localScale = new Vector3(scaleX, 1, 1);
         var w = a.rectTransform.rect.width;
         var needw = w * scaleX;       
-        Debug.Log(a.rectTransform.rect.ToString());      
+        //Debug.Log(a.rectTransform.rect.ToString());      
     }
 
     private void OnDisable()
-    {
+    {        
         image.release();
         image.Dispose();
+        edges.Dispose();
         image = null;
-        if (!TickBtnClicked) {
+        if (!preserveTexture) {
             Destroy(texCam);
         }            
         Destroy(texEdges);
         Destroy(texModel);
         Destroy(webCamTextureToMatHelper);
-        StopVideoRecording();
+        if (webcamCapture != null && webcamCapture.writer != null)
+            webcamCapture.writer.release();        
     }
 
     public void OnContrastBtnClicked()
@@ -338,14 +316,15 @@ public class DrawingScripts : MonoBehaviour {
         rimgmodel.GetComponent<FullscreenLayer>().enabled = false;
     }
 
-    bool TickBtnClicked = false;
+    bool preserveTexture = false;
     public void OnTickBtnClicked()
     {
-        TickBtnClicked = true;
-        GVs.SCENE_MANAGER.loadPreviewResultScene();        
+        preserveTexture = true;            
         PreviewResultScripts.texture = texCam;
+        ResultScripts.texture = texCam;
         if(webcamCapture!=null)
             ResultScripts.videoname = WebcamVideoCapture.filename;
+        GVs.SCENE_MANAGER.loadPreviewResultScene();
     }
 
     public void OnPushBtnClicked()
@@ -373,5 +352,4 @@ public class DrawingScripts : MonoBehaviour {
         rimgmodel.GetComponent<Transformer>().enabled = false;
         rimgmodel.GetComponent<FullscreenLayer>().enabled = false;
     }
-
 }

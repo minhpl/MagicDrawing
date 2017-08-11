@@ -6,6 +6,8 @@
 			<method name="OnPushBtnClicked"/>
 			<method name="OnTickBtnClicked"/>
 			<method name="OnContrastBtnClicked"/>
+			<method name="StartRecordVideo"/>
+			<method name="PauseVideoRecording"/>
 		</type>
 		<type fullname="BackButton">
 			<method name="onBackButtonClicked"/>

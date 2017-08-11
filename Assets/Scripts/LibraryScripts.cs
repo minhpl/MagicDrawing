@@ -21,6 +21,10 @@ public class LibraryScripts : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        Screen.autorotateToLandscapeLeft = false;
+        Screen.autorotateToLandscapeRight = false;
+        Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
     }
     // Use this for initialization
     void Start()
@@ -29,10 +33,8 @@ public class LibraryScripts : MonoBehaviour
         if (Application.platform == RuntimePlatform.Android)
         {
             GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
-
             //string androidMagicBookFolder = "/storage/emulated/0/DCIM/MagicDrawing/";
             //string libraryFolder = androidMagicBookFolder + "library";
-
             //var files = Directory.GetFiles(libraryFolder, "*.png");
             //foreach(var file in files)
             //{

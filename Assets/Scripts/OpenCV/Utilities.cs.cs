@@ -86,6 +86,8 @@ public class Utilities
         Debug.LogFormat("mlogcat " + msgFormat, args);
     }
 
+    public static string customFmts = "yyyyMMd_HHmmss";
+
     public static TimeSpan Time(Action action)
     {
         System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();

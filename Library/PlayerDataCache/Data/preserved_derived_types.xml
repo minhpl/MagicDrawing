@@ -220,6 +220,7 @@
 <type fullname="OpenCVFaceDetection" preserve="all"/>
 <type fullname="PositionAtFaceScreenSpace" preserve="all"/>
 <type fullname="TestCallSO" preserve="all"/>
+<type fullname="TestTourchScripts" preserve="all"/>
 <type fullname="BackButton" preserve="all"/>
 <type fullname="CheckFPS" preserve="all"/>
 <type fullname="DataBind" preserve="all"/>
@@ -251,7 +252,6 @@
 <type fullname="testin" preserve="all"/>
 <type fullname="ToggleScript" preserve="all"/>
 <type fullname="TrackScene" preserve="all"/>
-<type fullname="TestTourchScripts" preserve="all"/>
 <type fullname="TouchScript.Examples.Checker" preserve="all"/>
 <type fullname="ExamplesList" preserve="all"/>
 <type fullname="Highlight" preserve="all"/>
@@ -261,6 +261,7 @@
 <type fullname="TouchScript.Examples.CameraControl.CameraController" preserve="all"/>
 <type fullname="TouchScript.Examples.Checkers.Board" preserve="all"/>
 <type fullname="TouchScript.Examples.Checkers.Exclusive" preserve="all"/>
+<type fullname="Test" preserve="all"/>
 <type fullname="TouchScript.Examples.Colors.Circle" preserve="all"/>
 <type fullname="TouchScript.Examples.Colors.Colors" preserve="all"/>
 <type fullname="TouchScript.Examples.Cube.CustomPointerProxy" preserve="all"/>

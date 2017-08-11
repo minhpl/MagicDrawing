@@ -13,11 +13,12 @@ public class BackButton : MonoBehaviour {
 
     public void onBackButtonClicked()
     {
-        if(GVs.TRACE_SCENE.Count > 1)
+        Utilities.Log("BackbuttonScripts: stack trace scene have {0} element", GVs.TRACE_SCENE.Count);
+        if (GVs.TRACE_SCENE.Count > 1)
         {
             GVs.TRACE_SCENE.Pop();
             int i = GVs.TRACE_SCENE.Pop();
-            Debug.LogFormat("index scene back is {0}", i);
+            Utilities.Log("index scene back is {0}", i);
             SceneManager.LoadScene(i);
         }                 
     }

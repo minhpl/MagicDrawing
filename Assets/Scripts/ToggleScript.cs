@@ -55,15 +55,13 @@ public class ToggleScript : MonoBehaviour {
         Record.onClick.AddListener(() =>
         {
             Record.gameObject.SetActive(false);
-            Recording.gameObject.SetActive(true);
-            GetComponent<DrawingScripts>().StartRecordVideo();
+            Recording.gameObject.SetActive(true);            
         });
 
         Recording.onClick.AddListener(() =>
         {
             Recording.gameObject.SetActive(false);
             Record.gameObject.SetActive(true);
-            GetComponent<DrawingScripts>().StopVideoRecording();
         });
 
         BtnPush.onClick.AddListener(() =>

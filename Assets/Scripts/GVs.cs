@@ -26,6 +26,9 @@ public class GVs {
 
     //-----------------------
     public static Stack<int> TRACE_SCENE = new Stack<int>();
-    public static DrawingTemplateModel CURRENT_MODEL;    
- 
+    public static DrawingTemplateModel CURRENT_MODEL;
+
+    public static string androidDir = "/storage/emulated/0/DCIM/MagicDrawing/newfolder/";
+    public static string pcDir = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\";
+    public static string iphoneDir = "\\";
 }

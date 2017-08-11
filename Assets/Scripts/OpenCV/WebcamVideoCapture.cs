@@ -10,18 +10,14 @@ class WebcamVideoCapture
 {
     private int codec;
     private double fps;
-    public VideoWriter writer;
-    private string androidDir = "/storage/emulated/0/DCIM/MagicDrawing/newfolder/";
-    private string pcDir = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\";
-    private string iphoneDir = "\\";
-    private string customFmts = "yyyyMMd_HHmmss";
-    static public string filename = "";
+    public VideoWriter writer;        
+    static public string filename = null;
 
     public WebcamVideoCapture(Size size, bool createNewVideo = true)
     {
         if(createNewVideo)
         {
-            string name = String.Format("video_{0}.avi", DateTime.Now.ToString(customFmts));
+            string name = String.Format("video_{0}.avi", DateTime.Now.ToString(Utilities.customFmts));
             //#if UNITY_IPHONE
             //                    Debug.Log("file name is 3" + filename);
             //                                filename = iphoneDir + name;
@@ -36,23 +32,22 @@ class WebcamVideoCapture
             //#else
             //                //PC here                
             //                filename = pcDir + name;
-            //#endif
-            Utilities.Log("xin chao noi day {0}", name);
+            //#endif            
             if (Application.platform == RuntimePlatform.Android)
             {
-                filename = androidDir + name;
-                if (!Directory.Exists(androidDir))
+                filename = GVs.androidDir + name;
+                if (!Directory.Exists(GVs.androidDir))
                 {
-                    Directory.CreateDirectory(androidDir);
+                    Directory.CreateDirectory(GVs.androidDir);
                 }
                 Utilities.Log("filename is {0}", filename);
             }
             else
             {
-                filename = pcDir + name;
-                if (!Directory.Exists(pcDir))
+                filename = GVs.pcDir + name;
+                if (!Directory.Exists(GVs.pcDir))
                 {
-                    Directory.CreateDirectory(pcDir);
+                    Directory.CreateDirectory(GVs.pcDir);
                 }
                 Utilities.Log("filename is {0}", filename);
             }

@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class HomeController : MonoBehaviour {
+    
+
     void Start () {
 
         if (MakePersistentObject.Instance)
