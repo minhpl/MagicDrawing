@@ -9,3 +9,5 @@
 *.0.0.zip
 /Assets/NGUI/
 /OpenCV-android-sdk/
+*.meta
+/Library/

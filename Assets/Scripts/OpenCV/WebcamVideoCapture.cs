@@ -8,68 +8,61 @@ using UnityEngine;
 
 class WebcamVideoCapture
 {
-    int codec;
-    double fps;
+    private int codec;
+    private double fps;
     public VideoWriter writer;
-    string androidDir = "/storage/emulated/0/DCIM/MagicDrawing/newfolder/";
-    string pcDir = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\";
-    string iphoneDir = "\\";
+    private string androidDir = "/storage/emulated/0/DCIM/MagicDrawing/newfolder/";
+    private string pcDir = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\";
+    private string iphoneDir = "\\";
+    private string customFmts = "yyyyMMd_HHmmss";
+    static public string filename = "";
 
-    string customFmts = "yyyyMMd_HHmmss";
-    public string filename = "";
-
-    public WebcamVideoCapture(Size size)
+    public WebcamVideoCapture(Size size, bool createNewVideo = true)
     {
-        string name = String.Format("video_{0}.avi", DateTime.Now.ToString(customFmts));
-
-        //#if UNITY_IPHONE
-        //                    Debug.Log("file name is 3" + filename);
-        //                                filename = iphoneDir + name;
-        //#endif
-
-        //#if UNITY_ANDROID
-        //filename = androidDir + name;
-        //        if (!Directory.Exists(androidDir))
-        //        {
-        //            Directory.CreateDirectory(androidDir);
-        //        }
-        //        Utilities.Log("filename is 2{0}", "hello");
-        //#else
-        //                //PC here                
-        //                filename = pcDir + name;
-        //#endif
-
-        Utilities.Log("xin chao noi day {0}",name);
-
-        if (Application.platform == RuntimePlatform.Android)
+        if(createNewVideo)
         {
-            filename = androidDir + name;
-            if (!Directory.Exists(androidDir))
+            string name = String.Format("video_{0}.avi", DateTime.Now.ToString(customFmts));
+            //#if UNITY_IPHONE
+            //                    Debug.Log("file name is 3" + filename);
+            //                                filename = iphoneDir + name;
+            //#endif
+            //#if UNITY_ANDROID
+            //filename = androidDir + name;
+            //        if (!Directory.Exists(androidDir))
+            //        {
+            //            Directory.CreateDirectory(androidDir);
+            //        }
+            //        Utilities.Log("filename is 2{0}", "hello");
+            //#else
+            //                //PC here                
+            //                filename = pcDir + name;
+            //#endif
+            Utilities.Log("xin chao noi day {0}", name);
+            if (Application.platform == RuntimePlatform.Android)
             {
-                Directory.CreateDirectory(androidDir);
+                filename = androidDir + name;
+                if (!Directory.Exists(androidDir))
+                {
+                    Directory.CreateDirectory(androidDir);
+                }
+                Utilities.Log("filename is {0}", filename);
             }
-            Utilities.Log("filename is {0}", filename);
-        }
-        else
-        {
-            filename = pcDir + name;
-            if (!Directory.Exists(pcDir))
+            else
             {
-                Directory.CreateDirectory(pcDir);
+                filename = pcDir + name;
+                if (!Directory.Exists(pcDir))
+                {
+                    Directory.CreateDirectory(pcDir);
+                }
+                Utilities.Log("filename is {0}", filename);
             }
-            Utilities.Log("filename is {0}", filename);
-        }
-
-
+        }        
         codec = VideoWriter.fourcc('M', 'J', 'P', 'G');
         fps = 60;
         writer = new VideoWriter(filename, codec, fps, size);
     }
-
-
     public void write(Mat img)
     {
         writer.write(img);
     }
-
 }

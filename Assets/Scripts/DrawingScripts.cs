@@ -270,7 +270,10 @@ public class DrawingScripts : MonoBehaviour {
     {
         Utilities.Log("Start video recording");
         Mat m = webCamTextureToMatHelper.GetMat();
-        webcamCapture = new WebcamVideoCapture(m.size());
+        if (webcamCapture == null)
+            webcamCapture = new WebcamVideoCapture(m.size());
+        else
+            webcamCapture = new WebcamVideoCapture(m.size(), false);
         isRecording = true;
     }    
     public void StopVideoRecording()
@@ -342,7 +345,7 @@ public class DrawingScripts : MonoBehaviour {
         GVs.SCENE_MANAGER.loadPreviewResultScene();        
         PreviewResultScripts.texture = texCam;
         if(webcamCapture!=null)
-            ResultScripts.videoname = webcamCapture.filename;
+            ResultScripts.videoname = WebcamVideoCapture.filename;
     }
 
     public void OnPushBtnClicked()
@@ -370,4 +373,5 @@ public class DrawingScripts : MonoBehaviour {
         rimgmodel.GetComponent<Transformer>().enabled = false;
         rimgmodel.GetComponent<FullscreenLayer>().enabled = false;
     }
+
 }

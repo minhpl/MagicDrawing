@@ -76,17 +76,17 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook.Unity.Settings">
-      <HintPath>Library\FacebookSDK\Facebook.Unity.Settings.dll</HintPath>
+    <Reference Include="Mono.Cecil">
+      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
     </Reference>
-    <Reference Include="TexturePacker">
-      <HintPath>Assets\Extensions\TexturePacker\Lib\TexturePacker.dll</HintPath>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
-    <Reference Include="OSCsharp">
-      <HintPath>Assets\TouchScript\Modules\TUIO\Libraries\OSCsharp.dll</HintPath>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
-    <Reference Include="TUIOsharp">
-      <HintPath>Assets\TouchScript\Modules\TUIO\Libraries\TUIOsharp.dll</HintPath>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>Assets\Zip\Plugins\Ionic.Zip.dll</HintPath>
@@ -509,6 +509,7 @@
     <Compile Include="Assets\Scenes\Test\PhotoCaptureExample.cs" />
     <Compile Include="Assets\Scenes\Test\PositionAtFaceScreenSpace.cs" />
     <Compile Include="Assets\Scenes\Test\TestCallSO.cs" />
+    <Compile Include="Assets\Scenes\Test\TestTourchScripts.cs" />
     <Compile Include="Assets\Scripts\BackButton.cs" />
     <Compile Include="Assets\Scripts\CheckFPS.cs" />
     <Compile Include="Assets\Scripts\DataBind.cs" />
@@ -556,7 +557,6 @@
     <Compile Include="Assets\Scripts\ToggleScript.cs" />
     <Compile Include="Assets\Scripts\TrackScene.cs" />
     <Compile Include="Assets\Scripts\WebcamTexture.cs" />
-    <Compile Include="Assets\TestTourchScripts.cs" />
     <Compile Include="Assets\TouchScript\Examples\_misc\Scripts\Checker.cs" />
     <Compile Include="Assets\TouchScript\Examples\_misc\Scripts\ExamplesList.cs" />
     <Compile Include="Assets\TouchScript\Examples\_misc\Scripts\Highlight.cs" />
@@ -566,6 +566,7 @@
     <Compile Include="Assets\TouchScript\Examples\Camera\Scripts\CameraController.cs" />
     <Compile Include="Assets\TouchScript\Examples\Checkers\Scripts\Board.cs" />
     <Compile Include="Assets\TouchScript\Examples\Checkers\Scripts\Exclusive.cs" />
+    <Compile Include="Assets\TouchScript\Examples\Checkers\Test.cs" />
     <Compile Include="Assets\TouchScript\Examples\Colors\Scripts\Circle.cs" />
     <Compile Include="Assets\TouchScript\Examples\Colors\Scripts\Colors.cs" />
     <Compile Include="Assets\TouchScript\Examples\Cube\Scripts\CustomPointerProxy.cs" />
