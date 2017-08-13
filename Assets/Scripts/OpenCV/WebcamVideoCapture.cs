@@ -13,7 +13,7 @@ class WebcamVideoCapture
     public VideoWriter writer;        
     static public string filename = null;
     static public string filenameWithoutExt = null;
-    private string filePath;
+    public string filePath = null;
     public WebcamVideoCapture(Size size, bool createNewVideo = true)
     {
         if(createNewVideo)
@@ -22,18 +22,18 @@ class WebcamVideoCapture
             filename = filenameWithoutExt + ".avi";        
             if (Application.platform == RuntimePlatform.Android)
             {
-                filePath = GVs.androidDir + filename;
-                if (!Directory.Exists(GVs.androidDir))
+                filePath = GVs.androidDirMPiece + filename;
+                if (!Directory.Exists(GVs.androidDirMPiece))
                 {
-                    Directory.CreateDirectory(GVs.androidDir);
+                    Directory.CreateDirectory(GVs.androidDirMPiece);
                 }
             }
             else
             {
-                filePath = GVs.pcDir + filename;
-                if (!Directory.Exists(GVs.pcDir))
+                filePath = GVs.pcDirMPiece + filename;
+                if (!Directory.Exists(GVs.pcDirMPiece))
                 {
-                    Directory.CreateDirectory(GVs.pcDir);
+                    Directory.CreateDirectory(GVs.pcDirMPiece);
                 }                
             }
             //#if UNITY_IPHONE

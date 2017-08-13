@@ -33,13 +33,6 @@ public class LibraryScripts : MonoBehaviour
         if (Application.platform == RuntimePlatform.Android)
         {
             GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
-            //string androidMagicBookFolder = "/storage/emulated/0/DCIM/MagicDrawing/";
-            //string libraryFolder = androidMagicBookFolder + "library";
-            //var files = Directory.GetFiles(libraryFolder, "*.png");
-            //foreach(var file in files)
-            //{
-            //    Utilities.Log("File name is {0}", file);
-            //}
         }
         else
         {
@@ -90,8 +83,7 @@ public class LibraryScripts : MonoBehaviour
                 go.transform.localScale = imageItem.transform.localScale;
                 RawImage rimage = go.transform.Find("RImage").GetComponent<RawImage>();
 
-                var drawTemplateModel = GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i);
-                go.GetComponent<DataBind>().drawingTemplateModel = drawTemplateModel;
+                var drawTemplateModel = GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i);                
                 Texture2D texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + drawTemplateModel.thumb);
                 //TextureScale.Point(texture, 100, 50);
                 float width = texture.width;
@@ -130,9 +122,11 @@ public class LibraryScripts : MonoBehaviour
                 }
 
                 texture.Compress(true);
-                rimage.texture = texture;
+                rimage.texture = texture;                                
                 go.SetActive(true);
+                go.GetComponent<DataBind>().drawingTemplateModel = drawTemplateModel;
                 LstGameObject.Add(go);
+                
                 //var offsetWidth = 1 / 2048;
                 //var offsetHeight = 1 / 2048;
                 //var a = rimage.uvRect;
@@ -141,10 +135,18 @@ public class LibraryScripts : MonoBehaviour
                 //a.width -= 2 * offsetWidth;
                 //a.height -= 2 * offsetHeight;
                 LstTexture.Add(texture);
+
                 go.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     OnItemClicked(go);
-                });
+                    var dirPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/";
+                    var thumbPath = dirPath + drawTemplateModel.thumb;
+                    var imgPath = dirPath + drawTemplateModel.image;
+                    Debug.LogFormat("thumbPath is {0}", thumbPath);
+                    Debug.LogFormat("imgPath is {0}", imgPath);
+                    HistoryScripts.AddHistoryItem(new HistoryModel(imgPath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                });                
+
                 //var filePath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i).image;
                 //Mat a = Imgcodecs.imread(filePath);
                 //float width = a.width();
@@ -166,11 +168,9 @@ public class LibraryScripts : MonoBehaviour
             freeArea = Area - area2048 * num2048;
 
             if (freeArea > area1024)
-            {
-                //Debug.LogFormat("here");
+            {                
                 num2048 += 1;
                 numRectIn2048.Add(imageCount * clone - tempNumPacked);
-                //numRectIn2048 = clone * imageCount - numRectInOther;
             }
             else
             {
@@ -185,8 +185,7 @@ public class LibraryScripts : MonoBehaviour
             var offset = (1f / atlasSize);
             for (int i = 0; i < numRectIn2048.Count; i++)
             {
-                var count = numRectIn2048[i];
-                //Debug.LogFormat("Count is {0}", count);
+                var count = numRectIn2048[i];                
                 var subTextures = LstTexture.GetRange(index, count);
                 var subGameObjects = LstGameObject.GetRange(index, count);
 
@@ -253,7 +252,9 @@ public class LibraryScripts : MonoBehaviour
         //Debug.LogFormat("name is {0}", go.GetComponent<DataBind>().drawingTemplateModel.thumb);
         //GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
         GVs.CURRENT_MODEL = go.GetComponent<DataBind>().drawingTemplateModel;
+        Debug.LogFormat("is current model is null ? {0}", GVs.CURRENT_MODEL == null);
         DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;
+        //Debug.LogFormat("image Path is {0}", GVs.CURRENT_MODEL.image);
         GVs.SCENE_MANAGER.loadDrawingScene();
     }    
 
@@ -261,12 +262,17 @@ public class LibraryScripts : MonoBehaviour
     {
         StopCoroutine(coroutine);
         Destroy(GameObject.Find("Canvas"));
-        GVs.SCENE_MANAGER.loadCollectionScene();
+        //GVs.SCENE_MANAGER.loadCollectionScene();
         //SceneManager.LoadScene("LibrarySceneCompare");
     }
 
     public void OnCamBtnClicked()
     {
         GVs.SCENE_MANAGER.loadSnapImageScene();
+    }
+
+    public void OnHistoryBtnClicked()
+    {
+        GVs.SCENE_MANAGER.loadHistoryScene();
     }
 }

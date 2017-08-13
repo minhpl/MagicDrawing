@@ -6,8 +6,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ResultScripts : MonoBehaviour {
-    public static string videoname = null;
+    public static string videoPath = null;
     public static Texture2D texture;
+    public static string title;
     VideoCapture cap;    
     private bool isPlaying = false;
     private Color32[] buffer;
@@ -15,8 +16,21 @@ public class ResultScripts : MonoBehaviour {
     public GameObject panel;
     public GameObject btnPlay;
     public Canvas canvas;
+    public Text tit;
     private Texture2D texVideo;
-    void Start () {               
+    public enum MODE { FISRT_RESULT,REWATCH_RESULT};
+    public static MODE mode;    
+
+    private void Awake()
+    {
+        if (mode == MODE.REWATCH_RESULT)
+        {
+            tit.text = title;
+        }        
+    }
+
+    void Start () {
+        Debug.Log("Mono's Start function [ResultScripts]");
         var canvasRect = canvas.GetComponent<RectTransform>().rect;
         var ratioDisplay = (float)canvasRect.width / canvasRect.height;
         var panelAspect = panel.GetComponent<AspectRatioFitter>();
@@ -29,16 +43,19 @@ public class ResultScripts : MonoBehaviour {
             rawImageAspect.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
             rawImageAspect.aspectRatio = ratio;
             rimg.texture = texture;
+            var scale = 1 + GVs.ridTopPercent;
+            rimg.rectTransform.localScale = new Vector3(scale, scale, scale);
         }
-        if (videoname != null)
+        if (videoPath != null)
         {
+            Debug.LogFormat("Video Path is {0}", videoPath);
             btnPlay.SetActive(true);
         }
         else btnPlay.SetActive(false);     
     }
     private void OnDisable()
     {
-        videoname = null;
+        videoPath = null;
         Destroy(texture);
         Destroy(texVideo);
     }
@@ -47,15 +64,15 @@ public class ResultScripts : MonoBehaviour {
     {
         isPlaying = true;
         bool isPlayable = true;
-        if (videoname == null) isPlayable = false;
-        cap = new VideoCapture(videoname);
-        cap.open(videoname);
+        if (videoPath == null) isPlayable = false;
+        cap = new VideoCapture(videoPath);
+        cap.open(videoPath);
         if (!cap.isOpened())
         {
             isPlayable = false;
         }
         if (isPlayable)
-        {
+        {            
             btnPlay.SetActive(false);
             Mat frame = new Mat();
             for (;;)

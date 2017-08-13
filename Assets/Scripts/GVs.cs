@@ -27,9 +27,16 @@ public class GVs {
     //-----------------------
     public static Stack<int> TRACE_SCENE = new Stack<int>();
     public static DrawingTemplateModel CURRENT_MODEL;
+    public static LinkedList<string> history = new LinkedList<string>();
 
-    public static string androidDir = "/storage/emulated/0/DCIM/MagicDrawing/newfolder/";
-    public static string pcDir = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\";
-    public static string iphoneDir = "\\";
+    
+    public static string androidDirMPiece = "/storage/emulated/0/DCIM/MagicDrawing/Masterpiece/";    
+    public static string iphoneDirMPiece = "\\";
+    public static string pcDirMPiece = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\";
+
+    public static string androidDirMPModel = "/storage/emulated/0/DCIM/MagicDrawing/MasterPieceModel/";    
+    public static string iphoneDirMPModel = "\\";
+    public static string pcDirMPModel = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\MasterPieceModel\\";
+
     public static float ridTopPercent = 0.52f;
 }

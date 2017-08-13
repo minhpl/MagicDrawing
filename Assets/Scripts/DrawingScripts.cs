@@ -211,14 +211,9 @@ public class DrawingScripts : MonoBehaviour {
         loaded = true;
         while (eventSystem && eventSystem.GetComponent<TouchScriptInputModule>() == null)
         {
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
         eventSystem.GetComponent<TouchScriptInputModule>().enabled = false;
-    }
-
-    private void OnValidate()
-    {
-        
     }
 
     public void OnContrastSliderValueChange(Slider slider)
@@ -345,7 +340,7 @@ public class DrawingScripts : MonoBehaviour {
         PreviewResultScripts.texture = texCam;
         ResultScripts.texture = texCam;
         if(webcamCapture!=null)
-            ResultScripts.videoname = WebcamVideoCapture.filename;
+            ResultScripts.videoPath = webcamCapture.filePath;
         GVs.SCENE_MANAGER.loadPreviewResultScene();
     }
 

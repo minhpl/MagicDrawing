@@ -26,10 +26,11 @@ public class PreviewResultScripts : MonoBehaviour {
         {
             aspectRatioFitter.aspectRatio = (float)texture.width / (float)texture.height;
             aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+            var scale = 1 + GVs.ridTopPercent;
+            rawImg.rectTransform.localScale = new Vector3(scale, scale, scale);
             rawImg.texture = texture;
         }        
     }
-
     private void OnDisable()
     {
         if (preserveTexture)
@@ -38,12 +39,11 @@ public class PreviewResultScripts : MonoBehaviour {
         }        
         Destroy(texture);        
     }
-
     bool preserveTexture = false;
     public void OnOkBtnClicked()
     {
         preserveTexture = true;
-        ResultScripts.texture = texture;
+        ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;
         Mat a = new Mat(texture.height, texture.width,CvType.CV_8UC3);       
         Utils.texture2DToMat(texture, a );
         Imgproc.cvtColor(a, a, Imgproc.COLOR_RGB2BGR);
@@ -59,19 +59,19 @@ public class PreviewResultScripts : MonoBehaviour {
         }            
         if (Application.platform == RuntimePlatform.Android)
         {
-            fullPath = GVs.androidDir + name;            
-            if (!Directory.Exists(GVs.androidDir))
+            fullPath = GVs.androidDirMPiece + name;            
+            if (!Directory.Exists(GVs.androidDirMPiece))
             {
-                Directory.CreateDirectory(GVs.androidDir);
+                Directory.CreateDirectory(GVs.androidDirMPiece);
             }
             Utilities.Log("filename is {0}", fullPath);
         }
         else
         {
-            fullPath = GVs.pcDir + name;
-            if (!Directory.Exists(GVs.pcDir))
+            fullPath = GVs.pcDirMPiece + name;
+            if (!Directory.Exists(GVs.pcDirMPiece))
             {
-                Directory.CreateDirectory(GVs.pcDir);
+                Directory.CreateDirectory(GVs.pcDirMPiece);
             }
             Utilities.Log("filename is {0}", fullPath);
         }

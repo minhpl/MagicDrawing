@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using UniRx;
@@ -7,8 +9,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MasterpieceCreationScripts : MonoBehaviour {
-    private string dirPath;
-    public GameObject imageItem;
+    private string dirPathMP;
+    public GameObject panel;
     public GameObject canvas;
     public GridLayoutGroup gridLayoutGroup;
 	void Start () {
@@ -25,31 +27,35 @@ public class MasterpieceCreationScripts : MonoBehaviour {
         yield return null;
         if (Application.platform == RuntimePlatform.Android)
         {
-            dirPath = GVs.androidDir;
+            dirPathMP = GVs.androidDirMPiece;
         }
         else
         {
-            dirPath = GVs.pcDir;
+            dirPathMP = GVs.pcDirMPiece;
         }
-        var files = Directory.GetFiles(dirPath, "*.*", SearchOption.AllDirectories)
+        var files = Directory.GetFiles(dirPathMP, "*.*", SearchOption.AllDirectories)
             .Where(s => s.EndsWith(".png"));
         foreach (var f in files)
         {
             yield return null;
-            GameObject go = Instantiate(imageItem) as GameObject;
-            go.transform.SetParent(imageItem.transform.parent.transform);
-            go.transform.localScale = imageItem.transform.localScale;
+            GameObject go = Instantiate(panel) as GameObject;
+            go.transform.SetParent(panel.transform.parent.transform);
+            go.transform.localScale = panel.transform.localScale;
             go.SetActive(true);
             Texture2D texture = GFs.LoadPNGFromPath(f);
             GameObject masterpiece = go.transform.Find("masterpiece").gameObject;
             var databind = go.GetComponent<DataBind>();
-            databind.imageFileName = f;
-            string videoPath = dirPath + Path.GetFileNameWithoutExtension(f)+".avi";
+            databind.imagePath = f;
+            var fileNameWithouExtension = Path.GetFileNameWithoutExtension(f);
+            string videoPath = dirPathMP + fileNameWithouExtension + ".avi";
             if (File.Exists(videoPath))
             {
-                databind.videoFileName = videoPath;
+                databind.videoPath = videoPath;
             }
-            else Utilities.Log(videoPath);
+            else
+            {
+                Debug.Log(databind.videoPath == null);
+            }
             var rimg = masterpiece.GetComponent<RawImage>();
             var aspectratioFitter = masterpiece.GetComponent<AspectRatioFitter>();
             var widthImg = texture.width;
@@ -59,11 +65,19 @@ public class MasterpieceCreationScripts : MonoBehaviour {
             var scale = 1 + GVs.ridTopPercent;
             rimg.rectTransform.localScale = new Vector3(scale, scale, scale);
             go.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                GVs.SCENE_MANAGER.loadResultScene();
-            });
+                {
+                    ResultScripts.texture = texture;
+                    ResultScripts.videoPath = databind.videoPath;
+                    ResultScripts.mode = ResultScripts.MODE.REWATCH_RESULT;
+                    var datetime = DateTime.ParseExact(fileNameWithouExtension,Utilities.customFmts,new CultureInfo(0x042A));
+                    var datemonthyear = string.Format("{0}", datetime.Date.ToString("d-M-yyyy"));
+                    Debug.Log(datemonthyear);
+                    ResultScripts.title = datemonthyear;
+                    GVs.SCENE_MANAGER.loadResultScene();
+                }
+            );
             rimg.texture = texture;    
         }
-        Destroy(imageItem);
+        Destroy(panel);
     }
 }

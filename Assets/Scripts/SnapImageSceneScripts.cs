@@ -6,7 +6,7 @@ using UnityEngine;
 using OpenCVForUnity;
 using UnityEngine.UI;
 using System;
-
+using System.IO;
 public class SnapImageSceneScripts : MonoBehaviour
 {
     public GameObject goCam;
@@ -19,20 +19,17 @@ public class SnapImageSceneScripts : MonoBehaviour
     private int requestHeight = 1920;
     private WebCamTextureToMatHelper webcamTextureTomat;
     Mat snapMat;
-
     private void Awake()
     {
         if (MakePersistentObject.Instance)
             MakePersistentObject.Instance.gameObject.SetActive(false);
     }
-
     void Start()
     {
         rawImgCam = goCam.GetComponent<RawImage>();
         ShowCam();
         //MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
     }
-
     void ShowCam()
     {
         if (webcamTextureTomat == null)
@@ -221,6 +218,27 @@ public class SnapImageSceneScripts : MonoBehaviour
         if (snapMat != null)
         {
             DrawingScripts.image = snapMat;
+
+            var dateTimeNow = DateTime.Now.ToString(Utilities.customFmts);
+            string dirPathMPModel = null;
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                dirPathMPModel = GVs.androidDirMPModel;
+            }
+            else
+            {
+                dirPathMPModel = GVs.pcDirMPModel;
+            }
+
+            if (!Directory.Exists(dirPathMPModel))
+            {
+                Directory.CreateDirectory(dirPathMPModel);
+            }
+
+            var MPModelPath = dirPathMPModel + dateTimeNow + ".png";
+            Imgproc.cvtColor(snapMat, snapMat, Imgproc.COLOR_BGR2RGB);
+            Imgcodecs.imwrite(MPModelPath, snapMat);
+            HistoryScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
             Texture2D texture = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.BGRA32, false);
             Utils.matToTexture2D(snapMat, texture);
             DrawingScripts.texModel = texture;
