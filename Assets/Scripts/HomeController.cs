@@ -1,11 +1,40 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class HomeController : MonoBehaviour {
-    
+
+    private void Awake()
+    {
+        var clickStream = Observable.EveryUpdate().Where(_ => Input.touchCount!=0);
+        clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(250))).Where(xs => xs.Count >= 2)
+            .Subscribe(xs =>
+            {
+                Utilities.Log("Double click detected");
+            });
+        
+        Screen.autorotateToLandscapeLeft = false;
+        Screen.autorotateToLandscapeRight = false;
+        Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
+        //MainThreadDispatcher.StartCoroutine(Worker());
+    }
+
+    private IEnumerator Worker()
+    {        
+        yield return null;
+        Utilities.Log("mouse press is {0}", Input.GetMouseButtonDown(0));
+        Utilities.Log("touch is {0}", Input.touchCount);
+        Utilities.Log("Is touch supported? {0}", Input.touchSupported);
+        MainThreadDispatcher.StartCoroutine(Worker());
+        if (Input.GetKey("up"))
+            print("up arrow key is held down");
+    }
+
 
     void Start () {
 
@@ -59,7 +88,7 @@ public class HomeController : MonoBehaviour {
     {
         if (ready)
         {
-            GVs.SCENE_MANAGER.loadHistory1Scene();
+            GVs.SCENE_MANAGER.loadMasterpieceCreationScene();
         }         
     }
     public void loadLibrary()

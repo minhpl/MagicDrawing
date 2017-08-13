@@ -261,6 +261,7 @@ e260464741984401792c21e9f1b18f52 Assembly-CSharp.dll:.UIToggle
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableSelectTrigger
 ac4b8da881863d2cabf10e05b6e01c0a Assembly-CSharp.dll:.UIEventTrigger
 d80810436880258726b6be805d3417fb Assembly-CSharp.dll:.LibraryScripts
+aad8d5724b5ac45d7f61dc9236ad1154 Assembly-CSharp.dll:.MasterpieceCreationScripts
 53550d77a2892a1a140c18979b37baca Assembly-CSharp.dll:.WarpPerspective
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.UIDrawCall
 12bc5799a48e88313e25e6302ec35720 Assembly-CSharp.dll:.UICamera
@@ -318,7 +319,7 @@ d633212d6f78342331a42d3de880caf9 Assembly-CSharp.dll:TouchScript.Examples.KillMe
 154a7d6ef9630ee69cfa42695dd50703 Assembly-CSharp.dll:.TweenRotation
 4274518f8761bb4aa6c968ca5c7615e4 Assembly-CSharp.dll:.UIPopupList
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TrackScene
-ce4cd001509f10e62b19eb893b4e4e00 Assembly-CSharp.dll:.DrawingScripts
+57cd2a251c4d75e522eb7978d73d8c90 Assembly-CSharp.dll:.DrawingScripts
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Colors.Circle
 0189d52198025e02a31dab4f2f816848 Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.Clustered.ClusteredTransformGesture
 da9f29ffd5c4f0ac8282bf265db79688 Assembly-CSharp.dll:.TypewriterEffect
@@ -392,7 +393,7 @@ bf0efa3a2b50052bc4430312d3cc0dad Assembly-CSharp.dll:.LagPosition
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Cube.Init
 f9ab08734ff0441703a923df780d4c90 Assembly-CSharp.dll:.UITextList
 d62f60ad5ecff73b76da2ea09c712ada Assembly-CSharp.dll:.UIItemStorage
-c1c528dab73571b988ef8c8a34d82a86 Assembly-CSharp.dll:.ToggleScript
+664e82a89215ee403eba5f6f09b04f66 Assembly-CSharp.dll:.ToggleScript
 99fb603e20780b52805fbdf92487e554 Assembly-CSharp.dll:TouchScript.Behaviors.Transformer
 37d65bf29af9dd2fac1cab17987f9faa Assembly-CSharp.dll:.AnimatedAlpha
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample07_OrchestratIEnumerator
@@ -420,6 +421,7 @@ bcdcaf8839db68b83c8c16ec5024c6cc Assembly-CSharp.dll:.ActiveAnimation
 6ec273a5fcd8b0a1a1b85b7bebb4a14a Assembly-CSharp.dll:TouchScript.Layers.UI.TouchScriptInputModule
 af3c0485a6cfbede261a88cc1b5f8384 Assembly-CSharp.dll:.UI2DSprite
 9921a9f88a3288e106af12d6e3200e55 Assembly-CSharp.dll:.InvDatabase
+2f0fe82add67b48e13cff6cb22318cb2 Assembly-CSharp.dll:Consolation.Console
 a0eede1b5b36a25e94c81bef0c6bc660 Assembly-CSharp.dll:.UIImageButton
 25cb51b79761cf69e146997ca3f33ce1 Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.MouseCursor
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Behaviors.UI.OverHelper

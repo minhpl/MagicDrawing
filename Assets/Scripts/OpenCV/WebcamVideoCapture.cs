@@ -12,12 +12,30 @@ class WebcamVideoCapture
     private double fps;
     public VideoWriter writer;        
     static public string filename = null;
-
+    static public string filenameWithoutExt = null;
+    private string filePath;
     public WebcamVideoCapture(Size size, bool createNewVideo = true)
     {
         if(createNewVideo)
-        {
-            string name = String.Format("video_{0}.avi", DateTime.Now.ToString(Utilities.customFmts));
+        {            
+            filenameWithoutExt = String.Format("{0}", DateTime.Now.ToString(Utilities.customFmts));
+            filename = filenameWithoutExt + ".avi";        
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                filePath = GVs.androidDir + filename;
+                if (!Directory.Exists(GVs.androidDir))
+                {
+                    Directory.CreateDirectory(GVs.androidDir);
+                }
+            }
+            else
+            {
+                filePath = GVs.pcDir + filename;
+                if (!Directory.Exists(GVs.pcDir))
+                {
+                    Directory.CreateDirectory(GVs.pcDir);
+                }                
+            }
             //#if UNITY_IPHONE
             //                    Debug.Log("file name is 3" + filename);
             //                                filename = iphoneDir + name;
@@ -32,29 +50,11 @@ class WebcamVideoCapture
             //#else
             //                //PC here                
             //                filename = pcDir + name;
-            //#endif            
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                filename = GVs.androidDir + name;
-                if (!Directory.Exists(GVs.androidDir))
-                {
-                    Directory.CreateDirectory(GVs.androidDir);
-                }
-                Utilities.Log("filename is {0}", filename);
-            }
-            else
-            {
-                filename = GVs.pcDir + name;
-                if (!Directory.Exists(GVs.pcDir))
-                {
-                    Directory.CreateDirectory(GVs.pcDir);
-                }
-                Utilities.Log("filename is {0}", filename);
-            }
-        }        
+            //#endif    
+        }
         codec = VideoWriter.fourcc('M', 'J', 'P', 'G');
         fps = 60;
-        writer = new VideoWriter(filename, codec, fps, size);
+        writer = new VideoWriter(filePath, codec, fps, size);
     }
     public void write(Mat img)
     {

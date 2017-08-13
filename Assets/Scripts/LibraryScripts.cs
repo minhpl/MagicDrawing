@@ -79,13 +79,11 @@ public class LibraryScripts : MonoBehaviour
         int tempArea = area2048;
         int tempNumPacked = 0;
         
-
         for (int j = 0; j < clone; j++)
             for (int i = 0; i < imageCount; i++)
             {
                 //yield return new WaitForEndOfFrame();
                 yield return null;
-
                 if (imageItem == null) break;
                 GameObject go = Instantiate(imageItem) as GameObject;
                 go.transform.SetParent(imageItem.transform.parent.transform);
@@ -210,7 +208,6 @@ public class LibraryScripts : MonoBehaviour
                 }
                 index = count;
             }
-
             {
                 var subTextures = LstTexture.GetRange(LstTexture.Count - numRectInOther, numRectInOther);
                 var subGameObjects = LstGameObject.GetRange(LstTexture.Count - numRectInOther, numRectInOther);
@@ -239,12 +236,9 @@ public class LibraryScripts : MonoBehaviour
 
             //Debug.LogFormat("Number Area2048 need is {0}, Area1024 need is {1}, Area512 need is {2}", num2048, num1024, num512);            
         }
-
         //Destroy(imageItem.transform.parent.GetComponent<ContentSizeFitter>());
         //Destroy(imageItem.transform.parent.GetComponent<GridLayoutGroup>());
-
-        Destroy(imageItem);
-        
+        Destroy(imageItem);        
         //watch.Stop();
         //var elapsedMs = watch.ElapsedMilliseconds;
         //Utilities.Log("Time excution: {0}", elapsedMs);

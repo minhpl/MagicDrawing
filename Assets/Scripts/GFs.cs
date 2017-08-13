@@ -41,4 +41,23 @@ class GFs
         }
         return tex;
     }
+
+    public static Texture2D LoadPNGFromPath(string filePath)
+    {
+        Texture2D tex = null;
+        byte[] fileData;
+        if (File.Exists(filePath))
+        {
+            fileData = File.ReadAllBytes(filePath);
+            tex = new Texture2D(2, 2);
+            tex.LoadImage(fileData);
+        }
+        else
+        {
+            Debug.Log("File not existed");
+        }
+        return tex;
+    }
+
+
 }

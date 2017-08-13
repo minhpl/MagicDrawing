@@ -223,6 +223,7 @@
 <type fullname="TestTourchScripts" preserve="all"/>
 <type fullname="BackButton" preserve="all"/>
 <type fullname="CheckFPS" preserve="all"/>
+<type fullname="Consolation.Console" preserve="all"/>
 <type fullname="DataBind" preserve="all"/>
 <type fullname="DontShowPersistantScene" preserve="all"/>
 <type fullname="DrawingScripts" preserve="all"/>
@@ -233,6 +234,7 @@
 <type fullname="LibraryScriptsCompare" preserve="all"/>
 <type fullname="MainToolsScripts" preserve="all"/>
 <type fullname="MakePersistentObject" preserve="all"/>
+<type fullname="MasterpieceCreationScripts" preserve="all"/>
 <type fullname="HTTPRequest" preserve="all"/>
 <type fullname="AdaptiveThreshold" preserve="all"/>
 <type fullname="CannyEdgeDetector" preserve="all"/>

@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2017.1.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -514,6 +512,7 @@
     <Compile Include="Assets\Scenes\Test\TestTourchScripts.cs" />
     <Compile Include="Assets\Scripts\BackButton.cs" />
     <Compile Include="Assets\Scripts\CheckFPS.cs" />
+    <Compile Include="Assets\Scripts\Console.cs" />
     <Compile Include="Assets\Scripts\DataBind.cs" />
     <Compile Include="Assets\Scripts\DontShowPersistantScene.cs" />
     <Compile Include="Assets\Scripts\DrawingScripts.cs" />
@@ -528,6 +527,7 @@
     <Compile Include="Assets\Scripts\LibraryScriptsCompare.cs" />
     <Compile Include="Assets\Scripts\MainToolsScripts.cs" />
     <Compile Include="Assets\Scripts\MakePersistentObject.cs" />
+    <Compile Include="Assets\Scripts\MasterpieceCreationScripts.cs" />
     <Compile Include="Assets\Scripts\models\AvataModel.cs" />
     <Compile Include="Assets\Scripts\models\DownloadModel.cs" />
     <Compile Include="Assets\Scripts\models\DrawingTemplateModel.cs" />

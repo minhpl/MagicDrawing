@@ -10,8 +10,8 @@ public class SceneManagerScript  {
 		SceneManager.LoadScene("HomeScene");
 	}
 
-    public void loadHistory1Scene(){
-    	SceneManager.LoadScene("History1Scene");	
+    public void loadMasterpieceCreationScene(){
+    	SceneManager.LoadScene("MasterpieceCreationScene");	
     }
 
     public void loadLibraryScene(){

@@ -31,4 +31,5 @@ public class GVs {
     public static string androidDir = "/storage/emulated/0/DCIM/MagicDrawing/newfolder/";
     public static string pcDir = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\";
     public static string iphoneDir = "\\";
+    public static float ridTopPercent = 0.52f;
 }

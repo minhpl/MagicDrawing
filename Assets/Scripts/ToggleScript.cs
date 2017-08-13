@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,9 +18,22 @@ public class ToggleScript : MonoBehaviour {
     public Button Recording;
     public Button BtnPush;
     public Button BtnPushActive;
+    public GameObject panel_tool;
+    public GameObject backBtn;
     void Start() {
+        var clickStream = Observable.EveryUpdate().Where(_ => Input.GetMouseButtonDown(0));
+        clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(250))).Where(xs => xs.Count >= 2)
+            .Subscribe(xs =>
+            {
+                Utilities.Log("Double click detected");
+                if(panel_tool)
+                    panel_tool.SetActive(!panel_tool.activeSelf);
+                if(backBtn)
+                    backBtn.SetActive(!backBtn.activeSelf);
+            });
+        
 
-        BtnSlider.onClick.AddListener(() =>
+        BtnSlider.onClick.AddListener(  () =>
         {
             BtnSlider.gameObject.SetActive(false);
             BtnSlider_active.gameObject.SetActive(true);

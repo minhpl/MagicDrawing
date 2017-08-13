@@ -15,6 +15,7 @@ public class DrawingScripts : MonoBehaviour {
     public GameObject goModel;
     public Slider sliderLine;
     public Slider sliderContrast;
+    public Slider sliderTest;
     public Threshold threshold;
     public AdaptiveThreshold athreshold;
     public GameObject eventSystem;
@@ -38,6 +39,7 @@ public class DrawingScripts : MonoBehaviour {
     public static DRAWMODE drawMode = DRAWMODE.DRAW_MODEL;
     public enum FILTERMODE { LINE,BLEND};
     public static FILTERMODE filtermode = FILTERMODE.LINE;
+    
     private void Awake()
     {
         filtermode = FILTERMODE.LINE;
@@ -56,8 +58,17 @@ public class DrawingScripts : MonoBehaviour {
         //    .Subscribe(delegate (IList<float> i) { OnContrastSliderValueChange(sliderContrast); });
         onSliderContrastValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) => {
             OnContrastSliderValueChange(sliderContrast);
-        });        
-
+        });
+        if(sliderTest)
+        {
+            var onSliderTeststream = sliderTest.onValueChanged.AsObservable();
+            onSliderTeststream.Subscribe((float i) =>
+            {
+                var scale = 1 + i;
+                Utilities.Log("Scale is {0}", scale);
+                rimgcam.rectTransform.localScale = new Vector3(scale, scale, scale);
+            });
+        }
         //var heavyMethod2 = Observable.Start(() =>
         //{
         //    // heavy method...
@@ -111,9 +122,13 @@ public class DrawingScripts : MonoBehaviour {
             int h = (int)goCam.GetComponent<RawImage>().rectTransform.rect.height;            
             webCamTextureToMatHelper.onInitialized.AddListener(() => {
                 var rgbaMat = webCamTextureToMatHelper.GetMat();
+                var ridTopPercent = GVs.ridTopPercent;
                 var aspectRatioFitter = goCam.GetComponent<AspectRatioFitter>();
                 aspectRatioFitter.aspectRatio = (float)rgbaMat.width() / (float)rgbaMat.height();
                 aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+                var scale = 1 + ridTopPercent;
+                Utilities.Log("Scale is {0}", scale);
+                rimgcam.rectTransform.localScale = new Vector3(scale, scale, scale);
                 warpPerspective.Init(webCamTextureToMatHelper.GetMat());
                 Mat camMat = webCamTextureToMatHelper.GetMat();
                 texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
@@ -200,6 +215,12 @@ public class DrawingScripts : MonoBehaviour {
         }
         eventSystem.GetComponent<TouchScriptInputModule>().enabled = false;
     }
+
+    private void OnValidate()
+    {
+        
+    }
+
     public void OnContrastSliderValueChange(Slider slider)
     {
         float percent = slider.value / 100f;
@@ -283,7 +304,8 @@ public class DrawingScripts : MonoBehaviour {
         Destroy(texModel);
         Destroy(webCamTextureToMatHelper);
         if (webcamCapture != null && webcamCapture.writer != null)
-            webcamCapture.writer.release();        
+            webcamCapture.writer.release();      
+        //MainThreadDispatcher.
     }
 
     public void OnContrastBtnClicked()

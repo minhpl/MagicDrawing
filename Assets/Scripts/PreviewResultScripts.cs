@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using OpenCVForUnity;
 using System.IO;
 using System;
+using UniRx;
 
 public class PreviewResultScripts : MonoBehaviour {
     public Canvas canvas;
@@ -12,32 +13,29 @@ public class PreviewResultScripts : MonoBehaviour {
     public RawImage rawImg;    
     public static Texture2D texture;
     //public static float ratio;
-	void Start () {        
-        {                                
-            var canvasRect = canvas.GetComponent<RectTransform>().rect;
-            var canvasRatHW = canvasRect.height / canvasRect.width;
-            var panelRectTransform = panel.GetComponent<RectTransform>();
-            var width = panelRectTransform.rect.width;
-            var height = width * canvasRatHW;
-            panelRectTransform.sizeDelta = new Vector2(width, height);
-            var aspectRatioFitter = rawImg.gameObject.GetComponent<AspectRatioFitter>();
-            if(texture!=null)
-            {
-                aspectRatioFitter.aspectRatio = (float)texture.width / (float)texture.height;
-                aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
-                rawImg.texture = texture;
-            }
-        }
-	}
+    void Start()
+    {
+        var canvasRect = canvas.GetComponent<RectTransform>().rect;
+        var canvasRatHW = canvasRect.height / canvasRect.width;
+        var panelRectTransform = panel.GetComponent<RectTransform>();
+        var width = panelRectTransform.rect.width;
+        var height = width * canvasRatHW;
+        panelRectTransform.sizeDelta = new Vector2(width, height);
+        var aspectRatioFitter = rawImg.gameObject.GetComponent<AspectRatioFitter>();
+        if (texture != null)
+        {
+            aspectRatioFitter.aspectRatio = (float)texture.width / (float)texture.height;
+            aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+            rawImg.texture = texture;
+        }        
+    }
 
     private void OnDisable()
     {
         if (preserveTexture)
         {
-            Utilities.Log("here0");
             return;
-        }
-        Utilities.Log("why here");
+        }        
         Destroy(texture);        
     }
 
@@ -50,10 +48,18 @@ public class PreviewResultScripts : MonoBehaviour {
         Utils.texture2DToMat(texture, a );
         Imgproc.cvtColor(a, a, Imgproc.COLOR_RGB2BGR);
         string fullPath = null;
-        string name = String.Format("video_{0}.png", DateTime.Now.ToString(Utilities.customFmts));
+        string name = null;
+        if (WebcamVideoCapture.filenameWithoutExt != null)
+        {
+            name = String.Format("{0}.png", WebcamVideoCapture.filenameWithoutExt);
+        }            
+        else
+        {
+            name = String.Format("{0}.png", DateTime.Now.ToString(Utilities.customFmts));
+        }            
         if (Application.platform == RuntimePlatform.Android)
         {
-            fullPath = GVs.androidDir + name;
+            fullPath = GVs.androidDir + name;            
             if (!Directory.Exists(GVs.androidDir))
             {
                 Directory.CreateDirectory(GVs.androidDir);
@@ -71,5 +77,7 @@ public class PreviewResultScripts : MonoBehaviour {
         }
         Imgcodecs.imwrite(fullPath, a);
         GVs.SCENE_MANAGER.loadResultScene();
+        WebcamVideoCapture.filename = null;
+        WebcamVideoCapture.filenameWithoutExt = null;
     }
 }

@@ -35,10 +35,11 @@ public class SnapImageSceneScripts : MonoBehaviour
 
     void ShowCam()
     {
-        if(webcamTextureTomat==null)
+        if (webcamTextureTomat == null)
             webcamTextureTomat = goCam.GetComponent<WebCamTextureToMatHelper>();
         webcamTextureTomat.onInitialized.RemoveAllListeners();
-        webcamTextureTomat.onInitialized.AddListener(()=>{            
+        webcamTextureTomat.onInitialized.AddListener(() =>
+        {
             webcamTex = webcamTextureTomat.GetWebCamTexture();
             webcamTex.Play();
             rawImgCam.texture = webcamTex;
