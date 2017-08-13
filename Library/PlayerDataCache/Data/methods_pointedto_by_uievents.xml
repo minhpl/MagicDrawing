@@ -39,7 +39,6 @@
 			<method name="OnSnapBtnClicked"/>
 		</type>
 		<type fullname="LibraryScripts">
-			<method name="OnAppBtnClicked"/>
 			<method name="OnCamBtnClicked"/>
 		</type>
 		<type fullname="PreviewResultScripts">
@@ -47,9 +46,6 @@
 		</type>
 		<type fullname="ResultScripts">
 			<method name="OnPlayBtnClicked"/>
-		</type>
-		<type fullname="LibraryScriptsCompare">
-			<method name="onAppBtnClicked"/>
 		</type>
 	</assembly>
 	<assembly fullname="UnityEngine">

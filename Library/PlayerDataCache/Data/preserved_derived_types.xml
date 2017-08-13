@@ -229,6 +229,7 @@
 <type fullname="DrawingScripts" preserve="all"/>
 <type fullname="FPSs" preserve="all"/>
 <type fullname="GalaryScript" preserve="all"/>
+<type fullname="HistoryScripts" preserve="all"/>
 <type fullname="HomeController" preserve="all"/>
 <type fullname="LibraryScripts" preserve="all"/>
 <type fullname="LibraryScriptsCompare" preserve="all"/>
@@ -252,6 +253,7 @@
 <type fullname="ScrollViewScript" preserve="all"/>
 <type fullname="SnapImageSceneScripts" preserve="all"/>
 <type fullname="testin" preserve="all"/>
+<type fullname="TestSaladSeriazable" preserve="all"/>
 <type fullname="ToggleScript" preserve="all"/>
 <type fullname="TrackScene" preserve="all"/>
 <type fullname="TouchScript.Examples.Checker" preserve="all"/>
@@ -263,7 +265,6 @@
 <type fullname="TouchScript.Examples.CameraControl.CameraController" preserve="all"/>
 <type fullname="TouchScript.Examples.Checkers.Board" preserve="all"/>
 <type fullname="TouchScript.Examples.Checkers.Exclusive" preserve="all"/>
-<type fullname="Test" preserve="all"/>
 <type fullname="TouchScript.Examples.Colors.Circle" preserve="all"/>
 <type fullname="TouchScript.Examples.Colors.Colors" preserve="all"/>
 <type fullname="TouchScript.Examples.Cube.CustomPointerProxy" preserve="all"/>
@@ -324,6 +325,7 @@
 <type fullname="TouchScript.Layers.TouchLayer" preserve="all"/>
 <type fullname="TouchScript.Layers.UI.TouchScriptInputModule" preserve="all"/>
 <type fullname="TouchScript.TouchManager" preserve="all"/>
+<type fullname="JsonNetSample" preserve="all"/>
 </assembly>
 <assembly fullname="UnityEngine.UI">
 <type fullname="UnityEngine.EventSystems.EventSystem" preserve="all"/>
