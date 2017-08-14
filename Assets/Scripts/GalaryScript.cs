@@ -32,7 +32,7 @@ public class GalaryScript : MonoBehaviour {
         UITexture rimageOri = imageItem.transform.Find("image").GetComponent<UITexture>();
         int widthOri = rimageOri.width;
         Debug.LogFormat("width = {0}", widthOri);
-        imageCount = GVs.DRAWING_TEMPLATE_LIST_MODEL.Count();
+        imageCount = GVs.DRAWING_TEMPLATE_LIST.Count();
 
         Vector3 v3 = imageItem.transform.localPosition;
         v3.y += 340;
@@ -58,10 +58,10 @@ public class GalaryScript : MonoBehaviour {
                 go.GetComponent<UIButton>().tweenTarget = null;
 
                 UITexture rimage = go.transform.Find("image").GetComponent<UITexture>();
-                Texture2D texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i).thumb);
+                Texture2D texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST.dir + "/" + GVs.DRAWING_TEMPLATE_LIST.Get(i).thumb);
 
 
-                var drawTemplateModel = GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i);
+                var drawTemplateModel = GVs.DRAWING_TEMPLATE_LIST.Get(i);
                 go.GetComponent<DataBind>().drawingTemplateModel = drawTemplateModel;
 
                 float width = texture.width;
@@ -100,7 +100,7 @@ public class GalaryScript : MonoBehaviour {
         //Debug.LogFormat("name is {0}", go.GetComponent<DataBind>().drawingTemplateModel.thumb);
         //GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
         var drawTemplateModel = go.GetComponent<DataBind>().drawingTemplateModel;
-        var dirPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/";
+        var dirPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST.dir + "/";
         var thumbPath = dirPath + drawTemplateModel.thumb;
         var imgPath = dirPath + drawTemplateModel.image;
         DrawingScripts.imgModelPath = imgPath;

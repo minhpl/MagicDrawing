@@ -39,12 +39,13 @@ public class LibraryScripts : MonoBehaviour
             GVs.APP_PATH = Application.persistentDataPath;
         }
         GFs.LoadTemplateList();
+        GFs.LoadCategoryList();
+
         var watch = System.Diagnostics.Stopwatch.StartNew();
         coroutine = Load();
         MainThreadDispatcher.StartUpdateMicroCoroutine(coroutine);        
         watch.Stop();
-        var elapsedMs = watch.ElapsedMilliseconds;
-        //Utilities.Log("Time pass Load function: {0}", elapsedMs);        
+        var elapsedMs = watch.ElapsedMilliseconds;      
     }
 
     IEnumerator Load()
@@ -59,8 +60,8 @@ public class LibraryScripts : MonoBehaviour
         int deviant512 = (1 << 18) / 5;
         RawImage rimageOri = imageItem.transform.Find("RImage").GetComponent<RawImage>();
         int widthOri = (int)rimageOri.rectTransform.rect.width;
-
-        var imageCount = GVs.DRAWING_TEMPLATE_LIST_MODEL.Count();
+        var imageCount = GVs.DRAWING_TEMPLATE_LIST.Count();
+        imageCount = GVs.CATEGORY_LIST.data.Count;
         var watch = System.Diagnostics.Stopwatch.StartNew();
         var area2048 = (1 << 22) - deviant2048;
         var area1024 = (1 << 20) - deviant1024;
@@ -74,8 +75,7 @@ public class LibraryScripts : MonoBehaviour
         
         for (int j = 0; j < clone; j++)
             for (int i = 0; i < imageCount; i++)
-            {
-                //yield return new WaitForEndOfFrame();
+            {                
                 yield return null;
                 if (imageItem == null) break;
                 GameObject go = Instantiate(imageItem) as GameObject;
@@ -83,12 +83,14 @@ public class LibraryScripts : MonoBehaviour
                 go.transform.localScale = imageItem.transform.localScale;
                 RawImage rimage = go.transform.Find("RImage").GetComponent<RawImage>();
 
-                var drawTemplateModel = GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i);                
-                Texture2D texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + drawTemplateModel.thumb);
-                //TextureScale.Point(texture, 100, 50);
+                var categorys = GVs.CATEGORY_LIST.data;
+                Category category = categorys[i];
+                var dir = GVs.CATEGORY_LIST.dir;
+
+                var drawTemplateModel = GVs.DRAWING_TEMPLATE_LIST.Get(i);
+                Texture2D texture = GFs.LoadPNG(dir + "/" + category.image);                
                 float width = texture.width;
                 float height = texture.height;
-                //Debug.LogFormat("width = {0}, height = {1}", width, height);
                 float ratio = width / height;
 
                 var w = widthOri;
@@ -97,9 +99,7 @@ public class LibraryScripts : MonoBehaviour
                 {
                     w = widthOri >> deScale;
                     h = (int)(widthOri * height / width) >> deScale;
-
-                    TextureScale.Bilinear(texture, widthOri >> deScale, (int)(widthOri * height / width) >> deScale);
-                    //rimage.rectTransform.localScale = new Vector3(1, height / width, 1);
+                    TextureScale.Bilinear(texture, widthOri >> deScale, (int)(widthOri * height / width) >> deScale);                    
                     rimage.rectTransform.sizeDelta = new Vector2(widthOri, widthOri * height / width);
                 }
                 else
@@ -107,7 +107,6 @@ public class LibraryScripts : MonoBehaviour
                     w = (int)(widthOri * width / height) >> deScale;
                     h = widthOri >> deScale;
                     TextureScale.Bilinear(texture, (int)(widthOri * width / height) >> deScale, widthOri >> deScale);
-                    //rimage.rectTransform.localScale = new Vector3(ratio, 1, 1);
                     rimage.rectTransform.sizeDelta = new Vector2(widthOri * width / height, widthOri);
                 }
                 var area = w * h;
@@ -124,20 +123,12 @@ public class LibraryScripts : MonoBehaviour
                 texture.Compress(true);
                 rimage.texture = texture;                                
                 go.SetActive(true);                
-                LstGameObject.Add(go);
-                
-                //var offsetWidth = 1 / 2048;
-                //var offsetHeight = 1 / 2048;
-                //var a = rimage.uvRect;
-                //a.x += offsetWidth;
-                //a.y += offsetHeight;
-                //a.width -= 2 * offsetWidth;
-                //a.height -= 2 * offsetHeight;
+                LstGameObject.Add(go);               
                 LstTexture.Add(texture);
 
                 go.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    var dirPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/";
+                    var dirPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST.dir + "/";
                     var thumbPath = dirPath + drawTemplateModel.thumb;
                     var imgPath = dirPath + drawTemplateModel.image;
                     Debug.LogFormat("on click: img path is {0}", imgPath);
@@ -145,28 +136,13 @@ public class LibraryScripts : MonoBehaviour
                     DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;
                     HistorySceneScripts.AddHistoryItem(new HistoryModel(imgPath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
                     GVs.SCENE_MANAGER.loadDrawingScene();
-                });                
-
-                //var filePath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i).image;
-                //Mat a = Imgcodecs.imread(filePath);
-                //float width = a.width();
-                //float height = a.height();
-                //float ratio = width / height;
-                //if (ratio > 1)
-                //    Imgproc.resize(a, tempMat, new Size(widthOri, widthOri * height / width));
-                //else Imgproc.resize(a, tempMat, new Size(widthOri * width / height, widthOri));
-                //Texture2D texture2d = new Texture2D(tempMat.width(), tempMat.height());
-                //Utils.matToTexture2D(tempMat, texture2d);            
-                //rimage.texture = texture2d;
-                //rimage.rectTransform.sizeDelta = new Vector2(tempMat.width(), tempMat.height());
-                //go.SetActive(true);                          
+                });                                                       
             }
 
         if(USE_PACK && imageItem!=null)
         {
             int freeArea = 0;
             freeArea = Area - area2048 * num2048;
-
             if (freeArea > area1024)
             {                
                 num2048 += 1;
@@ -178,7 +154,6 @@ public class LibraryScripts : MonoBehaviour
                 if (freeArea > area512) num1024 += 1;
                 else num512 += 1;
             }
-
             int padding = 0;
             int index = 0;
             var atlasSize = 2048;
@@ -212,12 +187,8 @@ public class LibraryScripts : MonoBehaviour
                 var subGameObjects = LstGameObject.GetRange(LstTexture.Count - numRectInOther, numRectInOther);
                 atlasSize = num1024 > 0 ? 1024 : 512;
                 offset = (1f / atlasSize);
-
                 var atlas = new Texture2D(1, 1, TextureFormat.RGBA32, false);
                 var rects = atlas.PackTextures(subTextures.ToArray(), padding, atlasSize, false);
-                //atlas.Compress(true);
-                //Debug.LogFormat("Atlas size is {0}", atlasSize);
-                //Debug.LogFormat("Leng of rect array is {0}", rects.Length);
                 for (int i = 0; i < rects.Length; i++)
                 {
                     GameObject go = subGameObjects[i];
@@ -231,35 +202,15 @@ public class LibraryScripts : MonoBehaviour
                     rimg.texture = atlas;
                     rimg.uvRect = rect;
                 }
-            }
-
-            //Debug.LogFormat("Number Area2048 need is {0}, Area1024 need is {1}, Area512 need is {2}", num2048, num1024, num512);            
+            }         
         }
-        //Destroy(imageItem.transform.parent.GetComponent<ContentSizeFitter>());
-        //Destroy(imageItem.transform.parent.GetComponent<GridLayoutGroup>());
-        Destroy(imageItem);        
-        //watch.Stop();
-        //var elapsedMs = watch.ElapsedMilliseconds;
-        //Utilities.Log("Time excution: {0}", elapsedMs);
-        //imageItem.GetComponent<Button>().onClick.AddListener(() =>
-        //{
-        //    OnClickedGameObject(imageItem);
-        //});
+        Destroy(imageItem);                
     }
-
-    void OnItemClicked(GameObject go)
-    {
-        //Debug.LogFormat("name is {0}", go.GetComponent<DataBind>().drawingTemplateModel.thumb);
-        //GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
-        //GVs.CURRENT_MODEL = go.GetComponent<DataBind>().drawingTemplateModel;                       
-    }    
 
     public void OnAppBtnClicked()
     {
         StopCoroutine(coroutine);
         Destroy(GameObject.Find("Canvas"));
-        //GVs.SCENE_MANAGER.loadCollectionScene();
-        //SceneManager.LoadScene("LibrarySceneCompare");
     }
 
     public void OnCamBtnClicked()

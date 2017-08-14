@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+
+[Serializable]
+public class CategoryRequest
+{
+    public string categoryId;
+    public CategoryRequest(string id)
+    {
+        this.categoryId = id;
+    }
+}
+
+[Serializable]
+public class Category
+{
+    public string _id;
+    public string name;
+    public string image;
+    public int _v;
+}
+
+[Serializable]
+public class CategoryList
+{
+    public int success;
+    public string dir;
+    public List<Category> data;
+
+    public CategoryList()
+    {
+        data = new List<Category>();
+    }
+}

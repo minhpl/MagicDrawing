@@ -11,6 +11,8 @@ public class GVs {
     public static string GET_ALL_AVATA_URL = SERVER_URL + "users/drawing/getAllAvata";
     public static string DOWNLOAD_URL = SERVER_URL + "users/drawing/download";
     public static string GET_ALL_TEMPLATE_URL = SERVER_URL + "users/drawing/getAllTemplate";
+    public static string GET_ALL_CATEGORY_URL = GVs.SERVER_URL + "users/drawing/getAllCategory";
+    public static string GET_TEMPLATE_BY_CATEGORY_URL = GVs.SERVER_URL + "users/drawing/getTemplateByCategory";
 
     public static string KEY = "12345678123456781234567812345678";
     public static string IV = "1234567812345678";
@@ -22,7 +24,7 @@ public class GVs {
     public static int PROFILE_ADD = 2;
     public static int PROFILE_CHANGE_AVATA = 3;
 
-    public static DrawingTemplateListModel DRAWING_TEMPLATE_LIST_MODEL = new DrawingTemplateListModel();
+    public static TemplateDrawingList DRAWING_TEMPLATE_LIST = new TemplateDrawingList();
 
     //-----------------------
     public static Stack<int> TRACE_SCENE = new Stack<int>();
@@ -41,4 +43,6 @@ public class GVs {
     public static string pcDirMPModel = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\MasterPieceModel\\";
 
     public static float ridTopPercent = 0.52f;
+
+    public static CategoryList CATEGORY_LIST= new CategoryList();
 }

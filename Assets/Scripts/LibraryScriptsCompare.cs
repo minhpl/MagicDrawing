@@ -53,7 +53,7 @@ public class LibraryScriptsCompare : MonoBehaviour
 
         RawImage rimageOri = imageItem.transform.Find("RImage").GetComponent<RawImage>();
         int widthOri = (int)rimageOri.rectTransform.rect.width;
-        imageCount = GVs.DRAWING_TEMPLATE_LIST_MODEL.Count();
+        imageCount = GVs.DRAWING_TEMPLATE_LIST.Count();
         var watch = System.Diagnostics.Stopwatch.StartNew();
         for (int j = 0; j < 1; j++)
             for (int i = 0; i < imageCount; i++)
@@ -65,9 +65,9 @@ public class LibraryScriptsCompare : MonoBehaviour
                 RawImage rimage = go.transform.Find("RImage").GetComponent<RawImage>();
                 //a = GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i);     
 
-                var drawTemplateModel = GVs.DRAWING_TEMPLATE_LIST_MODEL.Get(i);
+                var drawTemplateModel = GVs.DRAWING_TEMPLATE_LIST.Get(i);
                 go.GetComponent<DataBind>().drawingTemplateModel = drawTemplateModel;
-                Texture2D texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + drawTemplateModel.thumb);
+                Texture2D texture = GFs.LoadPNG(GVs.DRAWING_TEMPLATE_LIST.dir + "/" + drawTemplateModel.thumb);
                 //TextureScale.Point(texture, 100, 50);
                 float width = texture.width;
                 float height = texture.height;
@@ -153,7 +153,7 @@ public class LibraryScriptsCompare : MonoBehaviour
         //GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
         var drawTemplateModel = go.GetComponent<DataBind>().drawingTemplateModel;
 
-        var dirPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/";
+        var dirPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST.dir + "/";
         var thumbPath = dirPath + drawTemplateModel.thumb;
         var imgPath = dirPath + drawTemplateModel.image;
         DrawingScripts.imgModelPath = imgPath;

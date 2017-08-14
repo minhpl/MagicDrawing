@@ -82,7 +82,7 @@ public class DrawingScripts : MonoBehaviour {
         //Debug.LogFormat("Slider value is {0}", slider.value);
     }
     // Use this for initialization
-    void Start () {
+    void Start () {        
         rimgcam = goCam.GetComponent<RawImage>();
         rimgmodel = goModel.GetComponent<RawImage>();
         rimgmodel.color = new Color(255, 255, 255, opaque);
@@ -99,7 +99,7 @@ public class DrawingScripts : MonoBehaviour {
             GVs.APP_PATH = Application.persistentDataPath;
         }
         threshold = GetComponent<Threshold>();
-        GFs.LoadTemplateList();
+        GFs.LoadTemplateList();        
         MainThreadDispatcher.StartUpdateMicroCoroutine(loadModel());
         MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
         //var heavyMethod = Observable.Start(() =>
@@ -133,24 +133,23 @@ public class DrawingScripts : MonoBehaviour {
                 warpPerspective.Init(webCamTextureToMatHelper.GetMat());
                 Mat camMat = webCamTextureToMatHelper.GetMat();
                 texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
-            });
+            });           
             webCamTextureToMatHelper.Initialize(null, 640, 480,true,60);
-        }
+        }        
+
         if (drawMode == DRAWMODE.DRAW_MODEL)
         {
             string imgPath;
             if (imgModelPath != null)
             {
                 imgPath = imgModelPath;
-                Debug.LogFormat("Img path is {0}", imgPath);
             }
             else
             {
-                imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0027.jpg";
+                imgPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST.dir + "/" + "C01T014.jpg";
             }
-            Debug.LogFormat("image path is {0}", imgPath);
-            image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
-            //yield break;
+            Debug.LogFormat("image path is {0}", imgPath);          
+            image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);            
             Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
             float w = image.width();
             float h = image.height();
@@ -178,7 +177,7 @@ public class DrawingScripts : MonoBehaviour {
         {
 
         }
-        //Utilities.Log("img loaded have width is {0}, height is {1}", image.width(), image.height());
+
         float width = image.width();
         float heigh = image.height();
         float modelAreaWidth = rimgmodel.rectTransform.rect.width;
@@ -216,14 +215,12 @@ public class DrawingScripts : MonoBehaviour {
         }
         eventSystem.GetComponent<TouchScriptInputModule>().enabled = false;
     }
-
     public void OnContrastSliderValueChange(Slider slider)
     {
         float percent = slider.value / 100f;
         var c = rimgmodel.color;
         rimgmodel.color = new Color(c.r, c.g, c.b, percent);
     }
-
     private float currentSliderValue = 0;
     public void OnLineSliderValueChange(Slider slider)
     {
@@ -239,8 +236,7 @@ public class DrawingScripts : MonoBehaviour {
                 rimgmodel.texture = texEdges;
             }            
         }
-    }
-   
+    }   
     IEnumerator Worker()
     {
         while (true)
@@ -286,7 +282,6 @@ public class DrawingScripts : MonoBehaviour {
         var needw = w * scaleX;       
         //Debug.Log(a.rectTransform.rect.ToString());      
     }
-
     private void OnDisable()
     {        
         image.release();
@@ -303,7 +298,6 @@ public class DrawingScripts : MonoBehaviour {
             webcamCapture.writer.release();      
         //MainThreadDispatcher.
     }
-
     public void OnContrastBtnClicked()
     {      
         if (filtermode == FILTERMODE.LINE)
@@ -321,7 +315,6 @@ public class DrawingScripts : MonoBehaviour {
             rimgmodel.texture = texModel;        
         }        
     }
-
     public void OnSliderBtnClicked()
     {
         filtermode = FILTERMODE.LINE;
@@ -333,7 +326,6 @@ public class DrawingScripts : MonoBehaviour {
         rimgmodel.GetComponent<Transformer>().enabled = false;
         rimgmodel.GetComponent<FullscreenLayer>().enabled = false;
     }
-
     bool preserveTexture = false;
     public void OnTickBtnClicked()
     {
@@ -344,7 +336,6 @@ public class DrawingScripts : MonoBehaviour {
             ResultScripts.videoPath = webcamCapture.filePath;
         GVs.SCENE_MANAGER.loadPreviewResultScene();
     }
-
     public void OnPushBtnClicked()
     {
         if(filtermode == FILTERMODE.LINE)
@@ -357,7 +348,6 @@ public class DrawingScripts : MonoBehaviour {
         rimgmodel.GetComponent<Transformer>().enabled = true;
         rimgmodel.GetComponent<FullscreenLayer>().enabled = true;
     }
-
     public void OnPushActiveBtnClicked()
     {
         if (filtermode == FILTERMODE.LINE)

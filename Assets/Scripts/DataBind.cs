@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DataBind : MonoBehaviour {
-    public DrawingTemplateModel drawingTemplateModel = null; 
+    public TemplateDrawing drawingTemplateModel = null; 
     public string imagePath = null;
     public string videoPath = null;
 }
