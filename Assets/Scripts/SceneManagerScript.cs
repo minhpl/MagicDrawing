@@ -42,6 +42,11 @@ public class SceneManagerScript  {
     	SceneManager.LoadScene("SnapImageScene");					
     }
 
+    public void loadGalleryScene()
+    {
+        SceneManager.LoadScene("GalleryScene");
+    }
+
     public void loadSplashScene(){
     	SceneManager.LoadScene("SplashScene");	
     }

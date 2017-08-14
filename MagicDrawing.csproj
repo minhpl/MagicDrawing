@@ -522,9 +522,10 @@
     <Compile Include="Assets\Scripts\DrawingScripts2.cs" />
     <Compile Include="Assets\Scripts\FPSs.cs" />
     <Compile Include="Assets\Scripts\GalaryScript.cs" />
+    <Compile Include="Assets\Scripts\GallerySceneScripts.cs" />
     <Compile Include="Assets\Scripts\GFs.cs" />
     <Compile Include="Assets\Scripts\GVs.cs" />
-    <Compile Include="Assets\Scripts\HistoryScripts.cs" />
+    <Compile Include="Assets\Scripts\HistorySceneScripts.cs" />
     <Compile Include="Assets\Scripts\HomeController.cs" />
     <Compile Include="Assets\Scripts\Job.cs" />
     <Compile Include="Assets\Scripts\LibraryScripts.cs" />

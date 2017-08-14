@@ -46,7 +46,7 @@ public class ResultScripts : MonoBehaviour {
             var scale = 1 + GVs.ridTopPercent;
             rimg.rectTransform.localScale = new Vector3(scale, scale, scale);
         }
-        if (videoPath != null)
+        if (!string.IsNullOrEmpty(videoPath))
         {
             Debug.LogFormat("Video Path is {0}", videoPath);
             btnPlay.SetActive(true);
@@ -64,7 +64,7 @@ public class ResultScripts : MonoBehaviour {
     {
         isPlaying = true;
         bool isPlayable = true;
-        if (videoPath == null) isPlayable = false;
+        if (string.IsNullOrEmpty(videoPath)) isPlayable = false;
         cap = new VideoCapture(videoPath);
         cap.open(videoPath);
         if (!cap.isOpened())

@@ -26,10 +26,12 @@ public class GVs {
 
     //-----------------------
     public static Stack<int> TRACE_SCENE = new Stack<int>();
-    public static DrawingTemplateModel CURRENT_MODEL;
     public static LinkedList<string> history = new LinkedList<string>();
 
-    
+    public static string androidMainImagesDirPath = "/storage/emulated/0/DCIM/";
+    public static string iosMainImagesDirPath = "\\";
+    public static string pcMainImagesDirPath = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\";   
+
     public static string androidDirMPiece = "/storage/emulated/0/DCIM/MagicDrawing/Masterpiece/";    
     public static string iphoneDirMPiece = "\\";
     public static string pcDirMPiece = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\";

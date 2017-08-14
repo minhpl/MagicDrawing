@@ -1,6 +1,11 @@
 <linker>
 	<assembly fullname="Assembly-CSharp">
+		<type fullname="HomeController">
+			<method name="loadLibrary"/>
+			<method name="loadHistory1Scene"/>
+		</type>
 		<type fullname="BackButton">
+			<method name="onBackButtonClicked"/>
 			<method name="onBackButtonClicked"/>
 			<method name="onBackButtonClicked"/>
 			<method name="onBackButtonClicked"/>

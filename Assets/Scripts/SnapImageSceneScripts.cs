@@ -218,7 +218,6 @@ public class SnapImageSceneScripts : MonoBehaviour
         if (snapMat != null)
         {
             DrawingScripts.image = snapMat;
-
             var dateTimeNow = DateTime.Now.ToString(Utilities.customFmts);
             string dirPathMPModel = null;
             if (Application.platform == RuntimePlatform.Android)
@@ -229,16 +228,14 @@ public class SnapImageSceneScripts : MonoBehaviour
             {
                 dirPathMPModel = GVs.pcDirMPModel;
             }
-
             if (!Directory.Exists(dirPathMPModel))
             {
                 Directory.CreateDirectory(dirPathMPModel);
             }
-
             var MPModelPath = dirPathMPModel + dateTimeNow + ".png";
             Imgproc.cvtColor(snapMat, snapMat, Imgproc.COLOR_BGR2RGB);
             Imgcodecs.imwrite(MPModelPath, snapMat);
-            HistoryScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
+            HistorySceneScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
             Texture2D texture = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.BGRA32, false);
             Utils.matToTexture2D(snapMat, texture);
             DrawingScripts.texModel = texture;

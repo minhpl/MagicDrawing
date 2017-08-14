@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Utilities;
+using OpenCVForUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,11 +13,7 @@ public class HistoryModel
     public enum IMAGETYPE { SNAP, MODEL};
     public string filePath;
     public string thumbPath;
-    public IMAGETYPE imgType;    
-    public HistoryModel()
-    {
-
-    }
+    public IMAGETYPE imgType;
     public HistoryModel(string filePath,string thumbPath, IMAGETYPE imgType = IMAGETYPE.SNAP)
     {
         this.filePath = filePath;
@@ -25,7 +22,7 @@ public class HistoryModel
     }
 }
 
-public class HistoryScripts : MonoBehaviour {	
+public class HistorySceneScripts : MonoBehaviour {	
     public static LinkedList<HistoryModel> history = null;
     private const string KEY = "history";    
     public GameObject item;
@@ -52,15 +49,36 @@ public class HistoryScripts : MonoBehaviour {
             GameObject cloneItem = Instantiate(item);
             cloneItem.transform.parent = item.transform.parent;
             cloneItem.transform.localScale = item.transform.localScale;
-
             var thumbPath = historyModel.thumbPath;
-
-            Texture2D texture = GFs.LoadPNGFromPath(thumbPath);
-
-            cloneItem.GetComponent<RawImage>().texture = texture;
+            var filePath = historyModel.filePath;
+            Mat image = Imgcodecs.imread(thumbPath, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+            Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
+            Texture2D texture = new Texture2D(image.width(),image.height(),TextureFormat.BGRA32,false);
+            Utils.matToTexture2D(image, texture);
+            var rimgGameObject = cloneItem.transform.Find("rimg");
+            rimgGameObject.GetComponent<RawImage>().texture = texture;
+            rimgGameObject.GetComponent<AspectRatioFitter>().aspectRatio = (float)image.width() / (float)image.height();
+            cloneItem.SetActive(true);
+            cloneItem.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                if(historyModel.imgType == HistoryModel.IMAGETYPE.MODEL)
+                {
+                    DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;                   
+                    DrawingScripts.imgModelPath = filePath;
+                    AddHistoryItem(new HistoryModel(filePath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                }
+                else
+                {                    
+                    DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
+                    DrawingScripts.image = image;
+                    DrawingScripts.texModel = texture;
+                    AddHistoryItem(new HistoryModel(filePath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                }
+                GVs.SCENE_MANAGER.loadDrawingScene();
+            });
         }
+        Destroy(item);
     }
-
     public static void AddHistoryItem(HistoryModel historyModel)
     {
         const int MAXHISTORY = 30;
@@ -71,14 +89,12 @@ public class HistoryScripts : MonoBehaviour {
                 history = JsonConvert.DeserializeObject<LinkedList<HistoryModel>>(jsonLoad);
             if (history == null)
                 history = new LinkedList<HistoryModel>();
-        }
-                        
-        if (history.Count == MAXHISTORY)
+        }                        
+        while (history.Count >= MAXHISTORY)
             history.RemoveLast();
         history.AddFirst(historyModel);
         var jsonSave = JsonConvert.SerializeObject(history);
         PlayerPrefs.SetString(KEY, jsonSave);
         PlayerPrefs.Save();
     }
-
 }

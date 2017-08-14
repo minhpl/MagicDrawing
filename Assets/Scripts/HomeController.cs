@@ -37,7 +37,7 @@ public class HomeController : MonoBehaviour {
 
 
     void Start () {
-
+        Debug.Log("xin chao the gioi");
         if (MakePersistentObject.Instance)
         {
             MakePersistentObject.Instance.gameObject.SetActive(false);
@@ -86,6 +86,7 @@ public class HomeController : MonoBehaviour {
 
     public void loadHistory1Scene()
     {
+        Debug.Log("the gioi tuoi dep");
         if (ready)
         {
             GVs.SCENE_MANAGER.loadMasterpieceCreationScene();

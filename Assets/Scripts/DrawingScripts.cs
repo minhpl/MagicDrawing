@@ -22,6 +22,7 @@ public class DrawingScripts : MonoBehaviour {
     public TouchManager touchManager;
     WarpPerspective warpPerspective;
     public static Mat image;
+    public static string imgModelPath = null;
     private Color32[] colorsBuffer;
     private Texture2D texEdges;
     private Mat edges;
@@ -137,19 +138,19 @@ public class DrawingScripts : MonoBehaviour {
         }
         if (drawMode == DRAWMODE.DRAW_MODEL)
         {
-            var model = GVs.CURRENT_MODEL;
             string imgPath;
-            if (model != null)
+            if (imgModelPath != null)
             {
-                imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + model.image;
+                imgPath = imgModelPath;
+                Debug.LogFormat("Img path is {0}", imgPath);
             }
             else
             {
                 imgPath = GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/" + "T0027.jpg";
             }
-            imgPath = GVs.APP_PATH + "/" + imgPath;
-            //Debug.LogFormat("image path is {0}", imgPath);
+            Debug.LogFormat("image path is {0}", imgPath);
             image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
+            //yield break;
             Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
             float w = image.width();
             float h = image.height();

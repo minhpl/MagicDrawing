@@ -99,7 +99,11 @@ public class GalaryScript : MonoBehaviour {
     {
         //Debug.LogFormat("name is {0}", go.GetComponent<DataBind>().drawingTemplateModel.thumb);
         //GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
-        GVs.CURRENT_MODEL = go.GetComponent<DataBind>().drawingTemplateModel;
+        var drawTemplateModel = go.GetComponent<DataBind>().drawingTemplateModel;
+        var dirPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST_MODEL.dir + "/";
+        var thumbPath = dirPath + drawTemplateModel.thumb;
+        var imgPath = dirPath + drawTemplateModel.image;
+        DrawingScripts.imgModelPath = imgPath;
         GVs.SCENE_MANAGER.loadDrawingScene();
     }
 

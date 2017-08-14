@@ -24,7 +24,7 @@ public class MainToolsScripts : MonoBehaviour {
 
         btnGallary.onClick.AddListener(() =>
         {
-
+            GVs.SCENE_MANAGER.loadGalleryScene();
         });
 
         btnHistory.onClick.AddListener(() =>

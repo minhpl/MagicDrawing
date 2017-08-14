@@ -33,7 +33,7 @@ public class MasterpieceCreationScripts : MonoBehaviour {
         {
             dirPathMP = GVs.pcDirMPiece;
         }
-        var files = Directory.GetFiles(dirPathMP, "*.*", SearchOption.AllDirectories)
+        var files = Directory.GetFiles(dirPathMP, "*.*", SearchOption.TopDirectoryOnly)
             .Where(s => s.EndsWith(".png"));
         foreach (var f in files)
         {
