@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ResultScripts : MonoBehaviour {
@@ -16,17 +17,32 @@ public class ResultScripts : MonoBehaviour {
     public GameObject panel;
     public GameObject btnPlay;
     public Canvas canvas;
+    public Button BackButton;
     public Text tit;
     private Texture2D texVideo;
     public enum MODE { FISRT_RESULT,REWATCH_RESULT};
-    public static MODE mode;    
-
+    public static MODE mode;
+    private int FPS = 60;
+    private float currentFPS = 0;
     private void Awake()
     {
         if (mode == MODE.REWATCH_RESULT)
         {
             tit.text = title;
         }        
+        if(mode==MODE.FISRT_RESULT && BackButton!=null)
+        {
+            BackButton.onClick = new Button.ButtonClickedEvent();
+            BackButton.onClick.AddListener(() =>
+            {
+                GVs.TRACE_SCENE.Pop();
+                GVs.TRACE_SCENE.Pop();
+                GVs.TRACE_SCENE.Pop();
+                int i = GVs.TRACE_SCENE.Pop();                
+                SceneManager.LoadScene(i);
+            });
+            //BackButton.onClick.RemoveAllListeners();
+        }
     }
 
     void Start () {
@@ -51,7 +67,8 @@ public class ResultScripts : MonoBehaviour {
             Debug.LogFormat("Video Path is {0}", videoPath);
             btnPlay.SetActive(true);
         }
-        else btnPlay.SetActive(false);     
+        else btnPlay.SetActive(false);
+
     }
     private void OnDisable()
     {
@@ -70,13 +87,29 @@ public class ResultScripts : MonoBehaviour {
         if (!cap.isOpened())
         {
             isPlayable = false;
-        }
+        }      
+
         if (isPlayable)
         {            
             btnPlay.SetActive(false);
             Mat frame = new Mat();
+
+            //int count = 0;
+            float a = 0;
             for (;;)
-            {
+            {  
+                currentFPS = 1 / Time.deltaTime;
+                if (a < 1)
+                {
+                    a = a + FPS / currentFPS - 1;
+                }
+                
+                if(a>1)
+                {
+                    a = a - 1;
+                    continue;
+                }                
+
                 yield return null;
                 cap.read(frame);                
                 if (frame.empty())
@@ -102,5 +135,10 @@ public class ResultScripts : MonoBehaviour {
     {
         if (isPlaying) return;
         MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
+    }
+
+    public void OnBackBtnClicked()
+    {
+        
     }
 }

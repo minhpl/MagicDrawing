@@ -10,6 +10,8 @@ using TouchScript.Behaviors;
 using TouchScript.Layers;
 using TouchScript.Layers.UI;
 using TouchScript;
+using TouchScript.Gestures;
+
 public class DrawingScripts : MonoBehaviour {
     public GameObject goCam;
     public GameObject goModel;
@@ -19,7 +21,7 @@ public class DrawingScripts : MonoBehaviour {
     public Threshold threshold;
     public AdaptiveThreshold athreshold;
     public GameObject eventSystem;
-    public TouchManager touchManager;
+    public TapGesture tapGesture;
     WarpPerspective warpPerspective;
     public static Mat image;
     public static string imgModelPath = null;
@@ -70,6 +72,7 @@ public class DrawingScripts : MonoBehaviour {
                 rimgcam.rectTransform.localScale = new Vector3(scale, scale, scale);
             });
         }
+        
         //var heavyMethod2 = Observable.Start(() =>
         //{
         //    // heavy method...
@@ -77,6 +80,7 @@ public class DrawingScripts : MonoBehaviour {
         //    return 10;
         //});
     }
+
     void OnSliderValueChaned(Slider slider)
     {
         //Debug.LogFormat("Slider value is {0}", slider.value);
@@ -99,7 +103,8 @@ public class DrawingScripts : MonoBehaviour {
             GVs.APP_PATH = Application.persistentDataPath;
         }
         threshold = GetComponent<Threshold>();
-        GFs.LoadTemplateList();        
+        GFs.LoadCategoryList();
+        GFs.LoadAllTemplateList();        
         MainThreadDispatcher.StartUpdateMicroCoroutine(loadModel());
         MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
         //var heavyMethod = Observable.Start(() =>
@@ -146,7 +151,8 @@ public class DrawingScripts : MonoBehaviour {
             }
             else
             {
-                imgPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST.dir + "/" + "C01T014.jpg";
+                var categoryID = GVs.CATEGORY_LIST.data[0]._id;
+                imgPath = GVs.APP_PATH + "/" + GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID].dir + "/" + "C01T014.jpg";
             }
             Debug.LogFormat("image path is {0}", imgPath);          
             image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);            
@@ -324,7 +330,7 @@ public class DrawingScripts : MonoBehaviour {
         rimgmodel.texture = texEdges;
         rimgmodel.GetComponent<ScreenTransformGesture>().enabled = false;
         rimgmodel.GetComponent<Transformer>().enabled = false;
-        rimgmodel.GetComponent<FullscreenLayer>().enabled = false;
+        //rimgmodel.GetComponent<FullscreenLayer>().enabled = false;
     }
     bool preserveTexture = false;
     public void OnTickBtnClicked()
@@ -346,7 +352,7 @@ public class DrawingScripts : MonoBehaviour {
         }        
         rimgmodel.GetComponent<ScreenTransformGesture>().enabled = true;
         rimgmodel.GetComponent<Transformer>().enabled = true;
-        rimgmodel.GetComponent<FullscreenLayer>().enabled = true;
+        //rimgmodel.GetComponent<FullscreenLayer>().enabled = true;
     }
     public void OnPushActiveBtnClicked()
     {
@@ -358,6 +364,6 @@ public class DrawingScripts : MonoBehaviour {
         }
         rimgmodel.GetComponent<ScreenTransformGesture>().enabled = false;
         rimgmodel.GetComponent<Transformer>().enabled = false;
-        rimgmodel.GetComponent<FullscreenLayer>().enabled = false;
+        //rimgmodel.GetComponent<FullscreenLayer>().enabled = false;
     }
 }

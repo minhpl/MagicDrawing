@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TouchScript.Gestures;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,18 +21,32 @@ public class ToggleScript : MonoBehaviour {
     public Button BtnPushActive;
     public GameObject panel_tool;
     public GameObject backBtn;
+    public TapGesture tapGesture;
     void Start() {
-        var clickStream = Observable.EveryUpdate().Where(_ => Input.GetMouseButtonDown(0));
-        clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(250))).Where(xs => xs.Count >= 2)
-            .Subscribe(xs =>
-            {
-                Utilities.Log("Double click detected");
-                if(panel_tool)
-                    panel_tool.SetActive(!panel_tool.activeSelf);
-                if(backBtn)
-                    backBtn.SetActive(!backBtn.activeSelf);
-            });
-        
+        //var clickStream = Observable.EveryUpdate().Where(_ => Input.GetMouseButtonDown(0));
+        //clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(250))).Where(xs => xs.Count >= 2)
+        //    .Subscribe(xs =>
+        //    {
+        //        Utilities.Log("Double click detected");
+        //        if (panel_tool)
+        //            panel_tool.SetActive(!panel_tool.activeSelf);
+        //        if (backBtn)
+        //            backBtn.SetActive(!backBtn.activeSelf);
+        //    });
+
+        //Debug.Log("xin chao the gioi tuoi dep cua chung ta");
+        //var clickStream2 = Observable.EveryUpdate().Where(_ => Input.touchCount != 0 || Input.GetMouseButtonDown(0));
+        //clickStream2.Buffer(clickStream2.Throttle(TimeSpan.FromMilliseconds(250))).Where(xs => xs.Count >= 2)
+        //    .Subscribe(xs =>
+        //    {
+        //        Utilities.Log("Double click detected");
+        //        if (panel_tool)
+        //            panel_tool.SetActive(!panel_tool.activeSelf);
+        //        if (backBtn)
+        //            backBtn.SetActive(!backBtn.activeSelf);
+        //    });
+
+        tapGesture.Tapped += tappedHandler;
 
         BtnSlider.onClick.AddListener(  () =>
         {
@@ -95,5 +110,15 @@ public class ToggleScript : MonoBehaviour {
             BtnPushActive.gameObject.SetActive(false);
             BtnPush.gameObject.SetActive(true);
         });
+    }
+
+
+    private void tappedHandler(object sender, System.EventArgs e)
+    {
+        Utilities.Log("Double click detected");
+        if (panel_tool)
+            panel_tool.SetActive(!panel_tool.activeSelf);
+        if (backBtn)
+            backBtn.SetActive(!backBtn.activeSelf);
     }
 }

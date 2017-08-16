@@ -49,6 +49,9 @@
 <type fullname="UniRx.Triggers.ObservableVisibleTrigger" preserve="all"/>
 </assembly>
 <assembly fullname="Assembly-CSharp">
+<type fullname="DemoScript" preserve="all"/>
+<type fullname="LukeWaffel.AndroidGallery.AndroidGallery" preserve="all"/>
+<type fullname="LukeWaffel.AndroidGallery.Singleton`1" preserve="all"/>
 <type fullname="IMGUI" preserve="all"/>
 <type fullname="EquipItems" preserve="all"/>
 <type fullname="EquipRandomItem" preserve="all"/>
@@ -217,10 +220,12 @@
 <type fullname="OpenCVForUnityExample.WebCamTextureToMatHelper" preserve="all"/>
 <type fullname="OpenCVForUnityExample.WebCamTextureToMatHelperExample" preserve="all"/>
 <type fullname="OpenCVForUnityExample.WrapPerspectiveExample" preserve="all"/>
+<type fullname="Example" preserve="all"/>
 <type fullname="OpenCVFaceDetection" preserve="all"/>
 <type fullname="PositionAtFaceScreenSpace" preserve="all"/>
 <type fullname="TestCallSO" preserve="all"/>
 <type fullname="TestTourchScripts" preserve="all"/>
+<type fullname="TestVideo" preserve="all"/>
 <type fullname="BackButton" preserve="all"/>
 <type fullname="CheckFPS" preserve="all"/>
 <type fullname="Consolation.Console" preserve="all"/>
@@ -257,6 +262,38 @@
 <type fullname="TestSaladSeriazable" preserve="all"/>
 <type fullname="ToggleScript" preserve="all"/>
 <type fullname="TrackScene" preserve="all"/>
+<type fullname="TMPro.Examples.Benchmark01" preserve="all"/>
+<type fullname="TMPro.Examples.Benchmark01_UGUI" preserve="all"/>
+<type fullname="TMPro.Examples.Benchmark02" preserve="all"/>
+<type fullname="TMPro.Examples.Benchmark03" preserve="all"/>
+<type fullname="TMPro.Examples.Benchmark04" preserve="all"/>
+<type fullname="TMPro.Examples.CameraController" preserve="all"/>
+<type fullname="ChatController" preserve="all"/>
+<type fullname="EnvMapAnimator" preserve="all"/>
+<type fullname="TMPro.Examples.ObjectSpin" preserve="all"/>
+<type fullname="TMPro.Examples.ShaderPropAnimator" preserve="all"/>
+<type fullname="TMPro.Examples.SimpleScript" preserve="all"/>
+<type fullname="TMPro.Examples.SkewTextExample" preserve="all"/>
+<type fullname="TMPro.Examples.TeleType" preserve="all"/>
+<type fullname="TMPro.Examples.TextConsoleSimulator" preserve="all"/>
+<type fullname="TMPro.Examples.TextMeshProFloatingText" preserve="all"/>
+<type fullname="TMPro.Examples.TextMeshSpawner" preserve="all"/>
+<type fullname="TMPro.TMP_DigitValidator" preserve="all"/>
+<type fullname="TMPro.Examples.TMP_ExampleScript_01" preserve="all"/>
+<type fullname="TMPro.Examples.TMP_FrameRateCounter" preserve="all"/>
+<type fullname="TMPro.Examples.TMP_TextEventCheck" preserve="all"/>
+<type fullname="TMPro.TMP_TextEventHandler" preserve="all"/>
+<type fullname="TMPro.Examples.TMP_TextInfoDebugTool" preserve="all"/>
+<type fullname="TMPro.Examples.TMP_TextSelector_A" preserve="all"/>
+<type fullname="TMPro.Examples.TMP_TextSelector_B" preserve="all"/>
+<type fullname="TMPro.Examples.TMP_UiFrameRateCounter" preserve="all"/>
+<type fullname="TMPro.Examples.TMPro_InstructionOverlay" preserve="all"/>
+<type fullname="TMPro.Examples.VertexColorCycler" preserve="all"/>
+<type fullname="TMPro.Examples.VertexJitter" preserve="all"/>
+<type fullname="TMPro.Examples.VertexShakeA" preserve="all"/>
+<type fullname="TMPro.Examples.VertexShakeB" preserve="all"/>
+<type fullname="TMPro.Examples.VertexZoom" preserve="all"/>
+<type fullname="TMPro.Examples.WarpTextExample" preserve="all"/>
 <type fullname="TouchScript.Examples.Checker" preserve="all"/>
 <type fullname="ExamplesList" preserve="all"/>
 <type fullname="Highlight" preserve="all"/>
@@ -326,6 +363,9 @@
 <type fullname="TouchScript.Layers.TouchLayer" preserve="all"/>
 <type fullname="TouchScript.Layers.UI.TouchScriptInputModule" preserve="all"/>
 <type fullname="TouchScript.TouchManager" preserve="all"/>
+<type fullname="Kakera.PickerController" preserve="all"/>
+<type fullname="Kakera.Rotator" preserve="all"/>
+<type fullname="Kakera.Unimgpicker" preserve="all"/>
 <type fullname="JsonNetSample" preserve="all"/>
 </assembly>
 <assembly fullname="UnityEngine.UI">
@@ -371,5 +411,29 @@
 <type fullname="UnityEngine.UI.Outline" preserve="all"/>
 <type fullname="UnityEngine.UI.PositionAsUV1" preserve="all"/>
 <type fullname="UnityEngine.UI.Shadow" preserve="all"/>
+</assembly>
+<assembly fullname="TextMeshPro-1.0.55.2017.1.0b12">
+<type fullname="TMPro.InlineGraphic" preserve="all"/>
+<type fullname="TMPro.InlineGraphicManager" preserve="all"/>
+<type fullname="TMPro.TextContainer" preserve="all"/>
+<type fullname="TMPro.TextMeshPro" preserve="all"/>
+<type fullname="TMPro.TextMeshProUGUI" preserve="all"/>
+<type fullname="TMPro.TMP_Asset" preserve="all"/>
+<type fullname="TMPro.TMP_ColorGradient" preserve="all"/>
+<type fullname="TMPro.TMP_Dropdown" preserve="all"/>
+<type fullname="TMPro.TMP_Dropdown/DropdownItem" preserve="all"/>
+<type fullname="TMPro.TMP_FontAsset" preserve="all"/>
+<type fullname="TMPro.TMP_InputField" preserve="all"/>
+<type fullname="TMPro.TMP_InputValidator" preserve="all"/>
+<type fullname="TMPro.TMP_PhoneNumberValidator" preserve="all"/>
+<type fullname="TMPro.TMP_ScrollbarEventHandler" preserve="all"/>
+<type fullname="TMPro.TMP_SelectionCaret" preserve="all"/>
+<type fullname="TMPro.TMP_Settings" preserve="all"/>
+<type fullname="TMPro.TMP_SpriteAnimator" preserve="all"/>
+<type fullname="TMPro.TMP_SpriteAsset" preserve="all"/>
+<type fullname="TMPro.TMP_StyleSheet" preserve="all"/>
+<type fullname="TMPro.TMP_SubMesh" preserve="all"/>
+<type fullname="TMPro.TMP_SubMeshUI" preserve="all"/>
+<type fullname="TMPro.TMP_Text" preserve="all"/>
 </assembly>
 </linker>

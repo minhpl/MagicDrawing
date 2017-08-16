@@ -4,38 +4,54 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
 
 class GFs
 {
-    public static void LoadTemplateList()
+    private const string ALL_TEMPLATE_LIST = "ALL_TEMPLATE_LIST";
+    private const string CATEGORY_LIST = "CATEGORY_LIST";
+
+    public static void LoadAllTemplateList()
     {
-        if (PlayerPrefs.HasKey("TEMPLATE_DRAWING_LIST"))
+        if (PlayerPrefs.HasKey(ALL_TEMPLATE_LIST))
         {
-            string s = PlayerPrefs.GetString("TEMPLATE_DRAWING_LIST");
-            GVs.DRAWING_TEMPLATE_LIST = JsonUtility.FromJson<TemplateDrawingList>(s);
+            string s = PlayerPrefs.GetString(ALL_TEMPLATE_LIST);
+            //Debug.LogFormat("Load All Template List: {0}", s);
+            try
+            {
+                GVs.TEMPLATE_LIST_ALL_CATEGORY = JsonConvert.DeserializeObject<Dictionary<string, TemplateDrawingList>>(s);
+                Debug.Log("Deserialized");
+            }
+            catch(Exception e)
+            {
+                Utilities.Log("Error is : {0}", e.ToString());
+                Utilities.Log("Trace is : {0}", e.ToString());
+            }
         }
         else
-            SaveTemplateList();
+            SaveAllTemplateList();
     }
 
-    public static void SaveTemplateList()
-    {
-        PlayerPrefs.SetString("TEMPLATE_DRAWING_LIST", JsonUtility.ToJson(GVs.DRAWING_TEMPLATE_LIST));
+    public static void SaveAllTemplateList()
+    {        
+        var json = JsonConvert.SerializeObject(GVs.TEMPLATE_LIST_ALL_CATEGORY);        
+        PlayerPrefs.SetString(ALL_TEMPLATE_LIST, json);
         PlayerPrefs.Save();
     }
 
     public static void SaveCategoryList()
     {
-        PlayerPrefs.SetString("CATEGORY_LIST", JsonUtility.ToJson(GVs.CATEGORY_LIST));
+        var json = JsonUtility.ToJson(GVs.CATEGORY_LIST);
+        PlayerPrefs.SetString(CATEGORY_LIST, json);
         PlayerPrefs.Save();
     }
 
     public static void LoadCategoryList()
     {
-        if (PlayerPrefs.HasKey("CATEGORY_LIST"))
+        if (PlayerPrefs.HasKey(CATEGORY_LIST))
         {
-            string s = PlayerPrefs.GetString("CATEGORY_LIST");
-            GVs.CATEGORY_LIST = JsonUtility.FromJson<CategoryList>(s);
+            string s = PlayerPrefs.GetString(CATEGORY_LIST);
+            GVs.CATEGORY_LIST = JsonUtility.FromJson<CategoryList>(s);            
         }
         else
             SaveCategoryList();
@@ -45,7 +61,7 @@ class GFs
     {
         Texture2D tex = null;
         byte[] fileData;
-        Debug.Log(GVs.APP_PATH + "/" + filePath);
+        //Debug.Log(GVs.APP_PATH + "/" + filePath);
         if (File.Exists(GVs.APP_PATH + "/" + filePath))
         {
             fileData = File.ReadAllBytes(GVs.APP_PATH + "/" + filePath);
@@ -75,6 +91,4 @@ class GFs
         }
         return tex;
     }
-
-
 }

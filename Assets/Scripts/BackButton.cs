@@ -5,14 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class BackButton : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-
-	}
-
     public void onBackButtonClicked()
-    {
+    {    
         Utilities.Log("BackbuttonScripts: stack trace scene have {0} element", GVs.TRACE_SCENE.Count);
         if (GVs.TRACE_SCENE.Count > 1)
         {

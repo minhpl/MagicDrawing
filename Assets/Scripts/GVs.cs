@@ -5,7 +5,7 @@ using UnityEngine;
 public class GVs {	
     public static string APP_PATH;
     public static SceneManagerScript SCENE_MANAGER = new SceneManagerScript();
-    public static string SERVER_URL = "http://113.23.71.93:3000/";
+    public static string SERVER_URL = "http://113.23.71.223:3000/";
     public static string ACTIVE_LICENSE_URL = SERVER_URL + "users/activeLicense";
     public static string CHECK_LICENSE_URL = SERVER_URL + "users/checkLicense";
     public static string GET_ALL_AVATA_URL = SERVER_URL + "users/drawing/getAllAvata";
@@ -42,7 +42,8 @@ public class GVs {
     public static string iphoneDirMPModel = "\\";
     public static string pcDirMPModel = "E:\\WorkspaceMinh\\MagicDrawing\\x64\\Release\\MasterPieceModel\\";
 
-    public static float ridTopPercent = 0.52f;
+    public static float ridTopPercent = 0.6f;
 
     public static CategoryList CATEGORY_LIST= new CategoryList();
+    public static Dictionary<string, TemplateDrawingList> TEMPLATE_LIST_ALL_CATEGORY;
 }

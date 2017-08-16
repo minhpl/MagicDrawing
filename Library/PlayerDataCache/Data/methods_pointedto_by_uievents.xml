@@ -4,6 +4,9 @@
 			<method name="loadLibrary"/>
 			<method name="loadHistory1Scene"/>
 		</type>
+		<type fullname="Kakera.PickerController">
+			<method name="OnPressShowPicker"/>
+		</type>
 		<type fullname="BackButton">
 			<method name="onBackButtonClicked"/>
 			<method name="onBackButtonClicked"/>
@@ -44,13 +47,14 @@
 			<method name="OnSnapBtnClicked"/>
 		</type>
 		<type fullname="LibraryScripts">
-			<method name="OnCamBtnClicked"/>
+			<method name="ObBackBtnClicked"/>
 		</type>
 		<type fullname="PreviewResultScripts">
 			<method name="OnOkBtnClicked"/>
 		</type>
 		<type fullname="ResultScripts">
 			<method name="OnPlayBtnClicked"/>
+			<method name="OnBackBtnClicked"/>
 		</type>
 	</assembly>
 	<assembly fullname="UnityEngine">

@@ -16,7 +16,7 @@ public class SceneManagerScript  {
 
     public void loadLibraryScene(){
     	SceneManager.LoadScene("LibraryScene");
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

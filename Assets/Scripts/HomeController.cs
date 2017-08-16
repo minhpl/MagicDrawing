@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,12 +12,12 @@ public class HomeController : MonoBehaviour {
 
     private void Awake()
     {
-        var clickStream = Observable.EveryUpdate().Where(_ => Input.touchCount!=0);
-        clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(250))).Where(xs => xs.Count >= 2)
-            .Subscribe(xs =>
-            {
-                Utilities.Log("Double click detected");
-            });
+        //var clickStream = Observable.EveryUpdate().Where(_ => Input.touchCount!=0);
+        //clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(250))).Where(xs => xs.Count >= 2)
+        //    .Subscribe(xs =>
+        //    {
+        //        Utilities.Log("Double click detected");
+        //    });
         
         Screen.autorotateToLandscapeLeft = false;
         Screen.autorotateToLandscapeRight = false;
@@ -47,12 +48,11 @@ public class HomeController : MonoBehaviour {
             GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
         }
         else
-        {
-            Utilities.Log("here");
+        {            
             GVs.APP_PATH = Application.persistentDataPath;
         }
         
-        GFs.LoadTemplateList();
+        GFs.LoadAllTemplateList();
         if(GVs.DRAWING_TEMPLATE_LIST!=null)
         {
             var imageCount = GVs.DRAWING_TEMPLATE_LIST.Count();
@@ -65,7 +65,6 @@ public class HomeController : MonoBehaviour {
         }        
 
         Utilities.Log("Waiting for downloading");
-
         //if (NET.NetWorkIsAvaiable())
         //    HTTPRequest.Instance.Request(GVs.GET_ALL_TEMPLATE_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
         //    {
@@ -85,14 +84,91 @@ public class HomeController : MonoBehaviour {
         //else
         //    Utilities.Log("Why network not available");
 
+        Dictionary<string,TemplateDrawingList> templateListsAllCategory = new Dictionary<string,TemplateDrawingList>();
+        List<IObservable<string>> ListStreamDownloadTemplate = new List<IObservable<string>>();        
         HTTPRequest.Instance.Request(GVs.GET_ALL_CATEGORY_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
         {
             try
             {
                 Debug.Log(data);
-                GVs.CATEGORY_LIST = JsonConvert.DeserializeObject <CategoryList>(data.ToString());
-                Debug.Log(GVs.CATEGORY_LIST.data.Count);
+                GVs.CATEGORY_LIST = JsonConvert.DeserializeObject<CategoryList>(data.ToString());
                 GFs.SaveCategoryList();
+                //var a = Observable.Create<string>((IObserver<string> observer) =>
+                //{
+                //    observer.OnNext("a1");
+                //    observer.OnNext("a2");
+                //    Thread thread = new Thread(() =>
+                //    {
+                //        Thread.Sleep(5000);
+                //        observer.OnCompleted();
+                //    });
+                //    thread.Start();
+                //    //Thread.Sleep(2000);                    
+                //    return Disposable.Create(() => Debug.Log("Observer a has unsubscribed"));
+                //});
+
+                //var cancel = a.Subscribe((string s) => { Debug.Log("event: " + s); }, () => { Debug.Log("stream completed"); });
+
+                //var b = Observable.Create<string>((IObserver<string> observer) =>
+                //{
+                //    observer.OnNext("b1");
+                //    observer.OnNext("b2");
+                //    observer.OnCompleted();
+                //    return Disposable.Create(() => Debug.Log("Observer b has unsubscribed"));
+                //});
+
+                //Observable.Zip(a, b).Subscribe((IList<string> listString) =>
+                //{
+                //    Debug.Log("Zip: " + listString[0] + " " + listString[1]);
+                //}, () => { Debug.Log("Zip operator completed"); });
+
+                //Observable.WhenAll(a, b).Subscribe((string[] s) => Debug.Log(s[0] + s[1]), () => { Debug.Log("WhenAll stream Completed"); });
+
+                var listCategory = GVs.CATEGORY_LIST.data;
+                for (int i = 0; i < listCategory.Count; i++)
+                {
+                    var category = listCategory[i];
+                    string id = category._id;
+                    var index = i;
+                    var stream = Observable.Create<string>((IObserver<string> observer) =>
+                    {
+                        HTTPRequest.Instance.Request(GVs.GET_TEMPLATE_BY_CATEGORY_URL, JsonUtility.ToJson(new ReqModel(new CategoryRequest(id))), (templates) =>
+                        {
+                            try
+                            {
+                                Debug.Log(templates);
+                                TemplateDrawingList templatelist = JsonConvert.DeserializeObject<TemplateDrawingList>(templates);
+                                templatelist.dir = templatelist.dir + "/" + id;
+                                GVs.DRAWING_TEMPLATE_LIST = templatelist;
+                                GFs.SaveAllTemplateList();
+                                templateListsAllCategory[id] = templatelist;
+
+                                HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY, id))), (d, process) =>
+                                {
+                                    observer.OnCompleted();
+                                });
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.LogFormat("Error : {0}", e.ToString());
+                            }
+                        });
+                        return Disposable.Create(() => {
+                            //Debug.LogFormat("observer {0} has unsubscribed", index);
+                        });
+                    });
+                    ListStreamDownloadTemplate.Add(stream);
+                }
+
+                Observable.WhenAll(ListStreamDownloadTemplate).Subscribe((string[] s) => { }, () =>
+                {
+                    GVs.TEMPLATE_LIST_ALL_CATEGORY = templateListsAllCategory;
+                    Debug.Log("all downloaded");                   
+                    var json = JsonConvert.SerializeObject(templateListsAllCategory);
+                    GFs.SaveAllTemplateList();
+                    Debug.Log(json);
+                    ready = true;
+                });
             }
             catch (Exception e)
             {
@@ -100,30 +176,16 @@ public class HomeController : MonoBehaviour {
             }
         });
 
-        HTTPRequest.Instance.Request(GVs.GET_TEMPLATE_BY_CATEGORY_URL, JsonUtility.ToJson(new ReqModel(new CategoryRequest("C01"))), (data) =>
-        {
-            try
-            {
-                TemplateDrawingList templatelist= JsonConvert.DeserializeObject<TemplateDrawingList>(data);
-                templatelist.dir = templatelist.dir + "/C01";
-                GVs.DRAWING_TEMPLATE_LIST = templatelist;
-                GFs.SaveTemplateList();
-                ready = true;
-            }
-            catch(Exception e)
-            {
-                Debug.LogFormat("Error : {0}", e.ToString());
-            }
-        });
         HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY_AVATA))), (d, process) =>
         {
 
         });
-        HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY, "C01"))), (d, process) =>
-        {
+        //HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY, "C01"))), (d, process) =>
+        //{
 
-        });
+        //});
     }
+
     private bool ready = false;
 
     public void loadHistory1Scene()

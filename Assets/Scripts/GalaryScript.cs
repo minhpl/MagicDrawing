@@ -21,7 +21,7 @@ public class GalaryScript : MonoBehaviour {
         {
             GVs.APP_PATH = Application.persistentDataPath;
         }
-        GFs.LoadTemplateList();
+        GFs.LoadAllTemplateList();
 
         StartCoroutine(load());
     }

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using LukeWaffel.AndroidGallery;
+using OpenCVForUnity;
+using Kakera;
 
 public class MainToolsScripts : MonoBehaviour {
 
@@ -9,10 +12,13 @@ public class MainToolsScripts : MonoBehaviour {
     public Button btnCam;
     public Button btnGallary;
     public Button btnHistory;
-   
 
-	// Use this for initialization
-	void Start () {
+    [SerializeField]
+    private Unimgpicker imagePicker;
+
+    // Use this for initialization
+    void Start () {
+        //imagePicker = new Unimgpicker();
         btnLibrary.onClick.AddListener(() =>
         {
             GVs.SCENE_MANAGER.loadLibraryScene();
@@ -23,13 +29,51 @@ public class MainToolsScripts : MonoBehaviour {
         });
 
         btnGallary.onClick.AddListener(() =>
-        {
-            GVs.SCENE_MANAGER.loadGalleryScene();
+        {           
+            if (Application.platform==RuntimePlatform.Android)
+            {
+                AndroidGallery.Instance.OpenGallery(ImageLoaded);                                
+            }
+            else if (Application.platform==RuntimePlatform.IPhonePlayer)
+            {
+                
+                imagePicker.Show("Select Image", "unimgpicker", 1024);
+            }
+            else
+            {
+                GVs.SCENE_MANAGER.loadGalleryScene();
+            }
         });
 
         btnHistory.onClick.AddListener(() =>
         {
             GVs.SCENE_MANAGER.loadHistoryScene();
         });
-	}
+
+        imagePicker.Completed += (string path) =>
+        {
+            Utilities.Log("Path is {0}", path);
+            Mat image = Imgcodecs.imread(path);
+            Texture2D texture = new Texture2D(image.width(), image.height(), TextureFormat.RGBA32, false);
+            Utils.matToTexture2D(image, texture);
+            DrawingScripts.image = image;
+            DrawingScripts.texModel = texture;
+            DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
+            GVs.SCENE_MANAGER.loadDrawingScene();
+            HistorySceneScripts.AddHistoryItem(new HistoryModel(path, path, HistoryModel.IMAGETYPE.SNAP));
+        };
+    }
+
+    void ImageLoaded()
+    {
+        Texture2D texture = (Texture2D)AndroidGallery.Instance.GetTexture();
+        Mat image = new Mat(texture.height, texture.width,CvType.CV_8UC4);
+        Utils.textureToMat(texture, image);
+        var path = AndroidGallery.Instance.getPath();        
+        DrawingScripts.image = image;
+        DrawingScripts.texModel = texture;
+        DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
+        GVs.SCENE_MANAGER.loadDrawingScene();
+        HistorySceneScripts.AddHistoryItem(new HistoryModel(path, path, HistoryModel.IMAGETYPE.SNAP));
+    }
 }

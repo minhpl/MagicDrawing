@@ -33,6 +33,9 @@ public class MasterpieceCreationScripts : MonoBehaviour {
         {
             dirPathMP = GVs.pcDirMPiece;
         }
+
+        Debug.LogFormat("dir path masterpiece is {0}", dirPathMP);
+
         var files = Directory.GetFiles(dirPathMP, "*.*", SearchOption.TopDirectoryOnly)
             .Where(s => s.EndsWith(".png"));
         foreach (var f in files)

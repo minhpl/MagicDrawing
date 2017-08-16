@@ -39,7 +39,7 @@ public class LibraryScriptsCompare : MonoBehaviour
         {
             GVs.APP_PATH = Application.persistentDataPath;
         }
-        GFs.LoadTemplateList();
+        GFs.LoadAllTemplateList();
         var watch = System.Diagnostics.Stopwatch.StartNew();        
         StartCoroutine(Load());        
         watch.Stop();

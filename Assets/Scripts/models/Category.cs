@@ -31,4 +31,9 @@ public class CategoryList
     {
         data = new List<Category>();
     }
+
+    public int Count()
+    {
+        return data.Count;
+    }
 }

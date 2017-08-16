@@ -75,9 +75,10 @@ public class PreviewResultScripts : MonoBehaviour {
             }
             Utilities.Log("filename is {0}", fullPath);
         }
-        Imgcodecs.imwrite(fullPath, a);
-        GVs.SCENE_MANAGER.loadResultScene();
+        Imgcodecs.imwrite(fullPath, a);        
         WebcamVideoCapture.filename = null;
         WebcamVideoCapture.filenameWithoutExt = null;
+        ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;
+        GVs.SCENE_MANAGER.loadResultScene();
     }
 }

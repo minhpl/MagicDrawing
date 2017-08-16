@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,12 +13,18 @@ using UnityEngine.UI;
 public class LibraryScripts : MonoBehaviour
 {
     public GameObject imageItem;
+    public Text TextTitle;    
     const int deScale = 1;
     const bool USE_PACK = true;
-    const int clone = 5;
-    //Mat tempMat;
+    const int clone = 1;
     public static LibraryScripts Instance;
-    IEnumerator coroutine;
+    public static TemplateDrawingList templateDrawingList;
+    private static string title;
+
+    public enum MODE {CATEGORY, TEMPLATE};
+    private static MODE mode = MODE.CATEGORY;
+
+    Coroutine coroutine;
     void Awake()
     {
         Instance = this;
@@ -29,7 +36,6 @@ public class LibraryScripts : MonoBehaviour
     // Use this for initialization
     void Start()
     {               
-        //tempMat = new Mat();
         if (Application.platform == RuntimePlatform.Android)
         {
             GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
@@ -38,19 +44,31 @@ public class LibraryScripts : MonoBehaviour
         {
             GVs.APP_PATH = Application.persistentDataPath;
         }
-        GFs.LoadTemplateList();
+
         GFs.LoadCategoryList();
+        GFs.LoadAllTemplateList();
+
+        if (mode == MODE.CATEGORY)
+        {
+            TextTitle.text = "Thư Viện";
+        }
+        else
+        {
+            TextTitle.text = title;
+        }
+
 
         var watch = System.Diagnostics.Stopwatch.StartNew();
-        coroutine = Load();
-        MainThreadDispatcher.StartUpdateMicroCoroutine(coroutine);        
+
+
+        //coroutine = MainThreadDispatcher.StartCoroutine(Load());
+        MainThreadDispatcher.StartUpdateMicroCoroutine(Load());
         watch.Stop();
         var elapsedMs = watch.ElapsedMilliseconds;      
     }
 
     IEnumerator Load()
     {                      
-        //Need
         List<Texture2D> LstTexture = new List<Texture2D>();
         List<GameObject> LstGameObject = new List<GameObject>();
         List<int> numRectIn2048 = new List<int>();
@@ -60,8 +78,7 @@ public class LibraryScripts : MonoBehaviour
         int deviant512 = (1 << 18) / 5;
         RawImage rimageOri = imageItem.transform.Find("RImage").GetComponent<RawImage>();
         int widthOri = (int)rimageOri.rectTransform.rect.width;
-        var imageCount = GVs.DRAWING_TEMPLATE_LIST.Count();
-        imageCount = GVs.CATEGORY_LIST.data.Count;
+       
         var watch = System.Diagnostics.Stopwatch.StartNew();
         var area2048 = (1 << 22) - deviant2048;
         var area1024 = (1 << 20) - deviant1024;
@@ -72,23 +89,44 @@ public class LibraryScripts : MonoBehaviour
         var num512 = 0;                
         int tempArea = area2048;
         int tempNumPacked = 0;
-        
+        var categorys = GVs.CATEGORY_LIST.data;
+        int imageCount = 0;        
+        if (mode == MODE.CATEGORY)
+        {            
+            imageCount = categorys.Count;
+        }
+        else
+        {
+            imageCount = templateDrawingList.Count();
+        }            
         for (int j = 0; j < clone; j++)
             for (int i = 0; i < imageCount; i++)
-            {                
+            {               
                 yield return null;
                 if (imageItem == null) break;
                 GameObject go = Instantiate(imageItem) as GameObject;
                 go.transform.SetParent(imageItem.transform.parent.transform);
                 go.transform.localScale = imageItem.transform.localScale;
                 RawImage rimage = go.transform.Find("RImage").GetComponent<RawImage>();
+                TextMeshProUGUI textMeshPro = go.transform.Find("textmeshpro").GetComponent<TextMeshProUGUI>();
+                Text text = go.transform.Find("text").GetComponent<Text>();
 
-                var categorys = GVs.CATEGORY_LIST.data;
-                Category category = categorys[i];
-                var dir = GVs.CATEGORY_LIST.dir;
+                Texture2D texture = null;
+                Category category = null;
+                TemplateDrawing template = null;
+                if (mode==MODE.CATEGORY)
+                {
+                    category = categorys[i];
+                    var dir = GVs.CATEGORY_LIST.dir;
+                    texture = GFs.LoadPNG(dir + "/" + category.image);
+                }
+                else
+                {                    
+                    template = templateDrawingList.Get(i);
+                    var dir = templateDrawingList.dir;
+                    texture= GFs.LoadPNG(dir + "/" + template.thumb);
+                }
 
-                var drawTemplateModel = GVs.DRAWING_TEMPLATE_LIST.Get(i);
-                Texture2D texture = GFs.LoadPNG(dir + "/" + category.image);                
                 float width = texture.width;
                 float height = texture.height;
                 float ratio = width / height;
@@ -99,7 +137,7 @@ public class LibraryScripts : MonoBehaviour
                 {
                     w = widthOri >> deScale;
                     h = (int)(widthOri * height / width) >> deScale;
-                    TextureScale.Bilinear(texture, widthOri >> deScale, (int)(widthOri * height / width) >> deScale);                    
+                    TextureScale.Bilinear(texture, widthOri >> deScale, (int)(widthOri * height / width) >> deScale);
                     rimage.rectTransform.sizeDelta = new Vector2(widthOri, widthOri * height / width);
                 }
                 else
@@ -112,34 +150,45 @@ public class LibraryScripts : MonoBehaviour
                 var area = w * h;
                 Area += area;
                 tempArea = tempArea - area;
-                if(tempArea < 0)
+                if (tempArea < 0)
                 {
                     num2048 += 1;
-                    tempArea = area2048 - area;                    
+                    tempArea = area2048 - area;
                     numRectIn2048.Add(j * imageCount + i + 1 - tempNumPacked);
                     tempNumPacked = j * imageCount + i + 1;
                 }
 
                 texture.Compress(true);
-                rimage.texture = texture;                                
-                go.SetActive(true);                
-                LstGameObject.Add(go);               
-                LstTexture.Add(texture);
-
                 go.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    var dirPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST.dir + "/";
-                    var thumbPath = dirPath + drawTemplateModel.thumb;
-                    var imgPath = dirPath + drawTemplateModel.image;
-                    Debug.LogFormat("on click: img path is {0}", imgPath);
-                    DrawingScripts.imgModelPath = imgPath;                    
-                    DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;
-                    HistorySceneScripts.AddHistoryItem(new HistoryModel(imgPath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
-                    GVs.SCENE_MANAGER.loadDrawingScene();
-                });                                                       
+                    if (mode == MODE.CATEGORY)
+                    {                        
+                        var categoryID = category._id;
+                        TemplateDrawingList templateDrawingList = GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID];
+                        LibraryScripts.templateDrawingList = templateDrawingList;
+                        LibraryScripts.mode = MODE.TEMPLATE;
+                        title = category.name;
+                        GVs.SCENE_MANAGER.loadLibraryScene();
+                    }
+                    else
+                    {
+                        var dirPath = GVs.APP_PATH + "/" + templateDrawingList.dir + "/";
+                        var thumbPath = dirPath + template.thumb;
+                        var imgPath = dirPath + template.image;
+                        DrawingScripts.imgModelPath = imgPath;
+                        DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;
+                        HistorySceneScripts.AddHistoryItem(new HistoryModel(imgPath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                        GVs.SCENE_MANAGER.loadDrawingScene();
+                    }
+                });
+
+                rimage.texture = texture;
+                go.SetActive(true);
+                LstGameObject.Add(go);
+                LstTexture.Add(texture);
             }
 
-        if(USE_PACK && imageItem!=null)
+        if (USE_PACK && imageItem!=null)
         {
             int freeArea = 0;
             freeArea = Area - area2048 * num2048;
@@ -207,6 +256,12 @@ public class LibraryScripts : MonoBehaviour
         Destroy(imageItem);                
     }
 
+    bool ondisable = false;
+    private void OnDisable()
+    {
+        ondisable = true;
+    }
+
     public void OnAppBtnClicked()
     {
         StopCoroutine(coroutine);
@@ -221,5 +276,10 @@ public class LibraryScripts : MonoBehaviour
     public void OnHistoryBtnClicked()
     {
         GVs.SCENE_MANAGER.loadHistoryScene();
+    }
+
+    public void ObBackBtnClicked()
+    {
+        mode = MODE.CATEGORY;
     }
 }

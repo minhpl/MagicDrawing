@@ -62,7 +62,7 @@ public class GallerySceneScripts : MonoBehaviour {
             Debug.LogFormat("{0} {1}", imgSize.width, imgSize.height);
             TextureScale.Bilinear(texture,(int)imgSize.width,(int)imgSize.height);
             texture.Compress(true);
-            rimgGameObject.GetComponent<RawImage>().texture = texture;            
+            rimgGameObject.GetComponent<RawImage>().texture = texture;
             cloneItem.GetComponent<Button>().onClick.AddListener(() =>
             {
                 DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
