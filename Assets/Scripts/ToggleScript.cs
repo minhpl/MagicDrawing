@@ -15,10 +15,12 @@ public class ToggleScript : MonoBehaviour {
     public GameObject line;
     public GameObject contrast;
     // Use this for initialization
-    public Button Record;
+    public Button StartRecord;
     public Button Recording;
     public Button BtnPush;
     public Button BtnPushActive;
+    public GameObject pause;
+    public GameObject play;
     public GameObject panel_tool;
     public GameObject backBtn;
     public TapGesture tapGesture;
@@ -82,16 +84,17 @@ public class ToggleScript : MonoBehaviour {
             panel_constract.SetActive(stateLine);
         });
 
-        Record.onClick.AddListener(() =>
+        StartRecord.onClick.AddListener(() =>
         {
-            Record.gameObject.SetActive(false);
+            StartRecord.gameObject.SetActive(false);
             Recording.gameObject.SetActive(true);            
         });
 
         Recording.onClick.AddListener(() =>
         {
-            Recording.gameObject.SetActive(false);
-            Record.gameObject.SetActive(true);
+            var state = play.gameObject.activeSelf;
+            play.gameObject.SetActive(!state);
+            pause.gameObject.SetActive(state);
         });
 
         BtnPush.onClick.AddListener(() =>

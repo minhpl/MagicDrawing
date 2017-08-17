@@ -20,25 +20,7 @@ public class LibraryScriptsCompare : MonoBehaviour
     }
     // Use this for initialization
     void Start()
-    {               
-        //tempMat = new Mat();
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
-
-            //string androidMagicBookFolder = "/storage/emulated/0/DCIM/MagicDrawing/";
-            //string libraryFolder = androidMagicBookFolder + "library";
-
-            //var files = Directory.GetFiles(libraryFolder, "*.png");
-            //foreach(var file in files)
-            //{
-            //    Utilities.Log("File name is {0}", file);
-            //}
-        }
-        else
-        {
-            GVs.APP_PATH = Application.persistentDataPath;
-        }
+    {                       
         GFs.LoadAllTemplateList();
         var watch = System.Diagnostics.Stopwatch.StartNew();        
         StartCoroutine(Load());        
@@ -152,8 +134,7 @@ public class LibraryScriptsCompare : MonoBehaviour
         Debug.LogFormat("name is {0}", go.GetComponent<DataBind>().drawingTemplateModel.thumb);
         //GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
         var drawTemplateModel = go.GetComponent<DataBind>().drawingTemplateModel;
-
-        var dirPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST.dir + "/";
+        var dirPath = GFs.getAppDataDirPath() + "/" + GVs.DRAWING_TEMPLATE_LIST.dir + "/";
         var thumbPath = dirPath + drawTemplateModel.thumb;
         var imgPath = dirPath + drawTemplateModel.image;
         DrawingScripts.imgModelPath = imgPath;

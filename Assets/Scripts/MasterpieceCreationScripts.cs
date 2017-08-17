@@ -25,15 +25,8 @@ public class MasterpieceCreationScripts : MonoBehaviour {
     IEnumerator LoadMasterpieceDrawing()
     {
         yield return null;
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            dirPathMP = GVs.androidDirMPiece;
-        }
-        else
-        {
-            dirPathMP = GVs.pcDirMPiece;
-        }
-
+       
+        dirPathMP = GFs.getMasterpieceDirPath();
         Debug.LogFormat("dir path masterpiece is {0}", dirPathMP);
 
         var files = Directory.GetFiles(dirPathMP, "*.*", SearchOption.TopDirectoryOnly)

@@ -36,15 +36,6 @@ public class LibraryScripts : MonoBehaviour
     // Use this for initialization
     void Start()
     {               
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
-        }
-        else
-        {
-            GVs.APP_PATH = Application.persistentDataPath;
-        }
-
         GFs.LoadCategoryList();
         GFs.LoadAllTemplateList();
 
@@ -172,7 +163,7 @@ public class LibraryScripts : MonoBehaviour
                     }
                     else
                     {
-                        var dirPath = GVs.APP_PATH + "/" + templateDrawingList.dir + "/";
+                        var dirPath = GFs.getAppDataDirPath() + "/" + templateDrawingList.dir + "/";
                         var thumbPath = dirPath + template.thumb;
                         var imgPath = dirPath + template.image;
                         DrawingScripts.imgModelPath = imgPath;

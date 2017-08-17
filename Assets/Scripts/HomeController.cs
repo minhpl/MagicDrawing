@@ -10,87 +10,54 @@ using UnityEngine.SceneManagement;
 
 public class HomeController : MonoBehaviour {
 
+    public Canvas canvas;
+
     private void Awake()
     {
-        //var clickStream = Observable.EveryUpdate().Where(_ => Input.touchCount!=0);
-        //clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(250))).Where(xs => xs.Count >= 2)
-        //    .Subscribe(xs =>
-        //    {
-        //        Utilities.Log("Double click detected");
-        //    });
-        
+        Screen.orientation = ScreenOrientation.Portrait;
         Screen.autorotateToLandscapeLeft = false;
         Screen.autorotateToLandscapeRight = false;
         Screen.autorotateToPortrait = false;
-        Screen.autorotateToPortraitUpsideDown = false;
-        //MainThreadDispatcher.StartCoroutine(Worker());
+        Screen.autorotateToPortraitUpsideDown = false;        
     }
 
-    private IEnumerator Worker()
-    {        
-        yield return null;
-        Utilities.Log("mouse press is {0}", Input.GetMouseButtonDown(0));
-        Utilities.Log("touch is {0}", Input.touchCount);
-        Utilities.Log("Is touch supported? {0}", Input.touchSupported);
-        MainThreadDispatcher.StartCoroutine(Worker());
-        if (Input.GetKey("up"))
-            print("up arrow key is held down");
-    }
+    void Start()
+    {
+        var width = (float)canvas.GetComponent<RectTransform>().rect.width;
+        var height = (float)canvas.GetComponent<RectTransform>().rect.height;
+        var ratioScreen = (float)width / (float)height;
+        Debug.LogFormat("RatioScreen is {0},canvas Width is {1},canvas Height is {2}", ratioScreen, width, height);
+        Debug.LogFormat("Screen width is {0}, Screen height is {1}", Screen.width, Screen.height);
 
-    void Start () {
         if (MakePersistentObject.Instance)
         {
             MakePersistentObject.Instance.gameObject.SetActive(false);
         }
 
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
-        }
-        else
-        {            
-            GVs.APP_PATH = Application.persistentDataPath;
-        }
-        
         GFs.LoadAllTemplateList();
-        if(GVs.DRAWING_TEMPLATE_LIST!=null)
+        GFs.LoadCategoryList();
+        if (GVs.DRAWING_TEMPLATE_LIST != null)
         {
-            var imageCount = GVs.DRAWING_TEMPLATE_LIST.Count();
-            if (imageCount > 0)
+            var numCategory = GVs.CATEGORY_LIST.Count();
+            var NumtemplateList = GVs.TEMPLATE_LIST_ALL_CATEGORY.Count;
+            if (numCategory == NumtemplateList)
             {
                 Utilities.Log("Ready");
                 //ready = true;
                 //return;
             }
-        }        
+        }
 
         Utilities.Log("Waiting for downloading");
-        //if (NET.NetWorkIsAvaiable())
-        //    HTTPRequest.Instance.Request(GVs.GET_ALL_TEMPLATE_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
-        //    {
-        //        Debug.Log("data: " + data);
-        //        GVs.DRAWING_TEMPLATE_LIST_MODEL = JsonUtility.FromJson<DrawingTemplateListModel>(data);
-        //        GFs.SaveTemplateList();
-        //        HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_TEMPLATE))), (d, process) =>
-        //        {
-        //            Utilities.Log("downloading");
-        //            if (process == 1)
-        //            {
-        //                ready = true;
-        //                Utilities.Log("Downloaded");
-        //            }
-        //        });
-        //    });
-        //else
-        //    Utilities.Log("Why network not available");
 
-        Dictionary<string,TemplateDrawingList> templateListsAllCategory = new Dictionary<string,TemplateDrawingList>();
-        List<IObservable<string>> ListStreamDownloadTemplate = new List<IObservable<string>>();        
-        HTTPRequest.Instance.Request(GVs.GET_ALL_CATEGORY_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
+        Dictionary<string, TemplateDrawingList> templateListsAllCategory = new Dictionary<string, TemplateDrawingList>();
+        List<IObservable<string>> ListStreamDownloadTemplate = new List<IObservable<string>>();
+
+        if (NET.NetWorkIsAvaiable())
+            HTTPRequest.Instance.Request(GVs.GET_ALL_CATEGORY_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
         {
             try
             {
-                Debug.Log(data);
                 GVs.CATEGORY_LIST = JsonConvert.DeserializeObject<CategoryList>(data.ToString());
                 GFs.SaveCategoryList();
                 //var a = Observable.Create<string>((IObserver<string> observer) =>
@@ -136,7 +103,6 @@ public class HomeController : MonoBehaviour {
                         {
                             try
                             {
-                                Debug.Log(templates);
                                 TemplateDrawingList templatelist = JsonConvert.DeserializeObject<TemplateDrawingList>(templates);
                                 templatelist.dir = templatelist.dir + "/" + id;
                                 GVs.DRAWING_TEMPLATE_LIST = templatelist;
@@ -153,7 +119,8 @@ public class HomeController : MonoBehaviour {
                                 Debug.LogFormat("Error : {0}", e.ToString());
                             }
                         });
-                        return Disposable.Create(() => {
+                        return Disposable.Create(() =>
+                        {
                             //Debug.LogFormat("observer {0} has unsubscribed", index);
                         });
                     });
@@ -163,10 +130,9 @@ public class HomeController : MonoBehaviour {
                 Observable.WhenAll(ListStreamDownloadTemplate).Subscribe((string[] s) => { }, () =>
                 {
                     GVs.TEMPLATE_LIST_ALL_CATEGORY = templateListsAllCategory;
-                    Debug.Log("all downloaded");                   
-                    var json = JsonConvert.SerializeObject(templateListsAllCategory);
                     GFs.SaveAllTemplateList();
-                    Debug.Log(json);
+                    Debug.Log("all downloaded");
+                    var json = JsonConvert.SerializeObject(templateListsAllCategory);
                     ready = true;
                 });
             }

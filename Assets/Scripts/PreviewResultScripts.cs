@@ -56,25 +56,16 @@ public class PreviewResultScripts : MonoBehaviour {
         else
         {
             name = String.Format("{0}.png", DateTime.Now.ToString(Utilities.customFmts));
-        }            
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            fullPath = GVs.androidDirMPiece + name;            
-            if (!Directory.Exists(GVs.androidDirMPiece))
-            {
-                Directory.CreateDirectory(GVs.androidDirMPiece);
-            }
-            Utilities.Log("filename is {0}", fullPath);
         }
-        else
+        
+        var masterPieceDirPath = GFs.getMasterpieceDirPath();
+        fullPath = masterPieceDirPath + name;
+        if (!Directory.Exists(masterPieceDirPath))
         {
-            fullPath = GVs.pcDirMPiece + name;
-            if (!Directory.Exists(GVs.pcDirMPiece))
-            {
-                Directory.CreateDirectory(GVs.pcDirMPiece);
-            }
-            Utilities.Log("filename is {0}", fullPath);
-        }
+            Directory.CreateDirectory(masterPieceDirPath);
+        }  
+
+        Utilities.Log("filename is {0}", fullPath);
         Imgcodecs.imwrite(fullPath, a);        
         WebcamVideoCapture.filename = null;
         WebcamVideoCapture.filenameWithoutExt = null;

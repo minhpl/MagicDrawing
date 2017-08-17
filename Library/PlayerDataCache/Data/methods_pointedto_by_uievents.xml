@@ -30,7 +30,7 @@
 			<method name="OnTickBtnClicked"/>
 			<method name="OnContrastBtnClicked"/>
 			<method name="StartRecordVideo"/>
-			<method name="PauseVideoRecording"/>
+			<method name="ToggleRecord"/>
 		</type>
 		<type fullname="TouchScript.Examples.Photos.Container">
 			<method name="Add"/>

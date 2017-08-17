@@ -533,7 +533,6 @@
     <Compile Include="Assets\Scripts\DataBind.cs" />
     <Compile Include="Assets\Scripts\DontShowPersistantScene.cs" />
     <Compile Include="Assets\Scripts\DrawingScripts.cs" />
-    <Compile Include="Assets\Scripts\DrawingScripts2.cs" />
     <Compile Include="Assets\Scripts\FPSs.cs" />
     <Compile Include="Assets\Scripts\GalaryScript.cs" />
     <Compile Include="Assets\Scripts\GallerySceneScripts.cs" />

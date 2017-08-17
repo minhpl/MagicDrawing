@@ -11,6 +11,7 @@ using TouchScript.Layers;
 using TouchScript.Layers.UI;
 using TouchScript;
 using TouchScript.Gestures;
+//using System.Diagnostics;
 
 public class DrawingScripts : MonoBehaviour {
     public GameObject goCam;
@@ -18,6 +19,7 @@ public class DrawingScripts : MonoBehaviour {
     public Slider sliderLine;
     public Slider sliderContrast;
     public Slider sliderTest;
+    public Text txtTime;
     public Threshold threshold;
     public AdaptiveThreshold athreshold;
     public GameObject eventSystem;
@@ -37,12 +39,12 @@ public class DrawingScripts : MonoBehaviour {
     bool loaded = false;
     WebcamVideoCapture webcamCapture;
     Mat warp;
-    private float opaque = 0.25f;    
+    //private float opaque = 0.25f;    
+    private float opaque = 0.4f;
     public enum DRAWMODE { DRAW_MODEL, DRAW_IMAGE};
     public static DRAWMODE drawMode = DRAWMODE.DRAW_MODEL;
     public enum FILTERMODE { LINE,BLEND};
-    public static FILTERMODE filtermode = FILTERMODE.LINE;
-    
+    public static FILTERMODE filtermode = FILTERMODE.LINE;    
     private void Awake()
     {
         filtermode = FILTERMODE.LINE;
@@ -71,8 +73,7 @@ public class DrawingScripts : MonoBehaviour {
                 Utilities.Log("Scale is {0}", scale);
                 rimgcam.rectTransform.localScale = new Vector3(scale, scale, scale);
             });
-        }
-        
+        }        
         //var heavyMethod2 = Observable.Start(() =>
         //{
         //    // heavy method...
@@ -80,7 +81,6 @@ public class DrawingScripts : MonoBehaviour {
         //    return 10;
         //});
     }
-
     void OnSliderValueChaned(Slider slider)
     {
         //Debug.LogFormat("Slider value is {0}", slider.value);
@@ -94,25 +94,10 @@ public class DrawingScripts : MonoBehaviour {
         warpPerspective = gameObject.GetComponent<WarpPerspective>();        
         utilities = new Utilities();
         threshold = GetComponent<Threshold>();
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
-        }
-        else
-        {
-            GVs.APP_PATH = Application.persistentDataPath;
-        }
-        threshold = GetComponent<Threshold>();
         GFs.LoadCategoryList();
         GFs.LoadAllTemplateList();        
         MainThreadDispatcher.StartUpdateMicroCoroutine(loadModel());
-        MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
-        //var heavyMethod = Observable.Start(() =>
-        //{
-        //    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
-        //    sliderLine.value = 1;
-        //    return 10;
-        //});
+        MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());      
     }    
     void OnDestroy()
     {
@@ -151,11 +136,12 @@ public class DrawingScripts : MonoBehaviour {
             }
             else
             {
-                var categoryID = GVs.CATEGORY_LIST.data[0]._id;
-                imgPath = GVs.APP_PATH + "/" + GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID].dir + "/" + "C01T014.jpg";
+                var categoryID = GVs.CATEGORY_LIST.data[5]._id;
+                imgPath = GFs.getAppDataDirPath() + GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID].dir + "/" + "C06T001.jpg";
+                Debug.LogFormat("Image paths is {0}", imgPath);                
             }
             Debug.LogFormat("image path is {0}", imgPath);          
-            image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);            
+            image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
             Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
             float w = image.width();
             float h = image.height();
@@ -242,7 +228,10 @@ public class DrawingScripts : MonoBehaviour {
                 rimgmodel.texture = texEdges;
             }            
         }
-    }   
+    }
+
+    System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+    
     IEnumerator Worker()
     {
         while (true)
@@ -258,6 +247,19 @@ public class DrawingScripts : MonoBehaviour {
                 {
                     //Utilities.Log("Mat width = {0}, warp width = {1}, Mat height = {2}, ward height = {3}",rgbaMat.width(), warp.width(), rgbaMat.height(),warp.height());
                     webcamCapture.write(warp);
+                    if(!stopWatch.IsRunning)
+                    {
+                        stopWatch.Start();
+                    }
+
+                    var timeLapse = stopWatch.Elapsed.Seconds;
+                    string minSec = string.Format("{0}:{1:00}", (int)timeLapse / 60, (int)timeLapse % 60);
+                    txtTime.text = minSec;
+                }
+                else
+                {
+                    if(stopWatch.IsRunning)
+                        stopWatch.Stop();
                 }
             }
         }
@@ -280,6 +282,19 @@ public class DrawingScripts : MonoBehaviour {
             //webcamCapture.writer.release();
         }
     }
+
+    public void ToggleRecord()
+    {
+        if (isRecording == false)
+        {
+            StartRecordVideo();
+        }
+        else
+        {
+            PauseVideoRecording();
+        }     
+    }
+
     public void ScaleGoCam(float scaleX)
     {
         RawImage a = goCam.GetComponent<RawImage>();

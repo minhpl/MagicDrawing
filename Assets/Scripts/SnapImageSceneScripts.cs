@@ -219,20 +219,14 @@ public class SnapImageSceneScripts : MonoBehaviour
         {
             DrawingScripts.image = snapMat;
             var dateTimeNow = DateTime.Now.ToString(Utilities.customFmts);
-            string dirPathMPModel = null;
-            if (Application.platform == RuntimePlatform.Android)
+            string dirPathSnapImage = null;
+
+            dirPathSnapImage = GFs.getSnapImageDirPath();            
+            if (!Directory.Exists(dirPathSnapImage))
             {
-                dirPathMPModel = GVs.androidDirMPModel;
+                Directory.CreateDirectory(dirPathSnapImage);
             }
-            else
-            {
-                dirPathMPModel = GVs.pcDirMPModel;
-            }
-            if (!Directory.Exists(dirPathMPModel))
-            {
-                Directory.CreateDirectory(dirPathMPModel);
-            }
-            var MPModelPath = dirPathMPModel + dateTimeNow + ".png";
+            var MPModelPath = dirPathSnapImage + dateTimeNow + ".png";
             Imgproc.cvtColor(snapMat, snapMat, Imgproc.COLOR_BGR2RGB);
             Imgcodecs.imwrite(MPModelPath, snapMat);
             HistorySceneScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
@@ -243,5 +237,4 @@ public class SnapImageSceneScripts : MonoBehaviour
             GVs.SCENE_MANAGER.loadDrawingScene();
         }            
     }
-
 }

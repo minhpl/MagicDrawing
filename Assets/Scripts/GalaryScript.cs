@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GalaryScript : MonoBehaviour {
-
     public GameObject imageItem;
     public UIScrollView uiScrollView;
     public int imageCount = 800;
@@ -12,17 +11,7 @@ public class GalaryScript : MonoBehaviour {
     const int clone = 5;
 	// Use this for initialization
 	void Start () {
-
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
-        }
-        else
-        {
-            GVs.APP_PATH = Application.persistentDataPath;
-        }
         GFs.LoadAllTemplateList();
-
         StartCoroutine(load());
     }
 
@@ -100,7 +89,7 @@ public class GalaryScript : MonoBehaviour {
         //Debug.LogFormat("name is {0}", go.GetComponent<DataBind>().drawingTemplateModel.thumb);
         //GVs.PREV_SCENE.Add(this.gameObject.scene.buildIndex);
         var drawTemplateModel = go.GetComponent<DataBind>().drawingTemplateModel;
-        var dirPath = GVs.APP_PATH + "/" + GVs.DRAWING_TEMPLATE_LIST.dir + "/";
+        var dirPath = GFs.getAppDataDirPath() + "/" + GVs.DRAWING_TEMPLATE_LIST.dir + "/";
         var thumbPath = dirPath + drawTemplateModel.thumb;
         var imgPath = dirPath + drawTemplateModel.image;
         DrawingScripts.imgModelPath = imgPath;

@@ -382,7 +382,7 @@ d633212d6f78342331a42d3de880caf9 Assembly-CSharp.dll:TouchScript.Examples.KillMe
 154a7d6ef9630ee69cfa42695dd50703 Assembly-CSharp.dll:.TweenRotation
 4274518f8761bb4aa6c968ca5c7615e4 Assembly-CSharp.dll:.UIPopupList
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TrackScene
-5f1ea8d5ecf86b19edf5ed2ae4b8a9ba Assembly-CSharp.dll:.DrawingScripts
+11f60cd2699ac034a3b4688ca77c2023 Assembly-CSharp.dll:.DrawingScripts
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Colors.Circle
 0189d52198025e02a31dab4f2f816848 Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.Clustered.ClusteredTransformGesture
 da9f29ffd5c4f0ac8282bf265db79688 Assembly-CSharp.dll:.TypewriterEffect
@@ -390,6 +390,7 @@ da9f29ffd5c4f0ac8282bf265db79688 Assembly-CSharp.dll:.TypewriterEffect
 e42de2fa430ffdc5cba11107db58d22d Assembly-CSharp.dll:TouchScript.Examples.CameraControl.CameraController
 5f090821814bc51a9f55429c0fa2da3e Assembly-CSharp.dll:.UIDragDropContainer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableTransformChangedTrigger
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Example
 62229a3e4d53ca59bec192e89627ed52 Assembly-CSharp.dll:TMPro.Examples.CameraController
 ae091289bdbf518321cd726c0612e3ab Assembly-CSharp.dll:.Threshold
 3db50826468913a08c4be516b2aa12f1 Assembly-CSharp.dll:TouchScript.Gestures.LongPressGesture
@@ -465,7 +466,7 @@ bf0efa3a2b50052bc4430312d3cc0dad Assembly-CSharp.dll:.LagPosition
 f9ab08734ff0441703a923df780d4c90 Assembly-CSharp.dll:.UITextList
 d62f60ad5ecff73b76da2ea09c712ada Assembly-CSharp.dll:.UIItemStorage
 75cd0c6c744b9733ef29aa6c59ece2b1 Assembly-CSharp.dll:TMPro.Examples.VertexShakeB
-80374a1241b7521b7351a1c4893dbc1e Assembly-CSharp.dll:.ToggleScript
+4b4884be8b801100e3e4b60120e23f91 Assembly-CSharp.dll:.ToggleScript
 99fb603e20780b52805fbdf92487e554 Assembly-CSharp.dll:TouchScript.Behaviors.Transformer
 37d65bf29af9dd2fac1cab17987f9faa Assembly-CSharp.dll:.AnimatedAlpha
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample07_OrchestratIEnumerator
@@ -504,7 +505,6 @@ a0eede1b5b36a25e94c81bef0c6bc660 Assembly-CSharp.dll:.UIImageButton
 a4eabebcf83f138d76a7d684d942ecc9 Assembly-CSharp.dll:.EquipItems
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableSubmitTrigger
 af7666733efcc974926d7d470e1732a6 Assembly-CSharp.dll:TMPro.Examples.SkewTextExample
-26599a031f3f9f494b747da8aa2f6a57 Assembly-CSharp.dll:.GallerySceneScripts
 e7ae6e9ee8a8a6b2d7860a7212a8416e Assembly-CSharp.dll:.EquipRandomItem
 697b2a99286e9715f6a9eb40c1a24c2f Assembly-CSharp.dll:.UI2DSpriteAnimation
 99ca7431436b7d3343aaef26acba433a Assembly-CSharp.dll:.UISprite
@@ -515,7 +515,8 @@ dbf94a43ec23ca8d598849bce5fbd83b Assembly-CSharp.dll:OpenCVForUnityExample.ArUco
 2427cde986b9c1964687738f93a0f5bf Assembly-CSharp.dll:TouchScript.Gestures.TapGesture
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample06_ConvertToCoroutine
 aff7acf4be22d7206d3a2378aa62492d Assembly-CSharp.dll:.TestCallSO
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.HomeController
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TestVideo
+30481ebbbfa27f6b8faf29342495cd7d Assembly-CSharp.dll:.HomeController
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ShowMe
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:LukeWaffel.AndroidGallery.AndroidGallery
 fcffe9bbf1b7b7e4593e31031f78987b Assembly-CSharp.dll:.UISliderColors
@@ -527,5 +528,3 @@ fcffe9bbf1b7b7e4593e31031f78987b Assembly-CSharp.dll:.UISliderColors
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TMPro.Examples.SimpleScript
 ffcb82fccd9242220f3d88cf27f8bfe3 Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.PinnedTransformGesture
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.LayerManager
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Example
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TestVideo

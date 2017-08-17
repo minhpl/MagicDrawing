@@ -180,22 +180,22 @@ public class HTTPRequest : MonoBehaviour
                         string dir = downloadInfo.dir;
                         bool compress = downloadInfo.compress;
                         // Debug.Log(DateTime.Now.Second);
-                        if (!Directory.Exists(GVs.APP_PATH + "/" + dir))
+                        if (!Directory.Exists(GFs.getAppDataDirPath() + "/" + dir))
                         {
-                            Directory.CreateDirectory(GVs.APP_PATH + "/" + dir);
+                            Directory.CreateDirectory(GFs.getAppDataDirPath() + "/" + dir);
                         }
-                        File.WriteAllBytes(GVs.APP_PATH + "/" + dir + fn, www.downloadHandler.data);
+                        File.WriteAllBytes(GFs.getAppDataDirPath() + "/" + dir + fn, www.downloadHandler.data);
                         // Debug.Log(DateTime.Now.Second);
                         if (compress)
                         {
-                            ZipUtil.Unzip(GVs.APP_PATH + "/" + dir + fn, GVs.APP_PATH + "/" + dir);
-                            File.Delete(GVs.APP_PATH + "/" + dir + fn);
+                            ZipUtil.Unzip(GFs.getAppDataDirPath() + "/" + dir + fn, GFs.getAppDataDirPath() + "/" + dir);
+                            File.Delete(GFs.getAppDataDirPath() + "/" + dir + fn);
                         }
                         else
                         {
-                            Debug.Log("download ml: " + (GVs.APP_PATH + "/" + dir + fn));
+                            Debug.Log("download ml: " + (GFs.getAppDataDirPath() + "/" + dir + fn));
                         }
-                        Debug.Log(GVs.APP_PATH);
+                        Debug.Log(GFs.getAppDataDirPath());
                         // Debug.Log(DateTime.Now.Second);
                         handler("Hoàn thành", 1);
                     }

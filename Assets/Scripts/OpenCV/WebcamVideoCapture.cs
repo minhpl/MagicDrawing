@@ -19,23 +19,14 @@ class WebcamVideoCapture
         if(createNewVideo)
         {            
             filenameWithoutExt = String.Format("{0}", DateTime.Now.ToString(Utilities.customFmts));
-            filename = filenameWithoutExt + ".avi";        
-            if (Application.platform == RuntimePlatform.Android)
+            filename = filenameWithoutExt + ".avi";
+
+            filePath = GFs.getMasterpieceDirPath() + filename;
+            if (!Directory.Exists(GFs.getMasterpieceDirPath()))
             {
-                filePath = GVs.androidDirMPiece + filename;
-                if (!Directory.Exists(GVs.androidDirMPiece))
-                {
-                    Directory.CreateDirectory(GVs.androidDirMPiece);
-                }
+                Directory.CreateDirectory(GFs.getMasterpieceDirPath());
             }
-            else
-            {
-                filePath = GVs.pcDirMPiece + filename;
-                if (!Directory.Exists(GVs.pcDirMPiece))
-                {
-                    Directory.CreateDirectory(GVs.pcDirMPiece);
-                }                
-            }
+            
             //#if UNITY_IPHONE
             //                    Debug.Log("file name is 3" + filename);
             //                                filename = iphoneDir + name;
