@@ -34,8 +34,9 @@ public class HomeController : MonoBehaviour {
             MakePersistentObject.Instance.gameObject.SetActive(false);
         }
 
-        GFs.LoadAllTemplateList();
         GFs.LoadCategoryList();
+        GFs.LoadAllTemplateList();
+        
         if (GVs.DRAWING_TEMPLATE_LIST != null)
         {
             var numCategory = GVs.CATEGORY_LIST.Count();
@@ -58,6 +59,7 @@ public class HomeController : MonoBehaviour {
         {
             try
             {
+                Debug.Log(data);
                 GVs.CATEGORY_LIST = JsonConvert.DeserializeObject<CategoryList>(data.ToString());
                 GFs.SaveCategoryList();
                 //var a = Observable.Create<string>((IObserver<string> observer) =>
@@ -103,6 +105,8 @@ public class HomeController : MonoBehaviour {
                         {
                             try
                             {
+                                Debug.Log(templates);
+
                                 TemplateDrawingList templatelist = JsonConvert.DeserializeObject<TemplateDrawingList>(templates);
                                 templatelist.dir = templatelist.dir + "/" + id;
                                 GVs.DRAWING_TEMPLATE_LIST = templatelist;

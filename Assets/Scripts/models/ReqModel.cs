@@ -6,7 +6,7 @@ using UnityEngine;
 
 class ReqModel
 {
-    public string license = "PUWCSL";
+    public string license = GVs.LICENSE_CODE;
     public string deviceId = "" + SystemInfo.deviceUniqueIdentifier;
     public string deviceName = "" + SystemInfo.deviceName;
     public string deviceType = "" + SystemInfo.deviceType;
@@ -15,7 +15,7 @@ class ReqModel
 
     public ReqModel() { }
 
-    public ReqModel(string license)
+    public ReqModel(string license, int con)
     {
         this.license = license;
     }

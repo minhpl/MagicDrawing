@@ -107,9 +107,9 @@ public class HTTPRequest : MonoBehaviour
                         if (www.downloadedBytes != 0)
                         {
                             Debug.Log("call success");
-                            string resData = www.downloadHandler.text.ToString();
-                            string encData = AesEncryptor.decode(resData, GVs.KEY, GVs.IV);
-                            handler(encData);
+                            string resData = www.downloadHandler.text;
+                            resData = AesEncryptor.decode(resData, GVs.KEY, GVs.IV);
+                            handler(resData);
                         }
                         else
                         {
@@ -119,7 +119,7 @@ public class HTTPRequest : MonoBehaviour
                 }
                 catch (System.Exception ex)
                 {
-                    handler("error data: "+ ex.Message);
+                    handler("null data");
                 }
             }
         }
@@ -165,54 +165,61 @@ public class HTTPRequest : MonoBehaviour
             // yield break;
         }
         string error = www.error;
-        if (string.IsNullOrEmpty(error))
+        if (www.responseCode == 200)
         {
-            if (handler != null)
+            if (string.IsNullOrEmpty(error))
             {
-                try
+                if (handler != null)
                 {
-                    if (www.downloadedBytes != 0)
+                    try
                     {
-                        string sInfo = www.GetResponseHeader("downloadInfo");
-                        sInfo = AesEncryptor.decode(sInfo, GVs.KEY, GVs.IV);
-                        DownloadModel downloadInfo = JsonUtility.FromJson<DownloadModel>(sInfo);
-                        string fn = downloadInfo.filename;
-                        string dir = downloadInfo.dir;
-                        bool compress = downloadInfo.compress;
-                        // Debug.Log(DateTime.Now.Second);
-                        if (!Directory.Exists(GFs.getAppDataDirPath() + "/" + dir))
+                        if (www.downloadedBytes != 0)
                         {
-                            Directory.CreateDirectory(GFs.getAppDataDirPath() + "/" + dir);
-                        }
-                        File.WriteAllBytes(GFs.getAppDataDirPath() + "/" + dir + fn, www.downloadHandler.data);
-                        // Debug.Log(DateTime.Now.Second);
-                        if (compress)
-                        {
-                            ZipUtil.Unzip(GFs.getAppDataDirPath() + "/" + dir + fn, GFs.getAppDataDirPath() + "/" + dir);
-                            File.Delete(GFs.getAppDataDirPath() + "/" + dir + fn);
+                            string sInfo = www.GetResponseHeader("downloadInfo");
+                            sInfo = AesEncryptor.decode(sInfo, GVs.KEY, GVs.IV);
+                            DownloadModel downloadInfo = JsonUtility.FromJson<DownloadModel>(sInfo);
+                            string fn = downloadInfo.filename;
+                            string dir = downloadInfo.dir;
+                            bool compress = downloadInfo.compress;
+                            // Debug.Log(DateTime.Now.Second);
+                            if (!Directory.Exists(GVs.APP_PATH + "/" + dir))
+                            {
+                                Directory.CreateDirectory(GVs.APP_PATH + "/" + dir);
+                            }
+                            File.WriteAllBytes(GVs.APP_PATH + "/" + dir + fn, www.downloadHandler.data);
+                            // Debug.Log(DateTime.Now.Second);
+                            if (compress)
+                            {
+                                ZipUtil.Unzip(GVs.APP_PATH + "/" + dir + fn, GVs.APP_PATH + "/" + dir);
+                                File.Delete(GVs.APP_PATH + "/" + dir + fn);
+                            }
+                            else
+                            {
+                                Debug.Log("download ml: " + (GVs.APP_PATH + "/" + dir + fn));
+                            }
+                            Debug.Log(GVs.APP_PATH);
+                            // Debug.Log(DateTime.Now.Second);
+                            handler("Hoàn thành", 1);
                         }
                         else
                         {
-                            Debug.Log("download ml: " + (GFs.getAppDataDirPath() + "/" + dir + fn));
+                            handler("zero data");
                         }
-                        Debug.Log(GFs.getAppDataDirPath());
-                        // Debug.Log(DateTime.Now.Second);
-                        handler("Hoàn thành", 1);
                     }
-                    else
+                    catch (System.Exception ex)
                     {
-                        handler("zero data");
+                        handler("null data");
                     }
                 }
-                catch (System.Exception ex)
-                {
-                    handler("null data");
-                }
+            }
+            else
+            {
+                handler("null data");
             }
         }
         else
         {
-            handler("null data");
+            handler("Dữ liệu không tồn tại", -404);
         }
         www.Dispose();
     }

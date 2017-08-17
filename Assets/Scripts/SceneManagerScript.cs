@@ -1,11 +1,78 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine;
 
-public class SceneManagerScript  {
+public class SceneManagerScript : MonoBehaviour
+{
 
-	public void loadHomeScne()
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public void StartArchivementScene()
+    {
+        SceneManager.LoadScene("FinishTrain", LoadSceneMode.Single);
+    }
+
+    public void StartHomeScene()
+    {
+        SceneManager.LoadScene("HomeScene", LoadSceneMode.Single);
+    }
+
+    public void StartEditProfileScene()
+    {
+        SceneManager.LoadScene("EditProfileScene", LoadSceneMode.Single);
+    }
+
+    public void StartProfileScene()
+    {
+        SceneManager.LoadScene("ProfileScene", LoadSceneMode.Single);
+    }
+
+
+    public void StartAvataScene()
+    {
+        SceneManager.LoadScene("AvataScene", LoadSceneMode.Single);
+    }
+    public void GameBackScene()
+    {
+        if (GVs.GAME_MODE == GVs.SINGLE_MODE || GVs.GAME_MODE == GVs.GENERAL_MODE) SceneManager.LoadScene("CategoryScene", LoadSceneMode.Single);
+        else SceneManager.LoadScene("HomeScene", LoadSceneMode.Single);
+    }
+
+    /* */
+    public void StartMainModeScene()
+    {
+        SceneManager.LoadScene("Main", LoadSceneMode.Single);
+        // StartCoroutine(LoadScene());
+        // StartCoroutine(SwitchScene());
+    }
+    AsyncOperation async;
+    IEnumerator LoadScene()
+    {
+        async = SceneManager.LoadSceneAsync("Main");
+        async.allowSceneActivation = false;
+        yield return async;
+        Debug.Log("Loading complete");
+    }
+
+    IEnumerator SwitchScene()
+    {
+        yield return new WaitForSeconds(2f);
+        if (async != null)
+            async.allowSceneActivation = true;
+    }
+
+public void loadHomeScne()
 	{
 		SceneManager.LoadScene("HomeScene");
 	}

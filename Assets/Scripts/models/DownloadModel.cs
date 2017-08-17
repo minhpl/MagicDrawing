@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class DownloadModel
 {
-    //ảnh đại diện cho category
-    public static int DOWNLOAD_CATEGORY_AVATA = 1;
-    //ảnh trong mỗi category
+    public static int DOWNLOAD_ML = 1;
     public static int DOWNLOAD_CATEGORY = 2;
-    //tát cả ảnh avata
     public static int DOWNLOAD_AVATAS = 3;
+	public static int DOWNLOAD_CATEGORY_AVATA = 1;
 
     public int downloadType;
     public string _id;

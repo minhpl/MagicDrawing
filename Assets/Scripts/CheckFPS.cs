@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using System;
-using UniRx;
-
 public class CheckFPS : MonoBehaviour
 {
 
@@ -24,7 +22,6 @@ public class CheckFPS : MonoBehaviour
     }
     long time = DateTime.Now.Millisecond;
     // Update is called once per frame
-
     void FixedUpdate()
     {
         // Debug.Log("FixedUpdate: " + (int)(Time.deltaTime * 1000));

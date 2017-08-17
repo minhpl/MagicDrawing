@@ -89,7 +89,11 @@ public class LibraryScripts : MonoBehaviour
         else
         {
             imageCount = templateDrawingList.Count();
-        }            
+        }
+
+        var app_path = GFs.getAppDataDirPath();        
+        var categoryDirPath = app_path + GVs.CATEGORY_LIST.dir + "/";
+
         for (int j = 0; j < clone; j++)
             for (int i = 0; i < imageCount; i++)
             {               
@@ -107,17 +111,16 @@ public class LibraryScripts : MonoBehaviour
                 TemplateDrawing template = null;
                 if (mode==MODE.CATEGORY)
                 {
-                    category = categorys[i];
-                    var dir = GVs.CATEGORY_LIST.dir;
-                    texture = GFs.LoadPNG(dir + "/" + category.image);
+                    category = categorys[i];                                        
+                    texture = GFs.LoadPNGFromPath(categoryDirPath + category.image);
                 }
                 else
                 {                    
                     template = templateDrawingList.Get(i);
-                    var dir = templateDrawingList.dir;
-                    texture= GFs.LoadPNG(dir + "/" + template.thumb);
+                    var dirPath = app_path+ templateDrawingList.dir + "/";
+                    texture= GFs.LoadPNGFromPath(dirPath + "/" + template.thumb);
                 }
-
+          
                 float width = texture.width;
                 float height = texture.height;
                 float ratio = width / height;
