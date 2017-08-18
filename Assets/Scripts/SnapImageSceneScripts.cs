@@ -244,4 +244,11 @@ public class SnapImageSceneScripts : MonoBehaviour
             GVs.SCENE_MANAGER.loadDrawingScene();
         }            
     }
+
+    public void OnCancelBtnClicked()
+    {
+        Debug.Log("herhehehehhehe");
+        rawImgCam.texture = webcamTex;
+    }
+
 }

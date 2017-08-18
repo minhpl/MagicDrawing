@@ -131,7 +131,7 @@ public class LibraryScripts : MonoBehaviour
                 if (ratio > 1)
                 {
                     w = widthOri >> deScale;
-                    h = (int)(widthOri * height / width) >> deScale;
+                    h = (int)(widthOri * height / width) >> deScale;                    
                     TextureScale.Bilinear(texture, widthOri >> deScale, (int)(widthOri * height / width) >> deScale);
                     rimage.rectTransform.sizeDelta = new Vector2(widthOri, widthOri * height / width);
                 }

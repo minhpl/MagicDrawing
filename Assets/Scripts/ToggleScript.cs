@@ -84,11 +84,11 @@ public class ToggleScript : MonoBehaviour {
             panel_constract.SetActive(stateLine);
         });
 
-        StartRecord.onClick.AddListener(() =>
-        {
-            StartRecord.gameObject.SetActive(false);
-            Recording.gameObject.SetActive(true);            
-        });
+        //StartRecord.onClick.AddListener(() =>
+        //{
+        //    StartRecord.gameObject.SetActive(false);
+        //    Recording.gameObject.SetActive(true);            
+        //});
 
         Recording.onClick.AddListener(() =>
         {

@@ -72,7 +72,7 @@ public class SceneManagerScript : MonoBehaviour
             async.allowSceneActivation = true;
     }
 
-public void loadHomeScne()
+public void loadHomeScene()
 	{
 		SceneManager.LoadScene("HomeScene");
 	}
