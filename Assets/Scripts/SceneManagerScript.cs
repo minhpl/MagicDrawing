@@ -131,4 +131,9 @@ public void loadHomeScne()
     {
         SceneManager.LoadScene("DrawingScene");
     }
+
+    public void loadTemplateScene()
+    {
+        SceneManager.LoadScene("TemplateScene");
+    }
 }

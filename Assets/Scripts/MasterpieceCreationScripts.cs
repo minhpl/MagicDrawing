@@ -22,7 +22,7 @@ public class MasterpieceCreationScripts : MonoBehaviour {
         var newheight = newwidth / canvasRat;
         gridLayoutGroup.cellSize = new Vector2(newwidth, newheight);                
     }	
-    IEnumerator LoadMasterpieceDrawing()
+	IEnumerator LoadMasterpieceDrawing()
     {
         yield return null;
        
@@ -31,9 +31,17 @@ public class MasterpieceCreationScripts : MonoBehaviour {
 
         var files = Directory.GetFiles(dirPathMP, "*.*", SearchOption.TopDirectoryOnly)
             .Where(s => s.EndsWith(".png"));
+
+		var info = new DirectoryInfo(dirPathMP);
+		var fileInfo = info.GetFiles();
+		foreach (var file in fileInfo) print(file.Name);
+
+		Debug.LogFormat ("Files count is :{0}", files.Count ());
         foreach (var f in files)
         {
             yield return null;
+			try {
+				Debug.Log(f.ToString());
             GameObject go = Instantiate(panel) as GameObject;
             go.transform.SetParent(panel.transform.parent.transform);
             go.transform.localScale = panel.transform.localScale;
@@ -72,7 +80,11 @@ public class MasterpieceCreationScripts : MonoBehaviour {
                     GVs.SCENE_MANAGER.loadResultScene();
                 }
             );
-            rimg.texture = texture;    
+            rimg.texture = texture;
+			} catch (Exception ex) {
+				Debug.Log ("Loi");
+				Debug.LogError (ex);
+			}
         }
         Destroy(panel);
     }

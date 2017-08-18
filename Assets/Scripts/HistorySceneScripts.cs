@@ -51,13 +51,18 @@ public class HistorySceneScripts : MonoBehaviour {
             cloneItem.transform.localScale = item.transform.localScale;
             var thumbPath = historyModel.thumbPath;
             var filePath = historyModel.filePath;
-            Mat image = Imgcodecs.imread(thumbPath, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
-            Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
-            Texture2D texture = new Texture2D(image.width(),image.height(),TextureFormat.BGRA32,false);
-            Utils.matToTexture2D(image, texture);
+			string loadPath = null;
+			if (historyModel.imgType == HistoryModel.IMAGETYPE.SNAP) {
+				loadPath = filePath;
+			} else {
+				loadPath = thumbPath;
+			}
+			Texture2D texture = GFs.LoadPNGFromPath(loadPath);
+            Mat image = new Mat(texture.height, texture.width, CvType.CV_8UC4);
+            Utils.texture2DToMat(texture, image);
             var rimgGameObject = cloneItem.transform.Find("rimg");
             rimgGameObject.GetComponent<RawImage>().texture = texture;
-            rimgGameObject.GetComponent<AspectRatioFitter>().aspectRatio = (float)image.width() / (float)image.height();
+            rimgGameObject.GetComponent<AspectRatioFitter>().aspectRatio = (float)texture.width / (float)texture.height;
             cloneItem.SetActive(true);
             cloneItem.GetComponent<Button>().onClick.AddListener(() =>
             {

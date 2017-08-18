@@ -6,7 +6,12 @@ using UnityEngine;
 class GVs
 {
     public static string LICENSE_CODE = "PUWCSL";
-    public static string APP_PATH = Application.persistentDataPath;
+	public static string APP_PATH =
+		#if UNITY_ANDROID
+		"data/data/com.MinhViet.Drawing/files";
+		#elif UNITY_IOS || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
+		Application.persistentDataPath;
+		#endif
     public static string TRAIN_PATH;
 
     public static SceneManagerScript SCENE_MANAGER = new SceneManagerScript();

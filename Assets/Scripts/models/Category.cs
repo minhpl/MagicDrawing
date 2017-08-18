@@ -34,6 +34,8 @@ public class CategoryList
 
     public int Count()
     {
+		if (data == null)
+			return 0;
         return data.Count;
     }
 }

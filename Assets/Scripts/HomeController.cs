@@ -18,26 +18,28 @@ public class HomeController : MonoBehaviour {
         Screen.autorotateToLandscapeLeft = false;
         Screen.autorotateToLandscapeRight = false;
         Screen.autorotateToPortrait = false;
-        Screen.autorotateToPortraitUpsideDown = false;        
+        Screen.autorotateToPortraitUpsideDown = false;
+        GFs.LoadData();
     }
+
+	Dictionary<string, TemplateDrawingList> templateListsAllCategory = new Dictionary<string, TemplateDrawingList>();
+	List<IObservable<string>> ListStreamDownloadTemplate = new List<IObservable<string>>();
 
     void Start()
     {
-        var width = (float)canvas.GetComponent<RectTransform>().rect.width;
-        var height = (float)canvas.GetComponent<RectTransform>().rect.height;
-        var ratioScreen = (float)width / (float)height;
-        Debug.LogFormat("RatioScreen is {0},canvas Width is {1},canvas Height is {2}", ratioScreen, width, height);
-        Debug.LogFormat("Screen width is {0}, Screen height is {1}", Screen.width, Screen.height);
+        //var width = (float)canvas.GetComponent<RectTransform>().rect.width;
+        //var height = (float)canvas.GetComponent<RectTransform>().rect.height;
+        //var ratioScreen = (float)width / (float)height;
+        //Debug.LogFormat("RatioScreen is {0},canvas Width is {1},canvas Height is {2}", ratioScreen, width, height);
+        //Debug.LogFormat("Screen width is {0}, Screen height is {1}", Screen.width, Screen.height);
 
         if (MakePersistentObject.Instance)
         {
             MakePersistentObject.Instance.gameObject.SetActive(false);
         }
-
-        GFs.LoadCategoryList();
-        GFs.LoadAllTemplateList();
-        
-        if (GVs.DRAWING_TEMPLATE_LIST != null)
+		try {
+			
+        if (GVs.CATEGORY_LIST != null && GVs.TEMPLATE_LIST_ALL_CATEGORY!=null)
         {
             var numCategory = GVs.CATEGORY_LIST.Count();
             var NumtemplateList = GVs.TEMPLATE_LIST_ALL_CATEGORY.Count;
@@ -49,9 +51,12 @@ public class HomeController : MonoBehaviour {
             }
         }
 
+		} catch (Exception ex) {
+			Debug.LogError (ex);
+		}
         Utilities.Log("Waiting for downloading");
 
-        Dictionary<string, TemplateDrawingList> templateListsAllCategory = new Dictionary<string, TemplateDrawingList>();
+//        Dictionary<string, TemplateDrawingList> templateListsAllCategory = new Dictionary<string, TemplateDrawingList>();
         List<IObservable<string>> ListStreamDownloadTemplate = new List<IObservable<string>>();
 
         if (NET.NetWorkIsAvaiable())
@@ -59,7 +64,7 @@ public class HomeController : MonoBehaviour {
         {
             try
             {
-                Debug.Log(data);
+				Debug.Log("GET_ALL_CATEGORY_URL: " + data);
                 GVs.CATEGORY_LIST = JsonConvert.DeserializeObject<CategoryList>(data.ToString());
                 GFs.SaveCategoryList();
                 //var a = Observable.Create<string>((IObserver<string> observer) =>

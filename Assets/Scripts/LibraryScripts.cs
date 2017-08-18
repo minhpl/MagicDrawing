@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 public class LibraryScripts : MonoBehaviour
 {
-    public GameObject imageItem;
+    public GameObject imageItem;    
     public Text TextTitle;    
     const int deScale = 1;
     const bool USE_PACK = true;
@@ -22,7 +22,7 @@ public class LibraryScripts : MonoBehaviour
     private static string title;
 
     public enum MODE {CATEGORY, TEMPLATE};
-    private static MODE mode = MODE.CATEGORY;
+    private static MODE mode;
 
     Coroutine coroutine;
     void Awake()
@@ -105,7 +105,7 @@ public class LibraryScripts : MonoBehaviour
                 RawImage rimage = go.transform.Find("RImage").GetComponent<RawImage>();
                 TextMeshProUGUI textMeshPro = go.transform.Find("textmeshpro").GetComponent<TextMeshProUGUI>();
                 Text text = go.transform.Find("text").GetComponent<Text>();
-
+                
                 Texture2D texture = null;
                 Category category = null;
                 TemplateDrawing template = null;
@@ -113,6 +113,7 @@ public class LibraryScripts : MonoBehaviour
                 {
                     category = categorys[i];                                        
                     texture = GFs.LoadPNGFromPath(categoryDirPath + category.image);
+                    text.text = category.name;
                 }
                 else
                 {                    
@@ -162,7 +163,7 @@ public class LibraryScripts : MonoBehaviour
                         LibraryScripts.templateDrawingList = templateDrawingList;
                         LibraryScripts.mode = MODE.TEMPLATE;
                         title = category.name;
-                        GVs.SCENE_MANAGER.loadLibraryScene();
+                        GVs.SCENE_MANAGER.loadTemplateScene();
                     }
                     else
                     {
@@ -182,7 +183,7 @@ public class LibraryScripts : MonoBehaviour
                 LstTexture.Add(texture);
             }
 
-        if (USE_PACK && imageItem!=null)
+        if (USE_PACK && imageItem != null)
         {
             int freeArea = 0;
             freeArea = Area - area2048 * num2048;
@@ -274,6 +275,6 @@ public class LibraryScripts : MonoBehaviour
 
     public void ObBackBtnClicked()
     {
-        mode = MODE.CATEGORY;
+        LibraryScripts.mode = LibraryScripts.MODE.CATEGORY;
     }
 }

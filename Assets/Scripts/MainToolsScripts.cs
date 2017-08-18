@@ -52,10 +52,11 @@ public class MainToolsScripts : MonoBehaviour {
 
         imagePicker.Completed += (string path) =>
         {
-            Utilities.Log("Path is {0}", path);
-            Mat image = Imgcodecs.imread(path);
-            Texture2D texture = new Texture2D(image.width(), image.height(), TextureFormat.RGBA32, false);
-            Utils.matToTexture2D(image, texture);
+            Utilities.Log("Path here is {0}", path);
+//            
+			Texture2D texture = GFs.LoadPNGFromPath(path);
+			Mat image = new Mat(texture.height,texture.width,CvType.CV_8UC3);
+			Utils.texture2DToMat(texture,image);
             DrawingScripts.image = image;
             DrawingScripts.texModel = texture;
             DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;

@@ -10,12 +10,21 @@ public class GFs
 {
     public static void LoadData()
     {
-        // PlayerPrefs.DeleteAll();
+         PlayerPrefs.DeleteAll();
+		Debug.Log ("here1");
         LoadUsers();
         LoadAvatas();
         LoadLevel();
+		Debug.Log ("here2");
         LoadLicenseCode();
+		Debug.Log ("here3");
         LoadSoundConfig();
+		Debug.Log ("here4");
+
+		GFs.LoadCategoryList();
+		Debug.Log ("here5");
+		GFs.LoadAllTemplateList();
+		Debug.Log ("here6");
     }
     public static void SaveUsers()
     {
@@ -149,7 +158,7 @@ public class GFs
             try
             {         
                 GVs.TEMPLATE_LIST_ALL_CATEGORY = JsonConvert.DeserializeObject<Dictionary<string, TemplateDrawingList>>(s);
-                AotHelper.EnsureDictionary<string, TemplateDrawingList>();
+//                AotHelper.EnsureDictionary<string, TemplateDrawingList>();
                 //Debug.Log("Deserialized dictionary success");
                 //Debug.Log(GVs.TEMPLATE_LIST_ALL_CATEGORY["C02"].templates.Count);
             }
@@ -176,17 +185,21 @@ public class GFs
     }
 
     public static void LoadCategoryList()
-    {
-        if (PlayerPrefs.HasKey(CATEGORY_LIST))
-        {
-            string s = PlayerPrefs.GetString(CATEGORY_LIST);
-            Debug.LogFormat("category is {0}", s);
-            GVs.CATEGORY_LIST = JsonUtility.FromJson<CategoryList>(s);
-            Debug.LogFormat("Category is {0}", GVs.CATEGORY_LIST.data[0].image);
-        }
-        else
-            SaveCategoryList();
-    }
+	{
+		if (PlayerPrefs.HasKey (CATEGORY_LIST)) {
+			try {
+				
+				string s = PlayerPrefs.GetString (CATEGORY_LIST);
+				Debug.LogFormat ("category is {0}", s);
+				GVs.CATEGORY_LIST = JsonUtility.FromJson<CategoryList> (s);
+				Debug.LogFormat ("Category is {0}", GVs.CATEGORY_LIST.data [0].image);
+
+			} catch (Exception ex) {
+
+			}
+		} else
+			SaveCategoryList ();
+	}
 
 
 

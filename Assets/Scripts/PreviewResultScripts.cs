@@ -66,7 +66,13 @@ public class PreviewResultScripts : MonoBehaviour {
         }  
 
         Utilities.Log("filename is {0}", fullPath);
-        Imgcodecs.imwrite(fullPath, a);        
+		if (Application.platform == RuntimePlatform.IPhonePlayer) {
+			System.IO.File.WriteAllBytes (fullPath, texture.EncodeToPNG());
+		} else {
+			Imgcodecs.imwrite(fullPath, a);   
+		}
+
+             
         WebcamVideoCapture.filename = null;
         WebcamVideoCapture.filenameWithoutExt = null;
         ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;

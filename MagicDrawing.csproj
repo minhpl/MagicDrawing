@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2017.1.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -537,6 +539,7 @@
     <Compile Include="Assets\Scripts\DataBind.cs" />
     <Compile Include="Assets\Scripts\DontShowPersistantScene.cs" />
     <Compile Include="Assets\Scripts\DrawingScripts.cs" />
+    <Compile Include="Assets\Scripts\DrawingScripts2.cs" />
     <Compile Include="Assets\Scripts\EditProfileScript.cs" />
     <Compile Include="Assets\Scripts\FPSs.cs" />
     <Compile Include="Assets\Scripts\GalaryScript.cs" />
@@ -548,8 +551,8 @@
     <Compile Include="Assets\Scripts\HomeMenuScript.cs" />
     <Compile Include="Assets\Scripts\HomeScript.cs" />
     <Compile Include="Assets\Scripts\Job.cs" />
-    <Compile Include="Assets\Scripts\LibraryScripts.cs" />
     <Compile Include="Assets\Scripts\LibraryScriptsCompare.cs" />
+    <Compile Include="Assets\Scripts\LibraryScripts.cs" />
     <Compile Include="Assets\Scripts\MainToolsScripts.cs" />
     <Compile Include="Assets\Scripts\MakePersistentObject.cs" />
     <Compile Include="Assets\Scripts\MasterpieceCreationScripts.cs" />
@@ -584,6 +587,7 @@
     <Compile Include="Assets\Scripts\ScrollViewScript.cs" />
     <Compile Include="Assets\Scripts\security\AesEncryptor.cs" />
     <Compile Include="Assets\Scripts\SelectBoxScript.cs" />
+    <Compile Include="Assets\Scripts\ShareFacebook.cs" />
     <Compile Include="Assets\Scripts\SnapImageSceneScripts.cs" />
     <Compile Include="Assets\Scripts\testin.cs" />
     <Compile Include="Assets\Scripts\TestSaladSeriazable.cs" />

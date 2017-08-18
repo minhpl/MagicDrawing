@@ -228,12 +228,19 @@ public class SnapImageSceneScripts : MonoBehaviour
             }
             var MPModelPath = dirPathSnapImage + dateTimeNow + ".png";
             Imgproc.cvtColor(snapMat, snapMat, Imgproc.COLOR_BGR2RGB);
-            Imgcodecs.imwrite(MPModelPath, snapMat);
-            HistorySceneScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
             Texture2D texture = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.BGRA32, false);
             Utils.matToTexture2D(snapMat, texture);
             DrawingScripts.texModel = texture;
             DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
+            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                System.IO.File.WriteAllBytes(MPModelPath, texture.EncodeToPNG());
+            }
+            else
+            {
+                Imgcodecs.imwrite(MPModelPath, snapMat);
+            }
+            HistorySceneScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
             GVs.SCENE_MANAGER.loadDrawingScene();
         }            
     }
