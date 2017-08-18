@@ -78,14 +78,17 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Facebook.Unity.Settings">
-      <HintPath>Library\FacebookSDK\Facebook.Unity.Settings.dll</HintPath>
     </Reference>
     <Reference Include="TexturePacker">
       <HintPath>Assets\Extensions\TexturePacker\Lib\TexturePacker.dll</HintPath>
@@ -522,7 +525,7 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\SimpleWB.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\WhiteBalancer.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\Xphoto.cs" />
-    <Compile Include="Assets\Scenes\M\Example.cs" />
+    <Compile Include="Assets\Scenes\Example.cs" />
     <Compile Include="Assets\Scenes\Test\OpenCVFaceDetection.cs" />
     <Compile Include="Assets\Scenes\Test\PhotoCaptureExample.cs" />
     <Compile Include="Assets\Scenes\Test\PositionAtFaceScreenSpace.cs" />
@@ -545,14 +548,15 @@
     <Compile Include="Assets\Scripts\GalaryScript.cs" />
     <Compile Include="Assets\Scripts\GallerySceneScripts.cs" />
     <Compile Include="Assets\Scripts\GFs.cs" />
+    <Compile Include="Assets\Scripts\GoHomeSceneScripts.cs" />
     <Compile Include="Assets\Scripts\GVs.cs" />
     <Compile Include="Assets\Scripts\HistorySceneScripts.cs" />
     <Compile Include="Assets\Scripts\HomeController.cs" />
     <Compile Include="Assets\Scripts\HomeMenuScript.cs" />
     <Compile Include="Assets\Scripts\HomeScript.cs" />
     <Compile Include="Assets\Scripts\Job.cs" />
-    <Compile Include="Assets\Scripts\LibraryScriptsCompare.cs" />
     <Compile Include="Assets\Scripts\LibraryScripts.cs" />
+    <Compile Include="Assets\Scripts\LibraryScriptsCompare.cs" />
     <Compile Include="Assets\Scripts\MainToolsScripts.cs" />
     <Compile Include="Assets\Scripts\MakePersistentObject.cs" />
     <Compile Include="Assets\Scripts\MasterpieceCreationScripts.cs" />
@@ -752,6 +756,77 @@
     <Compile Include="Assets\Unimgpicker\Scripts\PickerUnsupported.cs" />
     <Compile Include="Assets\Unimgpicker\Scripts\Unimgpicker.cs" />
     <Compile Include="Assets\UnityPackages\JsonNetSample\JsonNetSample.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Accordion\Accordion.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Accordion\AccordionElement.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Accordion\Tweening\FloatTween.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Accordion\Tweening\ITweenValue.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Accordion\Tweening\TweenRunner.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\BoundTooltip\BoundTooltipItem.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\BoundTooltip\BoundTooltipTrigger.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ComboBox\AutoCompleteComboBox.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ComboBox\ComboBox.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ComboBox\DropDownList.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ComboBox\DropDownListButton.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ComboBox\DropDownListItem.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Effects\BestFitOutline.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Effects\CurvedText.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Effects\CylinderText.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Effects\Gradient.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Effects\LetterSpacing.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Effects\NicerOutline.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Effects\SoftMaskScript.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Effects\UIFlippable.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Effects\UIImageCrop.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\HSVPicker\ColorPickerTester.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\HSVPicker\HexRGB.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\HSVPicker\HsvBoxSelector.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\HSVPicker\HSVPicker.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\HSVPicker\HSVSliderEvent.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\HSVPicker\HsvSliderPicker.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\HSVPicker\HSVUtil.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ImageExtended.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\InputFieldEnterSubmit.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\InputFocus.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\InputModules\AimerInputModule.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\InputModules\GamePadInputModule.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Layout\FlowLayoutGroup.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Layout\HorizontalScrollSnap.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Layout\RadialLayout.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Layout\ScrollSnap.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Layout\TileSizeFitter.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Layout\VerticalScrollSnap.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Primitives\DiamondGraph.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Primitives\UICircle.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Primitives\UICornerCut.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Primitives\UILineRenderer.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Primitives\UILineTextureRenderer.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\RaycastMask.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ReorderableList\ReorderableList.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ReorderableList\ReorderableListContent.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ReorderableList\ReorderableListDebug.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ReorderableList\ReorderableListElement.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\RescalingPanels\RescaleDragPanel.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\RescalingPanels\RescalePanel.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\RescalingPanels\ResizePanel.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ReturnKeyTriggersButton.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ScrollRectEx.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ScrollRectExtensions.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ScrollRectLinker.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ScrollRectTweener.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\SelectionBox\ExampleSelectable.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\SelectionBox\IBoxSelectable.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\SelectionBox\SelectionBox.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\TabNavigation.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\ToolTip.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\UIScrollToSelection.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\UIScrollToSelectionXY.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\UISelectableExtension.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\UIWindowBase.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Utilities\HoverTooltip.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Utilities\SetPropertyUtility.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\Utilities\switchToRectTransform.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\VR Extensions\VRCursor.cs" />
+    <Compile Include="Assets\unity-ui-extensions\Scripts\VR Extensions\VRInputModule.cs" />
     <Compile Include="Assets\Zip\Plugins\Zip.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -832,6 +907,9 @@
     <None Include="Assets\Unimgpicker\Editor\NSPhotoLibraryUsageDescription.txt" />
     <None Include="Assets\UnityPackages\link.xml" />
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
+    <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShader.shader" />
+    <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShaderText.shader" />
+    <None Include="Assets\unity-ui-extensions\Shaders\UIImageCrop.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

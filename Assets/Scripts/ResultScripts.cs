@@ -19,6 +19,7 @@ public class ResultScripts : MonoBehaviour {
     public Canvas canvas;
     public Button BackButton;
     public Text tit;
+    public RawImage rimgTitle;
     private Texture2D texVideo;
     public enum MODE { FISRT_RESULT,REWATCH_RESULT};
     public static MODE mode;
@@ -29,9 +30,13 @@ public class ResultScripts : MonoBehaviour {
         if (mode == MODE.REWATCH_RESULT)
         {
             tit.text = title;
+            rimgTitle.gameObject.SetActive(false);
+            tit.gameObject.SetActive(true);
         }        
         if(mode==MODE.FISRT_RESULT && BackButton!=null)
         {
+            rimgTitle.gameObject.SetActive(true);
+            tit.gameObject.SetActive(false);
             BackButton.onClick = new Button.ButtonClickedEvent();
             BackButton.onClick.AddListener(() =>
             {
@@ -40,8 +45,7 @@ public class ResultScripts : MonoBehaviour {
                 GVs.TRACE_SCENE.Pop();
                 int i = GVs.TRACE_SCENE.Pop();                
                 SceneManager.LoadScene(i);
-            });
-            //BackButton.onClick.RemoveAllListeners();
+            });           
         }
     }
 
@@ -137,8 +141,4 @@ public class ResultScripts : MonoBehaviour {
         MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
     }
 
-    public void OnBackBtnClicked()
-    {
-        
-    }
 }

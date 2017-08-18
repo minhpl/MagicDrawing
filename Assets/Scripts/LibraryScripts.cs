@@ -47,11 +47,7 @@ public class LibraryScripts : MonoBehaviour
         {
             TextTitle.text = title;
         }
-
-
         var watch = System.Diagnostics.Stopwatch.StartNew();
-
-
         //coroutine = MainThreadDispatcher.StartCoroutine(Load());
         MainThreadDispatcher.StartUpdateMicroCoroutine(Load());
         watch.Stop();
@@ -121,7 +117,7 @@ public class LibraryScripts : MonoBehaviour
                     var dirPath = app_path+ templateDrawingList.dir + "/";
                     texture= GFs.LoadPNGFromPath(dirPath + "/" + template.thumb);
                 }
-          
+                Debug.Log("hehehehe");
                 float width = texture.width;
                 float height = texture.height;
                 float ratio = width / height;
@@ -157,7 +153,8 @@ public class LibraryScripts : MonoBehaviour
                 go.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     if (mode == MODE.CATEGORY)
-                    {                        
+                    {
+                        
                         var categoryID = category._id;
                         TemplateDrawingList templateDrawingList = GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID];
                         LibraryScripts.templateDrawingList = templateDrawingList;

@@ -60,9 +60,9 @@ public class HistorySceneScripts : MonoBehaviour {
 			Texture2D texture = GFs.LoadPNGFromPath(loadPath);
             Mat image = new Mat(texture.height, texture.width, CvType.CV_8UC4);
             Utils.texture2DToMat(texture, image);
-            var rimgGameObject = cloneItem.transform.Find("rimg");
+            var rimgGameObject = cloneItem.transform.Find("RImage");
             rimgGameObject.GetComponent<RawImage>().texture = texture;
-            rimgGameObject.GetComponent<AspectRatioFitter>().aspectRatio = (float)texture.width / (float)texture.height;
+            rimgGameObject.GetComponent<AspectRatioFitter>().aspectRatio = (float)texture.width / (float)texture.height;            
             cloneItem.SetActive(true);
             cloneItem.GetComponent<Button>().onClick.AddListener(() =>
             {

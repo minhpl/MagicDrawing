@@ -10,21 +10,21 @@ public class GFs
 {
     public static void LoadData()
     {
-         PlayerPrefs.DeleteAll();
-		Debug.Log ("here1");
+         //PlayerPrefs.DeleteAll();
+		Utilities.Log ("here1");
         LoadUsers();
         LoadAvatas();
         LoadLevel();
-		Debug.Log ("here2");
+        Utilities.Log ("here2");
         LoadLicenseCode();
-		Debug.Log ("here3");
+        Utilities.Log ("here3");
         LoadSoundConfig();
-		Debug.Log ("here4");
+        Utilities.Log ("here4");
 
 		GFs.LoadCategoryList();
-		Debug.Log ("here5");
+        Utilities.Log ("here5");
 		GFs.LoadAllTemplateList();
-		Debug.Log ("here6");
+        Utilities.Log ("here6");
     }
     public static void SaveUsers()
     {

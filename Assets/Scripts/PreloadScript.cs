@@ -35,7 +35,7 @@ public class PreloadScript : MonoBehaviour
         }
         else
         {
-            GVs.SCENE_MANAGER.StartHomeScene();
+            //GVs.SCENE_MANAGER.StartHomeScene();
             // Init();
         }
     }

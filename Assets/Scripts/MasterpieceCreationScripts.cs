@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class MasterpieceCreationScripts : MonoBehaviour {
     private string dirPathMP;
-    public GameObject panel;
+    public GameObject item;
     public GameObject canvas;
     public GridLayoutGroup gridLayoutGroup;
 	void Start () {
@@ -40,52 +40,50 @@ public class MasterpieceCreationScripts : MonoBehaviour {
         foreach (var f in files)
         {
             yield return null;
-			try {
-				Debug.Log(f.ToString());
-            GameObject go = Instantiate(panel) as GameObject;
-            go.transform.SetParent(panel.transform.parent.transform);
-            go.transform.localScale = panel.transform.localScale;
-            go.SetActive(true);
-            Texture2D texture = GFs.LoadPNGFromPath(f);
-            GameObject masterpiece = go.transform.Find("masterpiece").gameObject;
-            var databind = go.GetComponent<DataBind>();
-            databind.imagePath = f;
-            var fileNameWithouExtension = Path.GetFileNameWithoutExtension(f);
-            string videoPath = dirPathMP + fileNameWithouExtension + ".avi";
-            if (File.Exists(videoPath))
+            try
             {
-                databind.videoPath = videoPath;
-            }
-            else
-            {
-                Debug.Log(databind.videoPath == null);
-            }
-            var rimg = masterpiece.GetComponent<RawImage>();
-            var aspectratioFitter = masterpiece.GetComponent<AspectRatioFitter>();
-            var widthImg = texture.width;
-            var heightImg = texture.height;
-            aspectratioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
-            aspectratioFitter.aspectRatio = (float)widthImg / (float)heightImg;
-            var scale = 1 + GVs.ridTopPercent;
-            rimg.rectTransform.localScale = new Vector3(scale, scale, scale);
-            go.GetComponent<Button>().onClick.AddListener(() =>
+                Debug.Log(f.ToString());
+                GameObject go = Instantiate(item) as GameObject;
+                go.transform.SetParent(item.transform.parent.transform);
+                go.transform.localScale = item.transform.localScale;
+                go.SetActive(true);
+                Texture2D texture = GFs.LoadPNGFromPath(f);
+                GameObject masterpiece = go.transform.Find("RImage").gameObject;
+
+                var fileNameWithouExtension = Path.GetFileNameWithoutExtension(f);
+                string videoPath = dirPathMP + fileNameWithouExtension + ".avi";
+                if (!File.Exists(videoPath))                
                 {
-                    ResultScripts.texture = texture;
-                    ResultScripts.videoPath = databind.videoPath;
-                    ResultScripts.mode = ResultScripts.MODE.REWATCH_RESULT;
-                    var datetime = DateTime.ParseExact(fileNameWithouExtension,Utilities.customFmts,new CultureInfo(0x042A));
-                    var datemonthyear = string.Format("{0}", datetime.Date.ToString("d-M-yyyy"));
-                    Debug.Log(datemonthyear);
-                    ResultScripts.title = datemonthyear;
-                    GVs.SCENE_MANAGER.loadResultScene();
+                    videoPath = null;
                 }
-            );
-            rimg.texture = texture;
-			} catch (Exception ex) {
-				Debug.Log ("Loi");
-				Debug.LogError (ex);
-			}
+                var rimg = masterpiece.GetComponent<RawImage>();
+                var aspectratioFitter = masterpiece.GetComponent<AspectRatioFitter>();
+                var widthImg = texture.width;
+                var heightImg = texture.height;
+                aspectratioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+                aspectratioFitter.aspectRatio = (float)widthImg / (float)heightImg;
+                var scale = 1 + GVs.ridTopPercent;
+                rimg.rectTransform.localScale = new Vector3(scale, scale, scale);
+                go.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        ResultScripts.texture = texture;
+                        ResultScripts.videoPath = videoPath;
+                        ResultScripts.mode = ResultScripts.MODE.REWATCH_RESULT;
+                        var datetime = DateTime.ParseExact(fileNameWithouExtension, Utilities.customFmts, new CultureInfo(0x042A));
+                        var datemonthyear = string.Format("{0}", datetime.Date.ToString("d-M-yyyy"));
+                        Debug.Log(datemonthyear);
+                        ResultScripts.title = datemonthyear;
+                        GVs.SCENE_MANAGER.loadResultScene();
+                    }
+                );
+                rimg.texture = texture;
+            }
+            catch (Exception ex)
+            {
+                Debug.Log("Loi");
+                Debug.LogError(ex);
+            }
         }
-        Destroy(panel);
+        Destroy(item);
     }
 }

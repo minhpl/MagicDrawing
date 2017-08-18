@@ -12,7 +12,6 @@ public class MainToolsScripts : MonoBehaviour {
     public Button btnCam;
     public Button btnGallary;
     public Button btnHistory;
-    public Button btnHome;
 
     [SerializeField]
     private Unimgpicker imagePicker;
@@ -64,12 +63,6 @@ public class MainToolsScripts : MonoBehaviour {
             GVs.SCENE_MANAGER.loadDrawingScene();
             HistorySceneScripts.AddHistoryItem(new HistoryModel(path, path, HistoryModel.IMAGETYPE.SNAP));
         };
-
-        btnHome.onClick.AddListener(() =>
-        {
-            GVs.TRACE_SCENE.Clear();
-            GVs.SCENE_MANAGER.loadHomeScene();
-        });
     }
 
     void ImageLoaded()

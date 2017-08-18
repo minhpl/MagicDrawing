@@ -1,12 +1,5 @@
 <linker>
 	<assembly fullname="Assembly-CSharp">
-		<type fullname="HomeController">
-			<method name="loadLibrary"/>
-			<method name="loadHistory1Scene"/>
-		</type>
-		<type fullname="Kakera.PickerController">
-			<method name="OnPressShowPicker"/>
-		</type>
 		<type fullname="BackButton">
 			<method name="onBackButtonClicked"/>
 			<method name="onBackButtonClicked"/>
@@ -21,32 +14,31 @@
 			<method name="onBackButtonClicked"/>
 			<method name="onBackButtonClicked"/>
 			<method name="onBackButtonClicked"/>
-			<method name="onBackButtonClicked"/>
+		</type>
+		<type fullname="GoHomeSceneScripts">
+			<method name="OnHomeBtnClicked"/>
+			<method name="OnHomeBtnClicked"/>
+			<method name="OnHomeBtnClicked"/>
+			<method name="OnHomeBtnClicked"/>
+			<method name="OnHomeBtnClicked"/>
 		</type>
 		<type fullname="DrawingScripts">
 			<method name="OnPushActiveBtnClicked"/>
+			<method name="OnTickBtnClicked"/>
 			<method name="OnSliderBtnClicked"/>
 			<method name="OnPushBtnClicked"/>
 			<method name="OnTickBtnClicked"/>
 			<method name="OnContrastBtnClicked"/>
-			<method name="StartRecordVideo"/>
 			<method name="ToggleRecord"/>
 		</type>
-		<type fullname="TouchScript.Examples.Photos.Container">
-			<method name="Add"/>
-		</type>
-		<type fullname="TouchScript.Examples.UI.SetColor">
-			<method name="Set"/>
-			<method name="Set"/>
-			<method name="Set"/>
-			<method name="Set"/>
-		</type>
 		<type fullname="SnapImageSceneScripts">
+			<method name="OnCancelBtnClicked"/>
 			<method name="OnDrawBtnClicked"/>
 			<method name="OnChangeCameraButton"/>
 			<method name="OnSnapBtnClicked"/>
 		</type>
 		<type fullname="LibraryScripts">
+			<method name="ObBackBtnClicked"/>
 			<method name="ObBackBtnClicked"/>
 		</type>
 		<type fullname="PreviewResultScripts">
@@ -54,17 +46,6 @@
 		</type>
 		<type fullname="ResultScripts">
 			<method name="OnPlayBtnClicked"/>
-			<method name="OnBackBtnClicked"/>
-		</type>
-	</assembly>
-	<assembly fullname="UnityEngine">
-		<type fullname="UnityEngine.Behaviour">
-			<method name="set_enabled"/>
-			<method name="set_enabled"/>
-			<method name="set_enabled"/>
-			<method name="set_enabled"/>
-			<method name="set_enabled"/>
-			<method name="set_enabled"/>
 		</type>
 	</assembly>
 </linker>

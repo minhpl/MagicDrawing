@@ -64,7 +64,7 @@ public class HomeController : MonoBehaviour {
         {
             try
             {
-				Debug.Log("GET_ALL_CATEGORY_URL: " + data);
+                Utilities.Log("GET_ALL_CATEGORY_URL: " + data);
                 GVs.CATEGORY_LIST = JsonConvert.DeserializeObject<CategoryList>(data.ToString());
                 GFs.SaveCategoryList();
                 //var a = Observable.Create<string>((IObserver<string> observer) =>
@@ -125,7 +125,7 @@ public class HomeController : MonoBehaviour {
                             }
                             catch (Exception e)
                             {
-                                Debug.LogFormat("Error : {0}", e.ToString());
+                                Utilities.LogFormat("Error : {0}", e.ToString());
                             }
                         });
                         return Disposable.Create(() =>
@@ -140,14 +140,14 @@ public class HomeController : MonoBehaviour {
                 {
                     GVs.TEMPLATE_LIST_ALL_CATEGORY = templateListsAllCategory;
                     GFs.SaveAllTemplateList();
-                    Debug.Log("all downloaded");
+                    Utilities.Log("all downloaded");
                     var json = JsonConvert.SerializeObject(templateListsAllCategory);
                     ready = true;
                 });
             }
             catch (Exception e)
             {
-                Debug.LogFormat("cannot deserialize data to object, error is {0}", e.ToString());
+                Utilities.Log("cannot deserialize data to object, error is {0}", e.ToString());
             }
         });
 
