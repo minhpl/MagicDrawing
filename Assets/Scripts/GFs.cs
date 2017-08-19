@@ -10,21 +10,14 @@ public class GFs
 {
     public static void LoadData()
     {
-         //PlayerPrefs.DeleteAll();
-		Utilities.Log ("here1");
+        //PlayerPrefs.DeleteAll();
         LoadUsers();
         LoadAvatas();
         LoadLevel();
-        Utilities.Log ("here2");
         LoadLicenseCode();
-        Utilities.Log ("here3");
         LoadSoundConfig();
-        Utilities.Log ("here4");
-
 		GFs.LoadCategoryList();
-        Utilities.Log ("here5");
 		GFs.LoadAllTemplateList();
-        Utilities.Log ("here6");
     }
     public static void SaveUsers()
     {
@@ -189,10 +182,8 @@ public class GFs
 		if (PlayerPrefs.HasKey (CATEGORY_LIST)) {
 			try {
 				
-				string s = PlayerPrefs.GetString (CATEGORY_LIST);
-				Debug.LogFormat ("category is {0}", s);
-				GVs.CATEGORY_LIST = JsonUtility.FromJson<CategoryList> (s);
-				Debug.LogFormat ("Category is {0}", GVs.CATEGORY_LIST.data [0].image);
+				string s = PlayerPrefs.GetString (CATEGORY_LIST);				
+				GVs.CATEGORY_LIST = JsonUtility.FromJson<CategoryList> (s);				
 
 			} catch (Exception ex) {
 

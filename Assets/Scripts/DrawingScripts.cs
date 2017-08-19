@@ -189,7 +189,7 @@ public class DrawingScripts : MonoBehaviour {
             var newWidth = modelAreaHeight * ratio;
             rimgmodel.rectTransform.sizeDelta = new Vector2(newWidth - modelAreaWidth, newHeight - modelAreaHeight);
         }
-        Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
+       
         athreshold = GetComponent<AdaptiveThreshold>();
         athreshold.setParameter(sliderLine.value);
         texEdges = new Texture2D(image.width(), image.height(), TextureFormat.ARGB32, false);

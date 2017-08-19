@@ -77,64 +77,82 @@ public class ResultScripts : MonoBehaviour {
     private void OnDisable()
     {
         videoPath = null;
-        Destroy(texture);
-        Destroy(texVideo);
+        if(texture!=null)
+            Destroy(texture);
+        if(texVideo!=null)
+            Destroy(texVideo);
     }
 
     IEnumerator Worker()
     {
+        Utilities.Log("heere1");
         isPlaying = true;
-        bool isPlayable = true;
-        if (string.IsNullOrEmpty(videoPath)) isPlayable = false;
+        if (string.IsNullOrEmpty(videoPath)) yield break;
         cap = new VideoCapture(videoPath);
         cap.open(videoPath);
+
         if (!cap.isOpened())
         {
-            isPlayable = false;
-        }      
-
-        if (isPlayable)
-        {            
-            btnPlay.SetActive(false);
-            Mat frame = new Mat();
-
-            //int count = 0;
-            float a = 0;
-            for (;;)
-            {  
-                currentFPS = 1 / Time.deltaTime;
-                if (a < 1)
-                {
-                    a = a + FPS / currentFPS - 1;
-                }
-                
-                if(a>1)
-                {
-                    a = a - 1;
-                    continue;
-                }                
-
-                yield return null;
-                cap.read(frame);                
-                if (frame.empty())
-                {
-                    break;
-                }
-                if (texVideo == null) {
-                    texVideo = new Texture2D(frame.width(), frame.height(), TextureFormat.BGRA32, false);
-                    buffer = new Color32[frame.width() * frame.height()];
-                }
-                Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGRA2RGBA);
-                Utils.matToTexture2D(frame, texVideo, buffer);
-                rimg.texture = texVideo;                
-            }
+            yield break;
         }
+        Utilities.Log("heere2");
+        btnPlay.SetActive(false);
+        Mat frame = new Mat();
+        float a = 0;
+        for (;;)
+        {
+            cap.read(frame);
+            if (frame.empty())
+            {                
+                Utilities.Log("heere5");
+                break;
+            }
+
+            currentFPS = 1 / Time.deltaTime;
+            if (a < 1)
+            {
+                if (currentFPS > 0)
+                    a = a + FPS / currentFPS - 1;
+            }
+
+            while (a > 1)
+            {
+                a = a - 1;
+                continue; 
+            }
+
+            Utilities.Log("heere3");
+            yield return null;
+                       
+            if (texVideo == null)
+            {
+                texVideo = new Texture2D(frame.width(), frame.height(), TextureFormat.BGRA32, false);
+                buffer = new Color32[frame.width() * frame.height()];
+            }
+            Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGRA2RGBA);
+            Utils.matToTexture2D(frame, texVideo, buffer);
+            rimg.texture = texVideo;              
+        }
+
         cap.release();
+        Utilities.Log("heere5");
         isPlaying = false;
-        btnPlay.SetActive(true);        
+        btnPlay.SetActive(true);
         rimg.texture = texture;
+        Utilities.Log("heere6");
         yield return null;
     }
+
+    //void playVideo()
+    //{
+    //    var heavyMethod2 = Observable.Start(() =>
+    //    {
+    //        cap = new VideoCapture(videoPath);
+    //        cap.open(videoPath);
+    //    });
+
+    //}
+
     public void OnPlayBtnClicked()
     {
         if (isPlaying) return;

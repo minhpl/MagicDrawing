@@ -19,10 +19,19 @@ public class HomeController : MonoBehaviour {
         Screen.autorotateToLandscapeRight = false;
         Screen.autorotateToPortrait = false;
         Screen.autorotateToPortraitUpsideDown = false;
-        GFs.LoadData();
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            GVs.APP_PATH =  "/data/data/com.MinhViet.ProductName/files";
+        }
+        else
+        {
+            GVs.APP_PATH = Application.persistentDataPath;
+        }
+
     }
 
-	Dictionary<string, TemplateDrawingList> templateListsAllCategory = new Dictionary<string, TemplateDrawingList>();
+    Dictionary<string, TemplateDrawingList> templateListsAllCategory = new Dictionary<string, TemplateDrawingList>();
 	List<IObservable<string>> ListStreamDownloadTemplate = new List<IObservable<string>>();
 
     void Start()
@@ -37,23 +46,27 @@ public class HomeController : MonoBehaviour {
         {
             MakePersistentObject.Instance.gameObject.SetActive(false);
         }
-		try {
-			
-        if (GVs.CATEGORY_LIST != null && GVs.TEMPLATE_LIST_ALL_CATEGORY!=null)
+
+        GFs.LoadData();
+
+        try
         {
-            var numCategory = GVs.CATEGORY_LIST.Count();
-            var NumtemplateList = GVs.TEMPLATE_LIST_ALL_CATEGORY.Count;
-            if (numCategory == NumtemplateList)
+            if (GVs.CATEGORY_LIST != null && GVs.TEMPLATE_LIST_ALL_CATEGORY != null)
             {
-                Utilities.Log("Ready");
-                //ready = true;
-                //return;
+                var numCategory = GVs.CATEGORY_LIST.Count();
+                var NumtemplateList = GVs.TEMPLATE_LIST_ALL_CATEGORY.Count;
+                if (numCategory == NumtemplateList && numCategory!=0)
+                {
+                    Utilities.Log("Ready");
+                    ready = true;
+                    //return;
+                }
             }
         }
-
-		} catch (Exception ex) {
-			Debug.LogError (ex);
-		}
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+        }
         Utilities.Log("Waiting for downloading");
 
 //        Dictionary<string, TemplateDrawingList> templateListsAllCategory = new Dictionary<string, TemplateDrawingList>();
@@ -64,39 +77,9 @@ public class HomeController : MonoBehaviour {
         {
             try
             {
-                Utilities.Log("GET_ALL_CATEGORY_URL: " + data);
+                Utilities.Log("GET_ALL_CATEGORY_URL: {0}", data);
                 GVs.CATEGORY_LIST = JsonConvert.DeserializeObject<CategoryList>(data.ToString());
                 GFs.SaveCategoryList();
-                //var a = Observable.Create<string>((IObserver<string> observer) =>
-                //{
-                //    observer.OnNext("a1");
-                //    observer.OnNext("a2");
-                //    Thread thread = new Thread(() =>
-                //    {
-                //        Thread.Sleep(5000);
-                //        observer.OnCompleted();
-                //    });
-                //    thread.Start();
-                //    //Thread.Sleep(2000);                    
-                //    return Disposable.Create(() => Debug.Log("Observer a has unsubscribed"));
-                //});
-
-                //var cancel = a.Subscribe((string s) => { Debug.Log("event: " + s); }, () => { Debug.Log("stream completed"); });
-
-                //var b = Observable.Create<string>((IObserver<string> observer) =>
-                //{
-                //    observer.OnNext("b1");
-                //    observer.OnNext("b2");
-                //    observer.OnCompleted();
-                //    return Disposable.Create(() => Debug.Log("Observer b has unsubscribed"));
-                //});
-
-                //Observable.Zip(a, b).Subscribe((IList<string> listString) =>
-                //{
-                //    Debug.Log("Zip: " + listString[0] + " " + listString[1]);
-                //}, () => { Debug.Log("Zip operator completed"); });
-
-                //Observable.WhenAll(a, b).Subscribe((string[] s) => Debug.Log(s[0] + s[1]), () => { Debug.Log("WhenAll stream Completed"); });
 
                 var listCategory = GVs.CATEGORY_LIST.data;
                 for (int i = 0; i < listCategory.Count; i++)
@@ -110,7 +93,7 @@ public class HomeController : MonoBehaviour {
                         {
                             try
                             {
-                                Debug.Log(templates);
+                                Utilities.Log("Template is {0}", templates);
 
                                 TemplateDrawingList templatelist = JsonConvert.DeserializeObject<TemplateDrawingList>(templates);
                                 templatelist.dir = templatelist.dir + "/" + id;
@@ -125,7 +108,7 @@ public class HomeController : MonoBehaviour {
                             }
                             catch (Exception e)
                             {
-                                Utilities.LogFormat("Error : {0}", e.ToString());
+                                Utilities.Log("Error : {0}", e.ToString());
                             }
                         });
                         return Disposable.Create(() =>
