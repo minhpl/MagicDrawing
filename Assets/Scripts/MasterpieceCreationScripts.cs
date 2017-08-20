@@ -62,8 +62,19 @@ public class MasterpieceCreationScripts : MonoBehaviour {
                 var heightImg = texture.height;
                 aspectratioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
                 aspectratioFitter.aspectRatio = (float)widthImg / (float)heightImg;
-                var scale = 1 + GVs.ridTopPercent;
+
+                var ridTopPercent = GVs.ridTopPercent;
+                rimg.rectTransform.pivot = new Vector2(0.5f, 1 - ridTopPercent);
+                var h = rimg.rectTransform.rect.height * rimg.rectTransform.localScale.y;
+                var ridTop = ridTopPercent * h;
+                Debug.Log(h);
+                var position = rimg.rectTransform.localPosition;
+                rimg.rectTransform.localPosition = new Vector3(position.x, position.y + ridTop, position.z);
+
+                var scale = 1 + GVs.bonusScale;
+                Utilities.Log("Scale is {0}", scale);
                 rimg.rectTransform.localScale = new Vector3(scale, scale, scale);
+
                 go.GetComponent<Button>().onClick.AddListener(() =>
                     {
                         ResultScripts.texture = texture;

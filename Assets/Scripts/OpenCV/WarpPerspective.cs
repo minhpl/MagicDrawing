@@ -16,19 +16,23 @@ class WarpPerspective : MonoBehaviour
     Size sizeOriginal;
     Size sizeNew;
     OpenCVForUnity.Rect myROI;
-
+    private  Mat src_corner;
+    private Mat dst_corner;
+    private Mat srcTM;
+    private Mat map_x;
+    private Mat map_y;
     Mat transformation_x;
     Mat transformation_y;
 
     Mat tempMat;
-    Mat tempMat2;
+    Mat tempMat2; 
     Mat result;
 
     private void Awake()
     {
         tempMat = new Mat();
         tempMat2 = new Mat();
-        result = new Mat();
+        result = new Mat();        
     }
 
 
@@ -43,20 +47,32 @@ class WarpPerspective : MonoBehaviour
     public void Init(Mat image)
     {
         sourceImage = image;
-        int w = image.width();
-        int h = image.height();
-        int topWidth = 500;
-        int botWidth = 272;
+        src_corner = new Mat(4, 2, CvType.CV_32FC1);
+        dst_corner = new Mat(4, 2, CvType.CV_32FC1);
+
+        map_x = new Mat();
+        map_y = new Mat();
+        srcTM = new Mat();
+        map_x.create(sourceImage.size(), CvType.CV_32FC1);
+        map_y.create(sourceImage.size(), CvType.CV_32FC1);
+        transformation_x = new Mat(sourceImage.size(), CvType.CV_16SC2);
+        transformation_y = new Mat(sourceImage.size(), CvType.CV_16UC1);
+        PreCalculateTransformMatrix();
+    }
+
+    public void PreCalculateTransformMatrix()
+    {
+
+        int w = sourceImage.width();
+        int h = sourceImage.height();
+        int topWidth = 800;
+        int botWidth = 300;
         topWidth = (int)(topWidth / widthScale);
         int differWidth = topWidth - botWidth;
         int halfWidth = differWidth / 2;
         int needWidthInDe = (int)(((float)halfWidth / (float)topWidth) * w);
         int topWidthAfter = w - needWidthInDe * 2;
         int newHeight = (int)(h / heightScale);
-
-        Mat src_corner = new Mat(4, 2, CvType.CV_32FC1);
-        Mat dst_corner = new Mat(4, 2, CvType.CV_32FC1);
-
         src_corner.put(0, 0,
                 0, 0,
                 w, 0,
@@ -68,14 +84,7 @@ class WarpPerspective : MonoBehaviour
                 w, h,
                 0, h);
         transformationMatrix = Imgproc.getPerspectiveTransform(src_corner, dst_corner);
-
-        Mat map_x = new Mat(), map_y = new Mat(), srcTM = new Mat();
         Core.invert(transformationMatrix, srcTM);
-        
-        map_x.create(sourceImage.size(), CvType.CV_32FC1);
-        map_y.create(sourceImage.size(), CvType.CV_32FC1);
-
-        Utilities.Log("Width = {0}, height = {1}", map_x.width(), map_x.height());
 
         double M11, M12, M13, M21, M22, M23, M31, M32, M33;
         M11 = srcTM.get(0, 0)[0];
@@ -105,8 +114,7 @@ class WarpPerspective : MonoBehaviour
             }
         }
         // This creates a fixed-point representation of the mapping resulting in ~4% CPU savings
-        transformation_x = new Mat(sourceImage.size(),CvType.CV_16SC2);
-        transformation_y = new Mat(sourceImage.size(), CvType.CV_16UC1);
+        
 
         Imgproc.convertMaps(map_x, map_y, transformation_x, transformation_y, CvType.CV_16SC2, false);
 

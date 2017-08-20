@@ -380,6 +380,7 @@ e83a9e5a848f2a14d2ba02d4208df41c Assembly-CSharp.dll:.UITooltip
 f3d8fa29cc9b1173818e2697a9236168 Assembly-CSharp.dll:UnityEngine.UI.Extensions.DropDownList
 c614e2948a9cff52dfd48f2591954d7b Assembly-CSharp.dll:.CloudScript
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.PointerCursor
+32e8fe00b63ed946490b898f6024a2f2 Facebook.Unity.Settings.dll:Facebook.Unity.Settings.FacebookSettings
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Portal.Vortex
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.FaceDetectionExample
 76015de5fcb247eeb8df66c001d5a22d Assembly-CSharp.dll:TMPro.Examples.TMP_FrameRateCounter

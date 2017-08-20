@@ -63,8 +63,21 @@ public class ResultScripts : MonoBehaviour {
             rawImageAspect.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
             rawImageAspect.aspectRatio = ratio;
             rimg.texture = texture;
-            var scale = 1 + GVs.ridTopPercent;
+            //var scale = 1 + GVs.ridTopPercent;
+            //rimg.rectTransform.localScale = new Vector3(scale, scale, scale);
+
+            var ridTopPercent = GVs.ridTopPercent;
+            rimg.rectTransform.pivot = new Vector2(0.5f, 1 - ridTopPercent);
+            var h = rimg.rectTransform.rect.height * rimg.rectTransform.localScale.y;
+            var ridTop = ridTopPercent * h;
+            Debug.Log(h);
+            var position = rimg.rectTransform.localPosition;
+            rimg.rectTransform.localPosition = new Vector3(position.x, position.y + ridTop, position.z);
+
+            var scale = 1 + GVs.bonusScale;
+            Utilities.Log("Scale is {0}", scale);
             rimg.rectTransform.localScale = new Vector3(scale, scale, scale);
+
         }
         if (!string.IsNullOrEmpty(videoPath))
         {
@@ -72,7 +85,6 @@ public class ResultScripts : MonoBehaviour {
             btnPlay.SetActive(true);
         }
         else btnPlay.SetActive(false);
-
     }
     private void OnDisable()
     {

@@ -72,6 +72,17 @@ public class DrawingScripts : MonoBehaviour {
                 var scale = 1 + i;
                 Utilities.Log("Scale is {0}", scale);
                 rimgcam.rectTransform.localScale = new Vector3(scale, scale, scale);
+
+
+                //float ridTopPercent = i;
+                //rimgcam.rectTransform.pivot = new Vector2(0.5f, 1 - ridTopPercent);
+                //var height = rimgcam.rectTransform.rect.height * rimgcam.rectTransform.localScale.y;
+                //var ridTop = ridTopPercent * height;
+                //Debug.Log(height);
+                //var position = rimgcam.rectTransform.localPosition;
+                //rimgcam.rectTransform.localPosition = new Vector3(position.x, position.y + ridTop, position.z);
+                //Utilities.Log("rid top percent is {0}", i);
+
             });
         }        
         //var heavyMethod2 = Observable.Start(() =>
@@ -96,8 +107,7 @@ public class DrawingScripts : MonoBehaviour {
         threshold = GetComponent<Threshold>();
         GFs.LoadCategoryList();
         GFs.LoadAllTemplateList();        
-        MainThreadDispatcher.StartUpdateMicroCoroutine(loadModel());
-        MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());      
+        MainThreadDispatcher.StartUpdateMicroCoroutine(loadModel());        
     }    
     void OnDestroy()
     {
@@ -117,14 +127,24 @@ public class DrawingScripts : MonoBehaviour {
                 var aspectRatioFitter = goCam.GetComponent<AspectRatioFitter>();
                 aspectRatioFitter.aspectRatio = (float)rgbaMat.width() / (float)rgbaMat.height();
                 aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
-                var scale = 1 + ridTopPercent;
+
+                rimgcam.rectTransform.pivot = new Vector2(0.5f, 1 - ridTopPercent);
+                var height = rimgcam.rectTransform.rect.height * rimgcam.rectTransform.localScale.y;
+                var ridTop = ridTopPercent * height ;
+                Debug.Log(height);                
+                var position = rimgcam.rectTransform.localPosition;
+                rimgcam.rectTransform.localPosition = new Vector3(position.x, position.y + ridTop, position.z);
+
+                var scale = 1 + GVs.bonusScale;
                 Utilities.Log("Scale is {0}", scale);
                 rimgcam.rectTransform.localScale = new Vector3(scale, scale, scale);
+
                 warpPerspective.Init(webCamTextureToMatHelper.GetMat());
                 Mat camMat = webCamTextureToMatHelper.GetMat();
                 texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
-            });           
-            webCamTextureToMatHelper.Initialize(null, 640, 480,true,60);
+                MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
+            });
+            webCamTextureToMatHelper.Initialize(null, 640, 480, true, 60);
         }        
 
         if (drawMode == DRAWMODE.DRAW_MODEL)
@@ -241,6 +261,7 @@ public class DrawingScripts : MonoBehaviour {
             {
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();
                 warp = warpPerspective.warpPerspective(rgbaMat);
+                Debug.Log(texCam != null);
                 Utils.matToTexture2D(warp, texCam, webCamTextureToMatHelper.GetBufferColors());
                 rimgcam.texture = texCam;
                 if(isRecording)

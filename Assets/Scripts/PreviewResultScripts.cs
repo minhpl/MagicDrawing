@@ -26,8 +26,21 @@ public class PreviewResultScripts : MonoBehaviour {
         {
             aspectRatioFitter.aspectRatio = (float)texture.width / (float)texture.height;
             aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
-            var scale = 1 + GVs.ridTopPercent;
+            //var scale = 1 + GVs.ridTopPercent;
+            //rawImg.rectTransform.localScale = new Vector3(scale, scale, scale);
+
+            var ridTopPercent = GVs.ridTopPercent;
+            rawImg.rectTransform.pivot = new Vector2(0.5f, 1 - ridTopPercent);
+            var h = rawImg.rectTransform.rect.height * rawImg.rectTransform.localScale.y;
+            var ridTop = ridTopPercent * h;
+            Debug.Log(h);
+            var position = rawImg.rectTransform.localPosition;
+            rawImg.rectTransform.localPosition = new Vector3(position.x, position.y + ridTop, position.z);
+
+            var scale = 1 + GVs.bonusScale;
+            Utilities.Log("Scale is {0}", scale);
             rawImg.rectTransform.localScale = new Vector3(scale, scale, scale);
+
             rawImg.texture = texture;
         }        
     }
