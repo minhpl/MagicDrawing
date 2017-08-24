@@ -1,0 +1,72 @@
+----- v0.1 -----
+
+* Initial release
+
+----- v0.2 -----
+
+* Minimum Unity version is now 4.0.1
+* Source stream access is now thread safe. No more random visible and audible glitches
+* Fixed a bug that caused crop and fill not to work in certain cases
+* All aspects of the FeatureDemo can now be controlled on touch screen (it used to depend on physical keyboard)
+* Added support for AVI OpenDML extension. 2Gb file size limit is not an issue any more
+* MoviePlayer component can decode frames for preview in edit mode
+* Added directory navigation to feature demo
+
+----- v0.3 -----
+
+* Added MPNG video codec with alpha channel support
+* Fixed RGB decoder where R and B channels were swapped
+
+----- v0.4 -----
+
+* Simplified some parts of the C# API. MoviePlayer component remained essentially the same
+* Added HTTP MJPEG streaming support (Unity PRO only)
+* Added "Movie Encoder" tool that wraps ffmpeg for easier use
+* Added "Duplicate Frame Remover" tool that can shrink AVI files further with zero quality loss
+* Fixed a bug that may cause "flashing" when switching quickly between movie clips
+* Added scripting samples
+
+----- v0.5 -----
+
+* Removed empty c# files whose only purpose was to make v0.3 to v0.4 upgrade errorless
+* Added MJPEG over HTTP streamer to feature demo scene
+
+----- v0.6 -----
+
+* Fixed NotSupportedException caused by HttpWebRequest when trying to stream MJPEG over HTTP in web player build
+* Disabled local webcam support when using Unity 4.3 on OSX, because WebCamTexture is not available since 4.3.2 on OSX build targets
+
+----- v0.7 -----
+
+MoviePlayer and MovieStreamer components:
+  * Added lengthSeconds property
+  * Material property is now used when drawing to screen
+  * Renamed propery otherMaterial -> material (when upgrading, otherMaterial will get copied to material automatically)
+
+MovieStreamer:
+  * Switched from HTTP 1.1 to HTTP 1.0 protocol if build target is web player (fix for glitchy decoding caused by "Transfer-Encoding: chunked" issue)
+
+Movie Encoder:
+  * Added file overwrite check
+  * Added "add .bytes extension" option
+  * Added "send to duplicate frame remover" option
+  * Fixed "ffmpeg not found" issue even if it was installed on OSX
+
+----- v0.8 -----
+
+* Fixed broken Windows Store build target support
+* Fixed audio source override option in MoviePlayer component
+* Added demuxOverride option into LoadOptions. Makes using raw files easier from script
+
+----- v0.9 -----
+
+* Fixed minor issues with Unity 5, now it's fully supported
+* Added video preloading option which decodes all frames into a spritesheet atlas on load
+* Working with MoviePlayer and MovieStreamer is a bit easier from Javascript (no optional methods arguments, new it's using SendMessage too for OnPlay, OnStop and OnLoop)
+
+----- v0.10 -----
+
+* Added Playmaker actions
+* Added mjpeg and pcm FourCCs used by Avidemux
+* Added load option that controls whether exception are logged or thrown
+* Removed LocalWebcamStreamer support

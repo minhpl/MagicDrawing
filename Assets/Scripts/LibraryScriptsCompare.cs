@@ -68,11 +68,11 @@ public class LibraryScriptsCompare : MonoBehaviour
                     //rimage.rectTransform.localScale = new Vector3(ratio, 1, 1);
                     rimage.rectTransform.sizeDelta = new Vector2(widthOri * width / height, widthOri);
                 }
+
                 texture.Compress(true);
                 rimage.texture = texture;
                 LstTexture.Add(texture);
-                
-                
+
                 go.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     OnItemClicked(go);

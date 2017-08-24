@@ -350,6 +350,8 @@
     <Compile Include="Assets\Plugins\UniRx\Scripts\UnityWinRTBridge\ThreadPoolScheduler_UnityWinRT.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\FFmpegOut\Internal\Shader\CameraCapture.shader" />
+    <None Include="Assets\MoviePlayer\CHANGELOG.txt" />
     <None Include="Assets\NGUI\Examples\Atlases\Fantasy\Fantasy Font - Normal.txt" />
     <None Include="Assets\NGUI\Examples\Atlases\Refractive\Refractive Font - Header.txt" />
     <None Include="Assets\NGUI\Examples\Atlases\Refractive\Refractive Font - Normal.txt" />
@@ -397,6 +399,7 @@
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\Unimgpicker\AndroidManifest.xml" />
     <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
+    <None Include="Assets\StreamingAssets\UTJ\FrameCapturer\License.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Anton OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Bangers - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
@@ -424,6 +427,7 @@
     <None Include="Assets\TouchScript\Shaders\DebugMultiplyNoDepthTest.shader" />
     <None Include="Assets\TouchScript\Shaders\DebugNoDepthTest.shader" />
     <None Include="Assets\TouchScript\license.txt" />
+    <None Include="Assets\UTJ\FrameCapturer\Shaders\CopyFrameBuffer.shader" />
     <None Include="Assets\Unimgpicker\Editor\NSPhotoLibraryUsageDescription.txt" />
     <None Include="Assets\UnityPackages\link.xml" />
     <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />

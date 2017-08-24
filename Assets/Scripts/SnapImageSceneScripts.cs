@@ -19,9 +19,7 @@ public class SnapImageSceneScripts : MonoBehaviour
     private int requestHeight = 1920;
     private WebCamTextureToMatHelper webcamTextureTomat;
     Mat snapMat;
-    //public Button btnDraw;
-    public Button btnSnap;
-    //public Button btnChangeCamera;
+    public Button btnSnap;    
     public Button btnCancel;
     public Button btnContinue;
 
@@ -46,10 +44,9 @@ public class SnapImageSceneScripts : MonoBehaviour
 
         rawImgCam = goCam.GetComponent<RawImage>();
         ShowCam();
-        //MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
     }
 
-    void ResizeAndFlipTexture()
+    void ResizeAndFlipWebcamTexture()
     {
         webcamTex = webcamTextureTomat.GetWebCamTexture();
         webcamTex.Play();
@@ -122,7 +119,7 @@ public class SnapImageSceneScripts : MonoBehaviour
         webcamTextureTomat.onInitialized.RemoveAllListeners();
         webcamTextureTomat.onInitialized.AddListener(() =>
         {
-            ResizeAndFlipTexture();
+            ResizeAndFlipWebcamTexture();
             rawImgCam.texture = webcamTex;
             camAvailable = true;
         });
@@ -154,8 +151,7 @@ public class SnapImageSceneScripts : MonoBehaviour
     }
 
     IEnumerator Snap()
-    {
-        //webcamtex.stop();
+    {        
         webcamTex.requestedWidth = 1920;
         webcamTex.requestedHeight = 1920;
         webcamTex.Play();
@@ -228,8 +224,6 @@ public class SnapImageSceneScripts : MonoBehaviour
         var rect = new OpenCVForUnity.Rect(deltaWidthMat / 2, deltaHeightMat / 2, matDisplayWidth, matDisplayHeight);
         snapMat = rgbaMat.submat(rect);
 
-        Utilities.Log("snap image width = {0}, height = {1}", snapMat.width(), snapMat.height());
-
         Texture2D texRgbaMat = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.RGBA32, false);
         Utils.matToTexture2D(snapMat, texRgbaMat);
         rawImgCam.texture = texRgbaMat;        
@@ -251,9 +245,8 @@ public class SnapImageSceneScripts : MonoBehaviour
                 Directory.CreateDirectory(dirPathSnapImage);
             }
             var MPModelPath = dirPathSnapImage + dateTimeNow + ".png";
-            Imgproc.cvtColor(snapMat, snapMat, Imgproc.COLOR_BGR2RGB);
             Texture2D texture = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.BGRA32, false);
-            Utils.matToTexture2D(snapMat, texture);
+            Utils.matToTexture2D(snapMat, texture);                        
             DrawingScripts.texModel = texture;
             DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
             if (Application.platform == RuntimePlatform.IPhonePlayer)
@@ -262,6 +255,7 @@ public class SnapImageSceneScripts : MonoBehaviour
             }
             else
             {
+                Imgproc.cvtColor(snapMat, snapMat, Imgproc.COLOR_BGR2RGB);
                 Imgcodecs.imwrite(MPModelPath, snapMat);
             }
             HistorySceneScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
@@ -274,7 +268,7 @@ public class SnapImageSceneScripts : MonoBehaviour
         rawImgCam.rectTransform.sizeDelta = new Vector2(0, 0);
         rawImgCam.transform.localScale = new Vector3(1, 1, 1);
         rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, 0);
-        ResizeAndFlipTexture();
+        ResizeAndFlipWebcamTexture();
         rawImgCam.texture = webcamTex;
     }
 

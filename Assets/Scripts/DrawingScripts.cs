@@ -187,7 +187,7 @@ public class DrawingScripts : MonoBehaviour {
         }
         else
         {
-
+            
         }
 
         float width = image.width();

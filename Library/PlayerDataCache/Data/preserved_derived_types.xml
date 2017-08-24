@@ -52,7 +52,14 @@
 <type fullname="DemoScript" preserve="all"/>
 <type fullname="LukeWaffel.AndroidGallery.AndroidGallery" preserve="all"/>
 <type fullname="LukeWaffel.AndroidGallery.Singleton`1" preserve="all"/>
+<type fullname="FFmpegOut.CameraCapture" preserve="all"/>
+<type fullname="FFmpegOut.Blitter" preserve="all"/>
 <type fullname="IMGUI" preserve="all"/>
+<type fullname="MoviePlayer" preserve="all"/>
+<type fullname="MoviePlayerBase" preserve="all"/>
+<type fullname="MovieStreamer" preserve="all"/>
+<type fullname="FeatureDemoUI" preserve="all"/>
+<type fullname="ScriptingDemoUI" preserve="all"/>
 <type fullname="EquipItems" preserve="all"/>
 <type fullname="EquipRandomItem" preserve="all"/>
 <type fullname="UICursor" preserve="all"/>
@@ -221,11 +228,6 @@
 <type fullname="OpenCVForUnityExample.WebCamTextureToMatHelperExample" preserve="all"/>
 <type fullname="OpenCVForUnityExample.WrapPerspectiveExample" preserve="all"/>
 <type fullname="Example" preserve="all"/>
-<type fullname="OpenCVFaceDetection" preserve="all"/>
-<type fullname="PositionAtFaceScreenSpace" preserve="all"/>
-<type fullname="TestCallSO" preserve="all"/>
-<type fullname="TestTourchScripts" preserve="all"/>
-<type fullname="TestVideo" preserve="all"/>
 <type fullname="AvataScript" preserve="all"/>
 <type fullname="BackButton" preserve="all"/>
 <type fullname="CheckFPS" preserve="all"/>
@@ -246,6 +248,7 @@
 <type fullname="HomeScript" preserve="all"/>
 <type fullname="LibraryScripts" preserve="all"/>
 <type fullname="LibraryScriptsCompare" preserve="all"/>
+<type fullname="LibraryScriptsNGUI" preserve="all"/>
 <type fullname="MainToolsScripts" preserve="all"/>
 <type fullname="MakePersistentObject" preserve="all"/>
 <type fullname="MasterpieceCreationScripts" preserve="all"/>
@@ -439,6 +442,10 @@
 <type fullname="UnityEngine.UI.Extensions.HoverTooltip" preserve="all"/>
 <type fullname="UnityEngine.UI.Extensions.VRCursor" preserve="all"/>
 <type fullname="UnityEngine.UI.Extensions.VRInputModule" preserve="all"/>
+<type fullname="UTJ.FrameCapturer.AudioRecorder" preserve="all"/>
+<type fullname="UTJ.FrameCapturer.GBufferRecorder" preserve="all"/>
+<type fullname="UTJ.FrameCapturer.MovieRecorder" preserve="all"/>
+<type fullname="UTJ.FrameCapturer.RecorderBase" preserve="all"/>
 </assembly>
 <assembly fullname="UnityEngine.UI">
 <type fullname="UnityEngine.EventSystems.EventSystem" preserve="all"/>

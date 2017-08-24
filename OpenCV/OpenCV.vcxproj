@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -79,12 +79,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <Linkage-fmt_greedy>ltcg</Linkage-fmt_greedy>
-    <TargetExt>.dll</TargetExt>
+    <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <Linkage-fmt_greedy>ltcg</Linkage-fmt_greedy>
-    <TargetExt>.dll</TargetExt>
+    <TargetExt>.exe</TargetExt>
     <TargetName>UnityOpenCVSample</TargetName>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
@@ -173,6 +173,7 @@
     <ClCompile Include="Sobel.cpp" />
     <ClCompile Include="SobelEdgeDetectionDemo.cpp" />
     <ClCompile Include="KalmanFilter.cpp" />
+    <ClCompile Include="Source.cpp" />
     <ClCompile Include="ThreshHoldUsingInRange.cpp" />
     <ClCompile Include="Threshold.cpp" />
   </ItemGroup>
