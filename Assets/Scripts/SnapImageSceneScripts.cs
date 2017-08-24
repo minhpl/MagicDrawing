@@ -258,7 +258,7 @@ public class SnapImageSceneScripts : MonoBehaviour
                 Imgproc.cvtColor(snapMat, snapMat, Imgproc.COLOR_BGR2RGB);
                 Imgcodecs.imwrite(MPModelPath, snapMat);
             }
-            HistorySceneScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
+            HistoryNGUIScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
             GVs.SCENE_MANAGER.loadDrawingScene();
         }            
     }

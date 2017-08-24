@@ -51,9 +51,7 @@ public class MainToolsScripts : MonoBehaviour {
         });
 
         imagePicker.Completed += (string path) =>
-        {
-            Utilities.Log("Path here is {0}", path);
-//            
+        {   
 			Texture2D texture = GFs.LoadPNGFromPath(path);
 			Mat image = new Mat(texture.height,texture.width,CvType.CV_8UC3);
 			Utils.texture2DToMat(texture,image);
@@ -61,7 +59,7 @@ public class MainToolsScripts : MonoBehaviour {
             DrawingScripts.texModel = texture;
             DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
             GVs.SCENE_MANAGER.loadDrawingScene();
-            HistorySceneScripts.AddHistoryItem(new HistoryModel(path, path, HistoryModel.IMAGETYPE.SNAP));
+            HistoryNGUIScripts.AddHistoryItem(new HistoryModel(path, path, HistoryModel.IMAGETYPE.SNAP));
         };
     }
 
@@ -75,6 +73,6 @@ public class MainToolsScripts : MonoBehaviour {
         DrawingScripts.texModel = texture;
         DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
         GVs.SCENE_MANAGER.loadDrawingScene();
-        HistorySceneScripts.AddHistoryItem(new HistoryModel(path, path, HistoryModel.IMAGETYPE.SNAP));
+        HistoryNGUIScripts.AddHistoryItem(new HistoryModel(path, path, HistoryModel.IMAGETYPE.SNAP));
     }
 }

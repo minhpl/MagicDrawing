@@ -86,6 +86,12 @@ public void loadHomeScene()
         //SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+   	public void loadLibraryNGUIScene(){
+    	SceneManager.LoadScene("LibraryNGUIScene");
+        //SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("OnSceneLoaded: " + scene.name);
@@ -136,4 +142,11 @@ public void loadHomeScene()
     {
         SceneManager.LoadScene("TemplateScene");
     }
+
+    public void loadTemplateNGUIScene()
+    {
+        SceneManager.LoadScene("TemplateNGUIScene");
+    }
+
+
 }

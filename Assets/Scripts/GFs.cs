@@ -147,13 +147,10 @@ public class GFs
         if (PlayerPrefs.HasKey(ALL_TEMPLATE_LIST))
         {
             string s = PlayerPrefs.GetString(ALL_TEMPLATE_LIST);
-            Debug.LogFormat("Load All Template List: {0}", s);
             try
             {         
                 GVs.TEMPLATE_LIST_ALL_CATEGORY = JsonConvert.DeserializeObject<Dictionary<string, TemplateDrawingList>>(s);
-//                AotHelper.EnsureDictionary<string, TemplateDrawingList>();
-                //Debug.Log("Deserialized dictionary success");
-                //Debug.Log(GVs.TEMPLATE_LIST_ALL_CATEGORY["C02"].templates.Count);
+                AotHelper.EnsureDictionary<string, TemplateDrawingList>();
             }
             catch(Exception e)
             {

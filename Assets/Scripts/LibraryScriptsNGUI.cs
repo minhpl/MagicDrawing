@@ -14,7 +14,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
 {
     public GameObject imageItem;
     public GameObject scrollView;
-    public UILabel TextTitle;    
+    public Text TextTitle;    
     const int deScale = 1;
     const bool USE_PACK = false;
     const int clone = 1;
@@ -70,7 +70,6 @@ public class LibraryScriptsNGUI : MonoBehaviour
         //int widthOri = (int)rimageOri.rectTransform.rect.width;
         int widthOri = rimageOri.width;
         int heightOri = rimageOri.height;
-        Debug.LogFormat("Width Ori gin is {0}, height is {1}", widthOri,heightOri);
 
         var watch = System.Diagnostics.Stopwatch.StartNew();
         var area2048 = (1 << 22) - deviant2048;
@@ -107,7 +106,6 @@ public class LibraryScriptsNGUI : MonoBehaviour
                 UITexture rimage = go.transform.Find("icon").GetComponent<UITexture>();
                 //TextMeshProUGUI textMeshPro = go.transform.Find("textmeshpro").GetComponent<TextMeshProUGUI>();
                 UILabel text = go.transform.Find("itemLabel").GetComponent<UILabel>();
-
             
                 Texture2D texture = null;
                 Category category = null;
@@ -124,16 +122,14 @@ public class LibraryScriptsNGUI : MonoBehaviour
                     var dirPath = app_path+ templateDrawingList.dir + "/";
                     texture= GFs.LoadPNGFromPath(dirPath + "/" + template.thumb);
                 }
+                go.SetActive(true);
 
                 rimage.mainTexture = texture;
-                go.SetActive(true);
                 scrollView.GetComponent<UIGrid>().Reposition();
 
                 float width = texture.width;
                 float height = texture.height;
                 float ratio = width / height;
-
-                Debug.LogFormat("Index {0} : texture width is {1}, height is {2}",i, width, height);
 
                 var w = widthOri;
                 var h = heightOri;
@@ -142,7 +138,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
                 {
                     w = widthOri;
                     h = (int)(w * height / width);
-                    
+
                     TextureScale.Bilinear(texture, w >> deScale, h >> deScale);
 
                     rimage.width = w;
@@ -180,7 +176,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         LibraryScriptsNGUI.templateDrawingList = templateDrawingList;
                         LibraryScriptsNGUI.mode = MODE.TEMPLATE;
                         title = category.name;
-                        GVs.SCENE_MANAGER.loadTemplateScene();
+                        GVs.SCENE_MANAGER.loadTemplateNGUIScene();
                     }
                     else
                     {
@@ -189,7 +185,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         var imgPath = dirPath + template.image;
                         DrawingScripts.imgModelPath = imgPath;
                         DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;
-                        HistorySceneScripts.AddHistoryItem(new HistoryModel(imgPath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                        HistoryNGUIScripts.AddHistoryItem(new HistoryModel(imgPath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
                         GVs.SCENE_MANAGER.loadDrawingScene();
                     }
                 }));

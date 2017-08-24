@@ -146,7 +146,7 @@ public class HomeController : MonoBehaviour {
 
     private bool ready = false;
 
-    public void loadHistory1Scene()
+    public void loadMasterpieceCreationScene()
     {
         if (ready)
         {
@@ -157,7 +157,7 @@ public class HomeController : MonoBehaviour {
     {
         if (ready)
         {         
-            GVs.SCENE_MANAGER.loadLibraryScene();
+            GVs.SCENE_MANAGER.loadLibraryNGUIScene();
         }            
     }
 }
