@@ -10,3 +10,6 @@
 /Assets/NGUI/
 /OpenCV-android-sdk/
 /Library/
+*.avi
+*.mp4
+/x64/
