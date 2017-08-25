@@ -55,7 +55,6 @@ public class GFs
     }
     public static void LoadLevel()
     {
-
         if (PlayerPrefs.HasKey("CURRENT_LEVEL"))
         {
             GVs.CURRENT_LEVEL = PlayerPrefs.GetInt("CURRENT_LEVEL");

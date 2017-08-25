@@ -76,14 +76,17 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Facebook.Unity.Settings">
-      <HintPath>Library\FacebookSDK\Facebook.Unity.Settings.dll</HintPath>
     </Reference>
     <Reference Include="TexturePacker">
       <HintPath>Assets\Extensions\TexturePacker\Lib\TexturePacker.dll</HintPath>
@@ -563,7 +566,7 @@
     <Compile Include="Assets\Scenes\Example.cs" />
     <Compile Include="Assets\Scripts\AvataScript.cs" />
     <Compile Include="Assets\Scripts\BackButton.cs" />
-    <Compile Include="Assets\Scripts\BackupScripts\LibraryScripts.cs" />
+    <Compile Include="Assets\Scripts\BackupScripts\MainToolsScripts.cs" />
     <Compile Include="Assets\Scripts\BackupScripts\MasterpieceCreationScripts.cs" />
     <Compile Include="Assets\Scripts\CheckFPS.cs" />
     <Compile Include="Assets\Scripts\ClearButtonTargetScript.cs" />
@@ -586,9 +589,8 @@
     <Compile Include="Assets\Scripts\HomeMenuScript.cs" />
     <Compile Include="Assets\Scripts\HomeScript.cs" />
     <Compile Include="Assets\Scripts\Job.cs" />
-    <Compile Include="Assets\Scripts\LibraryScriptsCompare.cs" />
     <Compile Include="Assets\Scripts\LibraryScriptsNGUI.cs" />
-    <Compile Include="Assets\Scripts\MainToolsScripts.cs" />
+    <Compile Include="Assets\Scripts\MainToolsNGUIScripts.cs" />
     <Compile Include="Assets\Scripts\MakePersistentObject.cs" />
     <Compile Include="Assets\Scripts\MasterpieceCreationNGUIScripts.cs" />
     <Compile Include="Assets\Scripts\models\AvataModel.cs" />

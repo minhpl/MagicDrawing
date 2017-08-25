@@ -18,27 +18,22 @@ public class LibraryScriptsNGUI : MonoBehaviour
     const int deScale = 1;
     const bool USE_PACK = false;
     const int clone = 1;
-    public static LibraryScriptsNGUI Instance;
     public static TemplateDrawingList templateDrawingList;
     private static string title;
 
     public enum MODE {CATEGORY, TEMPLATE};
-    private static MODE mode;
+    public static MODE mode;
 
     Coroutine coroutine;
     void Awake()
-    {
-        Instance = this;
-        Screen.autorotateToLandscapeLeft = false;
-        Screen.autorotateToLandscapeRight = false;
-        Screen.autorotateToPortrait = false;
-        Screen.autorotateToPortraitUpsideDown = false;
+    {                
+        GFs.LoadCategoryList();
+        GFs.LoadAllTemplateList();
     }
     // Use this for initialization
     void Start()
     {               
-        GFs.LoadCategoryList();
-        GFs.LoadAllTemplateList();
+       
 
         if (mode == MODE.CATEGORY)
         {

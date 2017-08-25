@@ -96,10 +96,21 @@ public class HistoryNGUIScripts : MonoBehaviour {
                 history = JsonConvert.DeserializeObject<LinkedList<HistoryModel>>(jsonLoad);
             if (history == null)
                 history = new LinkedList<HistoryModel>();
-        }                        
-        while (history.Count >= MAXHISTORY)
-            history.RemoveLast();
+        }
+
+        for (var a = history.First; a != null; a = a.Next)
+        {
+            if (a.Value.filePath == historyModel.filePath) ;           
+            history.Remove(a);
+            break;            
+        }
+
+        //var a = history.Find(historyModel);
+        //if (a != null) history.Remove(a);
+
         history.AddFirst(historyModel);
+        while (history.Count > MAXHISTORY)
+            history.RemoveLast();        
         var jsonSave = JsonConvert.SerializeObject(history);
         PlayerPrefs.SetString(KEY, jsonSave);
         PlayerPrefs.Save();

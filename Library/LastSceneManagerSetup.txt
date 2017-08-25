@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/MasterpieceCreationNGUIScene.unity
+- path: Assets/Scenes/SnapImageScene.unity
   isLoaded: 1
   isActive: 1

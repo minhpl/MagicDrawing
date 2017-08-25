@@ -72,10 +72,11 @@ public class SceneManagerScript : MonoBehaviour
             async.allowSceneActivation = true;
     }
 
-public void loadHomeScene()
-	{
-		SceneManager.LoadScene("HomeScene");
-	}
+    public void loadHomeScene()
+    {
+        Debug.Log("heerererer");
+        SceneManager.LoadScene("HomeScene");
+    }
 
     public void loadMasterpieceCreationScene(){
     	SceneManager.LoadScene("MasterpieceCreationScene");	
@@ -100,6 +101,11 @@ public void loadHomeScene()
 
     public void loadHistoryScene(){
     	SceneManager.LoadScene("HistoryScene");			
+    }
+
+    public void loadHistoryNGUIScene()
+    {
+        SceneManager.LoadScene("HistoryNGUIScene");
     }
 
     public void loadPreviewResultScene()

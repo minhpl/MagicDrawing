@@ -106,7 +106,7 @@ public class HTTPRequest : MonoBehaviour
                     {
                         if (www.downloadedBytes != 0)
                         {
-                            Debug.Log("call success");
+                            //Debug.Log("call success");
                             string resData = www.downloadHandler.text;
                             resData = AesEncryptor.decode(resData, GVs.KEY, GVs.IV);
                             handler(resData);
@@ -197,7 +197,7 @@ public class HTTPRequest : MonoBehaviour
                             {
                                 Debug.Log("download ml: " + (GVs.APP_PATH + "/" + dir + fn));
                             }
-                            Debug.Log(GVs.APP_PATH);
+                            //Debug.Log(GVs.APP_PATH);
                             // Debug.Log(DateTime.Now.Second);
                             handler("Hoàn thành", 1);
                         }
