@@ -229,7 +229,7 @@ public class SnapImageSceneScripts : MonoBehaviour
         rawImgCam.texture = texRgbaMat;        
     }
 
-    public void OnDrawBtnClicked()
+    public void OnContinueBtnClicked()
     {
         webcamTextureTomat.Stop();
         webcamTextureTomat = null;

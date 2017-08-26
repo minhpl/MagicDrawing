@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using UniRx;
@@ -9,31 +10,39 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class HomeController : MonoBehaviour {
-
     public Canvas canvas;
-
     private void Awake()
     {
-        Screen.orientation = ScreenOrientation.Portrait;
-        Screen.autorotateToLandscapeLeft = false;
-        Screen.autorotateToLandscapeRight = false;
-        Screen.autorotateToPortrait = false;
-        Screen.autorotateToPortraitUpsideDown = false;
+        //Screen.orientation = ScreenOrientation.Portrait;
+        //Screen.autorotateToLandscapeLeft = false;
+        //Screen.autorotateToLandscapeRight = false;
+        //Screen.autorotateToPortrait = false;
+        //Screen.autorotateToPortraitUpsideDown = false;
+
+        var masterPieceDirPath = GFs.getMasterpieceDirPath();
+        if (!Directory.Exists(masterPieceDirPath))
+        {
+            Directory.CreateDirectory(masterPieceDirPath);
+        }
+
+        var snapImageDirPath = GFs.getSnapImageDirPath();
+        if (!Directory.Exists(snapImageDirPath))
+        {
+            Directory.CreateDirectory(snapImageDirPath);
+        }
 
         if (Application.platform == RuntimePlatform.Android)
         {
-            GVs.APP_PATH =  "/data/data/com.MinhViet.ProductName/files";
+            GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
         }
         else
         {
             GVs.APP_PATH = Application.persistentDataPath;
         }
-
         if (MakePersistentObject.Instance)
         {
             MakePersistentObject.Instance.gameObject.SetActive(false);
         }
-
         //PlayerPrefs.DeleteAll();
         //PlayerPrefs.Save();
         GFs.LoadData();
@@ -127,7 +136,7 @@ public class HomeController : MonoBehaviour {
         //HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY, "C01"))), (d, process) =>
         //{
 
-        //});
+        //});        
     }
 
     void Start()
@@ -141,13 +150,14 @@ public class HomeController : MonoBehaviour {
     {
         if (ready)
         {
-            GVs.SCENE_MANAGER.loadMasterpieceCreationScene();
+            GVs.SCENE_MANAGER.loadMasterpieceCreationnNGUIScene();
         }         
     }
     public void loadLibrary()
     {
         if (ready)
-        {         
+        {
+            LibraryScriptsNGUI.mode = LibraryScriptsNGUI.MODE.CATEGORY;
             GVs.SCENE_MANAGER.loadLibraryNGUIScene();
         }            
     }

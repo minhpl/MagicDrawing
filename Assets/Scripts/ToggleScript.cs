@@ -13,44 +13,36 @@ public class ToggleScript : MonoBehaviour {
     public GameObject panel_line;
     public GameObject panel_constract;
     public GameObject line;
-    public GameObject contrast;
-    // Use this for initialization
-    public Button StartRecord;
+    public GameObject contrast;    
     public Button Recording;
     public Button BtnPush;
-    public Button BtnPushActive;
-    public GameObject pause;
-    public GameObject play;
+    public Button BtnPushActive;       
     public GameObject panel_tool;
     public GameObject backBtn;
     public TapGesture tapGesture;
+    public Button BtnTick;
+    public Button BtnCancel;
+    public Text textComfirm;
     void Start() {
-        //var clickStream = Observable.EveryUpdate().Where(_ => Input.GetMouseButtonDown(0));
-        //clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(250))).Where(xs => xs.Count >= 2)
-        //    .Subscribe(xs =>
-        //    {
-        //        Utilities.Log("Double click detected");
-        //        if (panel_tool)
-        //            panel_tool.SetActive(!panel_tool.activeSelf);
-        //        if (backBtn)
-        //            backBtn.SetActive(!backBtn.activeSelf);
-        //    });
-
-        //Debug.Log("xin chao the gioi tuoi dep cua chung ta");
-        //var clickStream2 = Observable.EveryUpdate().Where(_ => Input.touchCount != 0 || Input.GetMouseButtonDown(0));
-        //clickStream2.Buffer(clickStream2.Throttle(TimeSpan.FromMilliseconds(250))).Where(xs => xs.Count >= 2)
-        //    .Subscribe(xs =>
-        //    {
-        //        Utilities.Log("Double click detected");
-        //        if (panel_tool)
-        //            panel_tool.SetActive(!panel_tool.activeSelf);
-        //        if (backBtn)
-        //            backBtn.SetActive(!backBtn.activeSelf);
-        //    });
 
         tapGesture.Tapped += tappedHandler;
 
-        BtnSlider.onClick.AddListener(  () =>
+        BtnTick.onClick.AddListener(() =>
+        {
+            if(!BtnCancel.gameObject.activeSelf)
+            {
+                BtnCancel.gameObject.SetActive(true);
+                textComfirm.gameObject.SetActive(true);
+            }
+        });
+
+        BtnCancel.onClick.AddListener(() =>
+        {
+            BtnCancel.gameObject.SetActive(false);
+            textComfirm.gameObject.SetActive(false);
+        });
+
+        BtnSlider.onClick.AddListener(() =>
         {
             BtnSlider.gameObject.SetActive(false);
             BtnSlider_active.gameObject.SetActive(true);
@@ -75,26 +67,11 @@ public class ToggleScript : MonoBehaviour {
 
         btnContract.onClick.AddListener(() =>
         {
-            bool stateLine = panel_line.activeSelf;
-            //btnContract.gameObject.transform.Find("line").gameObject.SetActive(!stateLine);
-            //btnContract.gameObject.transform.Find("contrast").gameObject.SetActive(stateLine);            
+            bool stateLine = panel_line.activeSelf;            
             line.SetActive(!stateLine);
             contrast.SetActive(stateLine);
             panel_line.SetActive(!stateLine);
             panel_constract.SetActive(stateLine);
-        });
-
-        //StartRecord.onClick.AddListener(() =>
-        //{
-        //    StartRecord.gameObject.SetActive(false);
-        //    Recording.gameObject.SetActive(true);            
-        //});
-
-        Recording.onClick.AddListener(() =>
-        {
-            var state = play.gameObject.activeSelf;
-            play.gameObject.SetActive(!state);
-            pause.gameObject.SetActive(state);
         });
 
         BtnPush.onClick.AddListener(() =>
@@ -117,8 +94,7 @@ public class ToggleScript : MonoBehaviour {
 
 
     private void tappedHandler(object sender, System.EventArgs e)
-    {
-        Utilities.Log("Double click detected");
+    {       
         if (panel_tool)
             panel_tool.SetActive(!panel_tool.activeSelf);
         if (backBtn)

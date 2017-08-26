@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2017.1.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -76,17 +78,14 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.Unity.Settings">
+      <HintPath>Library\FacebookSDK\Facebook.Unity.Settings.dll</HintPath>
     </Reference>
     <Reference Include="TexturePacker">
       <HintPath>Assets\Extensions\TexturePacker\Lib\TexturePacker.dll</HintPath>
@@ -576,7 +575,6 @@
     <Compile Include="Assets\Scripts\DataBind.cs" />
     <Compile Include="Assets\Scripts\DontShowPersistantScene.cs" />
     <Compile Include="Assets\Scripts\DrawingScripts.cs" />
-    <Compile Include="Assets\Scripts\DrawingScripts2.cs" />
     <Compile Include="Assets\Scripts\EditProfileScript.cs" />
     <Compile Include="Assets\Scripts\FPSs.cs" />
     <Compile Include="Assets\Scripts\GalaryScript.cs" />
@@ -615,7 +613,6 @@
     <Compile Include="Assets\Scripts\OpenCV\WarpPerspective.cs" />
     <Compile Include="Assets\Scripts\OpenCV\WebcamVideoCapture.cs" />
     <Compile Include="Assets\Scripts\PreloadScript.cs" />
-    <Compile Include="Assets\Scripts\PreviewResultScripts.cs" />
     <Compile Include="Assets\Scripts\ProfileScript.cs" />
     <Compile Include="Assets\Scripts\RawInput\Scripts\Ball.cs" />
     <Compile Include="Assets\Scripts\RawInput\Scripts\Spawner.cs" />
@@ -1022,7 +1019,6 @@
     <None Include="Assets\Plugins\Android\everyplay\res\values\everyplay_themes.xml" />
     <None Include="Assets\Plugins\Everyplay\Helpers\Shaders\EveryplayCrossfade.shader" />
     <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
-    <None Include="Assets\StreamingAssets\UTJ\FrameCapturer\License.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Anton OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Bangers - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />

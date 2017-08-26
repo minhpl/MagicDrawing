@@ -1,5 +1,17 @@
 <linker>
 <assembly fullname="Assembly-CSharp-firstpass">
+<type fullname="EveryplayAnimatedThumbnail" preserve="all"/>
+<type fullname="EveryplayAnimatedThumbnailOnGUI" preserve="all"/>
+<type fullname="EveryplayFaceCamSettings" preserve="all"/>
+<type fullname="EveryplayHudCamera" preserve="all"/>
+<type fullname="EveryplayInGameFaceCam" preserve="all"/>
+<type fullname="EveryplayThumbnailPool" preserve="all"/>
+<type fullname="Everyplay" preserve="all"/>
+<type fullname="EveryplayEarlyInitializer" preserve="all"/>
+<type fullname="EveryplayFaceCamTest" preserve="all"/>
+<type fullname="EveryplayRecButtons" preserve="all"/>
+<type fullname="EveryplaySettings" preserve="all"/>
+<type fullname="EveryplayTest" preserve="all"/>
 <type fullname="UniRx.Examples.Sample01_ObservableWWW" preserve="all"/>
 <type fullname="UniRx.Examples.Sample02_ObservableTriggers" preserve="all"/>
 <type fullname="UniRx.Examples.Sample04_ConvertFromUnityCallback" preserve="all"/>
@@ -60,6 +72,8 @@
 <type fullname="MovieStreamer" preserve="all"/>
 <type fullname="FeatureDemoUI" preserve="all"/>
 <type fullname="ScriptingDemoUI" preserve="all"/>
+<type fullname="MobileMoviePlayer" preserve="all"/>
+<type fullname="MovieTexturePlayer" preserve="all"/>
 <type fullname="EquipItems" preserve="all"/>
 <type fullname="EquipRandomItem" preserve="all"/>
 <type fullname="UICursor" preserve="all"/>
@@ -230,6 +244,8 @@
 <type fullname="Example" preserve="all"/>
 <type fullname="AvataScript" preserve="all"/>
 <type fullname="BackButton" preserve="all"/>
+<type fullname="MainToolsScripts" preserve="all"/>
+<type fullname="MasterpieceCreationScripts" preserve="all"/>
 <type fullname="CheckFPS" preserve="all"/>
 <type fullname="ClearButtonTargetScript" preserve="all"/>
 <type fullname="ClearInputScript" preserve="all"/>
@@ -242,16 +258,14 @@
 <type fullname="FPSs" preserve="all"/>
 <type fullname="GalaryScript" preserve="all"/>
 <type fullname="GoHomeSceneScripts" preserve="all"/>
-<type fullname="HistorySceneScripts" preserve="all"/>
+<type fullname="HistoryNGUIScripts" preserve="all"/>
 <type fullname="HomeController" preserve="all"/>
 <type fullname="HomeMenuScript" preserve="all"/>
 <type fullname="HomeScript" preserve="all"/>
-<type fullname="LibraryScripts" preserve="all"/>
-<type fullname="LibraryScriptsCompare" preserve="all"/>
 <type fullname="LibraryScriptsNGUI" preserve="all"/>
-<type fullname="MainToolsScripts" preserve="all"/>
+<type fullname="MainToolsNGUIScripts" preserve="all"/>
 <type fullname="MakePersistentObject" preserve="all"/>
-<type fullname="MasterpieceCreationScripts" preserve="all"/>
+<type fullname="MasterpieceCreationNGUIScripts" preserve="all"/>
 <type fullname="HTTPRequest" preserve="all"/>
 <type fullname="AdaptiveThreshold" preserve="all"/>
 <type fullname="CannyEdgeDetector" preserve="all"/>

@@ -62,7 +62,6 @@ class WarpPerspective : MonoBehaviour
 
     public void PreCalculateTransformMatrix()
     {
-
         int w = sourceImage.width();
         int h = sourceImage.height();
         int topWidth = 800;
@@ -73,16 +72,33 @@ class WarpPerspective : MonoBehaviour
         int needWidthInDe = (int)(((float)halfWidth / (float)topWidth) * w);
         int topWidthAfter = w - needWidthInDe * 2;
         int newHeight = (int)(h / heightScale);
+
+        float delta = 0.34f;
+        float deltaHT = 0.08f;
+        float deltaHB = 0.35f;
+
+        float addW = w * 0.24f;
+        float addH = h * 0.24f;
+		float topH = 0f;
+
         src_corner.put(0, 0,
                 0, 0,
                 w, 0,
                 w, h,
                 0, h);
+        //dst_corner.put(0, 0,
+        //        needWidthInDe-addW, 0-topH*addH,
+        //        w - needWidthInDe+addW, 0-topH*addH,
+        //        w+addW, h+(2-topH)*addH,
+        //        0-addW, h+(2-topH)*addH);
+
         dst_corner.put(0, 0,
-                needWidthInDe, 0,
-                w - needWidthInDe, 0,
-                w, h,
-                0, h);
+            w * delta - addW, -h * deltaHT - topH * addH,
+            w - w * delta + addW, -h * deltaHT - topH * addH,
+            w + w * delta + addW, h + h * deltaHB + (2 - topH) * addH,
+            -w * delta - addW, h + h * deltaHB + (2 - topH) * addH);
+
+
         transformationMatrix = Imgproc.getPerspectiveTransform(src_corner, dst_corner);
         Core.invert(transformationMatrix, srcTM);
 

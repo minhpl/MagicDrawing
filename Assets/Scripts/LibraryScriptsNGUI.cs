@@ -183,13 +183,10 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         HistoryNGUIScripts.AddHistoryItem(new HistoryModel(imgPath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
                         GVs.SCENE_MANAGER.loadDrawingScene();
                     }
-                }));
-                                                    
-                
+                }));                                                   
                 LstGameObject.Add(go);
                 LstTexture.Add(texture);                
             }
-
         if (USE_PACK && imageItem != null)
         {
             int freeArea = 0;

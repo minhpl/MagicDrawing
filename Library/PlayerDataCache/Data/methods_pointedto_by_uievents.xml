@@ -1,5 +1,14 @@
 <linker>
 	<assembly fullname="Assembly-CSharp">
+		<type fullname="DrawingScripts">
+			<method name="OnPushActiveBtnClicked"/>
+			<method name="OnTickBtnClicked"/>
+			<method name="OnSliderBtnClicked"/>
+			<method name="OnPushBtnClicked"/>
+			<method name="OnTickBtnClicked"/>
+			<method name="OnContrastBtnClicked"/>
+			<method name="ToggleRecord"/>
+		</type>
 		<type fullname="BackButton">
 			<method name="onBackButtonClicked"/>
 			<method name="onBackButtonClicked"/>
@@ -15,37 +24,24 @@
 			<method name="onBackButtonClicked"/>
 			<method name="onBackButtonClicked"/>
 		</type>
-		<type fullname="GoHomeSceneScripts">
-			<method name="OnHomeBtnClicked"/>
-			<method name="OnHomeBtnClicked"/>
-			<method name="OnHomeBtnClicked"/>
-			<method name="OnHomeBtnClicked"/>
-			<method name="OnHomeBtnClicked"/>
-		</type>
-		<type fullname="DrawingScripts">
-			<method name="OnPushActiveBtnClicked"/>
-			<method name="OnTickBtnClicked"/>
-			<method name="OnSliderBtnClicked"/>
-			<method name="OnPushBtnClicked"/>
-			<method name="OnTickBtnClicked"/>
-			<method name="OnContrastBtnClicked"/>
-			<method name="ToggleRecord"/>
-		</type>
 		<type fullname="SnapImageSceneScripts">
 			<method name="OnCancelBtnClicked"/>
-			<method name="OnDrawBtnClicked"/>
 			<method name="OnChangeCameraButton"/>
 			<method name="OnSnapBtnClicked"/>
-		</type>
-		<type fullname="LibraryScripts">
-			<method name="ObBackBtnClicked"/>
-			<method name="ObBackBtnClicked"/>
+			<method name="OnContinueBtnClicked"/>
 		</type>
 		<type fullname="PreviewResultScripts">
 			<method name="OnOkBtnClicked"/>
 		</type>
+		<type fullname="GoHomeSceneScripts">
+			<method name="OnHomeBtnClicked"/>
+			<method name="OnHomeBtnClicked"/>
+		</type>
 		<type fullname="ResultScripts">
 			<method name="OnPlayBtnClicked"/>
+		</type>
+		<type fullname="LibraryScriptsNGUI">
+			<method name="ObBackBtnClicked"/>
 		</type>
 	</assembly>
 </linker>

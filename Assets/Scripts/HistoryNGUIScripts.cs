@@ -66,23 +66,23 @@ public class HistoryNGUIScripts : MonoBehaviour {
             cloneItem.SetActive(true);
             uiGrid.Reposition();
 
-            //cloneItem.GetComponent<Button>().onClick.AddListener(() =>
-            //{
-            //    if(historyModel.imgType == HistoryModel.IMAGETYPE.MODEL)
-            //    {
-            //        DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;                   
-            //        DrawingScripts.imgModelPath = filePath;
-            //        AddHistoryItem(new HistoryModel(filePath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
-            //    }
-            //    else
-            //    {                    
-            //        DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
-            //        DrawingScripts.image = image;
-            //        DrawingScripts.texModel = texture;
-            //        AddHistoryItem(new HistoryModel(filePath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
-            //    }
-            //    GVs.SCENE_MANAGER.loadDrawingScene();
-            //});
+            cloneItem.GetComponent<UIButton>().onClick.Add(new EventDelegate(() =>
+            {
+                if (historyModel.imgType == HistoryModel.IMAGETYPE.MODEL)
+                {
+                    DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;
+                    DrawingScripts.imgModelPath = filePath;
+                    AddHistoryItem(new HistoryModel(filePath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                }
+                else
+                {
+                    DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
+                    DrawingScripts.image = image;
+                    DrawingScripts.texModel = texture;
+                    AddHistoryItem(new HistoryModel(filePath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                }
+                GVs.SCENE_MANAGER.loadDrawingScene();
+            }));
         }
         Destroy(item);
     }
@@ -97,17 +97,14 @@ public class HistoryNGUIScripts : MonoBehaviour {
             if (history == null)
                 history = new LinkedList<HistoryModel>();
         }
-
         for (var a = history.First; a != null; a = a.Next)
         {
             if (a.Value.filePath == historyModel.filePath) ;           
             history.Remove(a);
             break;            
         }
-
         //var a = history.Find(historyModel);
         //if (a != null) history.Remove(a);
-
         history.AddFirst(historyModel);
         while (history.Count > MAXHISTORY)
             history.RemoveLast();        

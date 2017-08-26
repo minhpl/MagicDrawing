@@ -53,33 +53,20 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour {
             var uiTexture = masterpiece.GetComponent<UITexture>();          
             var widthImg = texture.width;
             var heightImg = texture.height;
-            //aspectratioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
-            //aspectratioFitter.aspectRatio = (float)widthImg / (float)heightImg;
 
-            //var ridTopPercent = GVs.ridTopPercent;
-            //rimg.rectTransform.pivot = new Vector2(0.5f, 1 - ridTopPercent);
-            //var h = rimg.rectTransform.rect.height * rimg.rectTransform.localScale.y;
-            //var ridTop = ridTopPercent * h;
-            //Debug.Log(h);
-            //var position = rimg.rectTransform.localPosition;
-            //rimg.rectTransform.localPosition = new Vector3(position.x, position.y + ridTop, position.z);
+            Debug.Log(f);
+            go.GetComponent<UIButton>().onClick.Add(new EventDelegate(() =>
+            {
+                ResultScripts.texture = texture;
+                ResultScripts.videoPath = videoPath;
+                ResultScripts.mode = ResultScripts.MODE.REWATCH_RESULT;
+                var datetime = DateTime.ParseExact(fileNameWithouExtension, Utilities.customFmts, new CultureInfo(0x042A));
+                var datemonthyear = string.Format("{0}", datetime.Date.ToString("d-M-yyyy"));
+                Debug.Log(datemonthyear);
+                ResultScripts.title = datemonthyear;
+                GVs.SCENE_MANAGER.loadResultScene();
+            })); 
 
-            //var scale = 1 + GVs.bonusScale;
-            //Utilities.Log("Scale is {0}", scale);
-            //rimg.rectTransform.localScale = new Vector3(scale, scale, scale);
-
-            //go.GetComponent<Button>().onClick.AddListener(() =>
-            //    {
-            //        ResultScripts.texture = texture;
-            //        ResultScripts.videoPath = videoPath;
-            //        ResultScripts.mode = ResultScripts.MODE.REWATCH_RESULT;
-            //        var datetime = DateTime.ParseExact(fileNameWithouExtension, Utilities.customFmts, new CultureInfo(0x042A));
-            //        var datemonthyear = string.Format("{0}", datetime.Date.ToString("d-M-yyyy"));
-            //        Debug.Log(datemonthyear);
-            //        ResultScripts.title = datemonthyear;
-            //        GVs.SCENE_MANAGER.loadResultScene();
-            //    }
-            //);
             uiTexture.mainTexture = texture;
         }
         Destroy(item);

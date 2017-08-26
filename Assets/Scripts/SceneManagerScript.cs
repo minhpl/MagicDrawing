@@ -82,6 +82,11 @@ public class SceneManagerScript : MonoBehaviour
     	SceneManager.LoadScene("MasterpieceCreationScene");	
     }
 
+    public void loadMasterpieceCreationnNGUIScene()
+    {
+        SceneManager.LoadScene("MasterpieceCreationNGUIScene");
+    }
+
     public void loadLibraryScene(){
     	SceneManager.LoadScene("LibraryScene");
         //SceneManager.sceneLoaded += OnSceneLoaded;
