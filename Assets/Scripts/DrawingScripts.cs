@@ -112,7 +112,17 @@ public class DrawingScripts : MonoBehaviour {
                 Utilities.Log("Scale is {0}", scale);
                 rimgcam.rectTransform.localScale = new Vector3(scale, scale, scale);
             });
-        }        
+        }
+
+
+    //    var clickStream = Observable.EveryUpdate()
+    //.Where(_ => Input.GetMouseButtonDown(0));
+
+    //    clickStream.Subscribe((long i) =>
+    //    {
+    //        Debug.Log("press detected");
+    //    });
+
     }
  
     void Start () {        

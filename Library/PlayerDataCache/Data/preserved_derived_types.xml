@@ -277,7 +277,6 @@
 <type fullname="Threshold" preserve="all"/>
 <type fullname="WarpPerspective" preserve="all"/>
 <type fullname="PreloadScript" preserve="all"/>
-<type fullname="PreviewResultScripts" preserve="all"/>
 <type fullname="ProfileScript" preserve="all"/>
 <type fullname="TouchScript.Examples.RawInput.Ball" preserve="all"/>
 <type fullname="TouchScript.Examples.RawInput.Spawner" preserve="all"/>

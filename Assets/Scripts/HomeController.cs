@@ -55,8 +55,8 @@ public class HomeController : MonoBehaviour {
                 if (numCategory == NumtemplateList && numCategory != 0)
                 {
                     Utilities.Log("Ready");
-                    ready = true;
-                    return;
+                    //ready = true;
+                    //return;
                 }
             }
         }

@@ -77,7 +77,7 @@ public class MainToolsNGUIScripts : MonoBehaviour {
     {
         Texture2D texture = (Texture2D)AndroidGallery.Instance.GetTexture();
         Mat image = new Mat(texture.height, texture.width,CvType.CV_8UC4);
-        Utils.textureToMat(texture, image);
+        Utils.texture2DToMat(texture, image);        
         var path = AndroidGallery.Instance.getPath();        
         DrawingScripts.image = image;
         DrawingScripts.texModel = texture;

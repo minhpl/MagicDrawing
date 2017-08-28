@@ -102,8 +102,7 @@ public class ResultScripts : MonoBehaviour {
         cap.read(frame);        
         rawImageAspect.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
         if (frame.empty())
-        {
-            
+        { 
             rawImageAspect.aspectRatio = ratioImage;
             cap.release();
             yield break;

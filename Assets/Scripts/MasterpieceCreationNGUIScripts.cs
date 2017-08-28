@@ -16,15 +16,15 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour {
 	void Start () {
         MainThreadDispatcher.StartUpdateMicroCoroutine(LoadMasterpieceDrawing());
         var canvasRect = canvas.GetComponent<RectTransform>().rect;
-        var canvasRat = (float)canvasRect.width / (float)canvasRect.height;
-        
+        var canvasRat = (float)canvasRect.width / (float)canvasRect.height;        
         UIPanel uiPanel = item.GetComponent<UIPanel>();
-        uiPanel.clipping = UIDrawCall.Clipping.SoftClip;
-        
+        uiPanel.clipping = UIDrawCall.Clipping.SoftClip;        
         var width = uiPanel.width;        
         var newheight = width / canvasRat;
         uiPanel.SetRect(0, 0, width, newheight);
-
+        BoxCollider boxCollider = item.GetComponent<BoxCollider>();
+        boxCollider.size = new Vector3(width, newheight, 0);
+        boxCollider.center = Vector3.zero;
         var padding = 50;
         uiGrid.cellHeight = newheight + padding;
     }	

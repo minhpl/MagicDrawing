@@ -19,14 +19,23 @@ public class ToggleScript : MonoBehaviour {
     public Button BtnPushActive;       
     public GameObject panel_tool;
     public GameObject backBtn;
-    public TapGesture tapGesture;
+    public TapGesture doubleTapGesture;
+    public PressGesture pressGesture;
     public Button BtnTick;
     public Button BtnCancel;
     public Text textComfirm;
     void Start() {
 
-        tapGesture.Tapped += tappedHandler;
-
+        doubleTapGesture.Tapped += tappedHandler;
+        pressGesture.Pressed += (object sender, System.EventArgs e) =>
+        {
+            panel_line.gameObject.SetActive(false);
+            panel_constract.gameObject.SetActive(false);
+            btnContract.gameObject.SetActive(false);
+            BtnSlider_active.gameObject.SetActive(false);
+            BtnSlider.gameObject.SetActive(true);
+        };
+        
         BtnTick.onClick.AddListener(() =>
         {
             if(!BtnCancel.gameObject.activeSelf)
@@ -94,7 +103,8 @@ public class ToggleScript : MonoBehaviour {
 
 
     private void tappedHandler(object sender, System.EventArgs e)
-    {       
+    {
+        Debug.Log("xin chao tapped handler");
         if (panel_tool)
             panel_tool.SetActive(!panel_tool.activeSelf);
         if (backBtn)
