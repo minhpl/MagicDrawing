@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/FacebookSDK/Examples/AccessTokenMenu.unity
+- path: Assets/Scenes/LibraryNGUIScene.unity
   isLoaded: 1
   isActive: 1
