@@ -54,6 +54,18 @@
      <Compile Include="Assets\AndroidGallery\Demo\DemoScript.cs" />
      <Compile Include="Assets\AndroidGallery\Scripts\AndroidGallery.cs" />
      <Compile Include="Assets\AndroidGallery\Scripts\Singleton.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\ConsoleBase.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\LogView.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\MenuBase.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\SubMenus\AccessTokenMenu.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\SubMenus\AppEvents.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\SubMenus\AppInvites.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\SubMenus\AppLinks.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\SubMenus\AppRequests.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\SubMenus\DialogShare.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\SubMenus\GraphRequest.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\SubMenus\MainMenu.cs" />
+     <Compile Include="Assets\FacebookSDK\Examples\Scripts\SubMenus\Pay.cs" />
      <Compile Include="Assets\FFmpegOut\CameraCapture.cs" />
      <Compile Include="Assets\FFmpegOut\FFmpegConfig.cs" />
      <Compile Include="Assets\FFmpegOut\FFmpegPipe.cs" />
@@ -77,11 +89,6 @@
      <Compile Include="Assets\MoviePlayer\Scripts\Decoder\VideoDecoderUnity.cs" />
      <Compile Include="Assets\MoviePlayer\Scripts\Demux.cs" />
      <Compile Include="Assets\MoviePlayer\Scripts\DuplicateFrameFinder.cs" />
-     <Compile Include="Assets\MoviePlayer\Scripts\Editors\DuplicateFrameRemoverWindow.cs" />
-     <Compile Include="Assets\MoviePlayer\Scripts\Editors\FfmpegWindow.cs" />
-     <Compile Include="Assets\MoviePlayer\Scripts\Editors\MoviePlayerEditor.cs" />
-     <Compile Include="Assets\MoviePlayer\Scripts\Editors\MovieStreamerEditor.cs" />
-     <Compile Include="Assets\MoviePlayer\Scripts\Editors\MpEditorUtil.cs" />
      <Compile Include="Assets\MoviePlayer\Scripts\LoadOptions.cs" />
      <Compile Include="Assets\MoviePlayer\Scripts\Local\LocalWebcamStreamer.cs" />
      <Compile Include="Assets\MoviePlayer\Scripts\MoviePlayerUtil.cs" />
@@ -948,8 +955,10 @@
      <None Include="Assets\Plugins\Android\everyplay\res\values-ja\everyplay_strings.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\values\everyplay_colors.xml" />
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
+     <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_video_timeline_tracker_button.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_theme_sidemenu_button.xml" />
+     <None Include="Assets\FacebookSDK\link.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_editor_processing.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_progressbar_horizontal.xml" />
      <None Include="Assets\Scenes\TouchScript\Shaders\DebugMultiplyNoDepthTest.shader" />
@@ -1010,6 +1019,18 @@
  </Reference>
  <Reference Include="TexturePacker">
  <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/Extensions/TexturePacker/Lib/TexturePacker.dll</HintPath>
+ </Reference>
+ <Reference Include="Facebook.Unity">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/FacebookSDK/Plugins/Facebook.Unity.dll</HintPath>
+ </Reference>
+ <Reference Include="Facebook.Unity.Gameroom">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/FacebookSDK/Plugins/Gameroom/Facebook.Unity.Gameroom.dll</HintPath>
+ </Reference>
+ <Reference Include="FacebookNamedPipeClient">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/FacebookSDK/Plugins/Gameroom/FacebookNamedPipeClient.dll</HintPath>
+ </Reference>
+ <Reference Include="Facebook.Unity.Settings">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/FacebookSDK/Plugins/Settings/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
  <Reference Include="OSCsharp">
  <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/Scenes/TouchScript/Modules/TUIO/Libraries/OSCsharp.dll</HintPath>

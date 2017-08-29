@@ -73,6 +73,11 @@
      <Compile Include="Assets\Editor\Everyplay\XCodeEditor\XCSourceFile.cs" />
      <Compile Include="Assets\Editor\Everyplay\XCodeEditor\XCTarget.cs" />
      <Compile Include="Assets\FFmpegOut\Editor\CameraCaptureEditor.cs" />
+     <Compile Include="Assets\MoviePlayer\Scripts\Editor\DuplicateFrameRemoverWindow.cs" />
+     <Compile Include="Assets\MoviePlayer\Scripts\Editor\FfmpegWindow.cs" />
+     <Compile Include="Assets\MoviePlayer\Scripts\Editor\MoviePlayerEditor.cs" />
+     <Compile Include="Assets\MoviePlayer\Scripts\Editor\MovieStreamerEditor.cs" />
+     <Compile Include="Assets\MoviePlayer\Scripts\Editor\MpEditorUtil.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Editor\InvDatabaseInspector.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Editor\InvFindItem.cs" />
      <Compile Include="Assets\NGUI\Scripts\Editor\ActiveAnimationEditor.cs" />
@@ -338,8 +343,10 @@
      <None Include="Assets\Plugins\Android\everyplay\res\values-ja\everyplay_strings.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\values\everyplay_colors.xml" />
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
+     <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_video_timeline_tracker_button.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_theme_sidemenu_button.xml" />
+     <None Include="Assets\FacebookSDK\link.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_editor_processing.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_progressbar_horizontal.xml" />
      <None Include="Assets\Scenes\TouchScript\Shaders\DebugMultiplyNoDepthTest.shader" />
@@ -445,6 +452,21 @@
  </Reference>
  <Reference Include="TexturePacker">
  <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/Extensions/TexturePacker/Lib/TexturePacker.dll</HintPath>
+ </Reference>
+ <Reference Include="Facebook.Unity">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/FacebookSDK/Plugins/Facebook.Unity.dll</HintPath>
+ </Reference>
+ <Reference Include="Facebook.Unity.Editor">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/FacebookSDK/Plugins/Editor/Facebook.Unity.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Facebook.Unity.Gameroom">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/FacebookSDK/Plugins/Gameroom/Facebook.Unity.Gameroom.dll</HintPath>
+ </Reference>
+ <Reference Include="FacebookNamedPipeClient">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/FacebookSDK/Plugins/Gameroom/FacebookNamedPipeClient.dll</HintPath>
+ </Reference>
+ <Reference Include="Facebook.Unity.Settings">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/FacebookSDK/Plugins/Settings/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
  <Reference Include="Google.IOSResolver">
  <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/PlayServicesResolver/Editor/Google.IOSResolver.dll</HintPath>
