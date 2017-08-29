@@ -32,8 +32,8 @@ public class LibraryScriptsNGUI : MonoBehaviour
     }
     // Use this for initialization
     void Start()
-    {               
-       
+    {
+        Debug.Log("here1");
 
         if (mode == MODE.CATEGORY)
         {
@@ -51,7 +51,8 @@ public class LibraryScriptsNGUI : MonoBehaviour
     }
 
     IEnumerator Load()
-    {                      
+    {
+        Debug.Log("here2");
         List<Texture2D> LstTexture = new List<Texture2D>();
         List<GameObject> LstGameObject = new List<GameObject>();
         List<int> numRectIn2048 = new List<int>();
@@ -86,107 +87,118 @@ public class LibraryScriptsNGUI : MonoBehaviour
         {
             imageCount = templateDrawingList.Count();
         }
-
+        Debug.Log(imageCount);
         var app_path = GFs.getAppDataDirPath();        
         var categoryDirPath = app_path + GVs.CATEGORY_LIST.dir + "/";
 
         for (int j = 0; j < clone; j++)
             for (int i = 0; i < imageCount; i++)
-            {               
+            {
                 yield return null;
-                if (imageItem == null) break;
-                GameObject go = Instantiate(imageItem) as GameObject;
-                go.transform.SetParent(imageItem.transform.parent.transform);
-                go.transform.localScale = imageItem.transform.localScale;
-                UITexture rimage = go.transform.Find("icon").GetComponent<UITexture>();
-                //TextMeshProUGUI textMeshPro = go.transform.Find("textmeshpro").GetComponent<TextMeshProUGUI>();
-                UILabel text = go.transform.Find("itemLabel").GetComponent<UILabel>();
-            
-                Texture2D texture = null;
-                Category category = null;
-                TemplateDrawing template = null;
-                if (mode==MODE.CATEGORY)
+                try
                 {
-                    category = categorys[i];                                        
-                    texture = GFs.LoadPNGFromPath(categoryDirPath + category.image);
-                    text.text = category.name;
-                }
-                else
-                {                    
-                    template = templateDrawingList.Get(i);
-                    var dirPath = app_path+ templateDrawingList.dir + "/";
-                    texture= GFs.LoadPNGFromPath(dirPath + "/" + template.thumb);
-                }
-                go.SetActive(true);
-
-                rimage.mainTexture = texture;
-                scrollView.GetComponent<UIGrid>().Reposition();
-
-                float width = texture.width;
-                float height = texture.height;
-                float ratio = width / height;
-
-                var w = widthOri;
-                var h = heightOri;
-
-                if (ratio > 1)
-                {
-                    w = widthOri;
-                    h = (int)(w * height / width);
-
-                    TextureScale.Bilinear(texture, w >> deScale, h >> deScale);
-
-                    rimage.width = w;
-                    rimage.height = h;
-                }
-                else
-                {
-                    h = widthOri;
-                    w = (int)(h * width / height);
-
-                    TextureScale.Bilinear(texture, w >> deScale, h >> deScale);
-                    rimage.width = w;
-                    rimage.height = h;
-                }
-
-                var area = w * h;
-                Area += area;
-                tempArea = tempArea - area;
-                if (tempArea < 0)
-                {
-                    num2048 += 1;
-                    tempArea = area2048 - area;
-                    numRectIn2048.Add(j * imageCount + i + 1 - tempNumPacked);
-                    tempNumPacked = j * imageCount + i + 1;
-                }
-
-                texture.Compress(true);
-                go.GetComponent<UIButton>().onClick.Add(new EventDelegate(() =>
-                {
+                    if (imageItem == null) break;
+                    Debug.Log("here3");
+                    GameObject go = Instantiate(imageItem) as GameObject;
+                    go.transform.SetParent(imageItem.transform.parent.transform);
+                    go.transform.localScale = imageItem.transform.localScale;
+                    UITexture rimage = go.transform.Find("icon").GetComponent<UITexture>();
+                    //TextMeshProUGUI textMeshPro = go.transform.Find("textmeshpro").GetComponent<TextMeshProUGUI>();
+                    UILabel text = go.transform.Find("itemLabel").GetComponent<UILabel>();
+                    Debug.Log("here4");
+                    Texture2D texture = null;
+                    Category category = null;
+                    TemplateDrawing template = null;
                     if (mode == MODE.CATEGORY)
                     {
-
-                        var categoryID = category._id;
-                        TemplateDrawingList templateDrawingList = GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID];
-                        LibraryScriptsNGUI.templateDrawingList = templateDrawingList;
-                        LibraryScriptsNGUI.mode = MODE.TEMPLATE;
-                        title = category.name;
-                        GVs.SCENE_MANAGER.loadTemplateNGUIScene();
+                        category = categorys[i];
+                        texture = GFs.LoadPNGFromPath(categoryDirPath + category.image);
+                        text.text = category.name;
                     }
                     else
                     {
-                        var dirPath = GFs.getAppDataDirPath() + "/" + templateDrawingList.dir + "/";
-                        var thumbPath = dirPath + template.thumb;
-                        var imgPath = dirPath + template.image;
-                        DrawingScripts.imgModelPath = imgPath;
-                        DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;
-                        HistoryNGUIScripts.AddHistoryItem(new HistoryModel(imgPath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
-                        GVs.SCENE_MANAGER.loadDrawingScene();
+                        template = templateDrawingList.Get(i);
+                        var dirPath = app_path + templateDrawingList.dir + "/";
+                        texture = GFs.LoadPNGFromPath(dirPath + "/" + template.thumb);
                     }
-                }));                                                   
-                LstGameObject.Add(go);
-                LstTexture.Add(texture);                
+                    go.SetActive(true);
+                    Debug.Log("here5");
+                    rimage.mainTexture = texture;
+                    scrollView.GetComponent<UIGrid>().Reposition();
+
+                    float width = texture.width;
+                    float height = texture.height;
+                    float ratio = width / height;
+
+                    var w = widthOri;
+                    var h = heightOri;
+
+                    if (ratio > 1)
+                    {
+                        w = widthOri;
+                        h = (int)(w * height / width);
+
+                        TextureScale.Bilinear(texture, w >> deScale, h >> deScale);
+
+                        rimage.width = w;
+                        rimage.height = h;
+                    }
+                    else
+                    {
+                        h = widthOri;
+                        w = (int)(h * width / height);
+
+                        TextureScale.Bilinear(texture, w >> deScale, h >> deScale);
+                        rimage.width = w;
+                        rimage.height = h;
+                    }
+
+                    var area = w * h;
+                    Area += area;
+                    tempArea = tempArea - area;
+                    if (tempArea < 0)
+                    {
+                        num2048 += 1;
+                        tempArea = area2048 - area;
+                        numRectIn2048.Add(j * imageCount + i + 1 - tempNumPacked);
+                        tempNumPacked = j * imageCount + i + 1;
+                    }
+
+                    texture.Compress(true);
+                    go.GetComponent<UIButton>().onClick.Add(new EventDelegate(() =>
+                    {
+                        if (mode == MODE.CATEGORY)
+                        {
+
+                            var categoryID = category._id;
+                            TemplateDrawingList templateDrawingList = GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID];
+                            LibraryScriptsNGUI.templateDrawingList = templateDrawingList;
+                            LibraryScriptsNGUI.mode = MODE.TEMPLATE;
+                            title = category.name;
+                            GVs.SCENE_MANAGER.loadTemplateNGUIScene();
+                        }
+                        else
+                        {
+                            var dirPath = GFs.getAppDataDirPath() + "/" + templateDrawingList.dir + "/";
+                            var thumbPath = dirPath + template.thumb;
+                            var imgPath = dirPath + template.image;
+                            DrawingScripts.imgModelPath = imgPath;
+                            DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;
+                            HistoryNGUIScripts.AddHistoryItem(new HistoryModel(imgPath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                            GVs.SCENE_MANAGER.loadDrawingScene();
+                        }
+                    }));
+                    LstGameObject.Add(go);
+                    LstTexture.Add(texture);
+                }
+                catch(Exception e)
+                {
+                    Debug.LogErrorFormat("Error is {0}", e.ToString());
+                    Debug.LogErrorFormat("Stacktrace is {0}", e.StackTrace.ToString());
+                }
+                
             }
+        
         if (USE_PACK && imageItem != null)
         {
             int freeArea = 0;

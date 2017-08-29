@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/MoviePlayer/Scenes/ScriptingDemo.unity
+- path: Assets/FacebookSDK/Examples/AccessTokenMenu.unity
   isLoaded: 1
   isActive: 1

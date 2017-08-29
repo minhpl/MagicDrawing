@@ -64,6 +64,18 @@
 <type fullname="DemoScript" preserve="all"/>
 <type fullname="LukeWaffel.AndroidGallery.AndroidGallery" preserve="all"/>
 <type fullname="LukeWaffel.AndroidGallery.Singleton`1" preserve="all"/>
+<type fullname="Facebook.Unity.Example.ConsoleBase" preserve="all"/>
+<type fullname="Facebook.Unity.Example.LogView" preserve="all"/>
+<type fullname="Facebook.Unity.Example.MenuBase" preserve="all"/>
+<type fullname="Facebook.Unity.Example.AccessTokenMenu" preserve="all"/>
+<type fullname="Facebook.Unity.Example.AppEvents" preserve="all"/>
+<type fullname="Facebook.Unity.Example.AppInvites" preserve="all"/>
+<type fullname="Facebook.Unity.Example.AppLinks" preserve="all"/>
+<type fullname="Facebook.Unity.Example.AppRequests" preserve="all"/>
+<type fullname="Facebook.Unity.Example.DialogShare" preserve="all"/>
+<type fullname="Facebook.Unity.Example.GraphRequest" preserve="all"/>
+<type fullname="Facebook.Unity.Example.MainMenu" preserve="all"/>
+<type fullname="Facebook.Unity.Example.Pay" preserve="all"/>
 <type fullname="FFmpegOut.CameraCapture" preserve="all"/>
 <type fullname="FFmpegOut.Blitter" preserve="all"/>
 <type fullname="IMGUI" preserve="all"/>
@@ -351,6 +363,7 @@
 <type fullname="SceneManagerScript" preserve="all"/>
 <type fullname="ScrollViewScript" preserve="all"/>
 <type fullname="SelectBoxScript" preserve="all"/>
+<type fullname="ShareFacebook" preserve="all"/>
 <type fullname="SnapImageSceneScripts" preserve="all"/>
 <type fullname="testin" preserve="all"/>
 <type fullname="TestSaladSeriazable" preserve="all"/>
@@ -502,6 +515,29 @@
 <type fullname="UnityEngine.UI.PositionAsUV1" preserve="all"/>
 <type fullname="UnityEngine.UI.Shadow" preserve="all"/>
 </assembly>
+<assembly fullname="Facebook.Unity">
+<type fullname="Facebook.Unity.FB" preserve="all"/>
+<type fullname="Facebook.Unity.FB/CompiledFacebookLoader" preserve="all"/>
+<type fullname="Facebook.Unity.FacebookGameObject" preserve="all"/>
+<type fullname="Facebook.Unity.AsyncRequestString" preserve="all"/>
+<type fullname="Facebook.Unity.FacebookScheduler" preserve="all"/>
+<type fullname="Facebook.Unity.Gameroom.GameroomFacebookGameObject" preserve="all"/>
+<type fullname="Facebook.Unity.Gameroom.GameroomFacebookLoader" preserve="all"/>
+<type fullname="Facebook.Unity.Editor.EditorFacebookGameObject" preserve="all"/>
+<type fullname="Facebook.Unity.Editor.EditorFacebookLoader" preserve="all"/>
+<type fullname="Facebook.Unity.Editor.EditorFacebookMockDialog" preserve="all"/>
+<type fullname="Facebook.Unity.Editor.Dialogs.EmptyMockDialog" preserve="all"/>
+<type fullname="Facebook.Unity.Editor.Dialogs.MockLoginDialog" preserve="all"/>
+<type fullname="Facebook.Unity.Editor.Dialogs.MockShareDialog" preserve="all"/>
+<type fullname="Facebook.Unity.Mobile.MobileFacebookGameObject" preserve="all"/>
+<type fullname="Facebook.Unity.Mobile.IOS.IOSFacebookGameObject" preserve="all"/>
+<type fullname="Facebook.Unity.Mobile.IOS.IOSFacebookLoader" preserve="all"/>
+<type fullname="Facebook.Unity.Mobile.Android.AndroidFacebookGameObject" preserve="all"/>
+<type fullname="Facebook.Unity.Mobile.Android.AndroidFacebookLoader" preserve="all"/>
+<type fullname="Facebook.Unity.Canvas.CanvasFacebookGameObject" preserve="all"/>
+<type fullname="Facebook.Unity.Canvas.CanvasFacebookLoader" preserve="all"/>
+<type fullname="Facebook.Unity.Canvas.JsBridge" preserve="all"/>
+</assembly>
 <assembly fullname="TextMeshPro-1.0.55.2017.1.0b12">
 <type fullname="TMPro.InlineGraphic" preserve="all"/>
 <type fullname="TMPro.InlineGraphicManager" preserve="all"/>
@@ -525,5 +561,8 @@
 <type fullname="TMPro.TMP_SubMesh" preserve="all"/>
 <type fullname="TMPro.TMP_SubMeshUI" preserve="all"/>
 <type fullname="TMPro.TMP_Text" preserve="all"/>
+</assembly>
+<assembly fullname="Facebook.Unity.Settings">
+<type fullname="Facebook.Unity.Settings.FacebookSettings" preserve="all"/>
 </assembly>
 </linker>

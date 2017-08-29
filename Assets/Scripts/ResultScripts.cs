@@ -23,6 +23,7 @@ public class ResultScripts : MonoBehaviour {
     public Text tit;
     public RawImage rimgTitle;
     public MoviePlayer moviePlayer;
+    public Button btnShareFacebooks;
     private Texture2D texVideo;
     private Mat frame;
     private AspectRatioFitter rawImageAspect;
@@ -52,7 +53,14 @@ public class ResultScripts : MonoBehaviour {
                 int i = GVs.TRACE_SCENE.Pop();                
                 SceneManager.LoadScene(i);
             });           
-        } 
+        }
+
+        btnShareFacebooks.onClick.AddListener(() =>
+        {
+            ShareFacebook.filePath = videoPath;
+            var shareFacebook = GetComponent<ShareFacebook>();
+            shareFacebook.onlogin();
+        });
     }
 
     void Start () {
@@ -86,6 +94,7 @@ public class ResultScripts : MonoBehaviour {
         if (texVideo != null)
             Destroy(texVideo);
         moviePlayer.Unload();
+        ShareFacebook.filePath = null;
     }
 
     public void OnPlayBtnClicked()

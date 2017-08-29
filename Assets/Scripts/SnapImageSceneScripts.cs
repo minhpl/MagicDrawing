@@ -110,6 +110,14 @@ public class SnapImageSceneScripts : MonoBehaviour
         {
             rawImgCam.rectTransform.localScale = new Vector3(-1, 1, 1);
         }
+
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            var localScale = rawImgCam.rectTransform.localScale;            
+            localScale.y = -localScale.y;
+            rawImgCam.rectTransform.localScale = localScale;
+        }
+
     }
 
     void ShowCam()

@@ -13,11 +13,11 @@ public class HomeController : MonoBehaviour {
     public Canvas canvas;
     private void Awake()
     {
-        //Screen.orientation = ScreenOrientation.Portrait;
-        //Screen.autorotateToLandscapeLeft = false;
-        //Screen.autorotateToLandscapeRight = false;
-        //Screen.autorotateToPortrait = false;
-        //Screen.autorotateToPortraitUpsideDown = false;
+        Screen.orientation = ScreenOrientation.Portrait;
+        Screen.autorotateToLandscapeLeft = false;
+        Screen.autorotateToLandscapeRight = false;
+        Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
 
         var masterPieceDirPath = GFs.getMasterpieceDirPath();
         if (!Directory.Exists(masterPieceDirPath))
@@ -33,7 +33,7 @@ public class HomeController : MonoBehaviour {
 
         if (Application.platform == RuntimePlatform.Android)
         {
-            GVs.APP_PATH = "/data/data/com.MinhViet.ProductName/files";
+            GVs.APP_PATH = "data/data/" + Application.identifier + "/files";
         }
         else
         {
@@ -55,8 +55,9 @@ public class HomeController : MonoBehaviour {
                 if (numCategory == NumtemplateList && numCategory != 0)
                 {
                     Utilities.Log("Ready");
-                    //ready = true;
-                    //return;
+                    ready1 = true;
+                    ready2 = true;
+                    return;
                 }
             }
         }
@@ -72,6 +73,7 @@ public class HomeController : MonoBehaviour {
         if (NET.NetWorkIsAvaiable())
             HTTPRequest.Instance.Request(GVs.GET_ALL_CATEGORY_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
             {
+                Debug.LogFormat("Data is {0}", data);
                 try
                 {
                     GVs.CATEGORY_LIST = JsonConvert.DeserializeObject<CategoryList>(data.ToString());
@@ -89,6 +91,7 @@ public class HomeController : MonoBehaviour {
                             {
                                 try
                                 {
+                                    Debug.Log(templates);
                                     TemplateDrawingList templatelist = JsonConvert.DeserializeObject<TemplateDrawingList>(templates);
                                     templatelist.dir = templatelist.dir + "/" + id;
                                     GVs.DRAWING_TEMPLATE_LIST = templatelist;
@@ -119,8 +122,9 @@ public class HomeController : MonoBehaviour {
                         GFs.SaveAllTemplateList();
                         Utilities.Log("all downloaded");
                         var json = JsonConvert.SerializeObject(templateListsAllCategory);
-                        ready = true;
+                        ready1 = true;
                     });
+
                 }
                 catch (Exception e)
                 {
@@ -129,8 +133,15 @@ public class HomeController : MonoBehaviour {
             });
 
 
+
+
+
         HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY_AVATA))), (d, process) =>
         {
+            if (process == 1)
+            {
+                ready2 = true;
+            }
 
         });
         //HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY, "C01"))), (d, process) =>
@@ -144,21 +155,22 @@ public class HomeController : MonoBehaviour {
 
     }
 
-    private bool ready = false;
+    private bool ready1 = false;
+    private bool ready2 = false;
 
     public void loadMasterpieceCreationScene()
     {
-        if (ready)
+        if (ready1 && ready2)
         {
             GVs.SCENE_MANAGER.loadMasterpieceCreationnNGUIScene();
-        }         
+        }
     }
     public void loadLibrary()
     {
-        if (ready)
+        if (ready1 && ready2)
         {
             LibraryScriptsNGUI.mode = LibraryScriptsNGUI.MODE.CATEGORY;
             GVs.SCENE_MANAGER.loadLibraryNGUIScene();
-        }            
+        }
     }
 }

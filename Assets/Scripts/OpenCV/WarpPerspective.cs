@@ -73,13 +73,15 @@ class WarpPerspective : MonoBehaviour
         int topWidthAfter = w - needWidthInDe * 2;
         int newHeight = (int)(h / heightScale);
 
-        float delta = 0.34f;
+        float delta = 0.37f;         //tham số bóp đầu lại, càng to càng bóp
         float deltaHT = 0.08f;
         float deltaHB = 0.35f;
 
-        float addW = w * 0.24f;
-        float addH = h * 0.24f;
-		float topH = 0f;
+        float addW = w * 0.325f;   //scale width param
+        float addH = h * 0.325f;   //scale height param
+		float topH = 0.14f;        //
+
+        Debug.LogFormat("Device model is : {0}", SystemInfo.deviceModel);
 
         src_corner.put(0, 0,
                 0, 0,

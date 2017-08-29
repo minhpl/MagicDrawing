@@ -179,10 +179,10 @@ public class GFs
 			try {
 				
 				string s = PlayerPrefs.GetString (CATEGORY_LIST);				
-				GVs.CATEGORY_LIST = JsonUtility.FromJson<CategoryList> (s);				
-
+				GVs.CATEGORY_LIST = JsonUtility.FromJson<CategoryList> (s);
+                Debug.Log(GVs.CATEGORY_LIST.data);
 			} catch (Exception ex) {
-
+                Debug.LogError("Exception is " + ex.ToString());
 			}
 		} else
 			SaveCategoryList ();
@@ -192,6 +192,7 @@ public class GFs
 
 	 public static Texture2D LoadPNGFromPath(string filePath)
     {
+        Debug.Log(filePath);
         Texture2D tex = null;
         byte[] fileData;
         if (File.Exists(filePath))
@@ -235,7 +236,7 @@ public class GFs
     {
         if (Application.platform == RuntimePlatform.Android)
         {
-            return "/data/data/com.MinhViet.ProductName/files/";
+            return "data/data/" + Application.identifier + "/files/";
         }
         else 
         {            
