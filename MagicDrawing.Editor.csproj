@@ -148,17 +148,17 @@
     <Reference Include="Google.VersionHandler">
       <HintPath>Assets\PlayServicesResolver\Editor\Google.VersionHandler.dll</HintPath>
     </Reference>
+    <Reference Include="OSCsharp">
+      <HintPath>Assets\Scenes\TouchScript\Modules\TUIO\Libraries\OSCsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="TUIOsharp">
+      <HintPath>Assets\Scenes\TouchScript\Modules\TUIO\Libraries\TUIOsharp.dll</HintPath>
+    </Reference>
     <Reference Include="TextMeshPro-1.0.55.2017.1.0b12">
       <HintPath>Assets\TextMesh Pro\Plugins\TextMeshPro-1.0.55.2017.1.0b12.dll</HintPath>
     </Reference>
     <Reference Include="TextMeshPro-1.0.55.2017.1.0b12-Editor">
       <HintPath>Assets\TextMesh Pro\Plugins\Editor\TextMeshPro-1.0.55.2017.1.0b12-Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="OSCsharp">
-      <HintPath>Assets\TouchScript\Modules\TUIO\Libraries\OSCsharp.dll</HintPath>
-    </Reference>
-    <Reference Include="TUIOsharp">
-      <HintPath>Assets\TouchScript\Modules\TUIO\Libraries\TUIOsharp.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Assets\UnityPackages\JsonNet\Newtonsoft.Json.dll</HintPath>
@@ -200,7 +200,6 @@
     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\XCSourceFile.cs" />
     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\XCTarget.cs" />
     <Compile Include="Assets\FFmpegOut\Editor\CameraCaptureEditor.cs" />
-    <Compile Include="Assets\MoviePlayer\Editor\WelcomePopup.cs" />
     <Compile Include="Assets\MoviePlayer\Scripts\Editor\DuplicateFrameRemoverWindow.cs" />
     <Compile Include="Assets\MoviePlayer\Scripts\Editor\FfmpegWindow.cs" />
     <Compile Include="Assets\MoviePlayer\Scripts\Editor\MoviePlayerEditor.cs" />
@@ -295,35 +294,35 @@
     <Compile Include="Assets\OpenCVForUnity\Editor\iOS_BuildPostprocessor.cs" />
     <Compile Include="Assets\OpenCVForUnity\Editor\OpenCVForUnityMenuItem.cs" />
     <Compile Include="Assets\OpenCVForUnity\Editor\WSA_BuildPostprocessor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Behaviors\Cursors\CursorManagerEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Behaviors\TransformerEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Debugging\PointerDebuggerWindow.cs" />
-    <Compile Include="Assets\TouchScript\Editor\EditorResources.cs" />
-    <Compile Include="Assets\TouchScript\Editor\EditorUI\GUIElements.cs" />
-    <Compile Include="Assets\TouchScript\Editor\EditorUI\GUIUtils.cs" />
-    <Compile Include="Assets\TouchScript\Editor\EditorUI\PagedList.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\FlickGestureEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\GestureEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\LongPressGestureEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\MetaGestureEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\PressGestureEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\ReleaseGestureEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\TapGestureEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\TransformGestures\Base\OnePointTransformGestureBaseEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\TransformGestures\Base\TransformGestureBaseEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\TransformGestures\Base\TwoPointTransformGestureBaseEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\TransformGestures\PinnedTransformGestureEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\TransformGestures\ScreenTransformGestureEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Gestures\TransformGestures\TransformGestureEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\InputSources\InputSourceEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\InputSources\StandardInputEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Layers\FullscreenLayerEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Layers\StandardLayerEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\TouchManagerEditor.cs" />
-    <Compile Include="Assets\TouchScript\Editor\TouchScriptSettingsWindow.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Utils\PropertyDrawers\NullToggleDrawer.cs" />
-    <Compile Include="Assets\TouchScript\Editor\Utils\PropertyDrawers\ToggleLeftDrawer.cs" />
-    <Compile Include="Assets\TouchScript\Modules\TUIO\Editor\InputSources\TuioInputEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Behaviors\Cursors\CursorManagerEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Behaviors\TransformerEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Debugging\PointerDebuggerWindow.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\EditorResources.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\EditorUI\GUIElements.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\EditorUI\GUIUtils.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\EditorUI\PagedList.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\FlickGestureEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\GestureEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\LongPressGestureEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\MetaGestureEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\PressGestureEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\ReleaseGestureEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\TapGestureEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\TransformGestures\Base\OnePointTransformGestureBaseEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\TransformGestures\Base\TransformGestureBaseEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\TransformGestures\Base\TwoPointTransformGestureBaseEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\TransformGestures\PinnedTransformGestureEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\TransformGestures\ScreenTransformGestureEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Gestures\TransformGestures\TransformGestureEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\InputSources\InputSourceEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\InputSources\StandardInputEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Layers\FullscreenLayerEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Layers\StandardLayerEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\TouchManagerEditor.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\TouchScriptSettingsWindow.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Utils\PropertyDrawers\NullToggleDrawer.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Editor\Utils\PropertyDrawers\ToggleLeftDrawer.cs" />
+    <Compile Include="Assets\Scenes\TouchScript\Modules\TUIO\Editor\InputSources\TuioInputEditor.cs" />
     <Compile Include="Assets\Unimgpicker\Editor\XcodeConfigurator.cs" />
     <Compile Include="Assets\unity-ui-extensions\Scripts\Accordion\Editor\AccordionElementEditor.cs" />
     <Compile Include="Assets\unity-ui-extensions\Scripts\Editor\CanvasGroupActivator.cs" />
@@ -341,8 +340,6 @@
   <ItemGroup>
     <None Include="Assets\FFmpegOut\Internal\Shader\CameraCapture.shader" />
     <None Include="Assets\MoviePlayer\CHANGELOG.txt" />
-    <None Include="Assets\MoviePlayer\Readme.txt" />
-    <None Include="Assets\MoviePlayer\Version Changes.txt" />
     <None Include="Assets\NGUI\Examples\Atlases\Fantasy\Fantasy Font - Normal.txt" />
     <None Include="Assets\NGUI\Examples\Atlases\Refractive\Refractive Font - Header.txt" />
     <None Include="Assets\NGUI\Examples\Atlases\Refractive\Refractive Font - Normal.txt" />
@@ -480,6 +477,14 @@
     <None Include="Assets\Plugins\Android\everyplay\res\values\everyplay_themes.xml" />
     <None Include="Assets\Plugins\Everyplay\Helpers\Shaders\EveryplayCrossfade.shader" />
     <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
+    <None Include="Assets\Scenes\TouchScript\Examples\_misc\Shaders\BorderDiffuse.shader" />
+    <None Include="Assets\Scenes\TouchScript\Examples\_misc\Shaders\UnlitColor.shader" />
+    <None Include="Assets\Scenes\TouchScript\Shaders\Cursor.shader" />
+    <None Include="Assets\Scenes\TouchScript\Shaders\DebugDepthTest.shader" />
+    <None Include="Assets\Scenes\TouchScript\Shaders\DebugMultiplyDepthTest.shader" />
+    <None Include="Assets\Scenes\TouchScript\Shaders\DebugMultiplyNoDepthTest.shader" />
+    <None Include="Assets\Scenes\TouchScript\Shaders\DebugNoDepthTest.shader" />
+    <None Include="Assets\Scenes\TouchScript\license.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Anton OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\Bangers - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
@@ -499,14 +504,6 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
-    <None Include="Assets\TouchScript\Examples\_misc\Shaders\BorderDiffuse.shader" />
-    <None Include="Assets\TouchScript\Examples\_misc\Shaders\UnlitColor.shader" />
-    <None Include="Assets\TouchScript\Shaders\Cursor.shader" />
-    <None Include="Assets\TouchScript\Shaders\DebugDepthTest.shader" />
-    <None Include="Assets\TouchScript\Shaders\DebugMultiplyDepthTest.shader" />
-    <None Include="Assets\TouchScript\Shaders\DebugMultiplyNoDepthTest.shader" />
-    <None Include="Assets\TouchScript\Shaders\DebugNoDepthTest.shader" />
-    <None Include="Assets\TouchScript\license.txt" />
     <None Include="Assets\UTJ\FrameCapturer\Shaders\CopyFrameBuffer.shader" />
     <None Include="Assets\Unimgpicker\Editor\NSPhotoLibraryUsageDescription.txt" />
     <None Include="Assets\UnityPackages\link.xml" />

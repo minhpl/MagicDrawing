@@ -25,12 +25,12 @@
 			<method name="OnSnapBtnClicked"/>
 			<method name="OnContinueBtnClicked"/>
 		</type>
-		<type fullname="ResultScripts">
-			<method name="OnPlayBtnClicked"/>
-		</type>
 		<type fullname="GoHomeSceneScripts">
 			<method name="OnHomeBtnClicked"/>
 			<method name="OnHomeBtnClicked"/>
+		</type>
+		<type fullname="ResultScripts">
+			<method name="OnPlayBtnClicked"/>
 		</type>
 		<type fullname="LibraryScriptsNGUI">
 			<method name="ObBackBtnClicked"/>

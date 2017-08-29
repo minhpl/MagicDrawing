@@ -209,7 +209,7 @@ public class GFs
 
     public static string getMasterpieceDirPath()
     {
-        const string ANDROID_DIR_PATH_MASTERPIECE = "/storage/emulated/0/DCIM/MagicDrawing/Masterpiece/";
+        string ANDROID_DIR_PATH_MASTERPIECE = "data/data/" + Application.identifier + "/files/Masterpiece/";
         const string IPHONE_DIR_NAME_MASTERPIECE = "masterpiece";
         const string PC_DIR_NAME_MASTERPIECE = "masterpiece";
 
