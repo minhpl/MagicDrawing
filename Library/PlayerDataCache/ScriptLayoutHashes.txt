@@ -266,7 +266,6 @@ eade7d86d108ad50a7c0dc69814a2760 TexturePacker.dll:.TPSkinnedMeshTexture
 710abba648f02ef9e275df7a6d3951c2 TexturePacker.dll:.TPSpriteTexture
 4713574598d854553b77f8875f9bbfd4 TexturePacker.dll:.TPStaticSprite
 506e4317fa7fda8e42472530b0a2282a Assembly-CSharp.dll:.UIFont
-33a3c6caba89c4bbd3a1e87d94a4f121 Assembly-CSharp.dll:.MobileMoviePlayer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:.EveryplayFaceCamTest
 4efe50cce18d1598bdf7f60004bfba24 Assembly-CSharp.dll:TouchScript.Examples.Checkers.Exclusive
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.UIInputOnGUI
@@ -395,7 +394,6 @@ f3d8fa29cc9b1173818e2697a9236168 Assembly-CSharp.dll:UnityEngine.UI.Extensions.D
 c614e2948a9cff52dfd48f2591954d7b Assembly-CSharp.dll:.CloudScript
 20955f3560e17b8ee41c80f0f37ff49d Assembly-CSharp-firstpass.dll:.EveryplayThumbnailPool
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.PointerCursor
-32e8fe00b63ed946490b898f6024a2f2 Facebook.Unity.Settings.dll:Facebook.Unity.Settings.FacebookSettings
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Portal.Vortex
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.FaceDetectionExample
 76015de5fcb247eeb8df66c001d5a22d Assembly-CSharp.dll:TMPro.Examples.TMP_FrameRateCounter
@@ -539,7 +537,6 @@ bf0efa3a2b50052bc4430312d3cc0dad Assembly-CSharp.dll:.LagPosition
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Cube.Init
 f9ab08734ff0441703a923df780d4c90 Assembly-CSharp.dll:.UITextList
 d62f60ad5ecff73b76da2ea09c712ada Assembly-CSharp.dll:.UIItemStorage
-a250c6cdc7341662ae20e174ee9da11d Assembly-CSharp.dll:.MovieTexturePlayer
 75cd0c6c744b9733ef29aa6c59ece2b1 Assembly-CSharp.dll:TMPro.Examples.VertexShakeB
 0a5faf492cd2f3d78f73f9bac5e2a158 Assembly-CSharp.dll:.ToggleScript
 9778b00922ba8aae9a3acf3ff3f34ff4 Assembly-CSharp.dll:UnityEngine.UI.Extensions.UILineTextureRenderer
@@ -562,7 +559,7 @@ afc52d27c3ec0bd47909e81bd45fbffa Assembly-CSharp.dll:TMPro.TMP_TextEventHandler
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SceneManagerScript
 60eed870167e94563437af95bcc883f9 Assembly-CSharp.dll:TouchScript.Examples.Portal.Rotator
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LanguageSelection
-863d0251293b7c03d96df0431f0c7ad4 Assembly-CSharp.dll:.ResultScripts
+74243ec1c1943090548742acaa2c8572 Assembly-CSharp.dll:.ResultScripts
 4f52fb13c8876d1fc6a0a4110faf10fc Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.ScreenTransformGesture
 01ca127772bebd003dc266e41c6d18bc Assembly-CSharp.dll:.UIDragCamera
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableCanvasGroupChangedTrigger

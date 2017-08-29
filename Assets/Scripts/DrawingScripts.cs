@@ -45,6 +45,8 @@ public class DrawingScripts : MonoBehaviour {
     bool loaded = false;
     WebcamVideoCapture webcamVideoCapture;
     Mat warp;
+    Mat displayMat;
+    Color32[] bufferColor;
     private float opaque = 0.25f;
     private OpenCVForUnity.Rect cropRect;
     //private float opaque = 0.4f;
@@ -148,14 +150,14 @@ public class DrawingScripts : MonoBehaviour {
         if (!webCamTextureToMatHelper.IsInitialized())
         {            
             webCamTextureToMatHelper.onInitialized.AddListener(() => {
-                var rgbaMat = webCamTextureToMatHelper.GetMat();                
+                var rgbaMat = webCamTextureToMatHelper.GetMat();
                 var aspectRatioFitter = goCam.GetComponent<AspectRatioFitter>();
                 aspectRatioFitter.aspectRatio = (float)rgbaMat.width() / (float)rgbaMat.height();
                 aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
 
                 warpPerspective.Init(webCamTextureToMatHelper.GetMat());
                 Mat camMat = webCamTextureToMatHelper.GetMat();
-                texCam = new Texture2D(camMat.width(), camMat.height(), TextureFormat.RGBA32, false);
+                
 
                 var rawImageCamera = goCam.GetComponent<RawImage>();
                 int camWidth = (int)rawImageCamera.rectTransform.rect.width;
@@ -171,7 +173,12 @@ public class DrawingScripts : MonoBehaviour {
                 int subHeight = matHeight - (offsetY << 1);
                 cropRect = new OpenCVForUnity.Rect(offsetX, offsetY, subWidth, subHeight);
 
-                var size = new Size(matWidth, matHeight);
+                aspectRatioFitter.aspectRatio = (float)widthCanvas / (float)heightCanvas;
+                aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+
+                texCam = new Texture2D(subWidth, subHeight, TextureFormat.RGBA32, false);                
+                bufferColor = new Color32[subWidth * subHeight];
+                var size = new Size(subWidth, subHeight);
                 webcamVideoCapture = new WebcamVideoCapture(size, true);
                 MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
                 stopWatch = new System.Diagnostics.Stopwatch();
@@ -288,10 +295,13 @@ public class DrawingScripts : MonoBehaviour {
             {
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();
                 warp = warpPerspective.warpPerspective(rgbaMat);
-                Utils.matToTexture2D(warp, texCam, webCamTextureToMatHelper.GetBufferColors());
+                displayMat = warp.submat(cropRect);
+                //Utils.matToTexture2D(warp, texCam, webCamTextureToMatHelper.GetBufferColors());
+                //Debug.Log(warp.width());
+                Utils.matToTexture2D(displayMat, texCam, bufferColor);
                 rimgcam.texture = texCam;
 
-                webcamVideoCapture.write(warp);
+                webcamVideoCapture.write(displayMat);
                 var timeLapse = stopWatch.Elapsed.Seconds;
                 string minSec = string.Format("{0}:{1:00}", (int)timeLapse / 60, (int)timeLapse % 60);
                 txtTime.text = minSec;            

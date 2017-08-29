@@ -44,7 +44,7 @@ class WebcamVideoCapture
             //#endif    
         }
         codec = VideoWriter.fourcc('M', 'J', 'P', 'G');
-        fps = 90;
+        fps = 120;
         writer = new VideoWriter(filePath, codec, fps, size);
     }
     public void write(Mat img)
