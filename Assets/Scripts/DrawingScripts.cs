@@ -28,6 +28,9 @@ public class DrawingScripts : MonoBehaviour {
     public Button cancelBtn;
     public Text txtComfirmText;
     public Canvas canvas;
+    public Button Button_Recording;
+    public GameObject pause;
+    public GameObject textTime;
     private Threshold threshold;
     private AdaptiveThreshold athreshold;   
     WarpPerspective warpPerspective;
@@ -55,22 +58,19 @@ public class DrawingScripts : MonoBehaviour {
     public enum FILTERMODE { LINE,BLEND};
     public static FILTERMODE filtermode = FILTERMODE.LINE;
     private System.Diagnostics.Stopwatch stopWatch;
+    private bool isRecording = false;
+    private IDisposable cancel;
+    private IDisposable cancelCorountineTurnOffTouchInput;
+    private IDisposable cancelCorountineBlinkTime;
     private void Awake()
     {
         filtermode = FILTERMODE.LINE;
         if (MakePersistentObject.Instance)
             MakePersistentObject.Instance.gameObject.SetActive(false);
         int delayTime = 100;
-        var onSliderLineValueStream = sliderLine.onValueChanged.AsObservable();
-        //onSliderValueStream.Buffer(onSliderValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
-        //    .Subscribe(list => Debug.LogFormat("list count is {0}", list[list.Count - 1]));
-        //onSliderLineValueStream.Buffer(onSliderLineValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
-        //    .Subscribe(delegate (IList<float> i) { OnLineSliderValueChange(sliderLine); });
-        onSliderLineValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) => { OnLineSliderValueChange(sliderLine); });
-        //slider.onValueChanged.AddListener(delegate { ValueChangeCheck(slider); });       
+        var onSliderLineValueStream = sliderLine.onValueChanged.AsObservable();        
+        onSliderLineValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) => { OnLineSliderValueChange(sliderLine); });            
         var onSliderContrastValueStream = sliderContrast.onValueChanged.AsObservable();
-        //onSliderContrastValueStream.Buffer(onSliderContrastValueStream.Throttle(TimeSpan.FromMilliseconds(delayTime)))
-        //    .Subscribe(delegate (IList<float> i) { OnContrastSliderValueChange(sliderContrast); });
         onSliderContrastValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) => {
             OnContrastSliderValueChange(sliderContrast);
         });
@@ -92,6 +92,7 @@ public class DrawingScripts : MonoBehaviour {
             {
                 stopWatch.Stop();
                 webCamTextureToMatHelper.Pause();
+                
             }
             else
             {
@@ -116,15 +117,22 @@ public class DrawingScripts : MonoBehaviour {
             });
         }
 
-
-    //    var clickStream = Observable.EveryUpdate()
-    //.Where(_ => Input.GetMouseButtonDown(0));
-
-    //    clickStream.Subscribe((long i) =>
-    //    {
-    //        Debug.Log("press detected");
-    //    });
-
+        Button_Recording.onClick.AddListener(() =>
+        {
+            if(!pause.activeSelf)
+            {
+                isRecording = true;
+                stopWatch.Start();
+                if (cancelCorountineBlinkTime != null)
+                    cancelCorountineBlinkTime.Dispose();
+            }
+            else
+            {
+                isRecording = false;
+                stopWatch.Stop();
+                cancelCorountineBlinkTime = Observable.FromCoroutine(blinkTime).Subscribe();                
+            }
+        });       
     }
  
     void Start () {        
@@ -141,6 +149,8 @@ public class DrawingScripts : MonoBehaviour {
     }    
     void OnDestroy()
     {
+        if (cancel!=null)
+            cancel.Dispose();
         webCamTextureToMatHelper.Stop();
         webCamTextureToMatHelper.Dispose();
     }
@@ -180,9 +190,9 @@ public class DrawingScripts : MonoBehaviour {
                 bufferColor = new Color32[subWidth * subHeight];
                 var size = new Size(subWidth, subHeight);
                 webcamVideoCapture = new WebcamVideoCapture(size, true);
-                MainThreadDispatcher.StartUpdateMicroCoroutine(Worker());
+                cancel = Observable.FromMicroCoroutine(Worker).Subscribe();
                 stopWatch = new System.Diagnostics.Stopwatch();
-                stopWatch.Start();
+                //stopWatch.Start();
             });
             webCamTextureToMatHelper.Initialize(null, 640, 480, true, 60);
         }        
@@ -257,26 +267,34 @@ public class DrawingScripts : MonoBehaviour {
         utilities = new Utilities();
         goModel.SetActive(true);
         loaded = true;
+
+
+        cancelCorountineTurnOffTouchInput = Observable.FromMicroCoroutine(turnOffTouchInput).Subscribe();
+        
+    }
+
+    IEnumerator turnOffTouchInput()
+    {
         while (eventSystem && eventSystem.GetComponent<TouchScriptInputModule>() == null)
         {
             yield return null;
         }
         eventSystem.GetComponent<TouchScriptInputModule>().enabled = false;
     }
+
     public void OnContrastSliderValueChange(Slider slider)
     {
         float percent = slider.value / 100f;
         var c = rimgmodel.color;
         rimgmodel.color = new Color(c.r, c.g, c.b, percent);
     }
-    private float currentSliderValue = 0;
+
     public void OnLineSliderValueChange(Slider slider)
     {
         if (loaded)
         {
             if (slider)
             {
-                currentSliderValue = slider.value;
                 athreshold.setParameter(slider.value);
                 edges = athreshold.adapTiveThreshold(image);
                 Mat redMat = utilities.makeMonoAlphaMat(edges,Utilities.MonoColor.RED);
@@ -296,15 +314,16 @@ public class DrawingScripts : MonoBehaviour {
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();
                 warp = warpPerspective.warpPerspective(rgbaMat);
                 displayMat = warp.submat(cropRect);
-                //Utils.matToTexture2D(warp, texCam, webCamTextureToMatHelper.GetBufferColors());
-                //Debug.Log(warp.width());
                 Utils.matToTexture2D(displayMat, texCam, bufferColor);
+                
+                if(isRecording)
+                {                
+                    webcamVideoCapture.write(displayMat);
+                    var timeLapse = stopWatch.Elapsed.Seconds;
+                    string minSec = string.Format("{0}:{1:00}", (int)timeLapse / 60, (int)timeLapse % 60);
+                    txtTime.text = minSec;
+                }
                 rimgcam.texture = texCam;
-
-                webcamVideoCapture.write(displayMat);
-                var timeLapse = stopWatch.Elapsed.Seconds;
-                string minSec = string.Format("{0}:{1:00}", (int)timeLapse / 60, (int)timeLapse % 60);
-                txtTime.text = minSec;            
             }
         }
     }
@@ -314,11 +333,14 @@ public class DrawingScripts : MonoBehaviour {
         RawImage a = goCam.GetComponent<RawImage>();
         a.rectTransform.localScale = new Vector3(scaleX, 1, 1);
         var w = a.rectTransform.rect.width;
-        var needw = w * scaleX;       
-        //Debug.Log(a.rectTransform.rect.ToString());      
+        var needw = w * scaleX;                   
     }
     private void OnDisable()
-    {        
+    {
+        if (cancelCorountineTurnOffTouchInput != null)
+            cancelCorountineTurnOffTouchInput.Dispose();
+        if (cancelCorountineBlinkTime!=null)
+            cancelCorountineBlinkTime.Dispose();
         image.release();
         image.Dispose();
         edges.Dispose();
@@ -362,19 +384,6 @@ public class DrawingScripts : MonoBehaviour {
     bool preserveTexture = false;
     public void OnTickBtnClicked()
     {
-        //var rawImageCamera = goCam.GetComponent<RawImage>();
-        //int width = (int)rawImageCamera.rectTransform.rect.width;
-        //int height = (int)rawImageCamera.rectTransform.rect.height;
-        //int widthCanvas = (int)canvas.GetComponent<RectTransform>().rect.width;
-        //int heightCanvas = (int)canvas.GetComponent<RectTransform>().rect.height;
-        //var matWidth = warp.width();
-        //var matHeight = warp.height();
-
-        //int offsetX = matWidth* ((width - widthCanvas) >> 1) / width;
-        //int offsetY = matHeight * ((height - heightCanvas) >> 1) / height;
-        //int subWidth = matWidth - (offsetX << 1);
-        //int subHeight = matHeight - (offsetY << 1);
-       
         Mat resultMat = warp.submat(cropRect);
         Texture2D resultTexture = new Texture2D(cropRect.width, cropRect.height, TextureFormat.BGRA32, false);
         Utils.matToTexture2D(resultMat, resultTexture);
@@ -399,7 +408,6 @@ public class DrawingScripts : MonoBehaviour {
             ResultScripts.videoPath = webcamVideoCapture.filePath;
         GVs.SCENE_MANAGER.loadResultScene();
     }
-
     public void OnPushBtnClicked()
     {
         if(filtermode == FILTERMODE.LINE)
@@ -421,5 +429,16 @@ public class DrawingScripts : MonoBehaviour {
         }
         rimgmodel.GetComponent<ScreenTransformGesture>().enabled = false;
         rimgmodel.GetComponent<Transformer>().enabled = false;        
+    }
+
+
+    IEnumerator blinkTime()
+    {
+        yield return null;
+        while(!isRecording)
+        {
+            yield return new WaitForSeconds(1);
+            textTime.SetActive(!textTime.activeSelf);
+        }
     }
 }

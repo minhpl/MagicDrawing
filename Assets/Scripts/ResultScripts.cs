@@ -66,14 +66,17 @@ public class ResultScripts : MonoBehaviour {
     void Start () {
         rawImageAspect = rimg.GetComponent<AspectRatioFitter>();
         var canvasRect = canvas.GetComponent<RectTransform>().rect;
+        var canvasWidth = canvasRect.width;
         var ratioCanvas = (float)canvasRect.width / canvasRect.height;
-        ratioImage = ratioCanvas;
+        ratioImage = ratioCanvas;        
         var panelAspect = panel.GetComponent<AspectRatioFitter>();
+        panel.GetComponent<RectTransform>().sizeDelta = new Vector2(canvasWidth * 0.68f, 1);
         panelAspect.aspectMode = AspectRatioFitter.AspectMode.WidthControlsHeight;
         panelAspect.aspectRatio = ratioCanvas;
+        
         if(texture!=null)
         {            
-            rimg.texture = texture;
+            rimg.texture = texture;   
         }
         if (!string.IsNullOrEmpty(videoPath))
         {

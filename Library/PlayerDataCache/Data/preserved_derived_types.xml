@@ -323,6 +323,8 @@
 <type fullname="TouchScript.TouchManager" preserve="all"/>
 <type fullname="AvataScript" preserve="all"/>
 <type fullname="BackButton" preserve="all"/>
+<type fullname="BackgroundScaleAllSceneScript" preserve="all"/>
+<type fullname="BackHomeScripts" preserve="all"/>
 <type fullname="MainToolsScripts" preserve="all"/>
 <type fullname="MasterpieceCreationScripts" preserve="all"/>
 <type fullname="CheckFPS" preserve="all"/>

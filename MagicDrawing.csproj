@@ -695,6 +695,8 @@
     <Compile Include="Assets\Scenes\TouchScript\Scripts\Utils\TransformUtils.cs" />
     <Compile Include="Assets\Scripts\AvataScript.cs" />
     <Compile Include="Assets\Scripts\BackButton.cs" />
+    <Compile Include="Assets\Scripts\BackgroundScaleAllSceneScript.cs" />
+    <Compile Include="Assets\Scripts\BackHomeScripts.cs" />
     <Compile Include="Assets\Scripts\BackupScripts\MainToolsScripts.cs" />
     <Compile Include="Assets\Scripts\BackupScripts\MasterpieceCreationScripts.cs" />
     <Compile Include="Assets\Scripts\CheckFPS.cs" />

@@ -4,19 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShareFacebook : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 	void Awake ()
-	{
-		Debug.Log ("1234");
+	{		
 		if (!FB.IsInitialized) {
 			// Initialize the Facebook SDK
 			FB.Init(InitCallback, OnHideUnity);
@@ -110,11 +99,8 @@ public class ShareFacebook : MonoBehaviour {
 		{
 			Debug.Log("OK Boy:\n" + result.RawResult);
 			StartCoroutine (StartVideoUpload ());
-		}
-	
+		}	
 	}
-
-
 
 	private IEnumerator TakeScreenshot()
 	{
@@ -151,7 +137,7 @@ public class ShareFacebook : MonoBehaviour {
 		var wwwForm = new WWWForm();
 		wwwForm.AddBinaryData("file", www.bytes, "Video.MOV","multipart/form-data");
 		wwwForm.AddField("title", "Hello World");
-		wwwForm.AddField("description", "Bac an cut");
+		//wwwForm.AddField("description", ":-) :-)");
 
 		FB.API("me/videos", HttpMethod.POST, HandleResult, wwwForm);
 	}

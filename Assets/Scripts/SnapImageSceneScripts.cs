@@ -140,6 +140,8 @@ public class SnapImageSceneScripts : MonoBehaviour
         if (webcamTex)
             webcamTex.Stop();
         webcamTex = null;
+        if (cancel != null)
+            cancel.Dispose();
     }
 
     public void OnChangeCameraButton()
@@ -151,11 +153,16 @@ public class SnapImageSceneScripts : MonoBehaviour
         rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, 0);
         isFronFacing = !isFronFacing;
         ShowCam();
+        btnContinue.gameObject.SetActive(false);
+        btnCancel.gameObject.SetActive(false);
     }
 
+
+    IDisposable cancel;
     public void OnSnapBtnClicked()
     {
-        MainThreadDispatcher.StartUpdateMicroCoroutine(Snap());
+        //MainThreadDispatcher.StartUpdateMicroCoroutine(Snap());
+        cancel = Observable.FromMicroCoroutine(Snap).Subscribe();        
     }
 
     IEnumerator Snap()

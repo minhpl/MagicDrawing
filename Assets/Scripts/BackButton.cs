@@ -3,8 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class BackButton : MonoBehaviour {
+
+    private void Start()
+    {
+        this.gameObject.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            onBackButtonClicked();
+        });
+    }
+
     public void onBackButtonClicked()
     {    
         Utilities.Log("BackbuttonScripts: stack trace scene have {0} element", GVs.TRACE_SCENE.Count);

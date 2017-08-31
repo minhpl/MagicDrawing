@@ -291,6 +291,13 @@ public class LibraryScriptsNGUI : MonoBehaviour
 
     public void ObBackBtnClicked()
     {
-        LibraryScriptsNGUI.mode = LibraryScriptsNGUI.MODE.CATEGORY;
+        if(mode==MODE.TEMPLATE)
+        {
+            Debug.Log("ahahha");
+            LibraryScriptsNGUI.mode = LibraryScriptsNGUI.MODE.CATEGORY;
+            GVs.TRACE_SCENE.Pop();
+            int i = GVs.TRACE_SCENE.Pop();
+            SceneManager.LoadScene(i);
+        }        
     }
 }

@@ -190,6 +190,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\CloudBuildHelper.cs" />
     <Compile Include="Assets\Editor\Everyplay\Scripts\EveryplayImport.cs" />
     <Compile Include="Assets\Editor\Everyplay\Scripts\EveryplayLegacyCleanup.cs" />
     <Compile Include="Assets\Editor\Everyplay\Scripts\EveryplayPostprocessor.cs" />

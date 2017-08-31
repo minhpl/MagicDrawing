@@ -100,8 +100,10 @@ public class HistoryNGUIScripts : MonoBehaviour {
         for (var a = history.First; a != null; a = a.Next)
         {
             if (a.Value.filePath == historyModel.filePath)
+            {
                 history.Remove(a);
-            break;
+                break;
+            }                            
         }
         //var a = history.Find(historyModel);
         //if (a != null) history.Remove(a);

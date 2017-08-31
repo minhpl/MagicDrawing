@@ -43,8 +43,8 @@ public class HomeController : MonoBehaviour {
         {
             MakePersistentObject.Instance.gameObject.SetActive(false);
         }
-        //PlayerPrefs.DeleteAll();
-        //PlayerPrefs.Save();
+
+
         GFs.LoadData();
         try
         {
@@ -59,6 +59,11 @@ public class HomeController : MonoBehaviour {
                     ready2 = true;
                     return;
                 }
+            }
+            else
+            {
+                PlayerPrefs.DeleteAll();
+                PlayerPrefs.Save();
             }
         }
         catch (Exception ex)
@@ -131,10 +136,6 @@ public class HomeController : MonoBehaviour {
                     Utilities.Log("cannot deserialize data to object, error is {0}", e.ToString());
                 }
             });
-
-
-
-
 
         HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY_AVATA))), (d, process) =>
         {
