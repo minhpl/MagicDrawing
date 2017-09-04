@@ -5,6 +5,8 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Utilities;
 using System;
+using UnityEngine.SceneManagement;
+using UniRx;
 
 public class GFs
 {
@@ -118,7 +120,7 @@ public class GFs
     {
         Texture2D tex = null;
         byte[] fileData;
-        Debug.Log(GVs.APP_PATH + "/" + filePath);
+        //Debug.Log(GVs.APP_PATH + "/" + filePath);
         if (File.Exists(GVs.APP_PATH + "/" + filePath))
         {
             fileData = File.ReadAllBytes(GVs.APP_PATH + "/" + filePath);
@@ -191,8 +193,7 @@ public class GFs
 
 
 	 public static Texture2D LoadPNGFromPath(string filePath)
-    {
-        Debug.Log(filePath);
+    {        
         Texture2D tex = null;
         byte[] fileData;
         if (File.Exists(filePath))
@@ -265,5 +266,52 @@ public class GFs
                 return appPath + PC_DIR_NAME_SNAPIMAGE+"/";
             }
         }
+    }
+
+    public static void GoHomeSceneScripts()
+    {     
+        GVs.TRACE_SCENE.Clear();
+        GVs.SCENE_MANAGER.loadHomeScene();     
+    }
+
+    public static void BackToPreviousScene()
+    {    
+        if (GVs.TRACE_SCENE.Count > 1)
+        {
+            GVs.TRACE_SCENE.Pop();
+            int i = GVs.TRACE_SCENE.Pop();
+            SceneManager.LoadScene(i);
+        }
+    }
+    
+    public static IDisposable BackButtonAndroidGoHome()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            return Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true)
+            .Subscribe((long xs) =>
+            {
+                GFs.GoHomeSceneScripts();
+            });
+        }
+        return null;
+    }
+
+    public static IDisposable BackButtonAndroidGoPreScene()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            return Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true)
+                .Subscribe((long xs) =>
+                {
+                    if (GVs.TRACE_SCENE.Count > 1)
+                    {
+                        GVs.TRACE_SCENE.Pop();
+                        int i = GVs.TRACE_SCENE.Pop();                        
+                        SceneManager.LoadScene(i);
+                    }
+                });
+        }
+        return null;
     }
 }

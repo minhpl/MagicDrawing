@@ -6,8 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BackButton : MonoBehaviour {
-
-    private void Start()
+    private void Awake()
     {
         this.gameObject.GetComponent<Button>().onClick.AddListener(() =>
         {

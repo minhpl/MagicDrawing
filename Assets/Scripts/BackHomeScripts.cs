@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class BackHomeScripts : MonoBehaviour {	
-	void Start () {
+	void Awake() {
         var btn = GetComponent<Button>();
         btn.onClick.AddListener(() =>
         {

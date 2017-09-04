@@ -9,7 +9,7 @@ using UnityEngine;
 class WebcamVideoCapture
 {
     private int codec;
-    private double fps;
+    public const int FPS = 120;
     public VideoWriter writer;        
     static public string filename = null;
     static public string filenameWithoutExt = null;
@@ -25,27 +25,11 @@ class WebcamVideoCapture
             if (!Directory.Exists(GFs.getMasterpieceDirPath()))
             {
                 Directory.CreateDirectory(GFs.getMasterpieceDirPath());
-            }
-            
-            //#if UNITY_IPHONE
-            //                    Debug.Log("file name is 3" + filename);
-            //                                filename = iphoneDir + name;
-            //#endif
-            //#if UNITY_ANDROID
-            //filename = androidDir + name;
-            //        if (!Directory.Exists(androidDir))
-            //        {
-            //            Directory.CreateDirectory(androidDir);
-            //        }
-            //        Utilities.Log("filename is 2{0}", "hello");
-            //#else
-            //                //PC here                
-            //                filename = pcDir + name;
-            //#endif    
+            }  
         }
         codec = VideoWriter.fourcc('M', 'J', 'P', 'G');
-        fps = 120;
-        writer = new VideoWriter(filePath, codec, fps, size);
+        //writer = new VideoWriter(filePath)
+        writer = new VideoWriter(filePath, codec, FPS, size);
     }
     public void write(Mat img)
     {

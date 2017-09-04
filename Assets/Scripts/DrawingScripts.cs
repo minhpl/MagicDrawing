@@ -19,14 +19,14 @@ public class DrawingScripts : MonoBehaviour {
     public Slider sliderLine;
     public Slider sliderContrast;
     public Slider sliderTest;
-    public Text txtTime;
+    public UnityEngine.UI.Text txtTime;
     public Button backBtn;
     public GameObject panelComfirm;
     public GameObject eventSystem;
     public TapGesture tapGesture;
     public Button tickBtn;
     public Button cancelBtn;
-    public Text txtComfirmText;
+    public UnityEngine.UI.Text txtComfirmText;
     public Canvas canvas;
     public Button Button_Recording;
     public GameObject pause;
@@ -62,16 +62,18 @@ public class DrawingScripts : MonoBehaviour {
     private IDisposable cancel;
     private IDisposable cancelCorountineTurnOffTouchInput;
     private IDisposable cancelCorountineBlinkTime;
+    private IDisposable cancelCoroutineBackBtnAndroid;
     private void Awake()
     {
         filtermode = FILTERMODE.LINE;
         if (MakePersistentObject.Instance)
             MakePersistentObject.Instance.gameObject.SetActive(false);
         int delayTime = 100;
-        var onSliderLineValueStream = sliderLine.onValueChanged.AsObservable();        
-        onSliderLineValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) => { OnLineSliderValueChange(sliderLine); });            
+        var onSliderLineValueStream = sliderLine.onValueChanged.AsObservable();
+        onSliderLineValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) => { OnLineSliderValueChange(sliderLine); });
         var onSliderContrastValueStream = sliderContrast.onValueChanged.AsObservable();
-        onSliderContrastValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) => {
+        onSliderContrastValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) =>
+        {
             OnContrastSliderValueChange(sliderContrast);
         });
         backBtn.onClick.RemoveAllListeners();
@@ -79,24 +81,37 @@ public class DrawingScripts : MonoBehaviour {
         backBtn.onClick.AddListener(() =>
         {
             panelComfirm.SetActive(true);
-        });        
+        });
         var cancelPopup = panelComfirm.transform.Find("cancel").GetComponent<Button>();
         cancelPopup.onClick.AddListener(() =>
-        {            
+        {
             panelComfirm.SetActive(false);
+        });
+
+        cancelCoroutineBackBtnAndroid = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
+        {
+            panelComfirm.SetActive(true);
+        });
+
+
+
+        var agreePopup = panelComfirm.transform.Find("agree").GetComponent<Button>();
+        agreePopup.onClick.AddListener(() =>
+        {
+            GFs.BackToPreviousScene();
         });
 
         tickBtn.onClick.AddListener(() =>
         {
-            if(!cancelBtn.gameObject.activeSelf)
+            if (!cancelBtn.gameObject.activeSelf)
             {
                 stopWatch.Stop();
                 webCamTextureToMatHelper.Pause();
-                
+
             }
             else
             {
-                OnTickBtnClicked();
+                OnTickConfirmBtnClicked();
             }
         });
 
@@ -119,7 +134,7 @@ public class DrawingScripts : MonoBehaviour {
 
         Button_Recording.onClick.AddListener(() =>
         {
-            if(!pause.activeSelf)
+            if (!pause.activeSelf)
             {
                 isRecording = true;
                 stopWatch.Start();
@@ -130,9 +145,11 @@ public class DrawingScripts : MonoBehaviour {
             {
                 isRecording = false;
                 stopWatch.Stop();
-                cancelCorountineBlinkTime = Observable.FromCoroutine(blinkTime).Subscribe();                
+                cancelCorountineBlinkTime = Observable.FromCoroutine(blinkTime).Subscribe();
             }
-        });       
+        });
+
+        
     }
  
     void Start () {        
@@ -270,7 +287,6 @@ public class DrawingScripts : MonoBehaviour {
 
 
         cancelCorountineTurnOffTouchInput = Observable.FromMicroCoroutine(turnOffTouchInput).Subscribe();
-        
     }
 
     IEnumerator turnOffTouchInput()
@@ -302,7 +318,9 @@ public class DrawingScripts : MonoBehaviour {
                 rimgmodel.texture = texEdges;
             }            
         }
-    }    
+    }
+
+    private int numberFrame = 0;
     
     IEnumerator Worker()
     {
@@ -317,11 +335,12 @@ public class DrawingScripts : MonoBehaviour {
                 Utils.matToTexture2D(displayMat, texCam, bufferColor);
                 
                 if(isRecording)
-                {                
+                {
+                    numberFrame++;                    
                     webcamVideoCapture.write(displayMat);
                     var timeLapse = stopWatch.Elapsed.Seconds;
                     string minSec = string.Format("{0}:{1:00}", (int)timeLapse / 60, (int)timeLapse % 60);
-                    txtTime.text = minSec;
+                    txtTime.text = minSec;                    
                 }
                 rimgcam.texture = texCam;
             }
@@ -341,6 +360,8 @@ public class DrawingScripts : MonoBehaviour {
             cancelCorountineTurnOffTouchInput.Dispose();
         if (cancelCorountineBlinkTime!=null)
             cancelCorountineBlinkTime.Dispose();
+        if (cancelCoroutineBackBtnAndroid!=null)
+            cancelCoroutineBackBtnAndroid.Dispose();
         image.release();
         image.Dispose();
         edges.Dispose();
@@ -382,7 +403,7 @@ public class DrawingScripts : MonoBehaviour {
         rimgmodel.GetComponent<Transformer>().enabled = false;       
     }
     bool preserveTexture = false;
-    public void OnTickBtnClicked()
+    public void OnTickConfirmBtnClicked()
     {
         Mat resultMat = warp.submat(cropRect);
         Texture2D resultTexture = new Texture2D(cropRect.width, cropRect.height, TextureFormat.BGRA32, false);
@@ -406,6 +427,18 @@ public class DrawingScripts : MonoBehaviour {
         ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;        
         if (webcamVideoCapture != null)
             ResultScripts.videoPath = webcamVideoCapture.filePath;
+
+        Debug.LogFormat("Number frame is "+numberFrame);
+        var lengthInSeconds = numberFrame / (float)WebcamVideoCapture.FPS;
+        if (lengthInSeconds < 3)
+        {
+            webcamVideoCapture.writer.release();
+            webcamVideoCapture.writer.Dispose();
+            Debug.Log("Video deleted");
+            File.Delete(webcamVideoCapture.filePath);
+            ResultScripts.videoPath = null;
+        }
+
         GVs.SCENE_MANAGER.loadResultScene();
     }
     public void OnPushBtnClicked()

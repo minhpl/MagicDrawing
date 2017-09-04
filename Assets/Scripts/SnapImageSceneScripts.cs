@@ -22,11 +22,14 @@ public class SnapImageSceneScripts : MonoBehaviour
     public Button btnSnap;    
     public Button btnCancel;
     public Button btnContinue;
-
+    public IDisposable cancelCoroutineBackAndroid;
+    IDisposable cancelMCoroutineSnap;
     private void Awake()
     {
         if (MakePersistentObject.Instance)
             MakePersistentObject.Instance.gameObject.SetActive(false);
+
+        cancelCoroutineBackAndroid = GFs.BackButtonAndroidGoPreScene();
     }
     void Start()
     {
@@ -140,8 +143,10 @@ public class SnapImageSceneScripts : MonoBehaviour
         if (webcamTex)
             webcamTex.Stop();
         webcamTex = null;
-        if (cancel != null)
-            cancel.Dispose();
+        if (cancelMCoroutineSnap != null)
+            cancelMCoroutineSnap.Dispose();
+        if (cancelCoroutineBackAndroid != null)
+            cancelCoroutineBackAndroid.Dispose();
     }
 
     public void OnChangeCameraButton()
@@ -156,13 +161,11 @@ public class SnapImageSceneScripts : MonoBehaviour
         btnContinue.gameObject.SetActive(false);
         btnCancel.gameObject.SetActive(false);
     }
-
-
-    IDisposable cancel;
+    
     public void OnSnapBtnClicked()
     {
         //MainThreadDispatcher.StartUpdateMicroCoroutine(Snap());
-        cancel = Observable.FromMicroCoroutine(Snap).Subscribe();        
+        cancelMCoroutineSnap = Observable.FromMicroCoroutine(Snap).Subscribe();              
     }
 
     IEnumerator Snap()

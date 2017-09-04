@@ -20,7 +20,7 @@ public class ResultScripts : MonoBehaviour {
     public GameObject btnPlay;
     public Canvas canvas;
     public Button BackButton;
-    public Text tit;
+    public UnityEngine.UI.Text tit;
     public RawImage rimgTitle;
     public MoviePlayer moviePlayer;
     public Button btnShareFacebooks;
@@ -32,6 +32,9 @@ public class ResultScripts : MonoBehaviour {
     private int FPS = 60;
     private float currentFPS = 0;
     private float ratioImage = 1;
+
+    private IDisposable cancelCorountineBackButtonAndroid;
+
     private void Awake()
     {
         if (mode == MODE.REWATCH_RESULT)
@@ -39,31 +42,64 @@ public class ResultScripts : MonoBehaviour {
             tit.text = title;
             rimgTitle.gameObject.SetActive(false);
             tit.gameObject.SetActive(true);
-        }        
-        if(mode==MODE.FISRT_RESULT && BackButton!=null)
-        {
-            rimgTitle.gameObject.SetActive(true);
-            tit.gameObject.SetActive(false);
-            BackButton.onClick = new Button.ButtonClickedEvent();
-            BackButton.onClick.AddListener(() =>
-            {
-                GVs.TRACE_SCENE.Pop();
-                GVs.TRACE_SCENE.Pop();
-                GVs.TRACE_SCENE.Pop();
-                int i = GVs.TRACE_SCENE.Pop();                
-                SceneManager.LoadScene(i);
-            });           
         }
+
+        Debug.Log(BackButton != null);        
 
         btnShareFacebooks.onClick.AddListener(() =>
         {
             ShareFacebook.filePath = videoPath;
             var shareFacebook = GetComponent<ShareFacebook>();
             shareFacebook.onlogin();
-        });
+        });  
+
+
+        if(Application.platform == RuntimePlatform.Android)
+        {
+            cancelCorountineBackButtonAndroid = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true)
+                .Subscribe(_ =>
+                {
+                    if (mode == MODE.FISRT_RESULT)
+                    {
+                        if (GVs.TRACE_SCENE.Count > 3)
+                        {
+                            GVs.TRACE_SCENE.Pop();
+                            GVs.TRACE_SCENE.Pop();
+                            int i = GVs.TRACE_SCENE.Pop();
+                            Debug.LogFormat("track scene have {0} elements", GVs.TRACE_SCENE.Count);
+                            SceneManager.LoadScene(i);
+                        }
+                    }
+                    else
+                    {
+                        GFs.BackToPreviousScene();
+                    }
+                });
+        }
     }
 
     void Start () {
+
+        if (mode == MODE.FISRT_RESULT)
+        {
+            rimgTitle.gameObject.SetActive(true);
+            tit.gameObject.SetActive(false);
+            BackButton.onClick.RemoveAllListeners();
+            BackButton.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
+            BackButton.onClick.AddListener(() =>
+            {
+                if (GVs.TRACE_SCENE.Count > 3)
+                {
+                    GVs.TRACE_SCENE.Pop();
+                    GVs.TRACE_SCENE.Pop();
+                    int i = GVs.TRACE_SCENE.Pop();
+                    Debug.LogFormat("track scene have {0} elements", GVs.TRACE_SCENE.Count);
+                    SceneManager.LoadScene(i);
+                }
+            });
+        }
+
+
         rawImageAspect = rimg.GetComponent<AspectRatioFitter>();
         var canvasRect = canvas.GetComponent<RectTransform>().rect;
         var canvasWidth = canvasRect.width;
@@ -90,12 +126,16 @@ public class ResultScripts : MonoBehaviour {
     }
 
     private void OnDisable()
-    {       
+    {
+        if (cancelCorountineBackButtonAndroid != null)
+            cancelCorountineBackButtonAndroid.Dispose();
         videoPath = null;        
         if (texture != null)
             Destroy(texture);
         if (texVideo != null)
             Destroy(texVideo);
+        moviePlayer.play = false;
+        moviePlayer.loop = false;
         moviePlayer.Unload();
         ShareFacebook.filePath = null;
     }

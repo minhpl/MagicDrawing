@@ -13,8 +13,15 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour {
     public GameObject item;
     public GameObject canvas;
     public UIGrid uiGrid;
-	void Start () {
-        MainThreadDispatcher.StartUpdateMicroCoroutine(LoadMasterpieceDrawing());
+    private IDisposable cancelCoroutineBackButtonAndroid;
+    private IDisposable cancelMCoroutineLoadMasterpiece;
+    private void Awake()
+    {
+        cancelCoroutineBackButtonAndroid = GFs.BackButtonAndroidGoHome();
+    }
+
+    void Start () {
+        cancelMCoroutineLoadMasterpiece = Observable.FromMicroCoroutine(LoadMasterpieceDrawing).Subscribe();
         var canvasRect = canvas.GetComponent<RectTransform>().rect;
         var canvasRat = (float)canvasRect.width / (float)canvasRect.height;        
         UIPanel uiPanel = item.GetComponent<UIPanel>();
@@ -27,8 +34,17 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour {
         boxCollider.center = Vector3.zero;
         var padding = 50;
         uiGrid.cellHeight = newheight + padding;
-    }	
-	IEnumerator LoadMasterpieceDrawing()
+    }
+
+    private void OnDisable()
+    {
+        if (cancelCoroutineBackButtonAndroid != null)
+            cancelCoroutineBackButtonAndroid.Dispose();
+        if (cancelMCoroutineLoadMasterpiece != null)
+            cancelMCoroutineLoadMasterpiece.Dispose();
+    }
+
+    IEnumerator LoadMasterpieceDrawing()
     {        
         yield return null;       
         dirPathMP = GFs.getMasterpieceDirPath();        

@@ -14,7 +14,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
 {
     public GameObject imageItem;
     public GameObject scrollView;
-    public Text TextTitle;    
+    public UnityEngine.UI.Text TextTitle;    
     const int deScale = 1;
     const bool USE_PACK = false;
     const int clone = 1;
@@ -23,18 +23,31 @@ public class LibraryScriptsNGUI : MonoBehaviour
 
     public enum MODE {CATEGORY, TEMPLATE};
     public static MODE mode;
-
-    Coroutine coroutine;
+    private IDisposable cancelCoroutineBackBtnAndroid;
     void Awake()
     {                
         GFs.LoadCategoryList();
         GFs.LoadAllTemplateList();
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            cancelCoroutineBackBtnAndroid = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true)
+            .Subscribe((long xs) =>
+            {
+                if (mode == MODE.CATEGORY)
+                {
+                    GFs.GoHomeSceneScripts();
+                }
+                else
+                {
+                    ObBackBtnClicked();
+                }
+            });
+        }
     }
     // Use this for initialization
     void Start()
     {
-        Debug.Log("here1");
-
         if (mode == MODE.CATEGORY)
         {
             TextTitle.text = "Thư Viện";
@@ -52,7 +65,6 @@ public class LibraryScriptsNGUI : MonoBehaviour
 
     IEnumerator Load()
     {
-        Debug.Log("here2");
         List<Texture2D> LstTexture = new List<Texture2D>();
         List<GameObject> LstGameObject = new List<GameObject>();
         List<int> numRectIn2048 = new List<int>();
@@ -98,14 +110,12 @@ public class LibraryScriptsNGUI : MonoBehaviour
                 try
                 {
                     if (imageItem == null) break;
-                    Debug.Log("here3");
                     GameObject go = Instantiate(imageItem) as GameObject;
                     go.transform.SetParent(imageItem.transform.parent.transform);
                     go.transform.localScale = imageItem.transform.localScale;
                     UITexture rimage = go.transform.Find("icon").GetComponent<UITexture>();
                     //TextMeshProUGUI textMeshPro = go.transform.Find("textmeshpro").GetComponent<TextMeshProUGUI>();
                     UILabel text = go.transform.Find("itemLabel").GetComponent<UILabel>();
-                    Debug.Log("here4");
                     Texture2D texture = null;
                     Category category = null;
                     TemplateDrawing template = null;
@@ -122,7 +132,6 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         texture = GFs.LoadPNGFromPath(dirPath + "/" + template.thumb);
                     }
                     go.SetActive(true);
-                    Debug.Log("here5");
                     rimage.mainTexture = texture;
                     scrollView.GetComponent<UIGrid>().Reposition();
 
@@ -271,11 +280,12 @@ public class LibraryScriptsNGUI : MonoBehaviour
     private void OnDisable()
     {
         ondisable = true;
+        if (cancelCoroutineBackBtnAndroid != null)
+            cancelCoroutineBackBtnAndroid.Dispose();
     }
 
     public void OnAppBtnClicked()
     {
-        StopCoroutine(coroutine);
         Destroy(GameObject.Find("Canvas"));
     }
 

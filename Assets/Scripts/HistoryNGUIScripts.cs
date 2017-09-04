@@ -27,13 +27,21 @@ public class HistoryNGUIScripts : MonoBehaviour {
     private const string KEY = "history";    
     public GameObject item;
     public UIGrid uiGrid;
+    private IDisposable cancelCoroutineBackBtnAndroid;
+    private IDisposable cancelLoad;
+    private void Awake()
+    {
+        cancelCoroutineBackBtnAndroid = GFs.BackButtonAndroidGoHome();
+    }
+
     void Start () {
+        
         if (history == null)
         {
             var json = PlayerPrefs.GetString(KEY);            
             history = JsonConvert.DeserializeObject<LinkedList<HistoryModel>>(json);            
         }
-        MainThreadDispatcher.StartUpdateMicroCoroutine(load());
+        cancelLoad = Observable.FromMicroCoroutine(load).Subscribe();
     }       
 
     IEnumerator load()
@@ -86,6 +94,15 @@ public class HistoryNGUIScripts : MonoBehaviour {
         }
         Destroy(item);
     }
+
+    public void OnDisable()
+    {
+        if (cancelCoroutineBackBtnAndroid != null)
+            cancelCoroutineBackBtnAndroid.Dispose();
+        if (cancelLoad != null)
+            cancelLoad.Dispose();
+    }
+
     public static void AddHistoryItem(HistoryModel historyModel)
     {
         const int MAXHISTORY = 30;
