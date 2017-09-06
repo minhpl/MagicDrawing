@@ -20,15 +20,13 @@ class WebcamVideoCapture
         {            
             filenameWithoutExt = String.Format("{0}", DateTime.Now.ToString(Utilities.customFmts));
             filename = filenameWithoutExt + ".avi";
-
             filePath = GFs.getMasterpieceDirPath() + filename;
             if (!Directory.Exists(GFs.getMasterpieceDirPath()))
             {
                 Directory.CreateDirectory(GFs.getMasterpieceDirPath());
             }  
         }
-        codec = VideoWriter.fourcc('M', 'J', 'P', 'G');
-        //writer = new VideoWriter(filePath)
+        codec = VideoWriter.fourcc('M', 'J', 'P', 'G');        
         writer = new VideoWriter(filePath, codec, FPS, size);
     }
     public void write(Mat img)

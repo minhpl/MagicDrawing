@@ -5,6 +5,9 @@ using UnityEngine.UI;
 using LukeWaffel.AndroidGallery;
 using OpenCVForUnity;
 using Kakera;
+using UniRx;
+using System;
+using UnityEngine.SceneManagement;
 
 public class MainToolsNGUIScripts : MonoBehaviour {
 
@@ -13,6 +16,7 @@ public class MainToolsNGUIScripts : MonoBehaviour {
     public UIButton uiBtnGallery;
     public UIButton uiBtnHistory;
     public UIButton uiBtnHome;
+    IDisposable cancelCorountineBackBtnAndroid;
 
     [SerializeField]
     private Unimgpicker imagePicker;
@@ -34,8 +38,19 @@ public class MainToolsNGUIScripts : MonoBehaviour {
 
         uiBtnGallery.onClick.Add(new EventDelegate(() =>
         {
+
+            //imagePicker.Show("Select Image", "unimgpicker", 1024);
+
             if (Application.platform == RuntimePlatform.Android)
             {
+               // Utilities.Log("Here 0, xin chao the gioi");
+               // IDisposable cancelCorountineBackBtnAndroid = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true)
+               //.Subscribe(_ => {
+               //    Utilities.Log("Here, xin chao the gioi");
+               //    int i = GVs.TRACE_SCENE.Pop();                   
+               //    SceneManager.LoadScene(i);
+               //});
+
                 AndroidGallery.Instance.OpenGallery(ImageLoaded);
             }
             else if (Application.platform == RuntimePlatform.IPhonePlayer)
@@ -71,6 +86,13 @@ public class MainToolsNGUIScripts : MonoBehaviour {
             GVs.SCENE_MANAGER.loadDrawingScene();
             HistoryNGUIScripts.AddHistoryItem(new HistoryModel(path, path, HistoryModel.IMAGETYPE.SNAP));
         };
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("when call this ????");
+        if(cancelCorountineBackBtnAndroid!=null)
+            cancelCorountineBackBtnAndroid.Dispose();
     }
 
     void ImageLoaded()

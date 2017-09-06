@@ -182,7 +182,6 @@ public class GFs
 				
 				string s = PlayerPrefs.GetString (CATEGORY_LIST);				
 				GVs.CATEGORY_LIST = JsonUtility.FromJson<CategoryList> (s);
-                Debug.Log(GVs.CATEGORY_LIST.data);
 			} catch (Exception ex) {
                 Debug.LogError("Exception is " + ex.ToString());
 			}

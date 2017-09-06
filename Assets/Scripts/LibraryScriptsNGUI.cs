@@ -20,6 +20,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
     const int clone = 1;
     public static TemplateDrawingList templateDrawingList;
     private static string title;
+    public Button BtnBack;
 
     public enum MODE {CATEGORY, TEMPLATE};
     public static MODE mode;
@@ -40,10 +41,25 @@ public class LibraryScriptsNGUI : MonoBehaviour
                 }
                 else
                 {
-                    ObBackBtnClicked();
+                    mode = MODE.CATEGORY;
+                    GFs.BackToPreviousScene();
                 }
             });
         }
+
+        BtnBack.onClick = new Button.ButtonClickedEvent();
+        BtnBack.onClick.AddListener(() =>
+        {
+            if (mode == MODE.CATEGORY)
+            {
+                GFs.GoHomeSceneScripts();
+            }
+            else
+            {
+                mode = MODE.CATEGORY;
+                GFs.BackToPreviousScene();
+            }
+        });
     }
     // Use this for initialization
     void Start()
@@ -172,8 +188,8 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         numRectIn2048.Add(j * imageCount + i + 1 - tempNumPacked);
                         tempNumPacked = j * imageCount + i + 1;
                     }
-
-                    texture.Compress(true);
+                    
+                    //texture.Compress(true);
                     go.GetComponent<UIButton>().onClick.Add(new EventDelegate(() =>
                     {
                         if (mode == MODE.CATEGORY)
@@ -299,15 +315,4 @@ public class LibraryScriptsNGUI : MonoBehaviour
         GVs.SCENE_MANAGER.loadHistoryScene();
     }
 
-    public void ObBackBtnClicked()
-    {
-        if(mode==MODE.TEMPLATE)
-        {
-            Debug.Log("ahahha");
-            LibraryScriptsNGUI.mode = LibraryScriptsNGUI.MODE.CATEGORY;
-            GVs.TRACE_SCENE.Pop();
-            int i = GVs.TRACE_SCENE.Pop();
-            SceneManager.LoadScene(i);
-        }        
-    }
 }

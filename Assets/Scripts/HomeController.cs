@@ -8,9 +8,10 @@ using System.Threading;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class HomeController : MonoBehaviour {
-    public Canvas canvas;
+    private IDisposable cancelCorountineQuitApplication;
     private void Awake()
     {
         Screen.orientation = ScreenOrientation.Portrait;
@@ -44,6 +45,17 @@ public class HomeController : MonoBehaviour {
             MakePersistentObject.Instance.gameObject.SetActive(false);
         }
 
+        var videoFiles = Directory.GetFiles(masterPieceDirPath, "*.*", SearchOption.TopDirectoryOnly)
+    .Where(s => s.EndsWith(".avi"));
+        foreach (var videoPath in videoFiles)
+        {
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(videoPath);
+            var imageCorresponding = masterPieceDirPath + fileNameWithoutExtension + ".png";
+            if (!File.Exists(imageCorresponding))
+            {
+                File.Delete(videoPath);
+            }
+        }
 
         GFs.LoadData();
         try
@@ -151,9 +163,16 @@ public class HomeController : MonoBehaviour {
         //});        
     }
 
-    void Start()
-    {
 
+    private void Start()
+    {
+        if(Application.platform==RuntimePlatform.Android)
+        {
+            cancelCorountineQuitApplication = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
+            {
+                Application.Quit();
+            });
+        }        
     }
 
     private bool ready1 = false;
@@ -170,8 +189,15 @@ public class HomeController : MonoBehaviour {
     {
         if (ready1 && ready2)
         {
-            LibraryScriptsNGUI.mode = LibraryScriptsNGUI.MODE.CATEGORY;
-            GVs.SCENE_MANAGER.loadLibraryNGUIScene();
+            LibraryScriptsNGUI.mode = LibraryScriptsNGUI.MODE.CATEGORY;            
+            SceneManager.LoadSceneAsync("LibraryNGUIScene");
+            //GVs.SCENE_MANAGER.loadLibraryNGUIScene();
         }
+    }
+
+    private void OnDisable()
+    {
+        if(cancelCorountineQuitApplication!=null)
+            cancelCorountineQuitApplication.Dispose();
     }
 }

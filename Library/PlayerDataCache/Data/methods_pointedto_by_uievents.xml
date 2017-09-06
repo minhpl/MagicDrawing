@@ -19,8 +19,8 @@
 		<type fullname="ResultScripts">
 			<method name="OnPlayBtnClicked"/>
 		</type>
-		<type fullname="LibraryScriptsNGUI">
-			<method name="ObBackBtnClicked"/>
+		<type fullname="BackButton">
+			<method name="onBackButtonClicked"/>
 		</type>
 	</assembly>
 </linker>

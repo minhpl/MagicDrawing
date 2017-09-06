@@ -128,6 +128,12 @@
     <Compile Include="Assets\Plugins\Everyplay\Scripts\EveryplayRecButtons.cs" />
     <Compile Include="Assets\Plugins\Everyplay\Scripts\EveryplaySettings.cs" />
     <Compile Include="Assets\Plugins\Everyplay\Scripts\EveryplayTest.cs" />
+    <Compile Include="Assets\Plugins\LeanTween\LeanAudio.cs" />
+    <Compile Include="Assets\Plugins\LeanTween\LeanTest.cs" />
+    <Compile Include="Assets\Plugins\LeanTween\LeanTween.cs" />
+    <Compile Include="Assets\Plugins\LeanTween\LTDescr.cs" />
+    <Compile Include="Assets\Plugins\LeanTween\LTDescrOptional.cs" />
+    <Compile Include="Assets\Plugins\LeanTween\LTSeq.cs" />
     <Compile Include="Assets\Plugins\UniRx\Examples\Sample01_ObservableWWW.cs" />
     <Compile Include="Assets\Plugins\UniRx\Examples\Sample02_ObservableTriggers.cs" />
     <Compile Include="Assets\Plugins\UniRx\Examples\Sample03_GameObjectAsObservable.cs" />
@@ -375,6 +381,9 @@
   <ItemGroup>
     <None Include="Assets\FFmpegOut\Internal\Shader\CameraCapture.shader" />
     <None Include="Assets\FacebookSDK\link.xml" />
+    <None Include="Assets\LeanTween\Examples\Archived\2dUnlitWithFade.shader" />
+    <None Include="Assets\LeanTween\License.txt" />
+    <None Include="Assets\LeanTween\ReadMe.txt" />
     <None Include="Assets\MoviePlayer\CHANGELOG.txt" />
     <None Include="Assets\NGUI\Examples\Atlases\Fantasy\Fantasy Font - Normal.txt" />
     <None Include="Assets\NGUI\Examples\Atlases\Refractive\Refractive Font - Header.txt" />
@@ -420,6 +429,9 @@
     <None Include="Assets\OpenCVForUnity\OpenCV_LICENSE.txt" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
+    <None Include="Assets\OpenCVForUnity\StreamingAssets\text\trained_classifierNM1.xml" />
+    <None Include="Assets\OpenCVForUnity\StreamingAssets\text\trained_classifierNM2.xml" />
+    <None Include="Assets\OpenCVForUnity\StreamingAssets\text\trained_classifier_erGrouping.xml" />
     <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\Unimgpicker\AndroidManifest.xml" />

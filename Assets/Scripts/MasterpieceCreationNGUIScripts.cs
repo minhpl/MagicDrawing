@@ -48,9 +48,9 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour {
     {        
         yield return null;       
         dirPathMP = GFs.getMasterpieceDirPath();        
-        var files = Directory.GetFiles(dirPathMP, "*.*", SearchOption.TopDirectoryOnly)
+        var imagefiles = Directory.GetFiles(dirPathMP, "*.*", SearchOption.TopDirectoryOnly)
             .Where(s => s.EndsWith(".png"));
-        foreach (var f in files)
+        foreach (var f in imagefiles)
         {
             yield return null;           
             GameObject go = Instantiate(item) as GameObject;
@@ -86,5 +86,17 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour {
             uiTexture.mainTexture = texture;
         }
         Destroy(item);
+
+        var videoFiles = Directory.GetFiles(dirPathMP, "*.*", SearchOption.TopDirectoryOnly)
+            .Where(s => s.EndsWith(".avi"));
+        foreach(var videoPath in videoFiles)
+        {
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(videoPath);
+            var imageCorresponding = dirPathMP + fileNameWithoutExtension + ".png";
+            if (!File.Exists(imageCorresponding))
+            {
+                File.Delete(videoPath);
+            }
+        }
     }
 }

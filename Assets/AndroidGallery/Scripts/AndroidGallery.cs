@@ -108,6 +108,5 @@ namespace LukeWaffel.AndroidGallery{
 			imageWWW = new WWW ("file://" + path);
             this.path = path;
 		}
-
 	}
 }

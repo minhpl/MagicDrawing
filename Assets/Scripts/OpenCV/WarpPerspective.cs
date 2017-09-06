@@ -35,13 +35,11 @@ class WarpPerspective : MonoBehaviour
         result = new Mat();        
     }
 
-
     public void setParam(float heightScale, float widthScale = 1)
     {
         this.heightScale = heightScale;
         this.widthScale = widthScale;
     }
-
 
     public float scaleX = 0;
     public void Init(Mat image)
@@ -73,15 +71,25 @@ class WarpPerspective : MonoBehaviour
         int topWidthAfter = w - needWidthInDe * 2;
         int newHeight = (int)(h / heightScale);
 
-        float delta = 0.37f;         //tham số bóp đầu lại, càng to càng bóp
+        float delta = 0.41f;         //tham số bóp đầu lại, càng to càng bóp
         float deltaHT = 0.08f;
         float deltaHB = 0.35f;
 
-        float addW = w * 0.325f;   //scale width param
-        float addH = h * 0.325f;   //scale height param
-		float topH = 0.14f;        //
+        const float SCREEN_RATIO1 = 0.75f;   // SAMSUNG
+        const float SCREEN_RATIO2 = 0.658f;  // HUAWEI
+        const float SCREEN_RATIO3 = 0.5625;  //VIVO 
 
-        Debug.LogFormat("Device model is : {0}", SystemInfo.deviceModel);
+        Utilities.Log("device model is {0}, device name is {1}, device type is {2}", SystemInfo.deviceModel, SystemInfo.deviceName, SystemInfo.deviceType);
+        float uniformScale = 1.1f;
+        Utilities.Log("device width is {0}, device height is {1}", Screen.width, Screen.height);
+
+        float scaleW = 0.325f*uniformScale;  //scale width param
+        float scaleH = 0.41f* uniformScale;  //scale height param
+
+        float addW = w * scaleW;   
+        float addH = h * scaleH;
+        float topH = 0.14f;        //
+
 
         src_corner.put(0, 0,
                 0, 0,

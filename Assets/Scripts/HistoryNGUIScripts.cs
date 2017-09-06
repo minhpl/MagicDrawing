@@ -29,13 +29,25 @@ public class HistoryNGUIScripts : MonoBehaviour {
     public UIGrid uiGrid;
     private IDisposable cancelCoroutineBackBtnAndroid;
     private IDisposable cancelLoad;
+    public Button btnBack;
     private void Awake()
     {
-        cancelCoroutineBackBtnAndroid = GFs.BackButtonAndroidGoHome();
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            cancelCoroutineBackBtnAndroid = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
+            {
+                GVs.SCENE_MANAGER.loadLibraryNGUIScene();
+            });
+
+            btnBack.onClick = new Button.ButtonClickedEvent();
+            btnBack.onClick.AddListener(() =>
+            {
+                GVs.SCENE_MANAGER.loadLibraryNGUIScene();
+            });
+        }
     }
 
     void Start () {
-        
         if (history == null)
         {
             var json = PlayerPrefs.GetString(KEY);            
