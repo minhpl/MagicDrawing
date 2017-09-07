@@ -9,6 +9,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using WW;
 
 public class HomeController : MonoBehaviour {
     private IDisposable cancelCorountineQuitApplication;
@@ -20,8 +21,22 @@ public class HomeController : MonoBehaviour {
 
     private void Awake()
     {
-        //PlayerPrefs.DeleteAll();
-        //PlayerPrefs.Save();
+
+
+        debug.log("Important message. Color it red and show in the console");
+
+        debug.log(1, "Debug message from a specific category. Custom color and important level (will always print)");
+
+        debug.log(2, "Debug message from a specific category, moderate importantce (marked as debug level 5)", 5);
+
+        debug.log(3, "Debug message, same as previous but will also print gameObject containing this call, it's name as well as highlight it from console+click)", 1, gameObject);
+
+
+
+
+
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
         Screen.orientation = ScreenOrientation.Portrait;
         Screen.autorotateToLandscapeLeft = false;
         Screen.autorotateToLandscapeRight = false;
@@ -146,11 +161,13 @@ public class HomeController : MonoBehaviour {
                         var index = i;
                         var stream = Observable.Create<string>((IObserver<string> observer) =>
                         {
+                            Debug.LogFormat("Start download tempplate {0}", index);
+
                             HTTPRequest.Instance.Request(GVs.GET_TEMPLATE_BY_CATEGORY_URL, JsonUtility.ToJson(new ReqModel(new CategoryRequest(id))), (templates) =>
                             {
                                 try
                                 {
-                                    Debug.Log(templates);
+                                    Debug.LogFormat("templates data : {0}",templates);
                                     TemplateDrawingList templatelist = JsonConvert.DeserializeObject<TemplateDrawingList>(templates);
                                     templatelist.dir = templatelist.dir + "/" + id;
                                     GVs.DRAWING_TEMPLATE_LIST = templatelist;
@@ -159,7 +176,12 @@ public class HomeController : MonoBehaviour {
 
                                     HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY, id))), (d, process) =>
                                     {
-                                        observer.OnCompleted();
+                                        if (process == 1)
+                                        {
+                                            //Thread.Sleep(2000);
+                                            Debug.LogFormat("call from thread {0}", index);
+                                            observer.OnCompleted();
+                                        }
                                     });
                                 }
                                 catch (Exception e)
@@ -169,21 +191,24 @@ public class HomeController : MonoBehaviour {
                             });
                             return Disposable.Create(() =>
                             {
-                                //Debug.LogFormat("observer {0} has unsubscribed", index);
+                                Debug.LogFormat("observer {0} has unsubscribed", index);
                             });
                         });
                         ListStreamDownloadTemplate.Add(stream);
                     }
 
-                    Observable.WhenAll(ListStreamDownloadTemplate).Subscribe((string[] s) => { }, () =>
-                    {
-                        GVs.TEMPLATE_LIST_ALL_CATEGORY = templateListsAllCategory;
-                        GFs.SaveAllTemplateList();
-                        Utilities.Log("all downloaded");
-                        var json = JsonConvert.SerializeObject(templateListsAllCategory);
-                        ready1 = true;
-                    });
+                    //Observable.Concat()
 
+                    //ListStreamDownloadTemplate[0].Subscribe();
+
+                    Observable.Concat(ListStreamDownloadTemplate).Subscribe(_ => { }, () =>
+                     {
+                         GVs.TEMPLATE_LIST_ALL_CATEGORY = templateListsAllCategory;
+                         GFs.SaveAllTemplateList();
+                         Utilities.Log("all downloaded");
+                         var json = JsonConvert.SerializeObject(templateListsAllCategory);
+                         ready1 = true;
+                     });
                 }
                 catch (Exception e)
                 {
