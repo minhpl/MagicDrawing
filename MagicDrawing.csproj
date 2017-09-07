@@ -815,6 +815,7 @@
     <Compile Include="Assets\Scripts\OpenCV\WebcamVideoCapture.cs" />
     <Compile Include="Assets\Scripts\PreloadScript.cs" />
     <Compile Include="Assets\Scripts\ProfileScript.cs" />
+    <Compile Include="Assets\Scripts\ProgressBarChangeScript.cs" />
     <Compile Include="Assets\Scripts\RawInput\Scripts\Ball.cs" />
     <Compile Include="Assets\Scripts\RawInput\Scripts\Spawner.cs" />
     <Compile Include="Assets\Scripts\ResultScripts.cs" />

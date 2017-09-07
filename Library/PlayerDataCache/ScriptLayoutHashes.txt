@@ -423,6 +423,7 @@ f1c2b748da64b3f847088e3a9438cd8e Assembly-CSharp.dll:UnityEngine.UI.Extensions.H
 05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Canvas.JsBridge
 05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Editor.Dialogs.MockLoginDialog
 05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Editor.Dialogs.MockShareDialog
+1b79ca04b79bfa824518456ec582c871 Assembly-CSharp.dll:.ProgressBarChangeScript
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.MultiObjectTrackingBasedOnColorExample
 71576082ce86792c07607fafd8e9952a Assembly-CSharp.dll:UnityEngine.UI.Extensions.HoverTooltip
 96de4fb640702f27e183c72c83d494a6 Assembly-CSharp.dll:UnityEngine.UI.Extensions.UIScrollToSelectionXY
@@ -600,6 +601,7 @@ bb614fa39b39c4954977762d0fc3e0b2 Assembly-CSharp.dll:.UIKeyNavigation
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.UIEventListener
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.InvEquipment
 a6dc623575719f7f6901ed47b413603b Assembly-CSharp.dll:UnityEngine.UI.Extensions.HexRGB
+4dfe33d9090a45557c2c14e3b464ad87 Assembly-CSharp.dll:.WWDebugWindow
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Runner
 9dc41ecfefe71e0d0e207b5650949483 Assembly-CSharp.dll:TouchScript.Devices.Display.DisplayDevice
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.HoughLinesPExample
@@ -682,7 +684,7 @@ f05e0adc8991144c9b222b05287a5d18 Assembly-CSharp.dll:FFmpegOut.CameraCapture
 dd37c508bf2069093e03ff44e9d2fff7 Assembly-CSharp.dll:.SnapImageSceneScripts
 2427cde986b9c1964687738f93a0f5bf Assembly-CSharp.dll:TouchScript.Gestures.TapGesture
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample06_ConvertToCoroutine
-3070dd0a371332e3eec4352f282638a5 Assembly-CSharp.dll:.HomeController
+f00abe8553b06aba4522410326cb30fc Assembly-CSharp.dll:.HomeController
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ShowMe
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:LukeWaffel.AndroidGallery.AndroidGallery
 fcffe9bbf1b7b7e4593e31031f78987b Assembly-CSharp.dll:.UISliderColors
