@@ -961,6 +961,8 @@
     <Compile Include="Assets\UTJ\FrameCapturer\Scripts\Misc\DataPath.cs" />
     <Compile Include="Assets\UTJ\FrameCapturer\Scripts\MovieRecorder.cs" />
     <Compile Include="Assets\UTJ\FrameCapturer\Scripts\RecorderBase.cs" />
+    <Compile Include="Assets\WW.cs" />
+    <Compile Include="Assets\WWDebugWindow.cs" />
     <Compile Include="Assets\Zip\Plugins\Zip.cs" />
   </ItemGroup>
   <ItemGroup>
