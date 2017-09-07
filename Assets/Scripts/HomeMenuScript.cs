@@ -61,7 +61,6 @@ public class HomeMenuScript : MonoBehaviour
             TweenPosition.Begin(gameObject, 0.2f, Vector3.zero);
             TweenPosition.Begin(goNavPanel, 0.2f, new Vector3(-600, 0, 0));
             TweenAlpha.Begin(goBG, 0.2f, 0);
-
             menuIsShow = false;
         }
     }
@@ -73,7 +72,6 @@ public class HomeMenuScript : MonoBehaviour
         TweenAlpha.Begin(goUser, 0.3f, 0);
         MenuOnClick();
     }
-
     public void CloseUserInforOnClick()
     {
         TweenAlpha.Begin(goUserInfo, 0.3f, 0);
@@ -89,6 +87,9 @@ public class HomeMenuScript : MonoBehaviour
         goUser.SetActive(true);
         TweenAlpha.Begin(goUser, 0.3f, 1);
     }
+
+
+
 
     public void OpenUserInFoOnClick()
     {

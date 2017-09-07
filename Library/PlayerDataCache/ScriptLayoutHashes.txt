@@ -490,7 +490,7 @@ d633212d6f78342331a42d3de880caf9 Assembly-CSharp.dll:TouchScript.Examples.KillMe
 154a7d6ef9630ee69cfa42695dd50703 Assembly-CSharp.dll:.TweenRotation
 4274518f8761bb4aa6c968ca5c7615e4 Assembly-CSharp.dll:.UIPopupList
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TrackScene
-129549ed06f3eea756506007fb984ad7 Assembly-CSharp.dll:.DrawingScripts
+14785ade06f284ae7cf14b1aa2396f82 Assembly-CSharp.dll:.DrawingScripts
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Colors.Circle
 0189d52198025e02a31dab4f2f816848 Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.Clustered.ClusteredTransformGesture
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ShareFacebook
@@ -518,6 +518,7 @@ e42de2fa430ffdc5cba11107db58d22d Assembly-CSharp.dll:TouchScript.Examples.Camera
 7687b0a06e8996c644005959c3c21919 Assembly-CSharp.dll:UnityEngine.UI.Extensions.Gradient
 5f090821814bc51a9f55429c0fa2da3e Assembly-CSharp.dll:.UIDragDropContainer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableTransformChangedTrigger
+0d89d68a350456a1a04498f5df268c7a Assembly-CSharp.dll:.TutorialController
 62229a3e4d53ca59bec192e89627ed52 Assembly-CSharp.dll:TMPro.Examples.CameraController
 ae091289bdbf518321cd726c0612e3ab Assembly-CSharp.dll:.Threshold
 3db50826468913a08c4be516b2aa12f1 Assembly-CSharp.dll:TouchScript.Gestures.LongPressGesture
@@ -588,7 +589,7 @@ ed5eb281c283ec5c7cc5c07b00278856 Assembly-CSharp.dll:.UISpriteAnimation
 c8afcdf7f1c813179938c6f7097f4bd0 Assembly-CSharp.dll:.UIButtonActivate
 9dc41ecfefe71e0d0e207b5650949483 Assembly-CSharp.dll:TouchScript.Devices.Display.GenericDisplayDevice
 a4679245d992f9784666cfa4339d7268 Assembly-CSharp.dll:.TweenVolume
-38c17aac994ff2b7b663ca012903f2d0 Assembly-CSharp.dll:.UserScript
+e818d673a103f6dbf25373d8b6cc4ae8 Assembly-CSharp.dll:.UserScript
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableDeselectTrigger
 1d64e023348eb548c41c518624467a77 Assembly-UnityScript.dll:.PathLocalCurveJS
 bb614fa39b39c4954977762d0fc3e0b2 Assembly-CSharp.dll:.UIKeyNavigation
@@ -609,7 +610,7 @@ bf0efa3a2b50052bc4430312d3cc0dad Assembly-CSharp.dll:.LagPosition
 f9ab08734ff0441703a923df780d4c90 Assembly-CSharp.dll:.UITextList
 d62f60ad5ecff73b76da2ea09c712ada Assembly-CSharp.dll:.UIItemStorage
 75cd0c6c744b9733ef29aa6c59ece2b1 Assembly-CSharp.dll:TMPro.Examples.VertexShakeB
-4bf7253a7e402066b870371e91ea407b Assembly-CSharp.dll:.ToggleScript
+6667bbf9ae4f58579da179f3482ec8f1 Assembly-CSharp.dll:.ToggleScript
 9778b00922ba8aae9a3acf3ff3f34ff4 Assembly-CSharp.dll:UnityEngine.UI.Extensions.UILineTextureRenderer
 99fb603e20780b52805fbdf92487e554 Assembly-CSharp.dll:TouchScript.Behaviors.Transformer
 37d65bf29af9dd2fac1cab17987f9faa Assembly-CSharp.dll:.AnimatedAlpha
@@ -634,7 +635,7 @@ ff2629f91a8e34f209aa735f6395b0c0 Assembly-UnityScript.dll:.GeneralBasicJS
 60eed870167e94563437af95bcc883f9 Assembly-CSharp.dll:TouchScript.Examples.Portal.Rotator
 48ddff96f17b93c27762041529c640e1 Assembly-UnityScript.dll:.OldGUIExamplesJS
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LanguageSelection
-f235d1d5935007c466ec9f9482cf6765 Assembly-CSharp.dll:.ResultScripts
+d5fc901b9b7d92fa24b91716e1dd3003 Assembly-CSharp.dll:.ResultScripts
 4f52fb13c8876d1fc6a0a4110faf10fc Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.ScreenTransformGesture
 01ca127772bebd003dc266e41c6d18bc Assembly-CSharp.dll:.UIDragCamera
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableCanvasGroupChangedTrigger
@@ -681,7 +682,7 @@ f05e0adc8991144c9b222b05287a5d18 Assembly-CSharp.dll:FFmpegOut.CameraCapture
 dd37c508bf2069093e03ff44e9d2fff7 Assembly-CSharp.dll:.SnapImageSceneScripts
 2427cde986b9c1964687738f93a0f5bf Assembly-CSharp.dll:TouchScript.Gestures.TapGesture
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample06_ConvertToCoroutine
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.HomeController
+3070dd0a371332e3eec4352f282638a5 Assembly-CSharp.dll:.HomeController
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ShowMe
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:LukeWaffel.AndroidGallery.AndroidGallery
 fcffe9bbf1b7b7e4593e31031f78987b Assembly-CSharp.dll:.UISliderColors

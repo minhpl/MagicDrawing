@@ -6,43 +6,36 @@ using System;
 [Serializable]
 public class UserListModel
 {
-    public UserModel[] userModels;
-    public UserListModel(UserModel[] userModels)
+    public List<UserModel> userModels;
+    public UserListModel(List<UserModel> userModels)
     {
         this.userModels = userModels;
     }
 
     public UserListModel()
     {
-        this.userModels = new UserModel[1];
-        this.userModels[0] = new UserModel("Người chơi 1");
+        this.userModels = new List<UserModel>();
+        this.userModels.Add(new UserModel("Người chơi 1"));
     }
 
     public void Add(UserModel um)
     {
         if (this.userModels == null)
         {
-            this.userModels = new UserModel[1];
-            this.userModels[0] = um;
+            this.userModels = new List<UserModel>();
         }
-        else
-        {
-            UserModel[] arr = new UserModel[this.userModels.Length + 1];
-            this.userModels.CopyTo(arr, 0);
-            arr[arr.Length - 1] = um;
-            this.userModels = arr;
-        }
+        this.userModels.Add(um);
     }
     public void Update(UserModel um)
     {
         if (this.userModels == null)
         {
-            this.userModels = new UserModel[1];
-            this.userModels[0] = um;
+            this.userModels = new List<UserModel>();
+            this.userModels.Add(um);
         }
         else
         {
-            for (int i = 0; i < this.userModels.Length; i++)
+            for (int i = 0; i < this.userModels.Count; i++)
             {
                 if (this.userModels[i].id.Equals(um.id))
                 {
@@ -52,9 +45,20 @@ public class UserListModel
         }
     }
 
+    public bool Delete(int i)
+    {
+        if (this.userModels == null)
+        {
+            return false;
+        }
+        if (i < 0 || i >= userModels.Count) return false;
+        userModels.RemoveAt(i);
+        return true;
+    }
+
     public UserModel Get(int i)
     {
-        if (this.userModels != null && i >= 0 && i < this.userModels.Length)
+        if (this.userModels != null && i >= 0 && i < this.userModels.Count)
         {
             return this.userModels[i];
         }
@@ -68,6 +72,12 @@ public class UserListModel
         this.userModels[i] = um;
     }
 
+    public int Count()
+    {
+        if (userModels == null) return 0;
+        return userModels.Count;
+    }
+
 }
 
 [Serializable]
@@ -76,6 +86,7 @@ public class UserModel
     public string id;
     public string name;
     public string avata;
+    public int survivalHighScore = 0;
     public UserModel(string name)
     {
         id = "" + DateTime.Now.Ticks;

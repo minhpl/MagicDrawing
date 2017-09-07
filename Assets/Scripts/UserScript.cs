@@ -19,6 +19,8 @@ public class UserScript : MonoBehaviour
 
     public UIToggle togSoundSystem;
     public UIToggle togSoundBG;
+    public GameObject deleteUserPopup;
+    public GameObject deleteUserButton;
     void Start()
     {
         InitUser();
@@ -29,11 +31,10 @@ public class UserScript : MonoBehaviour
     }
     private void InitUser()
     {
-
         for (int i = 0; i < users.Count; i++) Destroy(users[i]);
         users.Clear();
         toggleUsers.Clear();
-        int count = GVs.USER_LIST_MODEL.userModels.Length;
+        int count = GVs.USER_LIST_MODEL.Count();
         Vector3 v3 = userItem.transform.localPosition;
         // userItem.transform.Find("Toggle").GetComponent<UIToggle>().startsActive = true;
         v3.y += 252;
@@ -47,7 +48,7 @@ public class UserScript : MonoBehaviour
             go.transform.localScale = Vector3.one;
             go.transform.localPosition = v3;
             go.transform.Find("username").gameObject.GetComponent<UILabel>().text = GVs.USER_LIST_MODEL.Get(i).name;
-            // go.transform.Find("lblPoint").gameObject.GetComponent<UILabel>().text = GVs.USER_LIST_MODEL.Get(i).GetPointComplete() + "";
+            //go.transform.Find("lblPoint").gameObject.GetComponent<UILabel>().text = GVs.USER_LIST_MODEL.Get(i).GetPointComplete() + "";
             // GFs.LoadPNG(GVs.USER_LIST_MODEL.Get(i).avata, go.GetComponent<UITexture>());
             go.SetActive(true);
             // EventDelegate.Set(go.GetComponent<UIButton>().onClick, EditProfileOnCLick);
@@ -71,27 +72,36 @@ public class UserScript : MonoBehaviour
     }
     public void OpenUserInfoOnClick(GameObject go)
     {
+        deleteUserButton.SetActive(true);
+        if (GVs.USER_LIST_MODEL.Count() <= 1)
+            deleteUserButton.SetActive(false);
         string s = go.transform.Find("id").gameObject.GetComponent<UILabel>().text;
         if (!s.Equals(""))
         {
             GVs.PROFILE_STATE = GVs.PROFILE_EDIT;
             int id = int.Parse(s);
-            GVs.CURRENT_USER_EDIT = id;
-            GVs.CURRENT_USER_EDIT_MODEL = GVs.USER_LIST_MODEL.Get(GVs.CURRENT_USER_EDIT).Clone();
-            if (GVs.USER_LIST_MODEL.userModels.Length == 1)
-            {
-                GVs.CURRENT_USER_MODEL = GVs.USER_LIST_MODEL.Get(GVs.CURRENT_USER_EDIT).Clone();
-                GVs.CURRENT_USER_EDIT_MODEL = GVs.CURRENT_USER_MODEL;
-            }
+            SetCurrentUser(id);
             OpenUserInfor(id);
         }
         else OpenUserInfor();
+    }
+
+    private void SetCurrentUser(int id)
+    {
+        GVs.CURRENT_USER_EDIT = id;
+        GVs.CURRENT_USER_EDIT_MODEL = GVs.USER_LIST_MODEL.Get(GVs.CURRENT_USER_EDIT).Clone();
+        if (GVs.USER_LIST_MODEL.Count() == 1)
+        {
+            GVs.CURRENT_USER_MODEL = GVs.USER_LIST_MODEL.Get(GVs.CURRENT_USER_EDIT).Clone();
+            GVs.CURRENT_USER_EDIT_MODEL = GVs.CURRENT_USER_MODEL;
+        }
     }
 
     public void OpenAddUserOnClick()
     {
         GVs.NEW_USER_MODEL = new UserModel("");
         GVs.PROFILE_STATE = GVs.PROFILE_ADD;
+        deleteUserButton.SetActive(false);
         OpenUserInfor();
     }
 
@@ -156,6 +166,28 @@ public class UserScript : MonoBehaviour
                 SetUser();
             }
         }
+    }
+
+    public void DeleteUser()
+    {
+        deleteUserPopup.SetActive(true);
+    }
+
+    public void OnDeleteAllow()
+    {
+        bool val = GVs.CURRENT_USER_EDIT_MODEL.id.Equals(GVs.CURRENT_USER_MODEL.id);
+        GVs.USER_LIST_MODEL.Delete(GVs.CURRENT_USER_EDIT);
+        if (val) SetCurrentUser(0);
+        GFs.SaveUsers();
+        InitUser();
+        InitUser();
+        CloseUserInforOnClick();
+        deleteUserPopup.SetActive(false);
+    }
+
+    public void OnDeleteDeny()
+    {
+        deleteUserPopup.SetActive(false);
     }
 
     public void SoundOnChange()

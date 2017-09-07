@@ -14,6 +14,7 @@ public class HomeScript : MonoBehaviour
         // PlayerPrefs.DeleteAll();
 
         // new TrainSVM().doTrain();
+
         for (int i = 0; i < btnControls.Length; i++)
         {
             Vector3 v3 = btnControls[i].transform.localPosition;
@@ -21,33 +22,8 @@ public class HomeScript : MonoBehaviour
             TweenAlpha.Begin(btnControls[i], 0, 0);
         }
         StartCoroutine(Run());
-        // OpenAndroidGallery();
     }
 
-    public void OpenAndroidGallery()
-    {
-        #region [ Intent intent = new Intent(); ]
-        //instantiate the class Intent
-        AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
-        //instantiate the object Intent
-        AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
-        #endregion [ Intent intent = new Intent(); ]
-        #region [ intent.setAction(Intent.ACTION_VIEW); ]
-        //call setAction setting ACTION_SEND as parameter
-        intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_GET_CONTENT"));
-        #endregion [ intent.setAction(Intent.ACTION_VIEW); ]
-        //set the type of file
-        intentObject.Call<AndroidJavaObject>("setType", "image/*");
-        #region [ startActivity(intent); ]
-        //instantiate the class UnityPlayer
-        AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        //instantiate the object currentActivity
-        AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
-        //call the activity with our Intent
-        currentActivity.Call("startActivity", intentObject);
-        Debug.Log("call--------------------------------: " + currentActivity.Get<string>("data"));
-        #endregion [ startActivity(intent); ]
-    }
     IEnumerator Run()
     {
         yield return new WaitForSeconds(0.05f);
@@ -61,5 +37,14 @@ public class HomeScript : MonoBehaviour
         }
     }
 
+    public void Train()
+    {
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
+    }
 }
 

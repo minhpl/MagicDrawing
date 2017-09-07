@@ -75,6 +75,7 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour {
             {
                 ResultScripts.texture = texture;
                 ResultScripts.videoPath = videoPath;
+                ResultScripts.imagePath = f;
                 ResultScripts.mode = ResultScripts.MODE.REWATCH_RESULT;
                 var datetime = DateTime.ParseExact(fileNameWithouExtension, Utilities.customFmts, new CultureInfo(0x042A));
                 var datemonthyear = string.Format("{0}", datetime.Date.ToString("d-M-yyyy"));

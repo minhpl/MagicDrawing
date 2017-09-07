@@ -20,9 +20,12 @@ public class DrawingScripts : MonoBehaviour {
     public Slider sliderLine;
     public Slider sliderContrast;
     public Slider sliderTest;
+    public UnityEngine.UI.Text txtTime;
     public TextMeshProUGUI txtTimeTMPro;
     public Button backBtn;
     public GameObject panelComfirm;
+    public Button aggre;
+    public Button cancel;
     public GameObject eventSystem;
     public TapGesture tapGesture;
     public Button tickBtn;
@@ -31,7 +34,9 @@ public class DrawingScripts : MonoBehaviour {
     public Canvas canvas;
     public Button Button_Recording;
     public GameObject pause;
-    public GameObject textTimeTMPro;
+    public TextMeshProUGUI timeCounterSnap;
+    public GameObject Pnl_Snap;
+    public GameObject Pnl_Tool;
     private Threshold threshold;
     private AdaptiveThreshold athreshold;   
     WarpPerspective warpPerspective;
@@ -65,6 +70,8 @@ public class DrawingScripts : MonoBehaviour {
     private IDisposable cancelCorountineTurnOffTouchInput;
     private IDisposable cancelCorountineBlinkTime;
     private IDisposable cancelCoroutineBackBtnAndroid;
+    private IDisposable cancelCorountineSnapImage;
+
     private void Awake()
     {
         filtermode = FILTERMODE.LINE;
@@ -83,8 +90,8 @@ public class DrawingScripts : MonoBehaviour {
         {
             panelComfirm.SetActive(true);
         });
-        var cancelPopup = panelComfirm.transform.Find("cancel").GetComponent<Button>();
-        cancelPopup.onClick.AddListener(() =>
+        //var cancelPopup = panelComfirm.transform.Find("cancel").GetComponent<Button>();
+        cancel.onClick.AddListener(() =>
         {
             panelComfirm.SetActive(false);
         });
@@ -94,8 +101,8 @@ public class DrawingScripts : MonoBehaviour {
             panelComfirm.SetActive(true);
         });
 
-        var agreePopup = panelComfirm.transform.Find("agree").GetComponent<Button>();
-        agreePopup.onClick.AddListener(() =>
+        //var agreePopup = panelComfirm.transform.Find("agree").GetComponent<Button>();
+        aggre.onClick.AddListener(() =>
         {
             if ( webcamVideoCapture.filePath!=null)
             {
@@ -117,7 +124,7 @@ public class DrawingScripts : MonoBehaviour {
             }
             else
             {
-                OnTickConfirmBtnClicked();
+                IDisposable cancelCorountineSnapImage = Observable.FromCoroutine(SaveMasterpiece).Subscribe();
             }
         });
 
@@ -241,27 +248,27 @@ public class DrawingScripts : MonoBehaviour {
                 var categoryID = GVs.CATEGORY_LIST.data[5]._id;
                 imgPath = GFs.getAppDataDirPath() + GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID].dir + "/" + "C06T001.jpg";        
             }
-              
-            image = Imgcodecs.imread(imgPath, Imgcodecs.IMREAD_UNCHANGED);
-            Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);
-            float w = image.width();
-            float h = image.height();
-            var rat = w / h;
+            
+            texModel = GFs.LoadPNGFromPath(imgPath);
+            int w = texModel.width;
+            int h = texModel.height;
+            var rat = w / (float)h;
             var restrictMaxSize = 640;
             if (rat > 1)
             {
                 w = restrictMaxSize;
-                h = w / rat;
+                h = (int)(w / rat);
             }
             else
             {
                 h = restrictMaxSize;
-                w = h * rat;
+                w = (int)(h * rat);
             }
-            
-            Imgproc.resize(image, image, new Size(w, h), 0, 0, Imgproc.INTER_AREA);            
-            texModel = new Texture2D(image.width(), image.height(), TextureFormat.RGBA32, false);            
-            Utils.matToTexture2D(image, texModel);
+
+            TextureScale.Bilinear(texModel, (int)w, (int)h);
+            image = new Mat(h, w, CvType.CV_8UC4);
+            Utils.texture2DToMat(texModel, image);
+            Imgproc.cvtColor(image, image, Imgproc.COLOR_BGRA2RGBA);                      
             texModel.Compress(true);
         }
         else
@@ -339,25 +346,24 @@ public class DrawingScripts : MonoBehaviour {
     IEnumerator Worker()
     {
         while (true)
-        {    
+        {            
             yield return null;
             if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
             {
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();
                 warp = warpPerspective.warpPerspective(rgbaMat);
                 displayMat = warp.submat(cropRect);
-                Utils.matToTexture2D(displayMat, texCam, bufferColor);
+                Utils.matToTexture2D(displayMat, texCamCrop, bufferColor);
                 //Utils.matToTexture2D(warp, texCam, bufferColor);
                 if (isRecording)
                 {
                     numberFrame++;
-
                     webcamVideoCapture.write(displayMat);
                     var timeLapse = (int)stopWatch.Elapsed.TotalSeconds;
-                    string minSec = string.Format("{0}:{1:00}", (int)(timeLapse / 60f), (int)timeLapse % 60);                    
-                    txtTimeTMPro.text = minSec;
+                    string minSec = string.Format("{0}:{1:00}", (int)(timeLapse / 60f), (int)timeLapse % 60);
+                    txtTime.text = minSec;
                 }
-                rimgcam.texture = texCam;
+                rimgcam.texture = texCamCrop;
             }
         }
     }
@@ -377,6 +383,8 @@ public class DrawingScripts : MonoBehaviour {
             cancelCorountineBlinkTime.Dispose();
         if (cancelCoroutineBackBtnAndroid!=null)
             cancelCoroutineBackBtnAndroid.Dispose();
+        if (cancelCorountineSnapImage != null)
+            cancelCorountineSnapImage.Dispose();
         image.release();
         image.Dispose();
         edges.Dispose();
@@ -390,8 +398,8 @@ public class DrawingScripts : MonoBehaviour {
         if(webcamVideoCapture != null)
         {
             webcamVideoCapture.filePath = null;
-            if(webcamVideoCapture.writer != null)
-            {
+            if(webcamVideoCapture.writer != null && !webcamVideoCapture.writer.IsDisposed)
+            {                
                 webcamVideoCapture.writer.release();
             }
         }                  
@@ -424,8 +432,23 @@ public class DrawingScripts : MonoBehaviour {
         rimgmodel.GetComponent<Transformer>().enabled = false;       
     }
     bool preserveTexture = false;
-    public void OnTickConfirmBtnClicked()
+    IEnumerator SaveMasterpiece()
     {
+        webCamTextureToMatHelper.Play();
+        Pnl_Snap.SetActive(true);
+        Pnl_Tool.SetActive(false);
+        backBtn.gameObject.SetActive(false);
+        goModel.SetActive(false);   
+        float periods = 1f;
+        yield return new WaitForSeconds(periods);
+        timeCounterSnap.text = "2";
+        yield return new WaitForSeconds(periods);
+        timeCounterSnap.text = "1";        
+        yield return new WaitForSeconds(periods);
+        timeCounterSnap.text = null;
+        goCam.GetComponent<RawImage>().texture = null;
+        yield return new WaitForSeconds(periods);
+        Pnl_Snap.SetActive(false);
         Mat resultMat = warp.submat(cropRect);
         Texture2D resultTexture = new Texture2D(cropRect.width, cropRect.height, TextureFormat.BGRA32, false);
         Utils.matToTexture2D(resultMat, resultTexture);
@@ -440,12 +463,13 @@ public class DrawingScripts : MonoBehaviour {
             name = String.Format("{0}.png", DateTime.Now.ToString(Utilities.customFmts));
         }
         var masterPieceDirPath = GFs.getMasterpieceDirPath();
-        var fullPath = masterPieceDirPath + name;
-        File.WriteAllBytes(fullPath, resultTexture.EncodeToPNG());
+        var imagePath = masterPieceDirPath + name;
+        File.WriteAllBytes(imagePath, resultTexture.EncodeToPNG());
         WebcamVideoCapture.filename = null;
         WebcamVideoCapture.filenameWithoutExt = null;
         ResultScripts.texture = resultTexture;
-        ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;        
+        ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;
+        ResultScripts.imagePath = imagePath;
         if (webcamVideoCapture != null)
             ResultScripts.videoPath = webcamVideoCapture.filePath;
 
@@ -489,11 +513,14 @@ public class DrawingScripts : MonoBehaviour {
     IEnumerator blinkTime()
     {
         yield return null;
-        while(!isRecording)
+
+        var textTimeGameObj = txtTime.gameObject;
+        
+        while (!isRecording)
         {
             yield return new WaitForSeconds(1);
             //textTime.SetActive(!textTime.activeSelf);
-            textTimeTMPro.SetActive(!textTimeTMPro.activeSelf);
+            textTimeGameObj.SetActive(!textTimeGameObj.activeSelf);
         }
     }
 }

@@ -12,13 +12,38 @@ using UnityEngine.UI;
 
 public class HomeController : MonoBehaviour {
     private IDisposable cancelCorountineQuitApplication;
+    public GameObject requireNetworl_panel;
+    public UIButton BtnClose;
+    public UIButton BtnX;
+    IDisposable cancelCorountineDownloadData;
+
+
     private void Awake()
     {
+        //PlayerPrefs.DeleteAll();
+        //PlayerPrefs.Save();
         Screen.orientation = ScreenOrientation.Portrait;
         Screen.autorotateToLandscapeLeft = false;
         Screen.autorotateToLandscapeRight = false;
         Screen.autorotateToPortrait = false;
         Screen.autorotateToPortraitUpsideDown = false;
+
+        BtnClose.onClick.Add(new EventDelegate(() =>
+        {
+            if (NET.NetWorkIsAvaiable())
+            {
+                requireNetworl_panel.SetActive(false);
+            }
+
+        }));
+
+        BtnX.onClick.Add(new EventDelegate(() =>
+        {
+            if (NET.NetWorkIsAvaiable())
+            {
+                requireNetworl_panel.SetActive(false);
+            }
+        }));
 
         var masterPieceDirPath = GFs.getMasterpieceDirPath();
         if (!Directory.Exists(masterPieceDirPath))
@@ -83,9 +108,26 @@ public class HomeController : MonoBehaviour {
             Debug.LogError(ex);
         }
 
+
+        if (!NET.NetWorkIsAvaiable())
+        {
+            requireNetworl_panel.SetActive(true);
+        }
+
+        cancelCorountineDownloadData = Observable.FromCoroutine(DownloadData).Subscribe();
+
+    }
+
+    IEnumerator DownloadData()
+    {
         Utilities.Log("Waiting for downloading");
         Dictionary<string, TemplateDrawingList> templateListsAllCategory = new Dictionary<string, TemplateDrawingList>();
         List<IObservable<string>> ListStreamDownloadTemplate = new List<IObservable<string>>();
+
+        while (!NET.NetWorkIsAvaiable())
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
 
         if (NET.NetWorkIsAvaiable())
             HTTPRequest.Instance.Request(GVs.GET_ALL_CATEGORY_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
@@ -148,6 +190,10 @@ public class HomeController : MonoBehaviour {
                     Utilities.Log("cannot deserialize data to object, error is {0}", e.ToString());
                 }
             });
+        else
+        {
+            requireNetworl_panel.SetActive(true);
+        }
 
         HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY_AVATA))), (d, process) =>
         {
@@ -157,10 +203,11 @@ public class HomeController : MonoBehaviour {
             }
 
         });
+
         //HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY, "C01"))), (d, process) =>
         //{
 
-        //});        
+        //});     
     }
 
 
@@ -197,7 +244,10 @@ public class HomeController : MonoBehaviour {
 
     private void OnDisable()
     {
-        if(cancelCorountineQuitApplication!=null)
+        if (cancelCorountineQuitApplication != null)
             cancelCorountineQuitApplication.Dispose();
+
+        if (cancelCorountineDownloadData != null)
+            cancelCorountineDownloadData.Dispose();
     }
 }

@@ -12,7 +12,7 @@ public class ProfileScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        int count = GVs.USER_LIST_MODEL.userModels.Length;
+        int count = GVs.USER_LIST_MODEL.Count();
         Vector3 v3 = userItem.transform.localPosition;
         v3.y += 380;
         for (int i = 0; i < count; i++)
@@ -92,7 +92,7 @@ public class ProfileScript : MonoBehaviour
             int i = int.Parse(s);
             GVs.CURRENT_USER_EDIT = i;
             GVs.CURRENT_USER_EDIT_MODEL = GVs.USER_LIST_MODEL.Get(GVs.CURRENT_USER_EDIT).Clone();
-            if (GVs.USER_LIST_MODEL.userModels.Length == 1)
+            if (GVs.USER_LIST_MODEL.Count() == 1)
             {
                 GVs.CURRENT_USER_MODEL = GVs.USER_LIST_MODEL.Get(GVs.CURRENT_USER_EDIT).Clone();
                 GVs.CURRENT_USER_EDIT_MODEL = GVs.CURRENT_USER_MODEL;

@@ -26,7 +26,7 @@ public class ToggleScript : MonoBehaviour {
     public Text textComfirm;
     public Button Pnl_Recording;
     public GameObject pause;
-    public GameObject textTimeTMPro;
+    public GameObject textTime;
     void Start() {
 
         doubleTapGesture.Tapped += tappedHandler;
@@ -106,8 +106,8 @@ public class ToggleScript : MonoBehaviour {
         Pnl_Recording.onClick.AddListener(() =>
         {
             pause.SetActive(!pause.activeSelf);
-            if (!textTimeTMPro.activeSelf)
-                textTimeTMPro.SetActive(true);
+            if (!textTime.activeSelf)
+                textTime.SetActive(true);
         });
     }
 

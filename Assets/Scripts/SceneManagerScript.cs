@@ -159,5 +159,8 @@ public class SceneManagerScript : MonoBehaviour
         SceneManager.LoadScene("TemplateNGUIScene");
     }
 
-
+    public void StartPreloadScene()
+    {
+        SceneManager.LoadScene("HomeScene", LoadSceneMode.Single);
+    }
 }

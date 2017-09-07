@@ -77,7 +77,7 @@ class WarpPerspective : MonoBehaviour
 
         const float SCREEN_RATIO1 = 0.75f;   // SAMSUNG
         const float SCREEN_RATIO2 = 0.658f;  // HUAWEI
-        const float SCREEN_RATIO3 = 0.5625;  //VIVO 
+        const float SCREEN_RATIO3 = 0.5625f;  //VIVO 
 
         Utilities.Log("device model is {0}, device name is {1}, device type is {2}", SystemInfo.deviceModel, SystemInfo.deviceName, SystemInfo.deviceType);
         float uniformScale = 1.1f;

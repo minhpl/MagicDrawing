@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,7 @@ using UnityEngine.UI;
 
 public class ResultScripts : MonoBehaviour {
     public static string videoPath = null;
+    public static string imagePath = null;
     public static Texture2D texture;
     public static string title;
     //public static Size sizeVideo;
@@ -18,12 +20,16 @@ public class ResultScripts : MonoBehaviour {
     public RawImage rimg;
     public GameObject panel;
     public GameObject btnPlay;
+    public Button btnStop;
     public Canvas canvas;
     public Button BackButton;
     public UnityEngine.UI.Text tit;
     public RawImage rimgTitle;
     public MoviePlayer moviePlayer;
     public Button btnShareFacebooks;
+    public Button btnDelete;
+    public GameObject Pnl_Popup;
+    public Button OKButton;
     private Texture2D texVideo;
     private Mat frame;
     private AspectRatioFitter rawImageAspect;
@@ -37,6 +43,25 @@ public class ResultScripts : MonoBehaviour {
 
     private void Awake()
     {
+        btnPlay.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            btnStop.gameObject.SetActive(true);
+            btnPlay.gameObject.SetActive(false);
+        });
+
+        btnStop.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            btnStop.gameObject.SetActive(false);
+            btnPlay.gameObject.SetActive(true);
+        });
+
+        btnStop.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            moviePlayer.play = false;
+            moviePlayer.videoFrame = 0;
+            rimg.texture = texture;
+        });
+
         if (mode == MODE.REWATCH_RESULT)
         {
             tit.text = title;
@@ -44,17 +69,42 @@ public class ResultScripts : MonoBehaviour {
             tit.gameObject.SetActive(true);
         }
 
-        Debug.Log(BackButton != null);        
+        if (mode == MODE.FISRT_RESULT)
+        {
+            btnDelete.gameObject.SetActive(false);
+        }
+        else
+        {
+            btnDelete.gameObject.SetActive(true);
+        }
 
         btnShareFacebooks.onClick.AddListener(() =>
-        {
+        {            
+            Pnl_Popup.SetActive(true);
+            return;
             ShareFacebook.filePath = videoPath;
             var shareFacebook = GetComponent<ShareFacebook>();
             shareFacebook.onlogin();
-        });  
+        });
 
+        btnDelete.onClick.AddListener(() =>
+        {
+            Debug.LogFormat("ImagePath is {0}", imagePath);
+            Debug.LogFormat("VideoPath is {0}", videoPath);
+            File.Delete(imagePath);
+            if(File.Exists(videoPath))
+                File.Delete(videoPath);
+            GFs.BackToPreviousScene();
+        });
 
-        if(Application.platform == RuntimePlatform.Android)
+        OKButton.onClick.AddListener(() =>
+        {
+            Pnl_Popup.SetActive(false);
+        });
+
+        moviePlayer.OnStop += MoviePlayer_OnStop;
+
+        if (Application.platform == RuntimePlatform.Android)
         {
             cancelCorountineBackButtonAndroid = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true)
                 .Subscribe(_ =>
@@ -77,6 +127,7 @@ public class ResultScripts : MonoBehaviour {
                 });
         }
     }
+
 
     void Start () {
 
@@ -120,7 +171,7 @@ public class ResultScripts : MonoBehaviour {
             btnPlay.SetActive(true);
             moviePlayer.Load(videoPath);
             moviePlayer.play = false;
-            moviePlayer.loop = true;
+            moviePlayer.loop = false;
         }
         else btnPlay.SetActive(false);    
     }
@@ -145,12 +196,30 @@ public class ResultScripts : MonoBehaviour {
         rimg.texture = null;
         var isPlay = moviePlayer.play;
         if (isPlay == false)
-        { 
-            moviePlayer.play = true;
-        }
-        else
         {
-            moviePlayer.play = false;            
-        }        
+            moviePlayer.loop = true;
+            moviePlayer.play = true;
+            moviePlayer.OnLoop += MoviePlayer_OnLoop;
+        }   
     }
+
+    private void MoviePlayer_OnPlay(MoviePlayerBase caller)
+    {
+        moviePlayer.loop = false;
+    }
+
+    private void MoviePlayer_OnLoop(MoviePlayerBase caller)
+    {
+        Debug.Log("OnLopp heheh");
+        moviePlayer.loop = false;
+        moviePlayer.play=false;
+    }
+
+    private void MoviePlayer_OnStop(MoviePlayerBase caller)
+    {
+        rimg.texture = texture;
+        btnStop.gameObject.SetActive(false);
+        btnPlay.gameObject.SetActive(true);
+    }
+
 }
