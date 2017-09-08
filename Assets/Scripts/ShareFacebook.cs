@@ -133,7 +133,7 @@ public class ShareFacebook : MonoBehaviour {
 			yield return null;
 			Debug.Log("progress : "+www.progress);
 		}
-		Debug.Log("size : "+www.size);
+		Debug.Log("size : "+www.size/1024/1024);
 		var wwwForm = new WWWForm();
 		wwwForm.AddBinaryData("file", www.bytes, "Video.MOV","multipart/form-data");
 		wwwForm.AddField("title", "Hello World");

@@ -358,7 +358,10 @@ public class DrawingScripts : MonoBehaviour {
                 if (isRecording)
                 {
                     numberFrame++;
-                    webcamVideoCapture.write(displayMat);
+                    if (numberFrame % 5 == 1)
+                    {
+                        webcamVideoCapture.write(displayMat);
+                    }
                     var timeLapse = (int)stopWatch.Elapsed.TotalSeconds;
                     string minSec = string.Format("{0}:{1:00}", (int)(timeLapse / 60f), (int)timeLapse % 60);
                     txtTime.text = minSec;

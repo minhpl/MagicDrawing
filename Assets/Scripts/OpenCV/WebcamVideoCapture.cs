@@ -9,7 +9,7 @@ using UnityEngine;
 class WebcamVideoCapture
 {
     private int codec;
-    public const int FPS = 120;
+    public const int FPS = 24;
     public VideoWriter writer;        
     static public string filename = null;
     static public string filenameWithoutExt = null;
