@@ -15020,6 +15020,11 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>This icon is used for Spotlight searches. (iOS only).</para>
       </summary>
     </member>
+    <member name="F:UnityEditor.IconKind.Store">
+      <summary>
+        <para>This icon is used by the iOS App Store.</para>
+      </summary>
+    </member>
     <member name="T:UnityEditor.IHVImageFormatImporter">
       <summary>
         <para>Use IHVImageFormatImporter to modify Texture2D import settings for Textures in IHV (Independent Hardware Vendor) formats such as .DDS and .PVR from Editor scripts.</para>
@@ -20741,12 +20746,28 @@ See Also: PhysicsVisualizationSettings.</para>
         <para>Returns the list of assigned icons for the specified platform.</para>
       </summary>
       <param name="platform"></param>
+      <param name="kind"></param>
+    </member>
+    <member name="M:UnityEditor.PlayerSettings.GetIconsForTargetGroup(UnityEditor.BuildTargetGroup,UnityEditor.IconKind)">
+      <summary>
+        <para>Returns the list of assigned icons for the specified platform.</para>
+      </summary>
+      <param name="platform"></param>
+      <param name="kind"></param>
     </member>
     <member name="M:UnityEditor.PlayerSettings.GetIconSizesForTargetGroup(UnityEditor.BuildTargetGroup)">
       <summary>
         <para>Returns a list of icon sizes for the specified platform.</para>
       </summary>
       <param name="platform"></param>
+      <param name="kind"></param>
+    </member>
+    <member name="M:UnityEditor.PlayerSettings.GetIconSizesForTargetGroup(UnityEditor.BuildTargetGroup,UnityEditor.IconKind)">
+      <summary>
+        <para>Returns a list of icon sizes for the specified platform.</para>
+      </summary>
+      <param name="platform"></param>
+      <param name="kind"></param>
     </member>
     <member name="M:UnityEditor.PlayerSettings.GetIncrementalIl2CppBuild(UnityEditor.BuildTargetGroup)">
       <summary>
@@ -21716,6 +21737,15 @@ See Also: PhysicsVisualizationSettings.</para>
       </summary>
       <param name="platform"></param>
       <param name="icons"></param>
+      <param name="kind"></param>
+    </member>
+    <member name="M:UnityEditor.PlayerSettings.SetIconsForTargetGroup(UnityEditor.BuildTargetGroup,UnityEngine.Texture2D[],UnityEditor.IconKind)">
+      <summary>
+        <para>Assign a list of icons for the specified platform.</para>
+      </summary>
+      <param name="platform"></param>
+      <param name="icons"></param>
+      <param name="kind"></param>
     </member>
     <member name="M:UnityEditor.PlayerSettings.SetIncrementalIl2CppBuild(UnityEditor.BuildTargetGroup,System.Boolean)">
       <summary>
