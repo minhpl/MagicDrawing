@@ -1,4 +1,4 @@
-Android
+iOS
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.UI.TextureSwitch
 70d9a5dfdd92296522528a98d2f5ed68 Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.PenCursor
 78a28a48c2ded27a3fedcad1f807ebf3 Assembly-CSharp.dll:.LogoCinematic
@@ -15,7 +15,6 @@ c906602d9b43cc5e075f80e1d8ae7c79 Assembly-CSharp.dll:TMPro.Examples.Benchmark01_
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.StereoBMExample
 75325e41070c81b54c3ba1037bd497e0 Assembly-CSharp.dll:UTJ.FrameCapturer.AudioRecorder
 2493304bac448739d50f708564415122 Assembly-CSharp.dll:.GeneralBasics2dCS
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.MobileNetSSDWebCamTextureExample
 dc07d7ad69b399a46e92c483bf1c04ca UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsTracker
 a4679245d992f9784666cfa4339d7268 Assembly-CSharp.dll:.TweenOrthoSize
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
@@ -148,14 +147,12 @@ a4ba336b18824674218b3458f2e4d35c Assembly-CSharp.dll:.UIButtonColor
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Facebook.Unity.Example.Pay
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.TrackingExample
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GeneralCameraShake
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnitySample.ThinPlateSplineShapeTransformerExample
 25818c4379988e4e8c82ac46d94dea5c Assembly-CSharp-firstpass.dll:.EveryplayInGameFaceCam
 dac154b38532fd5a92a95b0a9a386115 Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.ObjectCursor
 217dc0a3d36fe50c135ffac0cc82c17a Assembly-CSharp.dll:.PreloadScript
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Multiuser.Logo
 ae7a0454ef6e3502360ce61e435fa50a Assembly-CSharp.dll:.HistoryNGUIScripts
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.UICenterOnClick
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.TensorFlowWebCamTextureExample
 6dd4b171fcb37229a7780ea8f47334c9 Assembly-CSharp.dll:.JsonNetSample
 025207ff21c5eafb7ebe5697443cf5eb Assembly-CSharp.dll:.EnvelopContent
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SetColorPickerColor
@@ -304,7 +301,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 a2398cab0afec05bd8b6b70c007a516c Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.UI.GradientTexture
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservablePointerExitTrigger
 50a0fa002cfc67638c87a901e46b763e Assembly-CSharp.dll:TMPro.Examples.TMP_TextSelector_B
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.FaceDetectionWebCamTextureExample
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.WebCamTextureFaceDetectionExample
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Facebook.Unity.Example.DialogShare
 877a57745159ed5125e6bc4bb667bc9f Assembly-CSharp.dll:.TweenPosition
 6db4996b92a306db1bf36bdbac22c304 Assembly-CSharp.dll:.CannyEdgeDetector
@@ -322,7 +319,6 @@ a4679245d992f9784666cfa4339d7268 Assembly-CSharp.dll:.TweenFOV
 b2b7fe871a51c58a929bd270b5fb0041 Assembly-CSharp.dll:.UIPlayAnimation
 29c1b1e291f02181bb9f6d627e944a72 Assembly-CSharp.dll:.SobelEdgeDetector
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.CheckFPS
-547b7939e8640e015ddfbbff71d8be17 Assembly-CSharp.dll:OpenCVForUnitySample.VideoWriterExample
 ef09686cacab03d94a8cc14711428c6b Assembly-CSharp.dll:.DownloadTexture
 020550babdb991365f61c5bffe1f4f52 Assembly-CSharp.dll:TMPro.Examples.Benchmark03
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Facebook.Unity.Example.GraphRequest
@@ -458,7 +454,7 @@ b8f04bdad423045528c67dfa4c3dca0d Assembly-CSharp.dll:TMPro.Examples.VertexShakeA
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample09_EventHandling
 3de465526050d8c52418b7a22cbcc972 Assembly-CSharp.dll:.Spin
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservablePointerDownTrigger
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.CircleDetectionExample
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.WebCamTextureCircleDetectionExample
 d32dd1e592cd63449e0027069541b421 Assembly-CSharp.dll:.UIPlaySound
 c1fa312bc75f65840a2d531ca0166207 Assembly-CSharp.dll:TouchScript.Examples.Tap.Spawn
 d78403ea814ebb39fb992bd3488f0709 Assembly-CSharp.dll:.TweenTransform
@@ -485,7 +481,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 d146d3d8148b2f35a8c7980d63a88f0e Assembly-CSharp.dll:.UICursor
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.InpaintExample
 d633212d6f78342331a42d3de880caf9 Assembly-CSharp.dll:TouchScript.Examples.KillMe
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.AsynchronousFaceDetectionWebCamTextureExample
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.WebCamTextureAsyncFaceDetectionExample
 2812764adab4962e912837773b0635ed Assembly-CSharp.dll:UnityEngine.UI.Extensions.UIFlippable
 8e47139dee354a0bdf94df00cf24b3bd Assembly-CSharp.dll:TouchScript.Gestures.ReleaseGesture
 154a7d6ef9630ee69cfa42695dd50703 Assembly-CSharp.dll:.TweenRotation
@@ -495,21 +491,6 @@ d633212d6f78342331a42d3de880caf9 Assembly-CSharp.dll:TouchScript.Examples.KillMe
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Colors.Circle
 0189d52198025e02a31dab4f2f816848 Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.Clustered.ClusteredTransformGesture
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ShareFacebook
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Mobile.Android.AndroidFacebookGameObject
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Mobile.Android.AndroidFacebookLoader
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.AsyncRequestString
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Canvas.CanvasFacebookGameObject
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Canvas.CanvasFacebookLoader
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Editor.EditorFacebookGameObject
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Editor.EditorFacebookLoader
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Editor.Dialogs.EmptyMockDialog
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.FacebookScheduler
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.FB
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Mobile.IOS.IOSFacebookGameObject
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Mobile.IOS.IOSFacebookLoader
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Canvas.JsBridge
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Editor.Dialogs.MockLoginDialog
-05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Editor.Dialogs.MockShareDialog
 da9f29ffd5c4f0ac8282bf265db79688 Assembly-CSharp.dll:.TypewriterEffect
 e7bda644d11f91c079b745726ebac0d4 Assembly-CSharp.dll:.SelectBoxScript
 87850b8e331cb17df6147150299d2208 Assembly-CSharp.dll:.UIColorPicker
@@ -559,7 +540,6 @@ a36d6541b3ca9c61d7938dcd4cc9cdf0 Assembly-CSharp.dll:UnityEngine.UI.Extensions.L
 f0f0ab6b8a39d0572cfa4ea315d84fbf Assembly-CSharp.dll:TMPro.Examples.Benchmark04
 cde49f8b65b330a3d5a092cd8f503d03 Assembly-CSharp.dll:UnityEngine.UI.Extensions.InputFieldEnterSubmit
 637d9c63f1b13e88562f25a79473a1f9 Assembly-CSharp.dll:UnityEngine.UI.Extensions.TileSizeFitter
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.TextDetectionExample
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.UIDragDropRoot
 f0d54179fe98107022c3ed2627a08a18 Assembly-CSharp.dll:.LookAtTarget
 54dd90a6359b2b57a10b0f9a1f0d173d Assembly-CSharp.dll:.UIAtlas
@@ -623,7 +603,6 @@ d62f60ad5ecff73b76da2ea09c712ada Assembly-CSharp.dll:.UIItemStorage
 b39130012d9305920643c74c163a189f Assembly-CSharp.dll:UnityEngine.UI.Extensions.FlowLayoutGroup
 34cc26eef60610038d95a74c1fe52bf9 Assembly-CSharp.dll:.AvataScript
 57bf8c7b0c4e3f2507ca692e798d298b Assembly-CSharp.dll:OpenCVForUnityExample.WebCamTextureToMatExample
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.MobileNetSSDExample
 f55492bcd9d3c95b5981d8fd2428b885 Assembly-CSharp.dll:.UIDragDropItem
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Facebook.Unity.Example.AppInvites
 afc52d27c3ec0bd47909e81bd45fbffa Assembly-CSharp.dll:TMPro.TMP_TextEventHandler
@@ -633,7 +612,6 @@ ff2629f91a8e34f209aa735f6395b0c0 Assembly-UnityScript.dll:.GeneralBasicJS
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableRectTransformTrigger
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Cube.CustomPointerProxy
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TMPro.Examples.VertexColorCycler
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SceneManagerScript
 60eed870167e94563437af95bcc883f9 Assembly-CSharp.dll:TouchScript.Examples.Portal.Rotator
 48ddff96f17b93c27762041529c640e1 Assembly-UnityScript.dll:.OldGUIExamplesJS
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LanguageSelection
@@ -675,7 +653,7 @@ af7666733efcc974926d7d470e1732a6 Assembly-CSharp.dll:TMPro.Examples.SkewTextExam
 e7ae6e9ee8a8a6b2d7860a7212a8416e Assembly-CSharp.dll:.EquipRandomItem
 697b2a99286e9715f6a9eb40c1a24c2f Assembly-CSharp.dll:.UI2DSpriteAnimation
 99ca7431436b7d3343aaef26acba433a Assembly-CSharp.dll:.UISprite
-dbf94a43ec23ca8d598849bce5fbd83b Assembly-CSharp.dll:OpenCVForUnityExample.ArUcoExample
+dbf94a43ec23ca8d598849bce5fbd83b Assembly-CSharp.dll:OpenCVForUnityExample.ArUcoTexture2DExample
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GeneralEventsListenersCS
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.MatchShapesExample
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Facebook.Unity.Example.AppRequests

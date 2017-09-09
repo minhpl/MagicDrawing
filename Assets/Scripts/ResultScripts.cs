@@ -1,4 +1,4 @@
-﻿﻿using OpenCVForUnity;
+﻿using OpenCVForUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ public class ResultScripts : MonoBehaviour {
 
     private void Awake()
     {
-      btnPlay.GetComponent<Button>().onClick.AddListener(() =>
+        btnPlay.GetComponent<Button>().onClick.AddListener(() =>
         {
             btnStop.gameObject.SetActive(true);
             btnPlay.gameObject.SetActive(false);
@@ -79,21 +79,12 @@ public class ResultScripts : MonoBehaviour {
         }
 
         btnShareFacebooks.onClick.AddListener(() =>
-
-        {
-            //Pnl_Popup.SetActive(true);
-            //return;
-            try
-            {
-                ShareFacebook.filePath = videoPath;
-                var shareFacebook = GetComponent<ShareFacebook>();
-                shareFacebook.onlogin();
-            }
-            catch(Exception e)
-            {
-                Utilities.LogFormat("Error is {0}", e.ToString());
-                Utilities.LogFormat("Stacktrace is {0}", e.StackTrace.ToString());
-            }
+        {            
+//            Pnl_Popup.SetActive(true);
+//            return;
+            ShareFacebook.filePath = videoPath;
+            var shareFacebook = GetComponent<ShareFacebook>();
+            shareFacebook.onlogin();
         });
 
         btnDelete.onClick.AddListener(() =>
@@ -148,6 +139,7 @@ public class ResultScripts : MonoBehaviour {
 			var mb = kb >> 10;
 			Debug.LogFormat("File size is {0} bytes, {1} kb, {2} mb", bytes, kb, mb);
 		}
+
 
 		if (mode == MODE.FISRT_RESULT)
         {
