@@ -86,6 +86,11 @@ public class Utilities
         Debug.LogFormat("mlogcat " + msgFormat, args);
     }
 
+    public static void LogFormat(string msgFormat, params object[] args)
+    {
+        Debug.LogFormat("mlogcat " + msgFormat, args);
+    }
+
     public static string customFmts = "yyyyMMd_HHmmss";
 
 

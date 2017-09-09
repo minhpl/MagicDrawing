@@ -43,6 +43,13 @@ public class ResultScripts : MonoBehaviour {
 
     private void Awake()
     {
+        var fileInfo = new FileInfo(videoPath);
+        var bytes = fileInfo.Length;
+        var kb = bytes / (1 >> 10);
+        var mb = bytes / (kb >> 1);
+        Debug.LogFormat("FileSize is {0} bytes, {1} kbytes, {2} mbytes", bytes, kb, mb);
+
+
         btnPlay.GetComponent<Button>().onClick.AddListener(() =>
         {
             btnStop.gameObject.SetActive(true);
@@ -79,12 +86,20 @@ public class ResultScripts : MonoBehaviour {
         }
 
         btnShareFacebooks.onClick.AddListener(() =>
-        {            
-            Pnl_Popup.SetActive(true);
-            return;
-            ShareFacebook.filePath = videoPath;
-            var shareFacebook = GetComponent<ShareFacebook>();
-            shareFacebook.onlogin();
+        {
+            //Pnl_Popup.SetActive(true);
+            //return;
+            try
+            {
+                ShareFacebook.filePath = videoPath;
+                var shareFacebook = GetComponent<ShareFacebook>();
+                shareFacebook.onlogin();
+            }
+            catch(Exception e)
+            {
+                Utilities.LogFormat("Error is {0}", e.ToString());
+                Utilities.LogFormat("Stacktrace is {0}", e.StackTrace.ToString());
+            }
         });
 
         btnDelete.onClick.AddListener(() =>

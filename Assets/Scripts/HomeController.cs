@@ -46,7 +46,6 @@ public class HomeController : MonoBehaviour {
             {
                 requireNetworl_panel.SetActive(false);
             }
-
         }));
 
         BtnX.onClick.Add(new EventDelegate(() =>
