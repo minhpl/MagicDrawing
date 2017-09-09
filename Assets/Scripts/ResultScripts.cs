@@ -1,4 +1,4 @@
-﻿using OpenCVForUnity;
+﻿﻿using OpenCVForUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,14 +43,7 @@ public class ResultScripts : MonoBehaviour {
 
     private void Awake()
     {
-        var fileInfo = new FileInfo(videoPath);
-        var bytes = fileInfo.Length;
-        var kb = bytes / (1 >> 10);
-        var mb = bytes / (kb >> 1);
-        Debug.LogFormat("FileSize is {0} bytes, {1} kbytes, {2} mbytes", bytes, kb, mb);
-
-
-        btnPlay.GetComponent<Button>().onClick.AddListener(() =>
+      btnPlay.GetComponent<Button>().onClick.AddListener(() =>
         {
             btnStop.gameObject.SetActive(true);
             btnPlay.gameObject.SetActive(false);
