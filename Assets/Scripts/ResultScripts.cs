@@ -86,6 +86,7 @@ public class ResultScripts : MonoBehaviour {
         }
 
         btnShareFacebooks.onClick.AddListener(() =>
+
         {
             //Pnl_Popup.SetActive(true);
             //return;
@@ -146,7 +147,16 @@ public class ResultScripts : MonoBehaviour {
 
     void Start () {
 
-        if (mode == MODE.FISRT_RESULT)
+		if (!string.IsNullOrEmpty(videoPath))
+		{
+			var fileInfo = new FileInfo(videoPath);
+			var bytes = fileInfo.Length;
+			var kb = bytes >> 10;
+			var mb = kb >> 10;
+			Debug.LogFormat("File size is {0} bytes, {1} kb, {2} mb", bytes, kb, mb);
+		}
+
+		if (mode == MODE.FISRT_RESULT)
         {
             rimgTitle.gameObject.SetActive(true);
             tit.gameObject.SetActive(false);
