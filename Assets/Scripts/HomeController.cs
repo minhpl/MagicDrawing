@@ -21,13 +21,8 @@ public class HomeController : MonoBehaviour {
     public UISlider UISliderProgressDownload;
     IDisposable cancelCorountineDownloadData;
 
-
     private void Awake()
     {
-        debug.log("Important message. Color it red and show in the console");
-        debug.log(1, "Debug message from a specific category. Custom color and important level (will always print)");    
-        debug.log(2, "Debug message from a specific category, moderate importantce (marked as debug level 5)", 5);
-        debug.log(3, "Debug message, same as previous but will also print gameObject containing this call, it's name as well as highlight it from console+click)", 1, gameObject);
         //PlayerPrefs.DeleteAll();
         //PlayerPrefs.Save();
         Screen.orientation = ScreenOrientation.Portrait;
@@ -252,7 +247,6 @@ public class HomeController : MonoBehaviour {
 
         //});     
     }
-
 
     private void Start()
     {

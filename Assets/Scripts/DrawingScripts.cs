@@ -15,8 +15,8 @@ using System.IO;
 using TMPro;
 
 public class DrawingScripts : MonoBehaviour {
-    public GameObject goCam;
-    public GameObject goModel;
+    public GameObject goDisplayCamera;
+    public GameObject goDisplayModel;
     public Slider sliderLine;
     public Slider sliderContrast;
     public Slider sliderTest;
@@ -71,9 +71,15 @@ public class DrawingScripts : MonoBehaviour {
     private IDisposable cancelCorountineBlinkTime;
     private IDisposable cancelCoroutineBackBtnAndroid;
     private IDisposable cancelCorountineSnapImage;
+    private const int FRAME_SKIP = 10;
+    private const int MAX_LENGTH_RESULT_VIDEO = 30; //seconds 
+    private int numberFrameSave = 0;
+    private Mat frame;
+    private Size size;
 
     private void Awake()
     {
+        frame = new Mat();
         filtermode = FILTERMODE.LINE;
         if (MakePersistentObject.Instance)
             MakePersistentObject.Instance.gameObject.SetActive(false);
@@ -89,19 +95,15 @@ public class DrawingScripts : MonoBehaviour {
         backBtn.onClick.AddListener(() =>
         {
             panelComfirm.SetActive(true);
-        });
-        //var cancelPopup = panelComfirm.transform.Find("cancel").GetComponent<Button>();
+        });        
         cancel.onClick.AddListener(() =>
         {
             panelComfirm.SetActive(false);
         });
-
         cancelCoroutineBackBtnAndroid = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
         {
             panelComfirm.SetActive(true);
-        });
-
-        //var agreePopup = panelComfirm.transform.Find("agree").GetComponent<Button>();
+        });        
         aggre.onClick.AddListener(() =>
         {
             if ( webcamVideoCapture.filePath!=null)
@@ -114,7 +116,6 @@ public class DrawingScripts : MonoBehaviour {
             }
             GFs.BackToPreviousScene();            
         });
-
         tickBtn.onClick.AddListener(() =>
         {
             if (!cancelBtn.gameObject.activeSelf)
@@ -127,13 +128,11 @@ public class DrawingScripts : MonoBehaviour {
                 IDisposable cancelCorountineSnapImage = Observable.FromCoroutine(SaveMasterpiece).Subscribe();
             }
         });
-
         cancelBtn.onClick.AddListener(() =>
         {
             webCamTextureToMatHelper.Play();
             stopWatch.Start();
         });
-
         if (sliderTest)
         {
             var onSliderTeststream = sliderTest.onValueChanged.AsObservable();
@@ -144,7 +143,6 @@ public class DrawingScripts : MonoBehaviour {
                 rimgcam.rectTransform.localScale = new Vector3(scale, scale, scale);
             });
         }
-
         Button_Recording.onClick.AddListener(() =>
         {
             if (!pause.activeSelf)
@@ -160,12 +158,12 @@ public class DrawingScripts : MonoBehaviour {
                 stopWatch.Stop();
                 cancelCorountineBlinkTime = Observable.FromCoroutine(blinkTime).Subscribe();
             }
-        }); 
+        });        
     }
  
     void Start () {        
-        rimgcam = goCam.GetComponent<RawImage>();
-        rimgmodel = goModel.GetComponent<RawImage>();
+        rimgcam = goDisplayCamera.GetComponent<RawImage>();
+        rimgmodel = goDisplayModel.GetComponent<RawImage>();
         rimgmodel.color = new Color(255, 255, 255, opaque);
         webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
         warpPerspective = gameObject.GetComponent<WarpPerspective>();        
@@ -200,7 +198,7 @@ public class DrawingScripts : MonoBehaviour {
                 warpPerspective.Init(webCamTextureToMatHelper.GetMat());
                 Mat camMat = webCamTextureToMatHelper.GetMat();
                             
-                var rawImageCamera = goCam.GetComponent<RawImage>();
+                var rawImageCamera = goDisplayCamera.GetComponent<RawImage>();
                 int rawImageWidth = (int)rawImageCamera.rectTransform.rect.width;
                 int rawImageHeight = (int)rawImageCamera.rectTransform.rect.height;
                 var matWidth = rgbaMat.width();
@@ -228,7 +226,7 @@ public class DrawingScripts : MonoBehaviour {
                 texCamCrop = new Texture2D(subWidth, subHeight, TextureFormat.RGBA32, false);
                 texCam = new Texture2D(matWidth, matHeight, TextureFormat.RGBA32, false);
                 bufferColor = new Color32[subWidth * subHeight];
-                var size = new Size(subWidth, subHeight);
+                size = new Size(subWidth, subHeight);
                 webcamVideoCapture = new WebcamVideoCapture(size, true);
                 cancelCorountineWorker = Observable.FromMicroCoroutine(Worker).Subscribe();
                 stopWatch = new System.Diagnostics.Stopwatch();
@@ -246,7 +244,8 @@ public class DrawingScripts : MonoBehaviour {
             else
             {
                 var categoryID = GVs.CATEGORY_LIST.data[5]._id;
-                imgPath = GFs.getAppDataDirPath() + GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID].dir + "/" + "C06T001.jpg";        
+                imgPath = GFs.getAppDataDirPath() + GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID].dir + "/" + "C06T001.png";
+                Debug.Log(imgPath);
             }
             
             texModel = GFs.LoadPNGFromPath(imgPath);
@@ -304,7 +303,7 @@ public class DrawingScripts : MonoBehaviour {
         Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
         rimgmodel.texture = texEdges;
         utilities = new Utilities();
-        goModel.SetActive(true);
+        goDisplayModel.SetActive(true);
         loaded = true;
 
         cancelCorountineTurnOffTouchInput = Observable.FromMicroCoroutine(turnOffTouchInput).Subscribe();
@@ -340,9 +339,7 @@ public class DrawingScripts : MonoBehaviour {
             }            
         }
     }
-
-    private int numberFrame = 0;
-    
+    int numberFrame = 0;
     IEnumerator Worker()
     {
         while (true)
@@ -353,13 +350,14 @@ public class DrawingScripts : MonoBehaviour {
                 Mat rgbaMat = webCamTextureToMatHelper.GetMat();
                 warp = warpPerspective.warpPerspective(rgbaMat);
                 displayMat = warp.submat(cropRect);
-                Utils.matToTexture2D(displayMat, texCamCrop, bufferColor);
-                //Utils.matToTexture2D(warp, texCam, bufferColor);
+                Utils.matToTexture2D(displayMat, texCamCrop, bufferColor);                
                 if (isRecording)
                 {
                     numberFrame++;
-                    if (numberFrame % 5 == 1)
+                    if (numberFrame % FRAME_SKIP == 1)
                     {
+                        numberFrameSave++;
+                        Debug.LogFormat("Number Save Frame = {0}", numberFrameSave);
                         webcamVideoCapture.write(displayMat);
                     }
                     var timeLapse = (int)stopWatch.Elapsed.TotalSeconds;
@@ -373,7 +371,7 @@ public class DrawingScripts : MonoBehaviour {
  
     public void ScaleGoCam(float scaleX)
     {
-        RawImage a = goCam.GetComponent<RawImage>();
+        RawImage a = goDisplayCamera.GetComponent<RawImage>();
         a.rectTransform.localScale = new Vector3(scaleX, 1, 1);
         var w = a.rectTransform.rect.width;
         var needw = w * scaleX;                   
@@ -437,11 +435,16 @@ public class DrawingScripts : MonoBehaviour {
     bool preserveTexture = false;
     IEnumerator SaveMasterpiece()
     {
+        var _numberFrameSave = numberFrameSave;
+        if (webcamVideoCapture.writer != null && !webcamVideoCapture.writer.IsDisposed)
+        {
+            webcamVideoCapture.writer.release();
+        }
         webCamTextureToMatHelper.Play();
         Pnl_Snap.SetActive(true);
         Pnl_Tool.SetActive(false);
         backBtn.gameObject.SetActive(false);
-        goModel.SetActive(false);   
+        goDisplayModel.SetActive(false);   
         float periods = 1f;
         yield return new WaitForSeconds(periods);
         timeCounterSnap.text = "2";
@@ -449,7 +452,7 @@ public class DrawingScripts : MonoBehaviour {
         timeCounterSnap.text = "1";        
         yield return new WaitForSeconds(periods);
         timeCounterSnap.text = null;
-        goCam.GetComponent<RawImage>().texture = null;
+        goDisplayCamera.GetComponent<RawImage>().texture = null;        
         yield return new WaitForSeconds(periods);
         Pnl_Snap.SetActive(false);
         Mat resultMat = warp.submat(cropRect);
@@ -468,25 +471,114 @@ public class DrawingScripts : MonoBehaviour {
         var masterPieceDirPath = GFs.getMasterpieceDirPath();
         var imagePath = masterPieceDirPath + name;
         File.WriteAllBytes(imagePath, resultTexture.EncodeToPNG());
-        WebcamVideoCapture.filename = null;
-        WebcamVideoCapture.filenameWithoutExt = null;
+
         ResultScripts.texture = resultTexture;
         ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;
         ResultScripts.imagePath = imagePath;
         if (webcamVideoCapture != null)
             ResultScripts.videoPath = webcamVideoCapture.filePath;
-
-        Debug.LogFormat("Number frame is "+numberFrame);
-        var lengthInSeconds = numberFrame / (float)WebcamVideoCapture.FPS;
+       
+        var lengthInSeconds = _numberFrameSave / (float)WebcamVideoCapture.FPS;        
         if (lengthInSeconds < 3)
         {
             webcamVideoCapture.writer.release();
             webcamVideoCapture.writer.Dispose();
-            Debug.Log("Video deleted");
             File.Delete(webcamVideoCapture.filePath);
             ResultScripts.videoPath = null;
         }
+        var maxNumberFrame = MAX_LENGTH_RESULT_VIDEO * WebcamVideoCapture.FPS;
+        var redundanceFrame = _numberFrameSave - maxNumberFrame;
 
+        Debug.LogFormat("RedundanceFrame is {0}", redundanceFrame);
+
+        if (redundanceFrame > 0)
+        {           
+            var filePath1 = GFs.getMasterpieceDirPath() + WebcamVideoCapture.filenameWithoutExt + ".avi";
+            var filePath2 = GFs.getMasterpieceDirPath() + WebcamVideoCapture.filenameWithoutExt + "_2.avi";
+            System.IO.File.Move(filePath1, filePath2);
+            
+            var writer = new VideoWriter(filePath1, VideoWriter.fourcc('M', 'J', 'P', 'G'), WebcamVideoCapture.FPS, size);                        
+            VideoCapture cap = new VideoCapture();
+            cap.open(filePath2);
+            Debug.LogFormat("number frame of first video is {0}", cap.get(7));
+            var count = 0;
+            var count2 = 0;
+            
+            if(maxNumberFrame>redundanceFrame)
+            {
+                float ratio = _numberFrameSave / (float)redundanceFrame;
+                int ratioFloor = (int)Math.Floor(ratio);
+                int j = 1;
+                float du = 0;
+                for (;; j++)
+                {
+                    cap.read(frame);
+                    if (frame.empty())
+                    {
+                        break;
+                    }
+
+                    count++;
+                    if (count != ratioFloor)
+                    {  
+                        count2++;
+                        writer.write(frame);
+
+                       
+                    }
+                    else
+                    {
+                        ratioFloor = (int)Math.Floor(ratio + du);
+                        du = ratio + du - ratioFloor;
+                        Debug.Log(j);
+                        Debug.LogFormat("ratio Floor is {0}",ratioFloor);
+                        count = 0;
+                    }
+                    
+                    if (count2 >= maxNumberFrame)
+                        break;
+                }
+                Debug.LogFormat("J = {0}", j);
+            }
+            else
+            {
+                float ratio = _numberFrameSave / (float)maxNumberFrame;
+                int ratioFloor = (int)Math.Floor(ratio);
+                count = 0;
+                float du = 0;
+                int j = 1;
+                for (; ; j++)
+                {
+                    cap.read(frame);
+                    if (frame.empty())
+                    {
+                        break;
+                    }
+
+                    count++;
+                    if (count == ratioFloor)
+                    {
+                        count2++;
+                        writer.write(frame);
+                        
+                        ratioFloor = (int)Math.Floor(ratio+du);
+                        du = ratio + du - ratioFloor;
+                        count = 0;
+                        Debug.LogFormat("ratioFloor is {0}", ratioFloor);
+                        //Debug.LogFormat("ratioFloor is {0}, ratio is {1}", ratioFloor, ratio);
+                    }
+                    
+                    if (count2 >= maxNumberFrame)
+                        break;
+                }
+                Debug.LogFormat("J = {0}", j);
+            }
+            Debug.LogFormat("Number frame of new video is {0}", count2);
+            writer.release();
+            writer.Dispose();
+            cap.release();
+            File.Delete(filePath2);
+        }
         GVs.SCENE_MANAGER.loadResultScene();
     }
     public void OnPushBtnClicked()
@@ -512,7 +604,6 @@ public class DrawingScripts : MonoBehaviour {
         rimgmodel.GetComponent<Transformer>().enabled = false;        
     }
 
-
     IEnumerator blinkTime()
     {
         yield return null;
@@ -522,7 +613,6 @@ public class DrawingScripts : MonoBehaviour {
         while (!isRecording)
         {
             yield return new WaitForSeconds(1);
-            //textTime.SetActive(!textTime.activeSelf);
             textTimeGameObj.SetActive(!textTimeGameObj.activeSelf);
         }
     }

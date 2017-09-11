@@ -26,8 +26,10 @@ class WebcamVideoCapture
                 Directory.CreateDirectory(GFs.getMasterpieceDirPath());
             }  
         }
-        codec = VideoWriter.fourcc('M', 'J', 'P', 'G');        
+        codec = VideoWriter.fourcc('M', 'J', 'P', 'G');
+        Debug.LogFormat("file path is {0}",filePath);
         writer = new VideoWriter(filePath, codec, FPS, size);
+        Debug.LogFormat("is writer open ? {0}", writer.isOpened());
     }
     public void write(Mat img)
     {

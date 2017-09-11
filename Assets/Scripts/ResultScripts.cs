@@ -13,9 +13,8 @@ public class ResultScripts : MonoBehaviour {
     public static string imagePath = null;
     public static Texture2D texture;
     public static string title;
-    //public static Size sizeVideo;
-    //public static float ratioVideo = 1;
-    VideoCapture cap;    
+
+    private VideoCapture cap;    
     private Color32[] buffer;
     public RawImage rimg;
     public GameObject panel;
@@ -80,17 +79,13 @@ public class ResultScripts : MonoBehaviour {
 
         btnShareFacebooks.onClick.AddListener(() =>
         {            
-//            Pnl_Popup.SetActive(true);
-//            return;
             ShareFacebook.filePath = videoPath;
             var shareFacebook = GetComponent<ShareFacebook>();
             shareFacebook.onlogin();
         });
 
         btnDelete.onClick.AddListener(() =>
-        {
-            Debug.LogFormat("ImagePath is {0}", imagePath);
-            Debug.LogFormat("VideoPath is {0}", videoPath);
+        {            
             File.Delete(imagePath);
             if(File.Exists(videoPath))
                 File.Delete(videoPath);
@@ -128,9 +123,7 @@ public class ResultScripts : MonoBehaviour {
         }
     }
 
-
     void Start () {
-
 		if (!string.IsNullOrEmpty(videoPath))
 		{
 			var fileInfo = new FileInfo(videoPath);
@@ -139,7 +132,6 @@ public class ResultScripts : MonoBehaviour {
 			var mb = kb >> 10;
 			Debug.LogFormat("File size is {0} bytes, {1} kb, {2} mb", bytes, kb, mb);
 		}
-
 
 		if (mode == MODE.FISRT_RESULT)
         {
@@ -220,7 +212,6 @@ public class ResultScripts : MonoBehaviour {
 
     private void MoviePlayer_OnLoop(MoviePlayerBase caller)
     {
-        Debug.Log("OnLopp heheh");
         moviePlayer.loop = false;
         moviePlayer.play=false;
     }
