@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2f0d1dc0cdbb7424f9de7d9d2c75f50a
+guid: a172572c1b5998741927646d26375b28
 timeCreated: 1498908656
 licenseType: Free
 TrueTypeFontImporter:
@@ -12,7 +12,12 @@ TrueTypeFontImporter:
   fontName: Quicksand
   fontNames:
   - Quicksand
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 2f0d1dc0cdbb7424f9de7d9d2c75f50a, type: 3}
+  - {fileID: 12800000, guid: 3bb90d91b7df21d4ab7f913c950540ab, type: 3}
+  - {fileID: 12800000, guid: e54b9ae6ff1069e46b63e13f0d82f998, type: 3}
+  - {fileID: 12800000, guid: ca17a408e1273e840bf8d4adf1421951, type: 3}
+  - {fileID: 12800000, guid: 9f879f0db815a8e48a263b97cb75d90e, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

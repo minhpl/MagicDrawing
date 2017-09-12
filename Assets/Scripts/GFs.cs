@@ -124,7 +124,7 @@ public class GFs
         if (File.Exists(GVs.APP_PATH + "/" + filePath))
         {
             fileData = File.ReadAllBytes(GVs.APP_PATH + "/" + filePath);
-            tex = new Texture2D(2, 2);
+            tex = new Texture2D(2, 2, TextureFormat.BGRA32, false);
             tex.LoadImage(fileData);
             uiTextture.mainTexture = tex;
         }
@@ -198,7 +198,7 @@ public class GFs
         if (File.Exists(filePath))
         {
             fileData = File.ReadAllBytes(filePath);
-            tex = new Texture2D(2, 2);
+            tex = new Texture2D(2, 2, TextureFormat.BGRA32, false);
             tex.LoadImage(fileData);
         }
         else

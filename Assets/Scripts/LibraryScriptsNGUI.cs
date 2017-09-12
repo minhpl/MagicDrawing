@@ -89,12 +89,9 @@ public class LibraryScriptsNGUI : MonoBehaviour
         int deviant1024 = (1 << 20) / 8;
         int deviant512 = (1 << 18) / 5;
         UITexture rimageOri = imageItem.transform.Find("icon").GetComponent<UITexture>();
-
-
         //int widthOri = (int)rimageOri.rectTransform.rect.width;
         int widthOri = rimageOri.width;
         int heightOri = rimageOri.height;
-
         var watch = System.Diagnostics.Stopwatch.StartNew();
         var area2048 = (1 << 22) - deviant2048;
         var area1024 = (1 << 20) - deviant1024;
@@ -188,8 +185,8 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         numRectIn2048.Add(j * imageCount + i + 1 - tempNumPacked);
                         tempNumPacked = j * imageCount + i + 1;
                     }
-                    
-                    //texture.Compress(true);
+
+                    texture.Compress(true);
                     go.GetComponent<UIButton>().onClick.Add(new EventDelegate(() =>
                     {
                         if (mode == MODE.CATEGORY)
