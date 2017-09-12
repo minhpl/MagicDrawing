@@ -80,6 +80,8 @@ public class ResultScripts : MonoBehaviour {
         btnShareFacebooks.onClick.AddListener(() =>
         {            
             ShareFacebook.filePath = videoPath;
+            var isVideoExist = File.Exists(videoPath);
+            Debug.LogFormat("is video exist ?? {0}", isVideoExist);
             var shareFacebook = GetComponent<ShareFacebook>();
             shareFacebook.onlogin();
         });

@@ -127,9 +127,10 @@ public class ShareFacebook : MonoBehaviour {
 	{
 		yield return new WaitForEndOfFrame();
         var url = "file:///" + filePath;
-        if(Application.platform == RuntimePlatform.IPhonePlayer)
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
             url = "file://" + filePath;
-		{
+        }
         Debug.Log("url is: " + url);
         WWW www = new WWW(url);
 		while(!www.isDone) {
