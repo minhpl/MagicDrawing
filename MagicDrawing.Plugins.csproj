@@ -429,6 +429,9 @@
     <None Include="Assets\OpenCVForUnity\OpenCV_LICENSE.txt" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
+    <None Include="Assets\OpenCVForUnity\StreamingAssets\text\trained_classifierNM1.xml" />
+    <None Include="Assets\OpenCVForUnity\StreamingAssets\text\trained_classifierNM2.xml" />
+    <None Include="Assets\OpenCVForUnity\StreamingAssets\text\trained_classifier_erGrouping.xml" />
     <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\Unimgpicker\AndroidManifest.xml" />

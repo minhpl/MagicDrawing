@@ -23,7 +23,7 @@ class GVs
     public static string GET_ALL_CATEGORY_URL = SERVER_URL + "users/drawing/getAllCategory";
     public static string GET_JUNIOR_CATEGORY_URL = SERVER_URL + "users/drawing/getJuniorCategory";
     public static string GET_WORD_BY_CATEGORY_URL = SERVER_URL + "users/drawing/getWordByCategory";
-    public static string GET_ALL_AVATA_URL = SERVER_URL + "users/drawing/getAllAvata";
+    public static string GET_ALL_AVATA_URL = SERVER_URL + "users/english/getAllAvata";
     public static string DOWNLOAD_URL = SERVER_URL + "users/drawing/download";
 
 	public static string GET_TEMPLATE_BY_CATEGORY_URL = GVs.SERVER_URL + "users/drawing/getTemplateByCategory";

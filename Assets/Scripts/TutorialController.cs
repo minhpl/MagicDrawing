@@ -39,4 +39,9 @@ public class TutorialController : MonoBehaviour
             GVs.SCENE_MANAGER.StartPreloadScene();
         }
     }
+
+        public void SkipOnClick()
+    {
+            GVs.SCENE_MANAGER.StartPreloadScene();
+    }
 }

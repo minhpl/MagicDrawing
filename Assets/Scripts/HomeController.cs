@@ -11,7 +11,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WW;
 
-public class HomeController : MonoBehaviour {
+public class HomeController : MonoBehaviour
+{
     private IDisposable cancelCorountineQuitApplication;
     public GameObject requireNetworl_panel;
     public UIButton BtnClose;
@@ -29,7 +30,7 @@ public class HomeController : MonoBehaviour {
         Screen.autorotateToLandscapeLeft = false;
         Screen.autorotateToLandscapeRight = false;
         Screen.autorotateToPortrait = false;
-        Screen.autorotateToPortraitUpsideDown = false;            
+        Screen.autorotateToPortraitUpsideDown = false;
         BtnQuitApp.onClick.Add(new EventDelegate(() =>
         {
             Application.Quit();
@@ -89,6 +90,35 @@ public class HomeController : MonoBehaviour {
         }
 
         GFs.LoadData();
+        DownloadAvatas();
+
+    }
+
+    private void DownloadAvatas()
+    {
+        HTTPRequest.Instance.Request(GVs.GET_ALL_AVATA_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
+        {
+            try
+            {
+                Debug.Log(data);
+                GVs.AVATA_LIST_MODEL = (JsonUtility.FromJson<AvataListModel>(data));
+                GFs.SaveAvatas();
+                HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_AVATAS))), (data2, process) =>
+                {
+                    if (process == 1 || process == -404)
+                    {
+                        DownloadCat();
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(e);
+            }
+        });
+    }
+    private void DownloadCat()
+    {
         try
         {
             if (GVs.CATEGORY_LIST != null && GVs.TEMPLATE_LIST_ALL_CATEGORY != null)
@@ -119,10 +149,9 @@ public class HomeController : MonoBehaviour {
         {
             requireNetworl_panel.SetActive(true);
         }
-
         cancelCorountineDownloadData = Observable.FromCoroutine(DownloadData).Subscribe();
-
     }
+
 
     IEnumerator DownloadData()
     {
@@ -142,11 +171,11 @@ public class HomeController : MonoBehaviour {
         if (NET.NetWorkIsAvaiable())
         {
             downloadPopUp.gameObject.SetActive(true);
-            UISliderProgressDownload.value = 0f/100f;
+            UISliderProgressDownload.value = 0f / 100f;
 
             HTTPRequest.Instance.Request(GVs.GET_ALL_CATEGORY_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
             {
-                
+
                 IObservable<float> stream = null;
                 currentProgress += PROGRESS_DOWNLOAD_ALL_CATEGORY;
                 UISliderProgressDownload.value = currentProgress;
@@ -186,8 +215,8 @@ public class HomeController : MonoBehaviour {
                                         {
                                             plusProgress = volumeCategoryProgress * process;
                                             currentProgress += plusProgress;
-                                            Debug.LogFormat("call from thread {0}", index);                                            
-                                            observer.OnCompleted();                                            
+                                            Debug.LogFormat("call from thread {0}", index);
+                                            observer.OnCompleted();
                                         }
                                     });
                                 }
@@ -236,11 +265,11 @@ public class HomeController : MonoBehaviour {
                     Utilities.Log("cannot deserialize data to object, error is {0}", e.ToString());
                 }
             });
-        }            
+        }
         else
         {
             requireNetworl_panel.SetActive(true);
-        }       
+        }
 
         //HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_CATEGORY, "C01"))), (d, process) =>
         //{
@@ -250,13 +279,13 @@ public class HomeController : MonoBehaviour {
 
     private void Start()
     {
-        if(Application.platform==RuntimePlatform.Android)
+        if (Application.platform == RuntimePlatform.Android)
         {
             cancelCorountineQuitApplication = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
             {
                 Application.Quit();
             });
-        }        
+        }
     }
 
     private bool ready1 = false;
@@ -273,7 +302,7 @@ public class HomeController : MonoBehaviour {
     {
         if (ready1 && ready2)
         {
-            LibraryScriptsNGUI.mode = LibraryScriptsNGUI.MODE.CATEGORY;            
+            LibraryScriptsNGUI.mode = LibraryScriptsNGUI.MODE.CATEGORY;
             SceneManager.LoadSceneAsync("LibraryNGUIScene");
             //GVs.SCENE_MANAGER.loadLibraryNGUIScene();
         }

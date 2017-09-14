@@ -1,4 +1,4 @@
-﻿using OpenCVForUnity;
+﻿    using OpenCVForUnity;
 using OpenCVForUnityExample;
 using System;
 using System.Collections;
@@ -79,6 +79,7 @@ public class DrawingScripts : MonoBehaviour {
 
     private void Awake()
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         frame = new Mat();
         filtermode = FILTERMODE.LINE;
         if (MakePersistentObject.Instance)
@@ -357,7 +358,7 @@ public class DrawingScripts : MonoBehaviour {
                     if (numberFrame % FRAME_SKIP == 1)
                     {
                         numberFrameSave++;
-                        Debug.LogFormat("Number Save Frame = {0}", numberFrameSave);
+                        //Debug.LogFormat("Number Save Frame = {0}", numberFrameSave);
                         webcamVideoCapture.write(displayMat);
                     }
                     var timeLapse = (int)stopWatch.Elapsed.TotalSeconds;

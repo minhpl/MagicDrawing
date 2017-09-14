@@ -21,8 +21,18 @@ public class UserScript : MonoBehaviour
     public UIToggle togSoundBG;
     public GameObject deleteUserPopup;
     public GameObject deleteUserButton;
+    public GameObject goAvataPanel;
+
+    public UITexture avata;
+    public Texture defaultAvata;
+    public AvataScript avataScript;
     void Start()
     {
+        defaultAvata = avata.mainTexture;
+        avataScript.handle = (UITexture tex) =>
+        {
+            avata.mainTexture = tex.mainTexture;
+        };
         InitUser();
         SetUser();
         lblCode.text = GVs.LICENSE_CODE;
@@ -48,8 +58,14 @@ public class UserScript : MonoBehaviour
             go.transform.localScale = Vector3.one;
             go.transform.localPosition = v3;
             go.transform.Find("username").gameObject.GetComponent<UILabel>().text = GVs.USER_LIST_MODEL.Get(i).name;
-            //go.transform.Find("lblPoint").gameObject.GetComponent<UILabel>().text = GVs.USER_LIST_MODEL.Get(i).GetPointComplete() + "";
-            // GFs.LoadPNG(GVs.USER_LIST_MODEL.Get(i).avata, go.GetComponent<UITexture>());
+            try
+            {
+                GFs.LoadPNG(GVs.USER_LIST_MODEL.Get(i).avata, go.transform.Find("avata").GetComponent<UITexture>());
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(e);
+            }
             go.SetActive(true);
             // EventDelegate.Set(go.GetComponent<UIButton>().onClick, EditProfileOnCLick);
             go.transform.Find("option").Find("id").gameObject.GetComponent<UILabel>().text = i + "";
@@ -68,7 +84,14 @@ public class UserScript : MonoBehaviour
     private void SetUser()
     {
         lblUsername.text = GVs.CURRENT_USER_MODEL.name;
-        GFs.LoadPNG(GVs.CURRENT_USER_MODEL.avata, userAvata);
+        if (GVs.CURRENT_USER_MODEL.avata == null || GVs.CURRENT_USER_MODEL.avata.Equals(""))
+        {
+            userAvata.mainTexture = defaultAvata;
+        }
+        else
+        {
+            GFs.LoadPNG(GVs.CURRENT_USER_MODEL.avata, userAvata);
+        }
     }
     public void OpenUserInfoOnClick(GameObject go)
     {
@@ -83,7 +106,10 @@ public class UserScript : MonoBehaviour
             SetCurrentUser(id);
             OpenUserInfor(id);
         }
-        else OpenUserInfor();
+        else
+        {
+            OpenUserInfor();
+        }
     }
 
     private void SetCurrentUser(int id)
@@ -113,7 +139,19 @@ public class UserScript : MonoBehaviour
         TweenAlpha.Begin(goUser, 0.3f, 0);
         if (id >= 0)
         {
+            if (GVs.USER_LIST_MODEL.Get(id).avata != null && !GVs.USER_LIST_MODEL.Get(id).avata.Equals(""))
+            {
+                avata.mainTexture = GFs.LoadPNG(GVs.USER_LIST_MODEL.Get(id).avata);
+            }
+            else
+            {
+                avata.mainTexture = defaultAvata;
+            }
             uiUsername.value = GVs.USER_LIST_MODEL.Get(id).name;
+        }
+        else
+        {
+            avata.mainTexture = defaultAvata;
         }
     }
 
@@ -123,6 +161,17 @@ public class UserScript : MonoBehaviour
         goUser.SetActive(true);
         TweenAlpha.Begin(goUser, 0.3f, 1);
         uiUsername.value = "";
+    }
+
+    public void OpenUserAvata()
+    {
+        TweenAlpha.Begin(goAvataPanel, 0f, 0);
+        goAvataPanel.SetActive(true);
+        TweenAlpha.Begin(goAvataPanel, 0.3f, 1);
+    }
+    public void CloseUserAvata()
+    {
+        TweenAlpha.Begin(goAvataPanel, 0.3f, 0);
     }
 
 

@@ -15,7 +15,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
     public GameObject imageItem;
     public GameObject scrollView;
     public UnityEngine.UI.Text TextTitle;    
-    const int deScale = 1;
+    const int deScale = 0;
     const bool USE_PACK = false;
     const int clone = 1;
     public static TemplateDrawingList templateDrawingList;
