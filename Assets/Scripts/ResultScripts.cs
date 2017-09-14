@@ -7,14 +7,16 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Facebook.Unity;
 
-public class ResultScripts : MonoBehaviour {
+public class ResultScripts : MonoBehaviour
+{
     public static string videoPath = null;
     public static string imagePath = null;
     public static Texture2D texture;
     public static string title;
 
-    private VideoCapture cap;    
+    private VideoCapture cap;
     private Color32[] buffer;
     public RawImage rimg;
     public GameObject panel;
@@ -29,10 +31,11 @@ public class ResultScripts : MonoBehaviour {
     public Button btnDelete;
     public GameObject Pnl_Popup;
     public Button OKButton;
+    public Button logoutBtn;
     private Texture2D texVideo;
     private Mat frame;
     private AspectRatioFitter rawImageAspect;
-    public enum MODE { FISRT_RESULT,REWATCH_RESULT};
+    public enum MODE { FISRT_RESULT, REWATCH_RESULT };
     public static MODE mode;
     private int FPS = 60;
     private float currentFPS = 0;
@@ -78,7 +81,7 @@ public class ResultScripts : MonoBehaviour {
         }
 
         btnShareFacebooks.onClick.AddListener(() =>
-        {            
+        {
             ShareFacebook.filePath = videoPath;
             var isVideoExist = File.Exists(videoPath);
             Debug.LogFormat("is video exist ?? {0}", isVideoExist);
@@ -87,9 +90,9 @@ public class ResultScripts : MonoBehaviour {
         });
 
         btnDelete.onClick.AddListener(() =>
-        {            
+        {
             File.Delete(imagePath);
-            if(File.Exists(videoPath))
+            if (File.Exists(videoPath))
                 File.Delete(videoPath);
             GFs.BackToPreviousScene();
         });
@@ -97,6 +100,12 @@ public class ResultScripts : MonoBehaviour {
         OKButton.onClick.AddListener(() =>
         {
             Pnl_Popup.SetActive(false);
+        });
+
+        logoutBtn.onClick.AddListener(() =>
+        {
+            Debug.Log("facebook logout clicked");
+            FB.LogOut();
         });
 
         moviePlayer.OnStop += MoviePlayer_OnStop;
@@ -125,17 +134,18 @@ public class ResultScripts : MonoBehaviour {
         }
     }
 
-    void Start () {
-		if (!string.IsNullOrEmpty(videoPath))
-		{
-			var fileInfo = new FileInfo(videoPath);
-			var bytes = fileInfo.Length;
-			var kb = bytes >> 10;
-			var mb = kb >> 10;
-			Debug.LogFormat("File size is {0} bytes, {1} kb, {2} mb", bytes, kb, mb);
-		}
+    void Start()
+    {
+        if (!string.IsNullOrEmpty(videoPath))
+        {
+            var fileInfo = new FileInfo(videoPath);
+            var bytes = fileInfo.Length;
+            var kb = bytes >> 10;
+            var mb = kb >> 10;
+            Debug.LogFormat("File size is {0} bytes, {1} kb, {2} mb", bytes, kb, mb);
+        }
 
-		if (mode == MODE.FISRT_RESULT)
+        if (mode == MODE.FISRT_RESULT)
         {
             rimgTitle.gameObject.SetActive(true);
             tit.gameObject.SetActive(false);
@@ -159,15 +169,15 @@ public class ResultScripts : MonoBehaviour {
         var canvasRect = canvas.GetComponent<RectTransform>().rect;
         var canvasWidth = canvasRect.width;
         var ratioCanvas = (float)canvasRect.width / canvasRect.height;
-        ratioImage = ratioCanvas;        
+        ratioImage = ratioCanvas;
         var panelAspect = panel.GetComponent<AspectRatioFitter>();
         panel.GetComponent<RectTransform>().sizeDelta = new Vector2(canvasWidth * 0.68f, 1);
         panelAspect.aspectMode = AspectRatioFitter.AspectMode.WidthControlsHeight;
         panelAspect.aspectRatio = ratioCanvas;
-        
-        if(texture!=null)
-        {            
-            rimg.texture = texture;   
+
+        if (texture != null)
+        {
+            rimg.texture = texture;
         }
         if (!string.IsNullOrEmpty(videoPath))
         {
@@ -177,14 +187,14 @@ public class ResultScripts : MonoBehaviour {
             moviePlayer.play = false;
             moviePlayer.loop = false;
         }
-        else btnPlay.SetActive(false);    
+        else btnPlay.SetActive(false);
     }
 
     private void OnDisable()
     {
         if (cancelCorountineBackButtonAndroid != null)
             cancelCorountineBackButtonAndroid.Dispose();
-        videoPath = null;        
+        videoPath = null;
         if (texture != null)
             Destroy(texture);
         if (texVideo != null)
@@ -204,7 +214,7 @@ public class ResultScripts : MonoBehaviour {
             moviePlayer.loop = true;
             moviePlayer.play = true;
             moviePlayer.OnLoop += MoviePlayer_OnLoop;
-        }   
+        }
     }
 
     private void MoviePlayer_OnPlay(MoviePlayerBase caller)
@@ -215,7 +225,7 @@ public class ResultScripts : MonoBehaviour {
     private void MoviePlayer_OnLoop(MoviePlayerBase caller)
     {
         moviePlayer.loop = false;
-        moviePlayer.play=false;
+        moviePlayer.play = false;
     }
 
     private void MoviePlayer_OnStop(MoviePlayerBase caller)
