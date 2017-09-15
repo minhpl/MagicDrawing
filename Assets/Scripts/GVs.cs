@@ -5,13 +5,14 @@ using System.Text;
 using UnityEngine;
 class GVs
 {
+    public static bool DEBUG = true;
     public static string LICENSE_CODE = "PUWCSL";
-	public static string APP_PATH =
-		#if UNITY_ANDROID
-		"data/data/com.MinhViet.Drawing/files";
-		#elif UNITY_IOS || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
+    public static string APP_PATH =
+#if UNITY_ANDROID
+        "data/data/com.MinhViet.Drawing/files";
+#elif UNITY_IOS || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
 		Application.persistentDataPath;
-		#endif
+#endif
     public static string TRAIN_PATH;
 
     public static SceneManagerScript SCENE_MANAGER = new SceneManagerScript();
@@ -26,7 +27,7 @@ class GVs
     public static string GET_ALL_AVATA_URL = SERVER_URL + "users/english/getAllAvata";
     public static string DOWNLOAD_URL = SERVER_URL + "users/drawing/download";
 
-	public static string GET_TEMPLATE_BY_CATEGORY_URL = GVs.SERVER_URL + "users/drawing/getTemplateByCategory";
+    public static string GET_TEMPLATE_BY_CATEGORY_URL = GVs.SERVER_URL + "users/drawing/getTemplateByCategory";
     public static string KEY = "12345678123456781234567812345678";
     public static string IV = "1234567812345678";
 
@@ -51,7 +52,7 @@ class GVs
     public static int PROFILE_CHANGE_AVATA = 3;
     public static int SOUND_SYSTEM = 1;
     public static int SOUND_BG = 1;
-  
+
     public static AvataListModel AVATA_LIST_MODEL = new AvataListModel();
     //-----------------------
     public static Stack<int> TRACE_SCENE = new Stack<int>();
@@ -68,5 +69,5 @@ public class COLOR
     public static string BLUE = "#0066ff";
     public static string CYAN = "#11cfe8";
     public static string GRAY = "#5d5d5d";
-    public static string YELLOW = "#ffd916";    
+    public static string YELLOW = "#ffd916";
 }
