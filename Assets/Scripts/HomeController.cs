@@ -22,8 +22,13 @@ public class HomeController : MonoBehaviour
     public UISlider UISliderProgressDownload;
     IDisposable cancelCorountineDownloadData;
 
+    public GameObject root;
+
     private void Awake()
     {
+
+        DontDestroyOnLoad(root);
+
         // PlayerPrefs.DeleteAll();
         // PlayerPrefs.Save();
         Screen.orientation = ScreenOrientation.Portrait;
@@ -95,19 +100,15 @@ public class HomeController : MonoBehaviour
         var arrUIButton = FindObjectsOfType<UIButton>();
         foreach(var btn in arrUIButton)
         {
-            btn.onClick.Add(new EventDelegate(() =>
-            {
-                PreloadScript.audioSource.Play();
-            }));
+            btn.gameObject.AddComponent<ClickSound>();
+        }
+        var arrButton = FindObjectsOfType<Button>();
+        foreach(var btn in arrButton)
+        {
+            btn.gameObject.AddComponent<ClickSound>();
         }
 
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            cancelCorountineQuitApplication = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
-            {
-                Application.Quit();
-            });
-        }
+        cancelCorountineQuitApplication = GFs.BackButtonAndroidQuitApplication();
     }
     public void loadMasterpieceCreationScene()
     {

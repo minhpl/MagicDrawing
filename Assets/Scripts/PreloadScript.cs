@@ -22,15 +22,23 @@ public class PreloadScript : MonoBehaviour
 
     private const float PROGRESS_DOWNLOAD_AVARTAR_PERCENT = 0.03f;
 
+    
+
     private void Awake()
     {
+        
         //PlayerPrefs.DeleteAll();
         //PlayerPrefs.Save();
         if (ClickSound.audioClip==null)
         {
             cancelCorountineLoadSoundButton = Observable.FromCoroutine(loadSoundButton).Subscribe(_ => { }, () => {                
                 ready2 = true;
+                Debug.Log("here");
             });
+        }
+        else
+        {
+            ready2 = true;
         }
         cancelCorountineQuitApplication = GFs.BackButtonAndroidQuitApplication();
     }
@@ -132,38 +140,40 @@ public class PreloadScript : MonoBehaviour
         });
 
         streamDownloadAvartarProfile.Subscribe(_ => { }, () =>
-         {
-             try
-             {
-                 if (GVs.CATEGORY_LIST != null && GVs.TEMPLATE_LIST_ALL_CATEGORY != null)
-                 {
-                     var numCategory = GVs.CATEGORY_LIST.Count();
-                     var NumtemplateList = GVs.TEMPLATE_LIST_ALL_CATEGORY.Count;
-                     if (numCategory == NumtemplateList && numCategory != 0)
-                     {
-                         Utilities.Log("Ready");
-                         ready1 = true;                         
-                         StartCoroutine(WaitForStartHome());
-                         return;
-                     }
-                 }
-                 else
-                 {
-                     PlayerPrefs.DeleteAll();
-                     PlayerPrefs.Save();
-                 }
-             }
-             catch (Exception ex)
-             {
-                 Debug.LogError(ex);
-             }
-
+         {                         
              cancelCorountineDownloadData = Observable.FromCoroutine(DownloadData).Subscribe();
          });
     }
 
     IEnumerator DownloadData()
     {
+        try
+        {
+            if (GVs.CATEGORY_LIST != null && GVs.TEMPLATE_LIST_ALL_CATEGORY != null)
+            {
+                var numCategory = GVs.CATEGORY_LIST.Count();
+                var NumtemplateList = GVs.TEMPLATE_LIST_ALL_CATEGORY.Count;
+                if (numCategory == NumtemplateList && numCategory != 0)
+                {
+                    Utilities.Log("Ready");
+                    ready1 = true;
+                    uiDownload.value = 1;
+                    StartCoroutine(WaitForStartHome());
+                    yield break;
+                }
+            }
+            else
+            {
+                PlayerPrefs.DeleteAll();
+                PlayerPrefs.Save();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+        }
+
+
         Utilities.Log("Waiting for downloading");
         Dictionary<string, TemplateDrawingList> templateListsAllCategory = new Dictionary<string, TemplateDrawingList>();
         List<IObservable<float>> ListStreamDownloadTemplate = new List<IObservable<float>>();
@@ -263,7 +273,6 @@ public class PreloadScript : MonoBehaviour
                             var json = JsonConvert.SerializeObject(templateListsAllCategory);
                             popupRequireNetwork.SetActive(false);
                             ready1 = true;
-                            Debug.Log("ee");
                             StartCoroutine(WaitForStartHome());
                         });
                 }
@@ -281,11 +290,13 @@ public class PreloadScript : MonoBehaviour
 
     IEnumerator loadSoundButton()
     {
-        var request = Resources.LoadAsync("button");
-        yield return request;
-        var audioClip = request.asset as AudioClip;
-        ClickSound.audioClip = audioClip;
-        yield return null;
+        if (ClickSound.audioClip)
+        {
+            var request = Resources.LoadAsync("button");
+            yield return request;
+            var audioClip = request.asset as AudioClip;
+            ClickSound.audioClip = audioClip;         
+        }
     }
 
     IEnumerator WaitForStartHome()

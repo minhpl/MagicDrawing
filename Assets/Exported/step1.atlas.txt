@@ -1,0 +1,62 @@
+
+step1.png
+size: 1924,1628
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 1
+  rotate: true
+  xy: 2, 546
+  size: 1080, 1920
+  orig: 1082, 1922
+  offset: 1, 1
+  index: -1
+Layer 2
+  rotate: true
+  xy: 725, 157
+  size: 266, 575
+  orig: 268, 577
+  offset: 1, 1
+  index: -1
+black
+  rotate: false
+  xy: 725, 20
+  size: 135, 135
+  orig: 135, 135
+  offset: 0, 0
+  index: -1
+guong
+  rotate: true
+  xy: 1302, 213
+  size: 210, 311
+  orig: 210, 311
+  offset: 0, 0
+  index: -1
+guong2
+  rotate: true
+  xy: 1302, 165
+  size: 46, 165
+  orig: 46, 165
+  offset: 0, 0
+  index: -1
+ipad
+  rotate: true
+  xy: 2, 2
+  size: 542, 721
+  orig: 542, 721
+  offset: 0, 0
+  index: -1
+line
+  rotate: true
+  xy: 725, 425
+  size: 119, 735
+  orig: 119, 735
+  offset: 0, 0
+  index: -1
+thanh-do
+  rotate: false
+  xy: 1462, 425
+  size: 396, 119
+  orig: 396, 119
+  offset: 0, 0
+  index: -1

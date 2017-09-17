@@ -159,4 +159,9 @@ public class SceneManagerScript
     {
         SceneManager.LoadScene("PreloadScene", LoadSceneMode.Single);
     }
+
+    public void loadPreloadScene()
+    {
+        SceneManager.LoadScene("PreloadScene", LoadSceneMode.Single);
+    }
 }

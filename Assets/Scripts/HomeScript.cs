@@ -9,19 +9,13 @@ public class HomeScript : MonoBehaviour
     public GameObject[] btnControls;
     void Start()
     {
-
-
-        // PlayerPrefs.DeleteAll();
-
-        // new TrainSVM().doTrain();
-
-        for (int i = 0; i < btnControls.Length; i++)
-        {
-            Vector3 v3 = btnControls[i].transform.localPosition;
-            TweenPosition.Begin(btnControls[i], 0, new Vector3(v3.x + 1080 / 2, v3.y, v3.x));
-            TweenAlpha.Begin(btnControls[i], 0, 0);
-        }
-        StartCoroutine(Run());
+        //for (int i = 0; i < btnControls.Length; i++)
+        //{
+        //    Vector3 v3 = btnControls[i].transform.localPosition;
+        //    TweenPosition.Begin(btnControls[i], 0, new Vector3(v3.x + 1080 / 2, v3.y, v3.x));
+        //    TweenAlpha.Begin(btnControls[i], 0, 0);
+        //}
+        //StartCoroutine(Run());
     }
 
     IEnumerator Run()
@@ -43,8 +37,8 @@ public class HomeScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Application.Quit();
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //    Application.Quit();
     }
 }
 

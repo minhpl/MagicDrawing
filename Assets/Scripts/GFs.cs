@@ -313,4 +313,16 @@ public class GFs
         }
         return null;
     }
+
+    public static IDisposable BackButtonAndroidQuitApplication()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            return Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
+            {
+                Application.Quit();
+            });
+        }
+        return null;
+    }
 }

@@ -16,7 +16,6 @@ public class ResultScripts : MonoBehaviour
     public static Texture2D texture;
     public static string title;
 
-    private VideoCapture cap;
     private Color32[] buffer;
     public RawImage rimg;
     public GameObject panel;
@@ -32,6 +31,9 @@ public class ResultScripts : MonoBehaviour
     public GameObject Pnl_Popup;
     public Button OKButton;
     public Button logoutBtn;
+    public GameObject Pnl_comfirmDelete;
+    public Button btn_okDelete;
+    public Button btn_cancelDelete;
     private Texture2D texVideo;
     private Mat frame;
     private AspectRatioFitter rawImageAspect;
@@ -45,6 +47,26 @@ public class ResultScripts : MonoBehaviour
 
     private void Awake()
     {
+        btnDelete.onClick.AddListener(() =>
+        {
+            Pnl_comfirmDelete.SetActive(true);            
+        });
+
+        btn_okDelete.onClick.AddListener(() =>
+        {
+            Pnl_comfirmDelete.SetActive(false);
+        });
+
+        btn_cancelDelete.onClick.AddListener(() =>
+        {
+            Pnl_comfirmDelete.SetActive(false);
+        });
+
+        OKButton.onClick.AddListener(() =>
+        {
+            Pnl_Popup.SetActive(false);
+        });
+
         btnPlay.GetComponent<Button>().onClick.AddListener(() =>
         {
             btnStop.gameObject.SetActive(true);
@@ -89,23 +111,21 @@ public class ResultScripts : MonoBehaviour
             shareFacebook.onlogin();
         });
 
-        btnDelete.onClick.AddListener(() =>
-        {
-            File.Delete(imagePath);
-            if (File.Exists(videoPath))
-                File.Delete(videoPath);
-            GFs.BackToPreviousScene();
-        });
-
-        OKButton.onClick.AddListener(() =>
-        {
-            Pnl_Popup.SetActive(false);
-        });
-
         logoutBtn.onClick.AddListener(() =>
         {
             Debug.Log("facebook logout clicked");
             FB.LogOut();
+        });
+
+        btn_okDelete.onClick.AddListener(() =>
+        {
+            moviePlayer.Unload();
+            File.Delete(imagePath);
+            if (File.Exists(videoPath))
+            {
+                File.Delete(videoPath);
+            }
+            GFs.BackToPreviousScene();
         });
 
         moviePlayer.OnStop += MoviePlayer_OnStop;
