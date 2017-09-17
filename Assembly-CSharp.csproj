@@ -579,6 +579,7 @@
      <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\SimpleWB.cs" />
      <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\WhiteBalancer.cs" />
      <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\Xphoto.cs" />
+     <Compile Include="Assets\Scenes\TestScene\ClickSound.cs" />
      <Compile Include="Assets\Scenes\TouchScript\Examples\_misc\Scripts\Checker.cs" />
      <Compile Include="Assets\Scenes\TouchScript\Examples\_misc\Scripts\ExamplesList.cs" />
      <Compile Include="Assets\Scenes\TouchScript\Examples\_misc\Scripts\Highlight.cs" />

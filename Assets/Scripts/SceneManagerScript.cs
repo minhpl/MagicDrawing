@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class SceneManagerScript 
+public class SceneManagerScript
 {
 
     public void StartArchivementScene()
@@ -66,8 +66,9 @@ public class SceneManagerScript
         SceneManager.LoadScene("HomeScene");
     }
 
-    public void loadMasterpieceCreationScene(){
-    	SceneManager.LoadScene("MasterpieceCreationScene");	
+    public void loadMasterpieceCreationScene()
+    {
+        SceneManager.LoadScene("MasterpieceCreationScene");
     }
 
     public void loadMasterpieceCreationnNGUIScene()
@@ -75,13 +76,15 @@ public class SceneManagerScript
         SceneManager.LoadScene("MasterpieceCreationNGUIScene");
     }
 
-    public void loadLibraryScene(){
-    	SceneManager.LoadScene("LibraryScene");
+    public void loadLibraryScene()
+    {
+        SceneManager.LoadScene("LibraryScene");
         //SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-   	public void loadLibraryNGUIScene(){
-    	SceneManager.LoadScene("LibraryNGUIScene");
+    public void loadLibraryNGUIScene()
+    {
+        SceneManager.LoadScene("LibraryNGUIScene");
         //SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -92,8 +95,9 @@ public class SceneManagerScript
         Debug.Log(mode);
     }
 
-    public void loadHistoryScene(){
-    	SceneManager.LoadScene("HistoryScene");			
+    public void loadHistoryScene()
+    {
+        SceneManager.LoadScene("HistoryScene");
     }
 
     public void loadHistoryNGUIScene()
@@ -103,15 +107,17 @@ public class SceneManagerScript
 
     public void loadPreviewResultScene()
     {
-    	SceneManager.LoadScene("PreviewResultScene");				
+        SceneManager.LoadScene("PreviewResultScene");
     }
 
-    public void loadResultScene(){
-    	SceneManager.LoadScene("ResultScene");					
+    public void loadResultScene()
+    {
+        SceneManager.LoadScene("ResultScene");
     }
 
-    public void loadSnapImageScene(){
-    	SceneManager.LoadScene("SnapImageScene");					
+    public void loadSnapImageScene()
+    {
+        SceneManager.LoadScene("SnapImageScene");
     }
 
     public void loadGalleryScene()
@@ -119,12 +125,14 @@ public class SceneManagerScript
         SceneManager.LoadScene("GalleryScene");
     }
 
-    public void loadSplashScene(){
-    	SceneManager.LoadScene("SplashScene");	
+    public void loadSplashScene()
+    {
+        SceneManager.LoadScene("SplashScene");
     }
 
-    public void loadTutorialScene(){
-    	SceneManager.LoadScene("Tutorial");
+    public void loadTutorialScene()
+    {
+        SceneManager.LoadScene("Tutorial");
     }
 
     public void loadCollectionScene()
@@ -149,6 +157,6 @@ public class SceneManagerScript
 
     public void StartPreloadScene()
     {
-        SceneManager.LoadScene("HomeScene", LoadSceneMode.Single);
+        SceneManager.LoadScene("PreloadScene", LoadSceneMode.Single);
     }
 }

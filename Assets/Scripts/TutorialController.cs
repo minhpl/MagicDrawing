@@ -40,8 +40,8 @@ public class TutorialController : MonoBehaviour
         }
     }
 
-        public void SkipOnClick()
+    public void SkipOnClick()
     {
-            GVs.SCENE_MANAGER.StartPreloadScene();
+        GVs.SCENE_MANAGER.StartPreloadScene();
     }
 }

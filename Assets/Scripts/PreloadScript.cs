@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.IO;
 using Newtonsoft.Json;
-using WW;
 using UniRx;
 
 public class PreloadScript : MonoBehaviour
@@ -19,7 +17,29 @@ public class PreloadScript : MonoBehaviour
 
     public GameObject[] btnControls;
 
-    IDisposable celCorountineDownloadData;
+    IDisposable cancelCorountineDownloadData;
+    IDisposable cancelCorountineLoadSoundButton;
+    bool ready1 = false;   //ready download data
+    bool ready2 = false;   //ready load sound from resources 
+    private void Awake()
+    {
+        if(ClickSound.audioClip!=null)
+        {
+            cancelCorountineLoadSoundButton = Observable.FromCoroutine(loadSoundButton).Subscribe(_ => { }, () => { ready2 = true; });
+        }
+    }
+
+
+    public static AudioSource audioSource;
+    IEnumerator loadSoundButton()
+    {
+        var request = Resources.LoadAsync("button");
+        yield return request;
+        var audioClip = request.asset as AudioClip;
+        ClickSound.audioClip = audioClip;
+        audioSource.clip = audioClip;
+        ready2 = true;
+    }
 
     // Use this for initialization
     void Start()
@@ -38,6 +58,14 @@ public class PreloadScript : MonoBehaviour
         uiDownload.numberOfSteps = 1001;
         GFs.LoadData();
         StartCheckApp();
+    }
+
+    private void OnDisable()
+    {
+        if (cancelCorountineDownloadData != null)
+            cancelCorountineDownloadData.Dispose();
+        if (cancelCorountineLoadSoundButton != null)
+            cancelCorountineLoadSoundButton.Dispose();
     }
 
     public void StartCheckApp()
@@ -118,7 +146,8 @@ public class PreloadScript : MonoBehaviour
                 if (numCategory == NumtemplateList && numCategory != 0)
                 {
                     Utilities.Log("Ready");
-                    StartHome();
+                    ready1 = true;
+                    StartCoroutine(WaitForStartHome());
                     return;
                 }
             }
@@ -133,7 +162,7 @@ public class PreloadScript : MonoBehaviour
             Debug.LogError(ex);
         }
 
-        celCorountineDownloadData = Observable.FromCoroutine(DownloadData).Subscribe();
+        cancelCorountineDownloadData = Observable.FromCoroutine(DownloadData).Subscribe();
     }
 
 
@@ -238,7 +267,7 @@ public class PreloadScript : MonoBehaviour
                             Utilities.Log("all downloaded");
                             var json = JsonConvert.SerializeObject(templateListsAllCategory);
                             popup.SetActive(false);
-                            StartHome();
+                            ready1 = true;
                         });
                 }
                 catch (Exception e)
@@ -253,14 +282,20 @@ public class PreloadScript : MonoBehaviour
         }
     }
 
-    private void StartHome()
+    IEnumerator WaitForStartHome()
     {
-        GVs.SCENE_MANAGER.StartHomeScene();
+        yield return null;
+        while (!ready1 || !ready2)
+        {
+            yield return null;
+            GVs.SCENE_MANAGER.StartHomeScene();            
+        }
     }
+
 
     // Update is called once per frame    
     void Update()
-    {
+    {        
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
     }

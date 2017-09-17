@@ -88,14 +88,19 @@ public class HomeController : MonoBehaviour
                 File.Delete(videoPath);
             }
         }
-
-
     }
-
-
 
     private void Start()
     {
+        var arrUIButton = FindObjectsOfType<UIButton>();
+        foreach(var btn in arrUIButton)
+        {
+            btn.onClick.Add(new EventDelegate(() =>
+            {
+                PreloadScript.audioSource.Play();
+            }));
+        }
+
         if (Application.platform == RuntimePlatform.Android)
         {
             cancelCorountineQuitApplication = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
