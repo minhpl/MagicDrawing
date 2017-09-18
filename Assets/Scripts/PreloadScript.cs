@@ -17,29 +17,12 @@ public class PreloadScript : MonoBehaviour
     IDisposable cancelCorountineDownloadData;
     IDisposable cancelCorountineLoadSoundButton;
     bool ready1 = false;   //ready download data
-    bool ready2 = false;   //ready load sound from resources 
     IDisposable cancelCorountineQuitApplication;
 
     private const float PROGRESS_DOWNLOAD_AVARTAR_PERCENT = 0.03f;
 
-    
-
     private void Awake()
     {
-        
-        //PlayerPrefs.DeleteAll();
-        //PlayerPrefs.Save();
-        if (ClickSound.audioClip==null)
-        {
-            cancelCorountineLoadSoundButton = Observable.FromCoroutine(loadSoundButton).Subscribe(_ => { }, () => {                
-                ready2 = true;
-                Debug.Log("here");
-            });
-        }
-        else
-        {
-            ready2 = true;
-        }
         cancelCorountineQuitApplication = GFs.BackButtonAndroidQuitApplication();
     }
 
@@ -264,7 +247,7 @@ public class PreloadScript : MonoBehaviour
                         return null;
                     });
                     ListStreamDownloadTemplate.Add(stream);
-
+                
                     Observable.Concat(ListStreamDownloadTemplate).Subscribe(_ => { }, () =>
                         {
                             GVs.TEMPLATE_LIST_ALL_CATEGORY = templateListsAllCategory;
@@ -288,21 +271,11 @@ public class PreloadScript : MonoBehaviour
         }
     }
 
-    IEnumerator loadSoundButton()
-    {
-        if (ClickSound.audioClip)
-        {
-            var request = Resources.LoadAsync("button");
-            yield return request;
-            var audioClip = request.asset as AudioClip;
-            ClickSound.audioClip = audioClip;         
-        }
-    }
 
     IEnumerator WaitForStartHome()
     {
         yield return null;
-        while (!ready1 || !ready2)
+        while (!ready1)
         {            
             yield return null;             
         }

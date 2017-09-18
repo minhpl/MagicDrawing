@@ -1,43 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
-
-public class ClickSound : MonoBehaviour
+public class SoundButtonClick : MonoBehaviour
 {
-    public static AudioClip audioClip = null;        
-    private static ResourceRequest resourceRequest = null;
-    private AudioSource audioSource {get {return GetComponent<AudioSource>(); }}
-
     void Start()
     {
-        if (audioClip == null)
-        {
-            audioClip = Resources.Load("button") as AudioClip;            
-        }
+        if (SingletonButtonSound.Instance == null)
+            this.gameObject.AddComponent<SingletonButtonSound>();
         
-        var uButton = GetComponent<Button>();
-        if (uButton != null)
+        
+        var listGameObjects = new List<GameObject>();
+        var rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+
+        foreach (var rootGO in rootGameObjects)
         {
-            gameObject.AddComponent<AudioSource>();
-            audioSource.clip = audioClip;
-            audioSource.playOnAwake = false;
-            uButton.onClick.AddListener(() => audioSource.Play());
-        }
-        else
-        {
-            var nguiButton = GetComponent<UIButton>();
-            if (nguiButton != null)
+            var UIButtonArrays = rootGO.GetComponentsInChildren<UIButton>(true);
+            var ButtonArrays = rootGO.GetComponentsInChildren<Button>(true);
+
+            foreach (var uibtn in UIButtonArrays)
             {
-                gameObject.AddComponent<AudioSource>();
-                audioSource.clip = audioClip;
-                audioSource.playOnAwake = false;
-                nguiButton.onClick.Add(new EventDelegate(() =>
+                uibtn.onClick.Add(new EventDelegate(() =>
                 {
-                    audioSource.Play();
+                    SingletonButtonSound.Instance.audioSource.Play();
                 }));
+            }
+
+            foreach (var btn in ButtonArrays)
+            {
+                btn.onClick.AddListener(() =>
+                {
+                    SingletonButtonSound.Instance.audioSource.Play();
+                });
             }
         }
 
-    }  
+    }
 }

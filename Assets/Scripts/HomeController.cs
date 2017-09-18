@@ -9,7 +9,6 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using WW;
 
 public class HomeController : MonoBehaviour
 {
@@ -26,9 +25,6 @@ public class HomeController : MonoBehaviour
 
     private void Awake()
     {
-
-        DontDestroyOnLoad(root);
-
         // PlayerPrefs.DeleteAll();
         // PlayerPrefs.Save();
         Screen.orientation = ScreenOrientation.Portrait;
@@ -97,17 +93,6 @@ public class HomeController : MonoBehaviour
 
     private void Start()
     {
-        var arrUIButton = FindObjectsOfType<UIButton>();
-        foreach(var btn in arrUIButton)
-        {
-            btn.gameObject.AddComponent<ClickSound>();
-        }
-        var arrButton = FindObjectsOfType<Button>();
-        foreach(var btn in arrButton)
-        {
-            btn.gameObject.AddComponent<ClickSound>();
-        }
-
         cancelCorountineQuitApplication = GFs.BackButtonAndroidQuitApplication();
     }
     public void loadMasterpieceCreationScene()
