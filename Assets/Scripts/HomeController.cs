@@ -25,6 +25,10 @@ public class HomeController : MonoBehaviour
 
     private void Awake()
     {
+        GFs.LoadData();
+        if(TutorialController.isAddedSoundButtonEvent == false)
+            GFs.addButtonSoundEventOnSceneLoad();
+
         // PlayerPrefs.DeleteAll();
         // PlayerPrefs.Save();
         Screen.orientation = ScreenOrientation.Portrait;

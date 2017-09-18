@@ -13,6 +13,7 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour
     private string dirPathMP;
     public GameObject item;
     public GameObject canvas;
+    public GameObject UIRoot;
     public UIGrid uiGrid;
     private IDisposable cancelCoroutineBackButtonAndroid;
     private IDisposable cancelMCoroutineLoadMasterpiece;
@@ -23,8 +24,8 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour
 
     void Start()
     {
-
         // DontDestroyOnLoad(canvas);
+        // DontDestroyOnLoad(UIRoot);
         cancelMCoroutineLoadMasterpiece = Observable.FromMicroCoroutine(LoadMasterpieceDrawing).Subscribe();
         var canvasRect = canvas.GetComponent<RectTransform>().rect;
         var canvasRat = (float)canvasRect.width / (float)canvasRect.height;

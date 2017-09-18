@@ -7,6 +7,7 @@ using Newtonsoft.Json.Utilities;
 using System;
 using UnityEngine.SceneManagement;
 using UniRx;
+using UnityEngine.UI;
 
 public class GFs
 {
@@ -329,5 +330,66 @@ public class GFs
             });
         }
         return null;
+    }
+    
+    public static void addButtonSoundEventOnSceneLoad()
+    {
+        if (!TutorialController.isAddedSoundButtonEvent)
+        {
+            TutorialController.isAddedSoundButtonEvent = true;
+            SceneManager.sceneLoaded += (Scene Scene, LoadSceneMode Mode) =>
+            {
+                var listGameObjects = new List<GameObject>();
+                var rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+
+                foreach (var rootGO in rootGameObjects)
+                {
+                    var UIButtonArrays = rootGO.GetComponentsInChildren<UIButton>(true);
+                    var ButtonArrays = rootGO.GetComponentsInChildren<Button>(true);
+
+                    foreach (var uibtn in UIButtonArrays)
+                    {
+                        if (uibtn.GetComponent<AudioSource>() != null)
+                            continue;
+
+                        uibtn.onClick.Add(new EventDelegate(() =>
+                        {
+                            if (GVs.SOUND_SYSTEM == 1)
+                            {
+                                Debug.LogFormat("Button sound from : {0}", uibtn.name);
+                                SoundButtonSingletonScript.Instance.audioSource.Play();
+                            }
+
+                        }));
+                    }
+
+                    foreach (var btn in ButtonArrays)
+                    {
+                        if (btn.GetComponent<AudioSource>() != null)
+                            continue;
+
+                        btn.onClick.AddListener(() =>
+                        {
+                            if (GVs.SOUND_SYSTEM == 1)
+                            {
+                                Debug.LogFormat("Button sound from : {0}", btn.name);
+                                SoundButtonSingletonScript.Instance.audioSource.Play();
+                            }
+                        });
+                    }
+                }
+
+                if (GVs.SOUND_BG == 1)
+                {
+                    var audioSource = SoundBackgroundSingletonScripts.Instance.audioSource;
+                    if (!audioSource.isPlaying)
+                    {
+                        audioSource.Play();
+                    }
+                    if (Scene.name == "DrawingScene")
+                        audioSource.Stop();
+                }
+            };
+        }
     }
 }

@@ -26,7 +26,6 @@ public class UserScript : MonoBehaviour
     public UITexture avata;
     public Texture defaultAvata;
     public AvataScript avataScript;
-
     void Start()
     {
         defaultAvata = avata.mainTexture;
@@ -40,14 +39,15 @@ public class UserScript : MonoBehaviour
         togSoundSystem.value = GVs.SOUND_SYSTEM == 1 ? true : false;
         togSoundBG.value = GVs.SOUND_BG == 1 ? true : false;
 
+
         togSoundBG.onChange.Add(new EventDelegate(() =>
         {
             if (togSoundBG.value == true)
             {
                 AudioSource audioSource = null;
-                if(SoundBackgroundSingletonScripts.Instance!=null)
-                    audioSource =  SoundBackgroundSingletonScripts.Instance.audioSource;
-                if (audioSource!=null && !audioSource.isPlaying)
+                if (SoundBackgroundSingletonScripts.Instance != null)
+                    audioSource = SoundBackgroundSingletonScripts.Instance.audioSource;
+                if (audioSource != null && !audioSource.isPlaying)
                     audioSource.Play();
             }
             else
@@ -75,8 +75,13 @@ public class UserScript : MonoBehaviour
             go.transform.localScale = Vector3.one;
             go.transform.localPosition = v3;
             go.transform.Find("username").gameObject.GetComponent<UILabel>().text = GVs.USER_LIST_MODEL.Get(i).name;
+            //go.transform.Find("lblPoint").gameObject.GetComponent<UILabel>().text = GVs.USER_LIST_MODEL.Get(i).GetPointComplete() + "";
             try
             {
+                // if (GVs.USER_LIST_MODEL.Get(i).avata.Equals("") && GVs.AVATA_LIST_MODEL != null && GVs.AVATA_LIST_MODEL.Count() > 0)
+                // {
+                //     GVs.USER_LIST_MODEL.Get(i).avata = GVs.AVATA_LIST_MODEL.dir + "/" + GVs.AVATA_LIST_MODEL.Get(0).image;
+                // }
                 GFs.LoadPNG(GVs.USER_LIST_MODEL.Get(i).avata, go.transform.Find("avata").GetComponent<UITexture>());
             }
             catch (System.Exception e)
@@ -185,9 +190,11 @@ public class UserScript : MonoBehaviour
         TweenAlpha.Begin(goAvataPanel, 0f, 0);
         goAvataPanel.SetActive(true);
         TweenAlpha.Begin(goAvataPanel, 0.3f, 1);
+        avataScript.PlayTween();
     }
     public void CloseUserAvata()
     {
+        avataScript.ResetTween();
         TweenAlpha.Begin(goAvataPanel, 0.3f, 0);
     }
 

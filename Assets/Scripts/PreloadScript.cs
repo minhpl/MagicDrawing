@@ -278,7 +278,7 @@ public class PreloadScript : MonoBehaviour
         {
             yield return null;
         }
-        yield return new WaitForSeconds(0);
+        yield return new WaitForSeconds(2);
         GVs.SCENE_MANAGER.StartHomeScene();
     }
 

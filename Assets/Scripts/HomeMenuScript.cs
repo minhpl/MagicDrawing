@@ -14,8 +14,8 @@ public class HomeMenuScript : MonoBehaviour
     public GameObject goHomeMenu;
     public GameObject goUser;
     public GameObject goUserInfo;
+    public GameObject goArchievement;
     public GameObject goCodePanel;
-
     // Use this for initialization
 
 
@@ -72,6 +72,13 @@ public class HomeMenuScript : MonoBehaviour
         TweenAlpha.Begin(goUser, 0.3f, 0);
         MenuOnClick();
     }
+    public void CloseArchievementOnClick()
+    {
+        goHomeMenu.SetActive(true);
+        TweenAlpha.Begin(goHomeMenu, 0.3f, 1);
+        TweenAlpha.Begin(goArchievement, 0.3f, 0);
+        MenuOnClick();
+    }
     public void CloseUserInforOnClick()
     {
         TweenAlpha.Begin(goUserInfo, 0.3f, 0);
@@ -88,7 +95,14 @@ public class HomeMenuScript : MonoBehaviour
         TweenAlpha.Begin(goUser, 0.3f, 1);
     }
 
-
+    public void OpenArchievementOnCLick()
+    {
+        CloseMenuOnClick();
+        TweenAlpha.Begin(goHomeMenu, 0.3f, 0);
+        TweenAlpha.Begin(goArchievement, 0f, 0);
+        goArchievement.SetActive(true);
+        TweenAlpha.Begin(goArchievement, 0.3f, 1);
+    }
 
 
     public void OpenUserInFoOnClick()
@@ -107,5 +121,7 @@ public class HomeMenuScript : MonoBehaviour
     {
         TweenAlpha.Begin(goCodePanel, 0.3f, 0);
     }
+
+    public UILabel[] lblPoints;
 }
 

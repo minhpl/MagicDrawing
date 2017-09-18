@@ -774,6 +774,7 @@
     <Compile Include="Assets\Scripts\CheckFPS.cs" />
     <Compile Include="Assets\Scripts\ClearButtonTargetScript.cs" />
     <Compile Include="Assets\Scripts\ClearInputScript.cs" />
+    <Compile Include="Assets\Scripts\ClearTweenButton.cs" />
     <Compile Include="Assets\Scripts\CloudScript.cs" />
     <Compile Include="Assets\Scripts\Console.cs" />
     <Compile Include="Assets\Scripts\DataBind.cs" />
@@ -816,6 +817,7 @@
     <Compile Include="Assets\Scripts\OpenCV\Utilities.cs" />
     <Compile Include="Assets\Scripts\OpenCV\WarpPerspective.cs" />
     <Compile Include="Assets\Scripts\OpenCV\WebcamVideoCapture.cs" />
+    <Compile Include="Assets\Scripts\PlayTweenAvata.cs" />
     <Compile Include="Assets\Scripts\PreloadScript.cs" />
     <Compile Include="Assets\Scripts\ProfileScript.cs" />
     <Compile Include="Assets\Scripts\ProgressBarChangeScript.cs" />
