@@ -19,7 +19,7 @@ public class SnapImageSceneScripts : MonoBehaviour
     private int requestHeight = 1920;
     private WebCamTextureToMatHelper webcamTextureTomat;
     Mat snapMat;
-    public Button btnSnap;    
+    public Button btnSnap;
     public Button btnCancel;
     public Button btnContinue;
     public IDisposable cancelCoroutineBackAndroid;
@@ -53,7 +53,7 @@ public class SnapImageSceneScripts : MonoBehaviour
     {
         webcamTex = webcamTextureTomat.GetWebCamTexture();
         webcamTex.Play();
-        
+
         var widthCam = webcamTex.width;
         var heightCam = webcamTex.height;
         var ratioWH = widthCam / (float)heightCam;
@@ -116,7 +116,7 @@ public class SnapImageSceneScripts : MonoBehaviour
 
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
-            var localScale = rawImgCam.rectTransform.localScale;            
+            var localScale = rawImgCam.rectTransform.localScale;
             localScale.y = -localScale.y;
             rawImgCam.rectTransform.localScale = localScale;
         }
@@ -161,15 +161,15 @@ public class SnapImageSceneScripts : MonoBehaviour
         btnContinue.gameObject.SetActive(false);
         btnCancel.gameObject.SetActive(false);
     }
-    
+
     public void OnSnapBtnClicked()
     {
         //MainThreadDispatcher.StartUpdateMicroCoroutine(Snap());
-        cancelMCoroutineSnap = Observable.FromMicroCoroutine(Snap).Subscribe();              
+        cancelMCoroutineSnap = Observable.FromMicroCoroutine(Snap).Subscribe();
     }
 
     IEnumerator Snap()
-    {        
+    {
         webcamTex.requestedWidth = 1920;
         webcamTex.requestedHeight = 1920;
         webcamTex.Play();
@@ -244,7 +244,7 @@ public class SnapImageSceneScripts : MonoBehaviour
 
         Texture2D texRgbaMat = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.RGBA32, false);
         Utils.matToTexture2D(snapMat, texRgbaMat);
-        rawImgCam.texture = texRgbaMat;        
+        rawImgCam.texture = texRgbaMat;
     }
 
     public void OnContinueBtnClicked()
@@ -257,14 +257,14 @@ public class SnapImageSceneScripts : MonoBehaviour
             var dateTimeNow = DateTime.Now.ToString(Utilities.customFmts);
             string dirPathSnapImage = null;
 
-            dirPathSnapImage = GFs.getSnapImageDirPath();            
+            dirPathSnapImage = GFs.getSnapImageDirPath();
             if (!Directory.Exists(dirPathSnapImage))
             {
                 Directory.CreateDirectory(dirPathSnapImage);
             }
             var MPModelPath = dirPathSnapImage + dateTimeNow + ".png";
             Texture2D texture = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.BGRA32, false);
-            Utils.matToTexture2D(snapMat, texture);                        
+            Utils.matToTexture2D(snapMat, texture);
             DrawingScripts.texModel = texture;
             DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
             if (Application.platform == RuntimePlatform.IPhonePlayer)
@@ -278,7 +278,7 @@ public class SnapImageSceneScripts : MonoBehaviour
             }
             HistoryNGUIScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
             GVs.SCENE_MANAGER.loadDrawingScene();
-        }            
+        }
     }
 
     public void OnCancelBtnClicked()

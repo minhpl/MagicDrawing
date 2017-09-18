@@ -18,8 +18,8 @@ public class GFs
         LoadLevel();
         LoadLicenseCode();
         LoadSoundConfig();
-		GFs.LoadCategoryList();
-		GFs.LoadAllTemplateList();
+        GFs.LoadCategoryList();
+        GFs.LoadAllTemplateList();
     }
     public static void SaveUsers()
     {
@@ -141,7 +141,7 @@ public class GFs
         return myColor;
     }
 
-	private const string ALL_TEMPLATE_LIST = "ALL_TEMPLATE_LIST";
+    private const string ALL_TEMPLATE_LIST = "ALL_TEMPLATE_LIST";
     private const string CATEGORY_LIST = "CATEGORY_LIST";
     public static void LoadAllTemplateList()
     {
@@ -149,11 +149,11 @@ public class GFs
         {
             string s = PlayerPrefs.GetString(ALL_TEMPLATE_LIST);
             try
-            {         
+            {
                 GVs.TEMPLATE_LIST_ALL_CATEGORY = JsonConvert.DeserializeObject<Dictionary<string, TemplateDrawingList>>(s);
                 AotHelper.EnsureDictionary<string, TemplateDrawingList>();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Utilities.Log("Error is : {0}", e.ToString());
                 Utilities.Log("Trace is : {0}", e.ToString());
@@ -163,8 +163,8 @@ public class GFs
             SaveAllTemplateList();
     }
     public static void SaveAllTemplateList()
-    {        
-        var json = JsonConvert.SerializeObject(GVs.TEMPLATE_LIST_ALL_CATEGORY);        
+    {
+        var json = JsonConvert.SerializeObject(GVs.TEMPLATE_LIST_ALL_CATEGORY);
         PlayerPrefs.SetString(ALL_TEMPLATE_LIST, json);
         PlayerPrefs.Save();
     }
@@ -176,23 +176,28 @@ public class GFs
     }
 
     public static void LoadCategoryList()
-	{
-		if (PlayerPrefs.HasKey (CATEGORY_LIST)) {
-			try {
-				
-				string s = PlayerPrefs.GetString (CATEGORY_LIST);				
-				GVs.CATEGORY_LIST = JsonUtility.FromJson<CategoryList> (s);
-			} catch (Exception ex) {
+    {
+        if (PlayerPrefs.HasKey(CATEGORY_LIST))
+        {
+            try
+            {
+
+                string s = PlayerPrefs.GetString(CATEGORY_LIST);
+                GVs.CATEGORY_LIST = JsonUtility.FromJson<CategoryList>(s);
+            }
+            catch (Exception ex)
+            {
                 Debug.LogError("Exception is " + ex.ToString());
-			}
-		} else
-			SaveCategoryList ();
-	}
+            }
+        }
+        else
+            SaveCategoryList();
+    }
 
 
 
-	 public static Texture2D LoadPNGFromPath(string filePath)
-    {        
+    public static Texture2D LoadPNGFromPath(string filePath)
+    {
         Texture2D tex = null;
         byte[] fileData;
         if (File.Exists(filePath))
@@ -223,11 +228,11 @@ public class GFs
             var appPath = getAppDataDirPath();
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
-                return appPath + IPHONE_DIR_NAME_MASTERPIECE+"/";
+                return appPath + IPHONE_DIR_NAME_MASTERPIECE + "/";
             }
             else
             {
-                return appPath + PC_DIR_NAME_MASTERPIECE+"/";
+                return appPath + PC_DIR_NAME_MASTERPIECE + "/";
             }
         }
     }
@@ -238,10 +243,10 @@ public class GFs
         {
             return "data/data/" + Application.identifier + "/files/";
         }
-        else 
-        {            
-            return Application.persistentDataPath + "/";            
-        }   
+        else
+        {
+            return Application.persistentDataPath + "/";
+        }
     }
 
     public static string getSnapImageDirPath()
@@ -258,23 +263,23 @@ public class GFs
             var appPath = getAppDataDirPath();
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
-                return appPath + IPHONE_DIR_NAME_SNAPIMAGE+"/";
+                return appPath + IPHONE_DIR_NAME_SNAPIMAGE + "/";
             }
             else
             {
-                return appPath + PC_DIR_NAME_SNAPIMAGE+"/";
+                return appPath + PC_DIR_NAME_SNAPIMAGE + "/";
             }
         }
     }
 
     public static void GoHomeSceneScripts()
-    {     
+    {
         GVs.TRACE_SCENE.Clear();
-        GVs.SCENE_MANAGER.loadHomeScene();     
+        GVs.SCENE_MANAGER.loadHomeScene();
     }
 
     public static void BackToPreviousScene()
-    {    
+    {
         if (GVs.TRACE_SCENE.Count > 1)
         {
             GVs.TRACE_SCENE.Pop();
@@ -282,7 +287,7 @@ public class GFs
             SceneManager.LoadScene(i);
         }
     }
-    
+
     public static IDisposable BackButtonAndroidGoHome()
     {
         if (Application.platform == RuntimePlatform.Android)
@@ -306,7 +311,7 @@ public class GFs
                     if (GVs.TRACE_SCENE.Count > 1)
                     {
                         GVs.TRACE_SCENE.Pop();
-                        int i = GVs.TRACE_SCENE.Pop();                        
+                        int i = GVs.TRACE_SCENE.Pop();
                         SceneManager.LoadScene(i);
                     }
                 });

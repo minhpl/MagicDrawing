@@ -40,7 +40,6 @@ public class PreloadScript : MonoBehaviour
             GVs.APP_PATH = Application.persistentDataPath;
         }
 
-        GFs.LoadData();
         StartCheckApp();
     }
 
@@ -103,10 +102,10 @@ public class PreloadScript : MonoBehaviour
                     GVs.AVATA_LIST_MODEL = (JsonUtility.FromJson<AvataListModel>(data));
                     GFs.SaveAvatas();
                     HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_AVATAS))), (data2, progress) =>
-                    {                        
-                        uiDownload.value = progress*PROGRESS_DOWNLOAD_AVARTAR_PERCENT;
+                    {
+                        uiDownload.value = progress * PROGRESS_DOWNLOAD_AVARTAR_PERCENT;
                         if (progress == 1 || progress == -404)
-                        {                               
+                        {
                             observer.OnCompleted();
                         }
                     });
@@ -123,7 +122,7 @@ public class PreloadScript : MonoBehaviour
         });
 
         streamDownloadAvartarProfile.Subscribe(_ => { }, () =>
-         {                         
+         {
              cancelCorountineDownloadData = Observable.FromCoroutine(DownloadData).Subscribe();
          });
     }
@@ -193,7 +192,7 @@ public class PreloadScript : MonoBehaviour
                         string id = category._id;
                         var index = i;
                         stream = Observable.Create<float>((IObserver<float> observer) =>
-                        {                          
+                        {
                             HTTPRequest.Instance.Request(GVs.GET_TEMPLATE_BY_CATEGORY_URL, JsonUtility.ToJson(new ReqModel(new CategoryRequest(id))), (templates) =>
                             {
                                 try
@@ -247,7 +246,7 @@ public class PreloadScript : MonoBehaviour
                         return null;
                     });
                     ListStreamDownloadTemplate.Add(stream);
-                
+
                     Observable.Concat(ListStreamDownloadTemplate).Subscribe(_ => { }, () =>
                         {
                             GVs.TEMPLATE_LIST_ALL_CATEGORY = templateListsAllCategory;
@@ -276,13 +275,13 @@ public class PreloadScript : MonoBehaviour
     {
         yield return null;
         while (!ready1)
-        {            
-            yield return null;             
+        {
+            yield return null;
         }
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0);
         GVs.SCENE_MANAGER.StartHomeScene();
     }
-   
+
     private IEnumerator StartApp()
     {
         yield return new WaitForSeconds(1);

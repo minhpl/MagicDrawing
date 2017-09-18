@@ -15,7 +15,7 @@ public class SoundControllerScript : MonoBehaviour
     void Awake()
     {
         if (Instance != null)
-        {
+        { 
             return;
         }
         Instance = this;

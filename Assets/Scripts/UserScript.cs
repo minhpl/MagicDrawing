@@ -26,6 +26,7 @@ public class UserScript : MonoBehaviour
     public UITexture avata;
     public Texture defaultAvata;
     public AvataScript avataScript;
+
     void Start()
     {
         defaultAvata = avata.mainTexture;
@@ -38,6 +39,22 @@ public class UserScript : MonoBehaviour
         lblCode.text = GVs.LICENSE_CODE;
         togSoundSystem.value = GVs.SOUND_SYSTEM == 1 ? true : false;
         togSoundBG.value = GVs.SOUND_BG == 1 ? true : false;
+
+        togSoundBG.onChange.Add(new EventDelegate(() =>
+        {
+            if (togSoundBG.value == true)
+            {
+                AudioSource audioSource = null;
+                if(SoundBackgroundSingletonScripts.Instance!=null)
+                    audioSource =  SoundBackgroundSingletonScripts.Instance.audioSource;
+                if (audioSource!=null && !audioSource.isPlaying)
+                    audioSource.Play();
+            }
+            else
+            {
+                SoundBackgroundSingletonScripts.Instance.audioSource.Stop();
+            }
+        }));
     }
     private void InitUser()
     {
