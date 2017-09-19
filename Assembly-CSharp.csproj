@@ -54,6 +54,8 @@
      <Compile Include="Assets\AndroidGallery\Demo\DemoScript.cs" />
      <Compile Include="Assets\AndroidGallery\Scripts\AndroidGallery.cs" />
      <Compile Include="Assets\AndroidGallery\Scripts\Singleton.cs" />
+     <Compile Include="Assets\Demigiant\DOTween\Examples\Basics.cs" />
+     <Compile Include="Assets\Demigiant\DOTween\Examples\Sequences.cs" />
      <Compile Include="Assets\FacebookSDK\Examples\Scripts\ConsoleBase.cs" />
      <Compile Include="Assets\FacebookSDK\Examples\Scripts\LogView.cs" />
      <Compile Include="Assets\FacebookSDK\Examples\Scripts\MenuBase.cs" />
@@ -531,7 +533,7 @@
      <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\Xphoto.cs" />
      <Compile Include="Assets\Scenes\TestScene\CallComponentOfOtherObject.cs" />
      <Compile Include="Assets\Scenes\TestScene\ClickSound.cs" />
-     <Compile Include="Assets\Scenes\TestScene\TestCoroutine.cs" />
+     <Compile Include="Assets\Scenes\TestScene\Test2.cs" />
      <Compile Include="Assets\Scenes\TouchScript\Examples\_misc\Scripts\Checker.cs" />
      <Compile Include="Assets\Scenes\TouchScript\Examples\_misc\Scripts\ExamplesList.cs" />
      <Compile Include="Assets\Scenes\TouchScript\Examples\_misc\Scripts\Highlight.cs" />
@@ -656,6 +658,7 @@
      <Compile Include="Assets\Scripts\CheckFPS.cs" />
      <Compile Include="Assets\Scripts\ClearButtonTargetScript.cs" />
      <Compile Include="Assets\Scripts\ClearInputScript.cs" />
+     <Compile Include="Assets\Scripts\ClearTweenButton.cs" />
      <Compile Include="Assets\Scripts\CloudScript.cs" />
      <Compile Include="Assets\Scripts\Console.cs" />
      <Compile Include="Assets\Scripts\DataBind.cs" />
@@ -698,6 +701,7 @@
      <Compile Include="Assets\Scripts\OpenCV\Utilities.cs" />
      <Compile Include="Assets\Scripts\OpenCV\WarpPerspective.cs" />
      <Compile Include="Assets\Scripts\OpenCV\WebcamVideoCapture.cs" />
+     <Compile Include="Assets\Scripts\PlayTweenAvata.cs" />
      <Compile Include="Assets\Scripts\PreloadScript.cs" />
      <Compile Include="Assets\Scripts\ProfileScript.cs" />
      <Compile Include="Assets\Scripts\ProgressBarChangeScript.cs" />
@@ -709,8 +713,9 @@
      <Compile Include="Assets\Scripts\security\AesEncryptor.cs" />
      <Compile Include="Assets\Scripts\SelectBoxScript.cs" />
      <Compile Include="Assets\Scripts\ShareFacebook.cs" />
-     <Compile Include="Assets\Scripts\SingletonButtonSound.cs" />
      <Compile Include="Assets\Scripts\SnapImageSceneScripts.cs" />
+     <Compile Include="Assets\Scripts\SoundBackgroundSingletonScripts.cs" />
+     <Compile Include="Assets\Scripts\SoundButtonSingletonScript.cs" />
      <Compile Include="Assets\Scripts\testin.cs" />
      <Compile Include="Assets\Scripts\TestSaladSeriazable.cs" />
      <Compile Include="Assets\Scripts\TextureScale.cs" />
@@ -718,7 +723,14 @@
      <Compile Include="Assets\Scripts\ToggleScript.cs" />
      <Compile Include="Assets\Scripts\TrackScene.cs" />
      <Compile Include="Assets\Scripts\TutorialController.cs" />
+     <Compile Include="Assets\Scripts\TweenHistoryNGUIScene.cs" />
+     <Compile Include="Assets\Scripts\TweenLibraryScene.cs" />
+     <Compile Include="Assets\Scripts\TweenMasterpieceCreationNGUIScene.cs" />
+     <Compile Include="Assets\Scripts\TweenTemplateNGUIScene.cs" />
      <Compile Include="Assets\Scripts\UserScript.cs" />
+     <Compile Include="Assets\Simple Scene Fade Load System\Demo (You don&apos;t have to import this folder)\DemoScript.cs" />
+     <Compile Include="Assets\Simple Scene Fade Load System\Scripts\Fader.cs" />
+     <Compile Include="Assets\Simple Scene Fade Load System\Scripts\Initiate.cs" />
      <Compile Include="Assets\SoundControllerScript.cs" />
      <Compile Include="Assets\Spine\spine-csharp\Animation.cs" />
      <Compile Include="Assets\Spine\spine-csharp\AnimationState.cs" />
@@ -833,6 +845,8 @@
      <Compile Include="Assets\TextMesh Pro\Examples\Scripts\VertexShakeB.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples\Scripts\VertexZoom.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples\Scripts\WarpTextExample.cs" />
+     <Compile Include="Assets\TweenBackButton.cs" />
+     <Compile Include="Assets\TweenSnapImageScene.cs" />
      <Compile Include="Assets\Unimgpicker\Samples\PickerController.cs" />
      <Compile Include="Assets\Unimgpicker\Samples\Rotator.cs" />
      <Compile Include="Assets\Unimgpicker\Scripts\IPicker.cs" />
@@ -936,6 +950,7 @@
      <None Include="Assets\NGUI\Examples\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_video_buttonbar_button.xml" />
      <None Include="Assets\NGUI\ReadMe - 3.11.0.txt" />
+     <None Include="Assets\Demigiant\DOTween\readme.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_slimprogressbar.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_video_microphone_editor.xml" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Masked 1.shader" />
@@ -959,6 +974,7 @@
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_theme_distinct_button_background.xml" />
      <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
      <None Include="Assets\OpenCVForUnity\OpenCV_LICENSE.txt" />
+     <None Include="Assets\Demigiant\DOTween\DOTween50.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_levels.xml" />
      <None Include="Assets\TextMesh Pro\Fonts\Anton OFL.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\values\everyplay_strings.xml" />
@@ -1075,12 +1091,14 @@
      <None Include="Assets\Plugins\Android\everyplay\res\values-zh-rCN\everyplay_strings.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_facecam_countdown.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_button_shape.xml" />
+     <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
      <None Include="Assets\Plugins\Android\everyplay\build.xml" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Text.shader" />
      <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_editor_microphone.xml" />
      <None Include="Assets\Exported\step1.atlas.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_video_control_buttons.xml" />
+     <None Include="Assets\Simple Scene Fade Load System\ReadMeFirst.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_video_oval_button.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_editor_vumeters.xml" />
      <None Include="Assets\TextMesh Pro\Fonts\Bangers - OFL.txt" />
@@ -1127,9 +1145,11 @@
      <None Include="Assets\NGUI\Examples\Shaders\Unlit - Depth.shader" />
      <None Include="Assets\NGUI\Examples\Atlases\SciFi\SciFi Font - Normal.txt" />
      <None Include="Assets\Scenes\TouchScript\Examples\_misc\Shaders\BorderDiffuse.shader" />
+     <None Include="Assets\Demigiant\DOTween\DOTween46.xml" />
      <None Include="Assets\Spine\spine-unity\Modules\Shaders\Sprite\CameraDepthTexture.shader" />
      <None Include="Assets\Spine\spine-unity\Modules\SlotBlendModes\Spine-Skeleton-PMA-Multiply.shader" />
      <None Include="Assets\Plugins\Everyplay\Helpers\Shaders\EveryplayCrossfade.shader" />
+     <None Include="Assets\Demigiant\DOTween\DOTween43.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_button_blue.xml" />
      <None Include="Assets\Spine\spine-unity\Modules\Shaders\Sprite\CGIncludes\ShaderMaths.cginc" />
      <None Include="Assets\Spine\spine-unity\Modules\SkeletonRenderSeparator\SkeletonRenderSeparator.txt" />
@@ -1167,6 +1187,18 @@
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ </Reference>
+ <Reference Include="DOTween">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/Demigiant/DOTween/DOTween.dll</HintPath>
+ </Reference>
+ <Reference Include="DOTween43">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/Demigiant/DOTween/DOTween43.dll</HintPath>
+ </Reference>
+ <Reference Include="DOTween46">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/Demigiant/DOTween/DOTween46.dll</HintPath>
+ </Reference>
+ <Reference Include="DOTween50">
+ <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/Demigiant/DOTween/DOTween50.dll</HintPath>
  </Reference>
  <Reference Include="TexturePacker">
  <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/Extensions/TexturePacker/Lib/TexturePacker.dll</HintPath>

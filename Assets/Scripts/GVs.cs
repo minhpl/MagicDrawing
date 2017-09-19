@@ -59,6 +59,8 @@ class GVs
     public static LinkedList<string> history = new LinkedList<string>();
     public const float ridTopPercent = 0.09f;
     public const float bonusScale = 1.2f;
+    public const float DURATION_TWEEN_UNIFY = 0.3f;
+    public const float DELAY_TWEEN_UNIFY = 0.2f;
     public static CategoryList CATEGORY_LIST = new CategoryList();
     public static Dictionary<string, TemplateDrawingList> TEMPLATE_LIST_ALL_CATEGORY;
     public static TemplateDrawingList DRAWING_TEMPLATE_LIST = new TemplateDrawingList();

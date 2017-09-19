@@ -14,7 +14,8 @@ public class LibraryScriptsNGUI : MonoBehaviour
 {
     public GameObject imageItem;
     public GameObject scrollView;
-    public UILabel TextTitle;    
+    public UILabel LabelTitle;    
+    public Text TextTitle;    
     const int deScale = 0;
     const bool USE_PACK = false;
     const int clone = 1;

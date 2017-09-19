@@ -62,7 +62,6 @@ public class SceneManagerScript
 
     public void loadHomeScene()
     {
-        Debug.Log("heerererer");
         SceneManager.LoadScene("HomeScene");
     }
 
