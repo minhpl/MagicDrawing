@@ -26,6 +26,11 @@ public class UserScript : MonoBehaviour
     public UITexture avata;
     public Texture defaultAvata;
     public AvataScript avataScript;
+
+    public UIPlayTween[] panelUserPlayTweens;
+    public UIPlayTween[] panelUserInfoPlayTweens;
+    public UIPlayTween[] panelDeleteUserPlayTweens;
+    
     void Start()
     {
         defaultAvata = avata.mainTexture;
@@ -56,9 +61,29 @@ public class UserScript : MonoBehaviour
             }
         }));
     }
+    public void OpenUserList()
+    {
+        GFs.PlayTweens(panelUserPlayTweens);
+        InitUser();
+        SetUser();
+    }
+    public void CloseUserList()
+    {
+        GFs.PlayTweens(panelUserPlayTweens, false);
+    }
     private void InitUser()
     {
-        for (int i = 0; i < users.Count; i++) Destroy(users[i]);
+        for (int i = 0; i < users.Count; i++) Destroy(users[i]); for (int i = 0; i < users.Count; i++)
+        {
+            try
+            {
+                Destroy(users[i].transform.Find("avata").GetComponent<UITexture>());
+            }
+            catch (System.Exception)
+            {
+            }
+            Destroy(users[i]);
+        }
         users.Clear();
         toggleUsers.Clear();
         int count = GVs.USER_LIST_MODEL.Count();
@@ -69,6 +94,16 @@ public class UserScript : MonoBehaviour
         {
             v3.y -= 252;
             GameObject go = Instantiate(userItem) as GameObject;
+            try
+            {
+                go.GetComponent<TweenAlpha>().delay = i * 0.05f;
+                go.GetComponent<TweenPosition>().delay = i * 0.05f;
+                go.GetComponent<TweenPosition>().from = new Vector3(-300, v3.y, 0);
+                go.GetComponent<TweenPosition>().to = new Vector3(0, v3.y, 0);
+            }
+            catch (System.Exception)
+            {
+            }
             if (i > 0) userItem.transform.Find("line").gameObject.SetActive(true);
             else userItem.transform.Find("line").gameObject.SetActive(false);
             go.transform.parent = userItem.transform.parent.transform;
@@ -117,6 +152,7 @@ public class UserScript : MonoBehaviour
     }
     public void OpenUserInfoOnClick(GameObject go)
     {
+        GFs.PlayTweens(panelUserInfoPlayTweens);
         deleteUserButton.SetActive(true);
         if (GVs.USER_LIST_MODEL.Count() <= 1)
             deleteUserButton.SetActive(false);
@@ -147,6 +183,7 @@ public class UserScript : MonoBehaviour
 
     public void OpenAddUserOnClick()
     {
+        GFs.PlayTweens(panelUserInfoPlayTweens);
         GVs.NEW_USER_MODEL = new UserModel("");
         GVs.PROFILE_STATE = GVs.PROFILE_ADD;
         deleteUserButton.SetActive(false);
@@ -179,6 +216,7 @@ public class UserScript : MonoBehaviour
 
     public void CloseUserInforOnClick()
     {
+        GFs.PlayTweens(panelUserInfoPlayTweens, false);
         TweenAlpha.Begin(goUserInfo, 0.3f, 0);
         goUser.SetActive(true);
         TweenAlpha.Begin(goUser, 0.3f, 1);
@@ -243,24 +281,33 @@ public class UserScript : MonoBehaviour
 
     public void DeleteUser()
     {
-        deleteUserPopup.SetActive(true);
+        // TweenAlpha.Begin(deleteUserPopup, 0.2f, 1);
+        // deleteUserPopup.SetActive(true);
+        GFs.PlayTweens(panelDeleteUserPlayTweens);
     }
 
     public void OnDeleteAllow()
     {
         bool val = GVs.CURRENT_USER_EDIT_MODEL.id.Equals(GVs.CURRENT_USER_MODEL.id);
         GVs.USER_LIST_MODEL.Delete(GVs.CURRENT_USER_EDIT);
-        if (val) SetCurrentUser(0);
+        if (val)
+        {
+            SetCurrentUser(0);
+            GVs.CURRENT_USER_MODEL = GVs.USER_LIST_MODEL.Get(GVs.CURRENT_USER_EDIT).Clone();
+            GVs.CURRENT_USER_EDIT_MODEL = GVs.CURRENT_USER_MODEL;
+            SetUser();
+        }
         GFs.SaveUsers();
         InitUser();
-        InitUser();
         CloseUserInforOnClick();
-        deleteUserPopup.SetActive(false);
+        GFs.PlayTweens(panelDeleteUserPlayTweens, false);
+        // TweenAlpha.Begin(deleteUserPopup, 0.2f, 0);
     }
 
     public void OnDeleteDeny()
     {
-        deleteUserPopup.SetActive(false);
+        GFs.PlayTweens(panelDeleteUserPlayTweens, false);
+        // TweenAlpha.Begin(deleteUserPopup, 0.2f, 0);
     }
 
     public void SoundOnChange()

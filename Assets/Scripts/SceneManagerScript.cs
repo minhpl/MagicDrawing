@@ -151,7 +151,7 @@ public class SceneManagerScript
 
     public void loadTemplateNGUIScene()
     {
-        SceneManager.LoadScene("TemplateNGUIScene");
+        SceneManager.LoadSceneAsync("TemplateNGUIScene");
     }
 
     public void StartPreloadScene()

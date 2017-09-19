@@ -38,13 +38,14 @@ public class HistoryNGUIScripts : MonoBehaviour {
             {
                 GVs.SCENE_MANAGER.loadLibraryNGUIScene();
             });
-
-            btnBack.onClick = new Button.ButtonClickedEvent();
-            btnBack.onClick.AddListener(() =>
-            {
-                GVs.SCENE_MANAGER.loadLibraryNGUIScene();
-            });
         }
+
+
+        btnBack.onClick = new Button.ButtonClickedEvent();
+        btnBack.onClick.AddListener(() =>
+        {
+            GVs.SCENE_MANAGER.loadLibraryNGUIScene();
+        });
     }
 
     void Start () {

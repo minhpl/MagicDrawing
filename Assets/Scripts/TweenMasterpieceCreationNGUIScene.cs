@@ -7,8 +7,8 @@ public class TweenMasterpieceCreationNGUIScene : MonoBehaviour {
 
     public Button BackButton;
     public Text textTile;
-    private float duration = 0.3f;
-    private float delay = 0.2f;
+    private float duration = GVs.DURATION_TWEEN_UNIFY;
+    private float delay = GVs.DELAY_TWEEN_UNIFY;
 
     void Awake () {
         List<LTDescr> listLT = new List<LTDescr>();

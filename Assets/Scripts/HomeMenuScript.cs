@@ -18,16 +18,17 @@ public class HomeMenuScript : MonoBehaviour
     public GameObject goCodePanel;
     // Use this for initialization
 
-
+    public UIPlayTween[] panelNavPlayTweens;
     void Awake()
     {
-        goNavPanel.transform.Find("container").GetComponent<UITexture>().height = (int)(1080 * (Screen.height * 1.0f) / Screen.width);
-        TweenPosition.Begin(goNavPanel, 0, new Vector3(-600, 0, 0));
-        goBG.GetComponent<UIButton>().tweenTarget = null;
-        TweenAlpha.Begin(goBG, 0, 0);
+        goNavPanel.transform.Find("container").GetComponent<UITexture>().height = (int)(1080*(Screen.height* 1.0f) / Screen.width);
+        // TweenPosition.Begin(goNavPanel, 0, new Vector3(-600, 0, 0));
+        // TweenAlpha.Begin(goBG, 0, 0);
         goNavPanel.transform.Find("container").transform.Find("svApp").gameObject.SetActive(true);
         goNavPanel.GetComponent<UIPanel>().depth = 3;
+        UIEventListener.Get(goBG).onClick += CloseMenuOnClick;
     }
+
     void Start()
     {
 
@@ -38,17 +39,23 @@ public class HomeMenuScript : MonoBehaviour
     {
         if (menuIsShow)
         {
-            TweenScale.Begin(gameObject, 0.2f, new Vector3(1f, 1f, 1));
-            TweenPosition.Begin(gameObject, 0.2f, Vector3.zero);
-            TweenPosition.Begin(goNavPanel, 0.2f, new Vector3(-600, 0, 0));
-            TweenAlpha.Begin(goBG, 0.2f, 0);
+
+            GFs.PlayTweens(panelNavPlayTweens, false, () =>
+            {
+            });
+            // TweenScale.Begin(gameObject, 0.2f, new Vector3(1f, 1f, 1));
+            // TweenPosition.Begin(gameObject, 0.2f, Vector3.zero);
+            // TweenPosition.Begin(goNavPanel, 0.2f, new Vector3(-600, 0, 0));
+            // TweenAlpha.Begin(goBG, 0.2f, 0);
         }
         else
         {
-            TweenScale.Begin(gameObject, 0.2f, new Vector3(0.9f, 0.9f, 1));
-            TweenPosition.Begin(gameObject, 0.2f, new Vector3(400, 0, 0));
-            TweenPosition.Begin(goNavPanel, 0.2f, Vector3.zero);
-            TweenAlpha.Begin(goBG, 0.2f, 0.5f);
+
+            GFs.PlayTweens(panelNavPlayTweens);
+            // TweenScale.Begin(gameObject, 0.2f, new Vector3(0.9f, 0.9f, 1));
+            // TweenPosition.Begin(gameObject, 0.2f, new Vector3(400, 0, 0));
+            // TweenPosition.Begin(goNavPanel, 0.2f, Vector3.zero);
+            // TweenAlpha.Begin(goBG, 0.2f, 0.5f);
         }
         menuIsShow = !menuIsShow;
     }
@@ -57,12 +64,19 @@ public class HomeMenuScript : MonoBehaviour
     {
         if (menuIsShow)
         {
-            TweenScale.Begin(gameObject, 0.2f, new Vector3(1f, 1f, 1));
-            TweenPosition.Begin(gameObject, 0.2f, Vector3.zero);
-            TweenPosition.Begin(goNavPanel, 0.2f, new Vector3(-600, 0, 0));
-            TweenAlpha.Begin(goBG, 0.2f, 0);
+            GFs.PlayTweens(panelNavPlayTweens, false, () =>
+            {
+            });
+            // TweenScale.Begin(gameObject, 0.2f, new Vector3(1f, 1f, 1));
+            // TweenPosition.Begin(gameObject, 0.2f, Vector3.zero);
+            // TweenPosition.Begin(goNavPanel, 0.2f, new Vector3(-600, 0, 0));
+            // TweenAlpha.Begin(goBG, 0.2f, 0);
             menuIsShow = false;
         }
+    }
+    public void CloseMenuOnClick(GameObject go)
+    {
+        CloseMenuOnClick();
     }
 
     public void CloseUserOnClick()

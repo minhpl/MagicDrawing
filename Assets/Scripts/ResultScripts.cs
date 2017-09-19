@@ -31,7 +31,8 @@ public class ResultScripts : MonoBehaviour
     public GameObject Pnl_Popup;
     public Button OKButton;
     public Button logoutBtn;
-    public GameObject Pnl_comfirmDelete;
+    public GameObject overlayer_comfirmDelete;
+    public GameObject panel_comfirmDelete;
     public Button btn_okDelete;
     public Button btn_cancelDelete;
     private Texture2D texVideo;
@@ -44,22 +45,58 @@ public class ResultScripts : MonoBehaviour
     private float ratioImage = 1;
 
     private IDisposable cancelCorountineBackButtonAndroid;
-
+    LTDescr ltdescr_ScaleComfirmDeletePanel;
+    LTDescr ltdescr_AlphaComfirmDeletePanel;
     private void Awake()
     {
         btnDelete.onClick.AddListener(() =>
         {
-            Pnl_comfirmDelete.SetActive(true);            
+            overlayer_comfirmDelete.SetActive(true);
+            ltdescr_ScaleComfirmDeletePanel = LeanTween.scale(panel_comfirmDelete, new Vector3(1f, 1f, 1f), GVs.DURATION_TWEEN_UNIFY)
+            .setEase(LeanTweenType.easeOutElastic)
+                .setRepeat(2).setLoopPingPong()
+                .setOnComplete(() =>
+                {
+                    ltdescr_ScaleComfirmDeletePanel.pause();
+                    ltdescr_ScaleComfirmDeletePanel.setEase(LeanTweenType.easeInQuart);
+                }).setOnCompleteOnRepeat(true);
+
+            ltdescr_AlphaComfirmDeletePanel = LeanTween.alpha(panel_comfirmDelete.GetComponent<RectTransform>(), 1, GVs.DURATION_TWEEN_UNIFY).setFrom(0)
+            .setRepeat(2).setLoopPingPong().setEase(LeanTweenType.easeOutElastic)
+            .setOnComplete(() =>
+            {
+                ltdescr_AlphaComfirmDeletePanel.pause();
+                ltdescr_ScaleComfirmDeletePanel.setEase(LeanTweenType.easeInQuart);
+            }).setOnCompleteOnRepeat(true);
         });
 
         btn_okDelete.onClick.AddListener(() =>
         {
-            Pnl_comfirmDelete.SetActive(false);
+            var a = LeanTween.sequence();
+            a.append(ltdescr_ScaleComfirmDeletePanel.resume());
+            a.append(() =>
+            {             
+                overlayer_comfirmDelete.SetActive(false);
+                moviePlayer.Unload();
+                File.Delete(imagePath);
+                if (File.Exists(videoPath))
+                {
+                    File.Delete(videoPath);
+                }
+                GFs.BackToPreviousScene();
+            });
+            ltdescr_AlphaComfirmDeletePanel.resume();
         });
 
         btn_cancelDelete.onClick.AddListener(() =>
         {
-            Pnl_comfirmDelete.SetActive(false);
+            var a = LeanTween.sequence();
+            a.append(ltdescr_ScaleComfirmDeletePanel.resume());
+            a.append(() =>
+            {                
+                overlayer_comfirmDelete.SetActive(false);
+            });
+            ltdescr_AlphaComfirmDeletePanel.resume();
         });
 
         OKButton.onClick.AddListener(() =>
@@ -115,17 +152,6 @@ public class ResultScripts : MonoBehaviour
         {
             Debug.Log("facebook logout clicked");
             FB.LogOut();
-        });
-
-        btn_okDelete.onClick.AddListener(() =>
-        {
-            moviePlayer.Unload();
-            File.Delete(imagePath);
-            if (File.Exists(videoPath))
-            {
-                File.Delete(videoPath);
-            }
-            GFs.BackToPreviousScene();
         });
 
         moviePlayer.OnStop += MoviePlayer_OnStop;
@@ -184,7 +210,6 @@ public class ResultScripts : MonoBehaviour
             });
         }
 
-
         rawImageAspect = rimg.GetComponent<AspectRatioFitter>();
         var canvasRect = canvas.GetComponent<RectTransform>().rect;
         var canvasWidth = canvasRect.width;
@@ -219,9 +244,18 @@ public class ResultScripts : MonoBehaviour
             Destroy(texture);
         if (texVideo != null)
             Destroy(texVideo);
-        moviePlayer.play = false;
-        moviePlayer.loop = false;
-        moviePlayer.Unload();
+        Debug.Log(moviePlayer != null);
+        {
+            try
+            {                
+                moviePlayer.play = false;
+                moviePlayer.loop = false;
+                moviePlayer.Unload();
+            }catch(Exception e)
+            {
+                Debug.Log("Error" + e.ToString());
+            }            
+        }
         ShareFacebook.filePath = null;
     }
 

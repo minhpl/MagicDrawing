@@ -79,6 +79,8 @@ public class DrawingScripts : MonoBehaviour
     private Mat frame;
     private Size size;
 
+    public UIPlayTween[] popupPlayTween;
+
     private void Awake()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
@@ -98,10 +100,23 @@ public class DrawingScripts : MonoBehaviour
         backBtn.onClick.AddListener(() =>
         {
             panelComfirm.SetActive(true);
+            for (int i = 0; i < popupPlayTween.Length; i++)
+            {
+                popupPlayTween[i].Play(true);
+            }
         });
         cancel.onClick.AddListener(() =>
         {
-            panelComfirm.SetActive(false);
+
+            for (int i = 0; i < popupPlayTween.Length; i++)
+            {
+                popupPlayTween[i].Play(false);
+            }
+            popupPlayTween[0].onFinished.Add(new EventDelegate(() =>
+            {
+                panelComfirm.SetActive(false);
+                popupPlayTween[0].onFinished.Clear();
+            }));
         });
         cancelCoroutineBackBtnAndroid = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
         {
@@ -117,7 +132,18 @@ public class DrawingScripts : MonoBehaviour
                     File.Delete(webcamVideoCapture.filePath);
                 }
             }
-            GFs.BackToPreviousScene();
+
+            for (int i = 0; i < popupPlayTween.Length; i++)
+            {
+                popupPlayTween[i].Play(false);
+            }
+            popupPlayTween[0].onFinished.Add(new EventDelegate(() =>
+            {
+                panelComfirm.SetActive(false);
+                popupPlayTween[0].onFinished.Clear();
+                GFs.BackToPreviousScene();
+            }));
+
         });
         tickBtn.onClick.AddListener(() =>
         {

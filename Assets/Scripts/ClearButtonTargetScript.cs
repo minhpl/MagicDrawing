@@ -19,7 +19,6 @@ public class ClearButtonTargetScript : MonoBehaviour
         catch (System.Exception e)
         {
         }
-
     }
 
 }

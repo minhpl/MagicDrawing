@@ -392,4 +392,21 @@ public class GFs
             };
         }
     }
+
+    public static void PlayTweens(UIPlayTween[] pts, bool forward = true, EventDelegate.Callback callBackFinish = null, int indexTweenFinish = 0)
+    {
+        for (int i = 0; i < pts.Length; i++)
+        {
+            pts[i].Play(forward);
+            pts[i].resetOnPlay = true;
+        }
+        if (callBackFinish != null)
+        {
+            pts[indexTweenFinish].onFinished.Add(new EventDelegate(() =>
+            {
+                pts[indexTweenFinish].onFinished.RemoveAt(pts[indexTweenFinish].onFinished.Count - 1);
+                callBackFinish();
+            }));
+        }
+    }
 }

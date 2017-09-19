@@ -2,20 +2,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using TMPro;
 using UniRx;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LibraryScriptsNGUI : MonoBehaviour
 {
     public GameObject imageItem;
     public GameObject scrollView;
-    public UILabel LabelTitle;    
-    public Text TextTitle;    
+    public UILabel LabelTitle;
+    public UnityEngine.UI.Text TextTitle;
+    public GameObject uiRoot_ScrollView;
     const int deScale = 0;
     const bool USE_PACK = false;
     const int clone = 1;
@@ -46,7 +43,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
                     GFs.BackToPreviousScene();
                 }
             });
-        }
+        }        
 
         BtnBack.onClick = new Button.ButtonClickedEvent();
         BtnBack.onClick.AddListener(() =>
@@ -64,7 +61,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
     }
     // Use this for initialization
     void Start()
-    {
+    {        
         if (mode == MODE.CATEGORY)
         {
             TextTitle.text = "Thư Viện";
@@ -82,6 +79,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
 
     IEnumerator Load()
     {
+        Debug.LogFormat("This scene have name is {0}", this.gameObject.scene.name);
         List<Texture2D> LstTexture = new List<Texture2D>();
         List<GameObject> LstGameObject = new List<GameObject>();
         List<int> numRectIn2048 = new List<int>();
@@ -116,15 +114,16 @@ public class LibraryScriptsNGUI : MonoBehaviour
         Debug.Log(imageCount);
         var app_path = GFs.getAppDataDirPath();        
         var categoryDirPath = app_path + GVs.CATEGORY_LIST.dir + "/";
+        yield return null;
 
         for (int j = 0; j < clone; j++)
             for (int i = 0; i < imageCount; i++)
             {
-                yield return null;
                 try
                 {
                     if (imageItem == null) break;
                     GameObject go = Instantiate(imageItem) as GameObject;
+                    go.transform.GetComponent<TweenAlpha>().delay = 0.05f * i;
                     go.transform.SetParent(imageItem.transform.parent.transform);
                     go.transform.localScale = imageItem.transform.localScale;
                     UITexture rimage = go.transform.Find("icon").GetComponent<UITexture>();
@@ -198,6 +197,8 @@ public class LibraryScriptsNGUI : MonoBehaviour
                             LibraryScriptsNGUI.templateDrawingList = templateDrawingList;
                             LibraryScriptsNGUI.mode = MODE.TEMPLATE;
                             title = category.name;
+                            //DontDestroyOnLoad(uiRoot_ScrollView);
+                            //uiRoot_ScrollView.SetActive(false);                            
                             GVs.SCENE_MANAGER.loadTemplateNGUIScene();
                         }
                         else
