@@ -30,7 +30,7 @@ public class AvataScript : MonoBehaviour
         ResetTween();
         TweenAlpha.Begin(transform.parent.gameObject, 0, 0);
         transform.parent.GetComponent<UIPanel>().depth = 10;
-        GetComponent<UIGrid>().Reposition();
+        //GetComponent<UIGrid>().Reposition();
     }
 
     public void PlayTween()

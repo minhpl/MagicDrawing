@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2017.1.1p1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -135,6 +137,7 @@
     <Compile Include="Assets\AndroidGallery\Demo\DemoScript.cs" />
     <Compile Include="Assets\AndroidGallery\Scripts\AndroidGallery.cs" />
     <Compile Include="Assets\AndroidGallery\Scripts\Singleton.cs" />
+    <Compile Include="Assets\BackButtonGoLibraryScene.cs" />
     <Compile Include="Assets\Demigiant\DOTween\Examples\Basics.cs" />
     <Compile Include="Assets\Demigiant\DOTween\Examples\Sequences.cs" />
     <Compile Include="Assets\FacebookSDK\Examples\Scripts\ConsoleBase.cs" />
@@ -863,7 +866,7 @@
     <Compile Include="Assets\Scripts\TweenSnapImageScene.cs" />
     <Compile Include="Assets\Scripts\TweenTemplateNGUIScene.cs" />
     <Compile Include="Assets\Scripts\UserScript.cs" />
-    <Compile Include="Assets\Simple Scene Fade Load System\Demo (You don&apos;t have to import this folder)\DemoScript.cs" />
+    <Compile Include="Assets\Simple Scene Fade Load System\Demo (You don't have to import this folder)\DemoScript.cs" />
     <Compile Include="Assets\Simple Scene Fade Load System\Scripts\Fader.cs" />
     <Compile Include="Assets\Simple Scene Fade Load System\Scripts\Initiate.cs" />
     <Compile Include="Assets\SoundControllerScript.cs" />

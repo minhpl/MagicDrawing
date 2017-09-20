@@ -13,6 +13,8 @@ using TouchScript;
 using TouchScript.Gestures;
 using System.IO;
 using TMPro;
+using System.Threading;
+using UnityEngine.SceneManagement;
 
 public class DrawingScripts : MonoBehaviour
 {
@@ -39,6 +41,7 @@ public class DrawingScripts : MonoBehaviour
     public GameObject Pnl_Snap;
     public GameObject Pnl_Tool;
     public AudioSource audioSource;
+    public Image img_progress_cutvideo;
     private Threshold threshold;
     private AdaptiveThreshold athreshold;
     WarpPerspective warpPerspective;
@@ -72,13 +75,12 @@ public class DrawingScripts : MonoBehaviour
     private IDisposable cancelCorountineTurnOffTouchInput;
     private IDisposable cancelCorountineBlinkTime;
     private IDisposable cancelCoroutineBackBtnAndroid;
-    private IDisposable cancelCorountineSnapImage;
-    private const int FRAME_SKIP = 10;
-    private const int MAX_LENGTH_RESULT_VIDEO = 30; //seconds 
+    private IDisposable cancelCorountineSnapImage;    
     private int numberFrameSave = 0;
     private Mat frame;
     private Size size;
-
+    private const int FRAME_SKIP = 10;
+    private const int MAX_LENGTH_RESULT_VIDEO = 30; //seconds 
     public UIPlayTween[] popupPlayTween;
 
     private void Awake()
@@ -95,7 +97,8 @@ public class DrawingScripts : MonoBehaviour
         onSliderContrastValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) =>
         {
             OnContrastSliderValueChange(sliderContrast);
-        });
+        });        
+
         backBtn.onClick = new Button.ButtonClickedEvent();
         backBtn.onClick.AddListener(() =>
         {
@@ -105,6 +108,7 @@ public class DrawingScripts : MonoBehaviour
                 popupPlayTween[i].Play(true);
             }
         });
+
         cancel.onClick.AddListener(() =>
         {
 
@@ -118,10 +122,19 @@ public class DrawingScripts : MonoBehaviour
                 popupPlayTween[0].onFinished.Clear();
             }));
         });
-        cancelCoroutineBackBtnAndroid = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
+
+        if (Application.platform == RuntimePlatform.Android)
         {
-            panelComfirm.SetActive(true);
-        });
+            cancelCoroutineBackBtnAndroid = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
+            {
+                panelComfirm.SetActive(true);
+                for (int i = 0; i < popupPlayTween.Length; i++)
+                {
+                    popupPlayTween[i].Play(true);
+                }
+            });
+        }       
+
         aggre.onClick.AddListener(() =>
         {
             if (webcamVideoCapture.filePath != null)
@@ -189,7 +202,6 @@ public class DrawingScripts : MonoBehaviour
                 cancelCorountineBlinkTime = Observable.FromCoroutine(blinkTime).Subscribe();
             }
         });
-
     }
 
     void Start()
@@ -387,7 +399,7 @@ public class DrawingScripts : MonoBehaviour
                 if (isRecording)
                 {
                     numberFrame++;
-                    if (numberFrame % FRAME_SKIP == 1)
+                    if (numberFrame % FRAME_SKIP == 0)
                     {
                         numberFrameSave++;
                         //Debug.LogFormat("Number Save Frame = {0}", numberFrameSave);
@@ -527,96 +539,110 @@ public class DrawingScripts : MonoBehaviour
 
         Debug.LogFormat("RedundanceFrame is {0}", redundanceFrame);
 
-        if (redundanceFrame > 0)
+        img_progress_cutvideo.GetComponent<RectTransform>().eulerAngles = Vector3.zero;
+        LeanTween.rotateAround(img_progress_cutvideo.gameObject, Vector3.forward, 360, 1)
+            .setOnStart(() => { img_progress_cutvideo.gameObject.SetActive(true); })
+            .setRepeat(-1).setEaseLinear();
+        var cutvideo = Observable.Start(() =>
         {
-            var filePath1 = GFs.getMasterpieceDirPath() + WebcamVideoCapture.filenameWithoutExt + ".avi";
-            var filePath2 = GFs.getMasterpieceDirPath() + WebcamVideoCapture.filenameWithoutExt + "_2.avi";
-            System.IO.File.Move(filePath1, filePath2);
+           if (redundanceFrame > 0)
+           {
+               var filePath1 = masterPieceDirPath + WebcamVideoCapture.filenameWithoutExt + ".avi";
+               var filePath2 = masterPieceDirPath + WebcamVideoCapture.filenameWithoutExt + "_2.avi";
+               System.IO.File.Move(filePath1, filePath2);
 
-            var writer = new VideoWriter(filePath1, VideoWriter.fourcc('M', 'J', 'P', 'G'), WebcamVideoCapture.FPS, size);
-            VideoCapture cap = new VideoCapture();
-            cap.open(filePath2);
-            Debug.LogFormat("number frame of first video is {0}", cap.get(7));
-            var count = 0;
-            var count2 = 0;
+               var writer = new VideoWriter(filePath1, VideoWriter.fourcc('M', 'J', 'P', 'G'), WebcamVideoCapture.FPS, size);
+               VideoCapture cap = new VideoCapture();
+               cap.open(filePath2);
+               Debug.LogFormat("number frame of first video is {0}", cap.get(7));
+               var count = 0;
+               var count2 = 0;
 
-            if (maxNumberFrame > redundanceFrame)
+               if (maxNumberFrame > redundanceFrame)
+               {
+                   float ratio = _numberFrameSave / (float)redundanceFrame;
+                   int ratioFloor = (int)Math.Floor(ratio);
+                   int j = 1;
+                   float du = 0;
+                   for (; ; j++)
+                   {
+                       cap.read(frame);
+                       if (frame.empty())
+                       {
+                           break;
+                       }
+
+                       count++;
+                       if (count != ratioFloor)
+                       {
+                           count2++;
+                           writer.write(frame);
+
+
+                       }
+                       else
+                       {
+                           ratioFloor = (int)Math.Floor(ratio + du);
+                           du = ratio + du - ratioFloor;
+                           Debug.Log(j);
+                           Debug.LogFormat("ratio Floor is {0}", ratioFloor);
+                           count = 0;
+                       }
+
+                       if (count2 >= maxNumberFrame)
+                           break;
+                   }
+                   Debug.LogFormat("J = {0}", j);
+               }
+               else
+               {
+                   float ratio = _numberFrameSave / (float)maxNumberFrame;
+                   int ratioFloor = (int)Math.Floor(ratio);
+                   count = 0;
+                   float du = 0;
+                   int j = 1;
+                   for (; ; j++)
+                   {
+                       cap.read(frame);
+                       if (frame.empty())
+                       {
+                           break;
+                       }
+
+                       count++;
+                       if (count == ratioFloor)
+                       {
+                           count2++;
+                           writer.write(frame);
+
+                           ratioFloor = (int)Math.Floor(ratio + du);
+                           du = ratio + du - ratioFloor;
+                           count = 0;
+                           Debug.LogFormat("ratioFloor is {0}", ratioFloor);
+                                //Debug.LogFormat("ratioFloor is {0}, ratio is {1}", ratioFloor, ratio);
+                            }
+
+                       if (count2 >= maxNumberFrame)
+                           break;
+                   }
+                   Debug.LogFormat("J = {0}", j);
+               }
+               Debug.LogFormat("Number frame of new video is {0}", count2);
+               writer.release();
+               writer.Dispose();
+               cap.release();
+               File.Delete(filePath2);
+           }
+           Thread.Sleep(500);
+       });
+        Observable.WhenAll(cutvideo)
+            .ObserveOnMainThread().Subscribe(_ =>
             {
-                float ratio = _numberFrameSave / (float)redundanceFrame;
-                int ratioFloor = (int)Math.Floor(ratio);
-                int j = 1;
-                float du = 0;
-                for (; ; j++)
-                {
-                    cap.read(frame);
-                    if (frame.empty())
-                    {
-                        break;
-                    }
-
-                    count++;
-                    if (count != ratioFloor)
-                    {
-                        count2++;
-                        writer.write(frame);
-
-
-                    }
-                    else
-                    {
-                        ratioFloor = (int)Math.Floor(ratio + du);
-                        du = ratio + du - ratioFloor;
-                        Debug.Log(j);
-                        Debug.LogFormat("ratio Floor is {0}", ratioFloor);
-                        count = 0;
-                    }
-
-                    if (count2 >= maxNumberFrame)
-                        break;
-                }
-                Debug.LogFormat("J = {0}", j);
-            }
-            else
-            {
-                float ratio = _numberFrameSave / (float)maxNumberFrame;
-                int ratioFloor = (int)Math.Floor(ratio);
-                count = 0;
-                float du = 0;
-                int j = 1;
-                for (; ; j++)
-                {
-                    cap.read(frame);
-                    if (frame.empty())
-                    {
-                        break;
-                    }
-
-                    count++;
-                    if (count == ratioFloor)
-                    {
-                        count2++;
-                        writer.write(frame);
-
-                        ratioFloor = (int)Math.Floor(ratio + du);
-                        du = ratio + du - ratioFloor;
-                        count = 0;
-                        Debug.LogFormat("ratioFloor is {0}", ratioFloor);
-                        //Debug.LogFormat("ratioFloor is {0}, ratio is {1}", ratioFloor, ratio);
-                    }
-
-                    if (count2 >= maxNumberFrame)
-                        break;
-                }
-                Debug.LogFormat("J = {0}", j);
-            }
-            Debug.LogFormat("Number frame of new video is {0}", count2);
-            writer.release();
-            writer.Dispose();
-            cap.release();
-            File.Delete(filePath2);
-        }
-        GVs.SCENE_MANAGER.loadResultScene();
+                img_progress_cutvideo.gameObject.SetActive(false);
+                GVs.SCENE_MANAGER.loadResultScene();
+            });
     }
+
     public void OnPushBtnClicked()
     {
         if (filtermode == FILTERMODE.LINE)

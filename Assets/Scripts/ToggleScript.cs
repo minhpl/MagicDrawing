@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TouchScript.Gestures;
 using UniRx;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ToggleScript : MonoBehaviour {
@@ -38,7 +39,25 @@ public class ToggleScript : MonoBehaviour {
             BtnSlider_active.gameObject.SetActive(false);
             BtnSlider.gameObject.SetActive(true);
         };
-        
+
+        var rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (var rootGO in rootGameObjects)
+        {
+            var ButtonArrays = rootGO.GetComponentsInChildren<Button>(true);
+            foreach (var uibtn in ButtonArrays)
+            {
+                uibtn.onClick.AddListener(() =>
+                {
+                    panel_line.gameObject.SetActive(false);
+                    panel_constract.gameObject.SetActive(false);
+                    btnContract.gameObject.SetActive(false);
+                    BtnSlider_active.gameObject.SetActive(false);
+                    BtnSlider.gameObject.SetActive(true);
+
+                });
+            }
+        }
+
         BtnTick.onClick.AddListener(() =>
         {
             if(!BtnCancel.gameObject.activeSelf)
@@ -97,6 +116,8 @@ public class ToggleScript : MonoBehaviour {
             btnContract.gameObject.SetActive(false);
         });
 
+
+
         BtnPushActive.onClick.AddListener(() =>
         {
             BtnPushActive.gameObject.SetActive(false);
@@ -109,6 +130,7 @@ public class ToggleScript : MonoBehaviour {
             if (!textTime.activeSelf)
                 textTime.SetActive(true);
         });
+
     }
 
     private void tappedHandler(object sender, System.EventArgs e)

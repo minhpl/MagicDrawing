@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 class GVs
 {
+    public static bool CANCEL_DOWNLOAD = false;
     public static bool DEBUG = true;
     public static string LICENSE_CODE = "PUWCSL";
     public static string APP_PATH =
@@ -14,7 +15,6 @@ class GVs
 		Application.persistentDataPath;
 #endif
     public static string TRAIN_PATH;
-
     public static SceneManagerScript SCENE_MANAGER = new SceneManagerScript();
     public static string SERVER_URL = "http://developer.magicbook.vn/";
     //public static string SERVER_URL = "http://113.23.71.223:3000/";
@@ -52,8 +52,9 @@ class GVs
     public static int PROFILE_CHANGE_AVATA = 3;
     public static int SOUND_SYSTEM = 1;
     public static int SOUND_BG = 1;
-
+    public static float DELAY_TWEEN = 0.3f;
     public static AvataListModel AVATA_LIST_MODEL = new AvataListModel();
+    public static DownloadHistoryStore DOWNLOAD_HISTORY_STORE = new DownloadHistoryStore(); 
     //-----------------------
     public static Stack<int> TRACE_SCENE = new Stack<int>();
     public static LinkedList<string> history = new LinkedList<string>();

@@ -115,15 +115,15 @@ public class LibraryScriptsNGUI : MonoBehaviour
         var app_path = GFs.getAppDataDirPath();        
         var categoryDirPath = app_path + GVs.CATEGORY_LIST.dir + "/";
         yield return null;
-
         for (int j = 0; j < clone; j++)
             for (int i = 0; i < imageCount; i++)
             {
+                //yield return null;
                 try
-                {
+                {                   
                     if (imageItem == null) break;
                     GameObject go = Instantiate(imageItem) as GameObject;
-                    go.transform.GetComponent<TweenAlpha>().delay = 0.05f * i;
+                    go.transform.GetComponent<TweenAlpha>().delay = 0.035f * i + 0.5f;
                     go.transform.SetParent(imageItem.transform.parent.transform);
                     go.transform.localScale = imageItem.transform.localScale;
                     UITexture rimage = go.transform.Find("icon").GetComponent<UITexture>();
@@ -146,7 +146,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
                     }
                     go.SetActive(true);
                     rimage.mainTexture = texture;
-                    scrollView.GetComponent<UIGrid>().Reposition();
+                    //scrollView.GetComponent<UIGrid>().Reposition();
 
                     float width = texture.width;
                     float height = texture.height;
@@ -222,7 +222,8 @@ public class LibraryScriptsNGUI : MonoBehaviour
                 }
                 
             }
-        
+        scrollView.GetComponent<UIGrid>().Reposition();
+
         if (USE_PACK && imageItem != null)
         {
             int freeArea = 0;

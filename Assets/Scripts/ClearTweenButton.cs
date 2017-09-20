@@ -11,6 +11,7 @@ public class ClearTweenButton : MonoBehaviour
         {
             GetComponent<UIPlayTween>().Play(true);
             tweenScale = GetComponent<TweenScale>();
+            tweenScale.ResetToBeginning();
             tweenScale.SetOnFinished(FinishTween);
         }
         catch (System.Exception)

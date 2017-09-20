@@ -65,8 +65,7 @@ public class ResultScripts : MonoBehaviour
             .setRepeat(2).setLoopPingPong().setEase(LeanTweenType.easeOutElastic)
             .setOnComplete(() =>
             {
-                ltdescr_AlphaComfirmDeletePanel.pause();
-                ltdescr_ScaleComfirmDeletePanel.setEase(LeanTweenType.easeInQuart);
+                ltdescr_AlphaComfirmDeletePanel.pause();                
             }).setOnCompleteOnRepeat(true);
         });
 

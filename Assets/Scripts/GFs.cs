@@ -11,8 +11,26 @@ using UnityEngine.UI;
 
 public class GFs
 {
+    public static void LoadDownloadHistoryStore()
+    {
+        if (PlayerPrefs.HasKey("DOWNLOAD_HISTORY_STORE"))
+        {
+            string s = PlayerPrefs.GetString("DOWNLOAD_HISTORY_STORE");
+            GVs.DOWNLOAD_HISTORY_STORE = JsonUtility.FromJson<DownloadHistoryStore>(s);
+        }
+        SaveDownloadHistoryStore();
+    }
+    public static void SaveDownloadHistoryStore()
+    {
+
+        PlayerPrefs.SetString("DOWNLOAD_HISTORY_STORE", JsonUtility.ToJson(GVs.DOWNLOAD_HISTORY_STORE));
+        PlayerPrefs.Save();
+    }
+
+
     public static void LoadData()
     {
+        LoadDownloadHistoryStore();
         //PlayerPrefs.DeleteAll();
         LoadUsers();
         LoadAvatas();
@@ -382,7 +400,7 @@ public class GFs
                 if (GVs.SOUND_BG == 1)
                 {
                     var audioSource = SoundBackgroundSingletonScripts.Instance.audioSource;
-                    if (!audioSource.isPlaying)
+                    if (!audioSource.isPlaying && Scene.name!="TutorialScene")
                     {
                         audioSource.Play();
                     }

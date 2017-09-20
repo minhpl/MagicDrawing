@@ -106,7 +106,7 @@ public class HTTPRequest : MonoBehaviour
                     {
                         if (www.downloadedBytes != 0)
                         {
-                            //Debug.Log("call success");
+                            if (GVs.DEBUG) Debug.Log("call success");
                             string resData = www.downloadHandler.text;
                             resData = AesEncryptor.decode(resData, GVs.KEY, GVs.IV);
                             handler(resData);
@@ -135,6 +135,7 @@ public class HTTPRequest : MonoBehaviour
 
     private IEnumerator RequestDơnloader(string url, string reqModel, HandlerDownload handler, Action timeOutCallback, float timeOut = 20f)
     {
+        GVs.CANCEL_DOWNLOAD = false;
         WWWForm form = new WWWForm();
         string data = reqModel;
         data = AesEncryptor.encode(data, GVs.KEY, GVs.IV);
@@ -143,10 +144,9 @@ public class HTTPRequest : MonoBehaviour
         UnityWebRequest www = UnityWebRequest.Post(url, form);
         www.Send();
 
-        while (!www.isDone)
+        while (!www.isDone && !GVs.CANCEL_DOWNLOAD)
         {
             timeOut -= Time.deltaTime;
-
             if (www.downloadProgress > 0.95)
                 handler("Xử lý dữ liệu", www.downloadProgress);
             else
@@ -173,42 +173,58 @@ public class HTTPRequest : MonoBehaviour
                 {
                     try
                     {
-                        if (www.downloadedBytes != 0)
-                        {
-                            string sInfo = www.GetResponseHeader("downloadInfo");
-                            sInfo = AesEncryptor.decode(sInfo, GVs.KEY, GVs.IV);
-                            DownloadModel downloadInfo = JsonUtility.FromJson<DownloadModel>(sInfo);
-                            string fn = downloadInfo.filename;
-                            string dir = downloadInfo.dir;
-                            bool compress = downloadInfo.compress;
-                            // Debug.Log(DateTime.Now.Second);
-                            if (!Directory.Exists(GVs.APP_PATH + "/" + dir))
-                            {
-                                Directory.CreateDirectory(GVs.APP_PATH + "/" + dir);
-                            }
-                            File.WriteAllBytes(GVs.APP_PATH + "/" + dir + fn, www.downloadHandler.data);
-                            // Debug.Log(DateTime.Now.Second);
-                            if (compress)
-                            {
-                                ZipUtil.Unzip(GVs.APP_PATH + "/" + dir + fn, GVs.APP_PATH + "/" + dir);
-                                File.Delete(GVs.APP_PATH + "/" + dir + fn);
-                            }
-                            else
-                            {
-                                Debug.Log("download ml: " + (GVs.APP_PATH + "/" + dir + fn));
-                            }
-                            //Debug.Log(GVs.APP_PATH);
-                            // Debug.Log(DateTime.Now.Second);
-                            handler("Hoàn thành", 1);
-                        }
-                        else
-                        {
-                            handler("zero data");
-                        }
+
                     }
                     catch (System.Exception ex)
                     {
                         handler("null data");
+                    }
+                    if (www.downloadedBytes != 0)
+                    {
+                        string sInfo = www.GetResponseHeader("downloadInfo");
+                        sInfo = AesEncryptor.decode(sInfo, GVs.KEY, GVs.IV);
+                        DownloadModel downloadInfo = JsonUtility.FromJson<DownloadModel>(sInfo);
+
+                        string fn = downloadInfo.filename;
+                        string dir = downloadInfo.dir;
+                        bool compress = downloadInfo.compress;
+                        // Debug.Log(DateTime.Now.Second);
+                        if (!Directory.Exists(GVs.APP_PATH + "/" + dir))
+                        {
+                            Directory.CreateDirectory(GVs.APP_PATH + "/" + dir);
+                        }
+                        File.WriteAllBytes(GVs.APP_PATH + "/" + dir + fn, www.downloadHandler.data);
+                        // Debug.Log(DateTime.Now.Second);
+                        if (compress && !GVs.CANCEL_DOWNLOAD)
+                        {
+                            handler("Giải nén", 2);
+                            ZipUtil.Unzip(GVs.APP_PATH + "/" + dir + fn, GVs.APP_PATH + "/" + dir);
+                            File.Delete(GVs.APP_PATH + "/" + dir + fn);
+                            /*
+                            unzipping = true;
+                            new UnzipAsync(GVs.APP_PATH + "/" + dir + fn, GVs.APP_PATH + "/" + dir, () =>
+                            {
+                                unzipping = false;
+                            }).Start();
+                            while (unzipping)
+                            {
+                                yield return new WaitForSeconds(0.25f);
+                            }
+                            File.Delete(GVs.APP_PATH + "/" + dir + fn);
+                            */
+                        }
+                        else
+                        {
+                            if (GVs.DEBUG) Debug.Log("download ml: " + (GVs.APP_PATH + "/" + dir + fn));
+                        }
+                        if (GVs.DEBUG) Debug.Log(GVs.APP_PATH);
+                        // Debug.Log(DateTime.Now.Second);
+                        GVs.DOWNLOAD_HISTORY_STORE.Update(downloadInfo.dh);
+                        handler("Hoàn thành", 1);
+                    }
+                    else
+                    {
+                        handler("zero data");
                     }
                 }
             }
@@ -217,6 +233,10 @@ public class HTTPRequest : MonoBehaviour
                 handler("null data");
             }
         }
+        else if (www.responseCode == 304)
+        {
+            handler("Hoàn thành", 1);
+        }
         else
         {
             handler("Dữ liệu không tồn tại", -404);
@@ -224,4 +244,5 @@ public class HTTPRequest : MonoBehaviour
         www.Dispose();
     }
     #endregion
+    public bool unzipping = false;
 }
