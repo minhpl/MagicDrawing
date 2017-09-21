@@ -7,6 +7,7 @@ using UniRx;
 
 public class PreloadScript : MonoBehaviour
 {
+    public GameObject goLogo;
     public UISlider uiDownload;
     public UILabel text;
     public GameObject popupRequireNetwork;
@@ -59,7 +60,34 @@ public class PreloadScript : MonoBehaviour
         if (NET.NetWorkIsAvaiable()) popupRequireNetwork.SetActive(false);
         if (GVs.LICENSE_CODE.Equals(""))
         {
-            licensePanel.SetActive(true);
+
+            if (!NET.NetWorkIsAvaiable())
+            {
+                popupRequireNetwork.SetActive(true);
+                return;
+            }
+
+            HTTPRequest.Instance.Request(GVs.CHECK_AVAIABLE_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
+            {
+                try
+                {
+                    ResModel resModel = JsonUtility.FromJson<ResModel>(data);
+                    if (resModel.success == 0)
+                    {
+                        GVs.LICENSE_CODE = "******";
+                        StartCheckApp();
+                    }
+                    else
+                    {
+                        licensePanel.SetActive(true);
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    Debug.Log(data);
+                    Debug.Log(e);
+                }
+            });
         }
         else
         {
@@ -93,6 +121,7 @@ public class PreloadScript : MonoBehaviour
             }
             return;
         }
+        goLogo.SetActive(true);
         uiDownload.gameObject.SetActive(true);
         uiDownload.numberOfSteps = 1001;
         popupRequireNetwork.SetActive(false);
@@ -133,7 +162,7 @@ public class PreloadScript : MonoBehaviour
                 cancelCorountineDownloadData = Observable.FromCoroutine(DownloadData).Subscribe();
             });
         });
-        
+
     }
 
     private IObservable<float> streamDownloadOtherApp = Observable.Create<float>((IObserver<float> observer) =>
@@ -142,14 +171,14 @@ public class PreloadScript : MonoBehaviour
         {
             try
             {
-                GVs.OTHER_APP_LIST_MODEL = (JsonUtility.FromJson<OtherAppListModel>(data));               
+                GVs.OTHER_APP_LIST_MODEL = (JsonUtility.FromJson<OtherAppListModel>(data));
                 HTTPRequest.Instance.Download(GVs.DOWNLOAD_OTHER_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_OTHER_APP_ICON))), (data2, process) =>
                 {
                     if (process == 1 || process == -404)
                     {
-                        if(process==1)
+                        if (process == 1)
                             GFs.SaveOtherAppList();
-                        observer.OnCompleted();                        
+                        observer.OnCompleted();
                     }
                 });
             }

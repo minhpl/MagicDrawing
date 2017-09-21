@@ -25,7 +25,7 @@ public class GFs
         GFs.LoadCategoryList();
         GFs.LoadAllTemplateList();
     }
-    
+
     public static void LoadDownloadHistoryStore()
     {
         if (PlayerPrefs.HasKey("DOWNLOAD_HISTORY_STORE"))
@@ -109,10 +109,11 @@ public class GFs
     {
         if (PlayerPrefs.HasKey("LICENSE_CODE"))
         {
-
             GVs.LICENSE_CODE = PlayerPrefs.GetString("LICENSE_CODE");
         }
+        else GVs.LICENSE_CODE = "";
     }
+
     public static void SaveLicenseCode()
     {
         PlayerPrefs.SetString("LICENSE_CODE", GVs.LICENSE_CODE);
@@ -231,8 +232,6 @@ public class GFs
         else
             SaveCategoryList();
     }
-
-
 
     public static Texture2D LoadPNGFromPath(string filePath)
     {
@@ -368,7 +367,7 @@ public class GFs
         }
         return null;
     }
-    
+
     public static void addButtonSoundEventOnSceneLoad()
     {
         if (!TutorialController.isAddedSoundButtonEvent)
@@ -419,7 +418,7 @@ public class GFs
                 if (GVs.SOUND_BG == 1)
                 {
                     var audioSource = SoundBackgroundSingletonScripts.Instance.audioSource;
-                    if (!audioSource.isPlaying && Scene.name!="TutorialScene")
+                    if (!audioSource.isPlaying && Scene.name != "TutorialScene")
                     {
                         audioSource.Play();
                     }

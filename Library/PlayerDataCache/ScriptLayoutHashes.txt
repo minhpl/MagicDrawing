@@ -1,4 +1,4 @@
-Android
+iOS
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.UI.TextureSwitch
 70d9a5dfdd92296522528a98d2f5ed68 Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.PenCursor
 78a28a48c2ded27a3fedcad1f807ebf3 Assembly-CSharp.dll:.LogoCinematic
@@ -236,7 +236,7 @@ d25057724e4b31ba030cceb84c72270b Assembly-CSharp.dll:.AnimatedWidget
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ClearButtonTargetScript
 375c3df321eba06470b1e1131db29fe9 Assembly-CSharp.dll:.UILabel
 d01076a6a1818355740b0f2f03649d29 Assembly-CSharp.dll:TouchScript.Examples.Photos.Container
-3a4407705fa5eaa3d78331d9ffda25c5 Assembly-CSharp.dll:.MainToolsNGUIScripts
+87586429f011b9ccaff8c184c9e742e3 Assembly-CSharp.dll:.MainToolsNGUIScripts
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.CamShiftExample
 cd6a6e8941670a64796d07c5183a3d4f Assembly-CSharp.dll:.UIButton
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableUpdateSelectedTrigger
@@ -662,6 +662,7 @@ d62f60ad5ecff73b76da2ea09c712ada Assembly-CSharp.dll:.UIItemStorage
 6667bbf9ae4f58579da179f3482ec8f1 Assembly-CSharp.dll:.ToggleScript
 9778b00922ba8aae9a3acf3ff3f34ff4 Assembly-CSharp.dll:UnityEngine.UI.Extensions.UILineTextureRenderer
 99fb603e20780b52805fbdf92487e554 Assembly-CSharp.dll:TouchScript.Behaviors.Transformer
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TweenProgressLongWaitTask
 37d65bf29af9dd2fac1cab17987f9faa Assembly-CSharp.dll:.AnimatedAlpha
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample07_OrchestratIEnumerator
 56054d5c8bd19ebccddbb29522d1a093 Assembly-CSharp.dll:UnityEngine.UI.Extensions.NicerOutline
@@ -670,6 +671,7 @@ d62f60ad5ecff73b76da2ea09c712ada Assembly-CSharp.dll:.UIItemStorage
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample02_ObservableTriggers
 8416e9da8fd7dbae60d969efdb2242bd Assembly-CSharp.dll:.UIStretch
 b39130012d9305920643c74c163a189f Assembly-CSharp.dll:UnityEngine.UI.Extensions.FlowLayoutGroup
+99ce47887b098109b40d301ef8c0ce10 Assembly-CSharp.dll:.OtherAppController
 5d6ce4ad9293135539ef0600737ddedf Assembly-CSharp.dll:.AvataScript
 57bf8c7b0c4e3f2507ca692e798d298b Assembly-CSharp.dll:OpenCVForUnityExample.WebCamTextureToMatExample
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.MobileNetSSDExample
@@ -754,4 +756,3 @@ a37f17210073a9a877f3068e247a471e Assembly-CSharp.dll:UnityEngine.UI.Extensions.D
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TMPro.Examples.SimpleScript
 ffcb82fccd9242220f3d88cf27f8bfe3 Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.PinnedTransformGesture
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.LayerManager
-99ce47887b098109b40d301ef8c0ce10 Assembly-CSharp.dll:.OtherAppController

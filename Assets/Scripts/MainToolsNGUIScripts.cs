@@ -8,6 +8,7 @@ using Kakera;
 using UniRx;
 using System;
 using UnityEngine.SceneManagement;
+using System.Threading;
 
 public class MainToolsNGUIScripts : MonoBehaviour {
 
@@ -16,6 +17,8 @@ public class MainToolsNGUIScripts : MonoBehaviour {
     public UIButton uiBtnGallery;
     public UIButton uiBtnHistory;
     public UIButton uiBtnHome;
+    public GameObject progressWaitLongTask;
+
     IDisposable cancelCorountineBackBtnAndroid;
 
     [SerializeField]
@@ -60,7 +63,11 @@ public class MainToolsNGUIScripts : MonoBehaviour {
             }
             else
             {
-                GVs.SCENE_MANAGER.loadGalleryScene();
+                progressWaitLongTask.SetActive(true);
+                Observable.FromCoroutine(WaitSomeTime).DoOnCompleted(() =>
+                {
+                    progressWaitLongTask.SetActive(false);
+                });                
             }
         }));
 
@@ -77,12 +84,14 @@ public class MainToolsNGUIScripts : MonoBehaviour {
 
         imagePicker.Completed += (string path) =>
         {
+            progressWaitLongTask.SetActive(true);
             Texture2D texture = GFs.LoadPNGFromPath(path);
             Mat image = new Mat(texture.height, texture.width, CvType.CV_8UC3);
             Utils.texture2DToMat(texture, image);
             DrawingScripts.image = image;
             DrawingScripts.texModel = texture;
             DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
+            progressWaitLongTask.SetActive(false);
             GVs.SCENE_MANAGER.loadDrawingScene();
             HistoryNGUIScripts.AddHistoryItem(new HistoryModel(path, path, HistoryModel.IMAGETYPE.SNAP));
         };
@@ -97,6 +106,7 @@ public class MainToolsNGUIScripts : MonoBehaviour {
 
     void ImageLoaded()
     {
+        progressWaitLongTask.SetActive(true);
         Texture2D texture = (Texture2D)AndroidGallery.Instance.GetTexture();
         Mat image = new Mat(texture.height, texture.width,CvType.CV_8UC4);
         Utils.texture2DToMat(texture, image);        
@@ -104,7 +114,13 @@ public class MainToolsNGUIScripts : MonoBehaviour {
         DrawingScripts.image = image;
         DrawingScripts.texModel = texture;
         DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
+        progressWaitLongTask.SetActive(false);
         GVs.SCENE_MANAGER.loadDrawingScene();
         HistoryNGUIScripts.AddHistoryItem(new HistoryModel(path, path, HistoryModel.IMAGETYPE.SNAP));
+    }
+
+    IEnumerator WaitSomeTime()
+    {
+        yield return new WaitForSeconds(2);
     }
 }

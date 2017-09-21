@@ -54,7 +54,6 @@
      <Compile Include="Assets\AndroidGallery\Demo\DemoScript.cs" />
      <Compile Include="Assets\AndroidGallery\Scripts\AndroidGallery.cs" />
      <Compile Include="Assets\AndroidGallery\Scripts\Singleton.cs" />
-     <Compile Include="Assets\BackButtonGoLibraryScene.cs" />
      <Compile Include="Assets\Demigiant\DOTween\Examples\Basics.cs" />
      <Compile Include="Assets\Demigiant\DOTween\Examples\Sequences.cs" />
      <Compile Include="Assets\FacebookSDK\Examples\Scripts\ConsoleBase.cs" />
@@ -703,6 +702,7 @@
      <Compile Include="Assets\Scripts\AutoHidePanel.cs" />
      <Compile Include="Assets\Scripts\AvataScript.cs" />
      <Compile Include="Assets\Scripts\BackButton.cs" />
+     <Compile Include="Assets\Scripts\BackButtonGoLibraryScene.cs" />
      <Compile Include="Assets\Scripts\BackgroundScaleAllSceneScript.cs" />
      <Compile Include="Assets\Scripts\BackHomeScripts.cs" />
      <Compile Include="Assets\Scripts\CheckFPS.cs" />
@@ -735,6 +735,7 @@
      <Compile Include="Assets\Scripts\models\Category.cs" />
      <Compile Include="Assets\Scripts\models\Dispatch.cs" />
      <Compile Include="Assets\Scripts\models\DownloadModel.cs" />
+     <Compile Include="Assets\Scripts\models\OtherAppModel.cs" />
      <Compile Include="Assets\Scripts\models\ReqModel.cs" />
      <Compile Include="Assets\Scripts\models\ResModel.cs" />
      <Compile Include="Assets\Scripts\models\TemplateDrawing.cs" />
@@ -752,6 +753,7 @@
      <Compile Include="Assets\Scripts\OpenCV\Utilities.cs" />
      <Compile Include="Assets\Scripts\OpenCV\WarpPerspective.cs" />
      <Compile Include="Assets\Scripts\OpenCV\WebcamVideoCapture.cs" />
+     <Compile Include="Assets\Scripts\OtherAppController.cs" />
      <Compile Include="Assets\Scripts\PlayTweenAvata.cs" />
      <Compile Include="Assets\Scripts\PreloadScript.cs" />
      <Compile Include="Assets\Scripts\ProfileScript.cs" />
@@ -902,6 +904,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples\Scripts\VertexShakeB.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples\Scripts\VertexZoom.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples\Scripts\WarpTextExample.cs" />
+     <Compile Include="Assets\TweenProgressLongWaitTask.cs" />
      <Compile Include="Assets\UITween\Prefabs\Click Effect Pref\ClickedWaveAnimation.cs" />
      <Compile Include="Assets\UITween\ScenesExamplesScripts\ActivateOnEnable.cs" />
      <Compile Include="Assets\UITween\ScenesExamplesScripts\CreateAnimImage.cs" />

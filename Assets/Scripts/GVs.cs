@@ -7,7 +7,7 @@ class GVs
 {
     public static bool CANCEL_DOWNLOAD = false;
     public static bool DEBUG = true;
-    public static string LICENSE_CODE = "PUWCSL";
+    public static string LICENSE_CODE = "";
     public static string APP_PATH =
 #if UNITY_ANDROID
         "data/data/com.MinhViet.Drawing/files";
@@ -28,6 +28,8 @@ class GVs
     public static string GET_ALL_OTHER_APP_URL = SERVER_URL + "users/other/getAllApp";
     public static string DOWNLOAD_OTHER_URL = SERVER_URL + "users/other/download";
     public static string DOWNLOAD_URL = SERVER_URL + "users/drawing/download";
+    public static string CHECK_AVAIABLE_URL = SERVER_URL + "users/checkAvaiable";
+    
 
     public static string GET_TEMPLATE_BY_CATEGORY_URL = GVs.SERVER_URL + "users/drawing/getTemplateByCategory";
     public static string KEY = "12345678123456781234567812345678";
