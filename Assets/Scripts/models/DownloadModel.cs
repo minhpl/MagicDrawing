@@ -9,11 +9,11 @@ public class DownloadModel
     public static int DOWNLOAD_CATEGORY_AVATA = 1;
     public static int DOWNLOAD_CATEGORY = 2;
     public static int DOWNLOAD_AVATAS = 3;
-    
+    public static int DOWNLOAD_OTHER_APP_ICON = 10;
 
     public int downloadType;
     public string _id;
-
+    
     public string filename;
     public string dir;
     public bool compress;

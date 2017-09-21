@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2017.1.1p1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -795,6 +793,7 @@
     <Compile Include="Assets\Scripts\CloudScript.cs" />
     <Compile Include="Assets\Scripts\Console.cs" />
     <Compile Include="Assets\Scripts\DataBind.cs" />
+    <Compile Include="Assets\Scripts\DelayTweenScript.cs" />
     <Compile Include="Assets\Scripts\DontShowPersistantScene.cs" />
     <Compile Include="Assets\Scripts\DrawingScripts.cs" />
     <Compile Include="Assets\Scripts\EditProfileScript.cs" />
@@ -817,6 +816,7 @@
     <Compile Include="Assets\Scripts\models\Category.cs" />
     <Compile Include="Assets\Scripts\models\Dispatch.cs" />
     <Compile Include="Assets\Scripts\models\DownloadModel.cs" />
+    <Compile Include="Assets\Scripts\models\OtherAppModel.cs" />
     <Compile Include="Assets\Scripts\models\ReqModel.cs" />
     <Compile Include="Assets\Scripts\models\ResModel.cs" />
     <Compile Include="Assets\Scripts\models\TemplateDrawing.cs" />
@@ -834,6 +834,7 @@
     <Compile Include="Assets\Scripts\OpenCV\Utilities.cs" />
     <Compile Include="Assets\Scripts\OpenCV\WarpPerspective.cs" />
     <Compile Include="Assets\Scripts\OpenCV\WebcamVideoCapture.cs" />
+    <Compile Include="Assets\Scripts\OtherAppController.cs" />
     <Compile Include="Assets\Scripts\PlayTweenAvata.cs" />
     <Compile Include="Assets\Scripts\PreloadScript.cs" />
     <Compile Include="Assets\Scripts\ProfileScript.cs" />
@@ -860,13 +861,14 @@
     <Compile Include="Assets\Scripts\TweenBackButton.cs" />
     <Compile Include="Assets\Scripts\TweenDrawingScene.cs" />
     <Compile Include="Assets\Scripts\TweenHistoryNGUIScene.cs" />
+    <Compile Include="Assets\Scripts\TweenHomeScene.cs" />
     <Compile Include="Assets\Scripts\TweenLibraryScene.cs" />
     <Compile Include="Assets\Scripts\TweenMasterpieceCreationNGUIScene.cs" />
     <Compile Include="Assets\Scripts\TweenResultScene.cs" />
     <Compile Include="Assets\Scripts\TweenSnapImageScene.cs" />
     <Compile Include="Assets\Scripts\TweenTemplateNGUIScene.cs" />
     <Compile Include="Assets\Scripts\UserScript.cs" />
-    <Compile Include="Assets\Simple Scene Fade Load System\Demo (You don't have to import this folder)\DemoScript.cs" />
+    <Compile Include="Assets\Simple Scene Fade Load System\Demo (You don&apos;t have to import this folder)\DemoScript.cs" />
     <Compile Include="Assets\Simple Scene Fade Load System\Scripts\Fader.cs" />
     <Compile Include="Assets\Simple Scene Fade Load System\Scripts\Initiate.cs" />
     <Compile Include="Assets\SoundControllerScript.cs" />

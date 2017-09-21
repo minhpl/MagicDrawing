@@ -11,6 +11,21 @@ using UnityEngine.UI;
 
 public class GFs
 {
+
+    public static void LoadData()
+    {
+        //PlayerPrefs.DeleteAll();
+        LoadOtherAppList();
+        LoadDownloadHistoryStore();
+        LoadUsers();
+        LoadAvatas();
+        LoadLevel();
+        LoadLicenseCode();
+        LoadSoundConfig();
+        GFs.LoadCategoryList();
+        GFs.LoadAllTemplateList();
+    }
+    
     public static void LoadDownloadHistoryStore()
     {
         if (PlayerPrefs.HasKey("DOWNLOAD_HISTORY_STORE"))
@@ -27,19 +42,23 @@ public class GFs
         PlayerPrefs.Save();
     }
 
-
-    public static void LoadData()
+    public static void LoadOtherAppList()
     {
-        LoadDownloadHistoryStore();
-        //PlayerPrefs.DeleteAll();
-        LoadUsers();
-        LoadAvatas();
-        LoadLevel();
-        LoadLicenseCode();
-        LoadSoundConfig();
-        GFs.LoadCategoryList();
-        GFs.LoadAllTemplateList();
+
+        if (PlayerPrefs.HasKey("OTHER_APP_LIST_MODEL"))
+        {
+            string s = PlayerPrefs.GetString("OTHER_APP_LIST_MODEL");
+            GVs.OTHER_APP_LIST_MODEL = JsonUtility.FromJson<OtherAppListModel>(s);
+        }
+        SaveOtherAppList();
     }
+    public static void SaveOtherAppList()
+    {
+
+        PlayerPrefs.SetString("OTHER_APP_LIST_MODEL", JsonUtility.ToJson(GVs.OTHER_APP_LIST_MODEL));
+        PlayerPrefs.Save();
+    }
+
     public static void SaveUsers()
     {
         PlayerPrefs.SetString("USERS", JsonUtility.ToJson(GVs.USER_LIST_MODEL));

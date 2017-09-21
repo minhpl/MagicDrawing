@@ -29,6 +29,7 @@ public class PreloadScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        GFs.LoadData();
         if (GVs.DEBUG) Debug.Log("Application.persistentDataPath;: " + Application.persistentDataPath);
         // getApplicationContext().getFilesDir().getAbsolutePath()
         if (Application.platform == RuntimePlatform.Android)
@@ -82,6 +83,10 @@ public class PreloadScript : MonoBehaviour
             {
                 popupRequireNetwork.SetActive(true);
             }
+            else if (GVs.OTHER_APP_LIST_MODEL == null || GVs.OTHER_APP_LIST_MODEL.Count() == 9)
+            {
+                popupRequireNetwork.SetActive(true);
+            }
             else
             {
                 GVs.SCENE_MANAGER.StartHomeScene();
@@ -121,11 +126,41 @@ public class PreloadScript : MonoBehaviour
             });
         });
 
-        streamDownloadAvartarProfile.Subscribe(_ => { }, () =>
-         {
-             cancelCorountineDownloadData = Observable.FromCoroutine(DownloadData).Subscribe();
-         });
+        streamDownloadOtherApp.Subscribe(_ => { }, () =>
+        {
+            streamDownloadAvartarProfile.Subscribe(_ => { }, () =>
+            {
+                cancelCorountineDownloadData = Observable.FromCoroutine(DownloadData).Subscribe();
+            });
+        });
+        
     }
+
+    private IObservable<float> streamDownloadOtherApp = Observable.Create<float>((IObserver<float> observer) =>
+    {
+        HTTPRequest.Instance.Request(GVs.GET_ALL_OTHER_APP_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
+        {
+            try
+            {
+                GVs.OTHER_APP_LIST_MODEL = (JsonUtility.FromJson<OtherAppListModel>(data));               
+                HTTPRequest.Instance.Download(GVs.DOWNLOAD_OTHER_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_OTHER_APP_ICON))), (data2, process) =>
+                {
+                    if (process == 1 || process == -404)
+                    {
+                        if(process==1)
+                            GFs.SaveOtherAppList();
+                        observer.OnCompleted();                        
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(e);
+                observer.OnError(e);
+            }
+        });
+        return Disposable.Empty;
+    });
 
     IEnumerator DownloadData()
     {

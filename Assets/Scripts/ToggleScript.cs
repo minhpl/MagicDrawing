@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TouchScript.Gestures;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -40,21 +41,22 @@ public class ToggleScript : MonoBehaviour {
             BtnSlider.gameObject.SetActive(true);
         };
 
+        UnityAction action = () =>
+        {
+            panel_line.gameObject.SetActive(false);
+            panel_constract.gameObject.SetActive(false);
+            btnContract.gameObject.SetActive(false);
+            BtnSlider_active.gameObject.SetActive(false);
+            BtnSlider.gameObject.SetActive(true);
+        };
+
         var rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
         foreach (var rootGO in rootGameObjects)
         {
             var ButtonArrays = rootGO.GetComponentsInChildren<Button>(true);
             foreach (var uibtn in ButtonArrays)
             {
-                uibtn.onClick.AddListener(() =>
-                {
-                    panel_line.gameObject.SetActive(false);
-                    panel_constract.gameObject.SetActive(false);
-                    btnContract.gameObject.SetActive(false);
-                    BtnSlider_active.gameObject.SetActive(false);
-                    BtnSlider.gameObject.SetActive(true);
-
-                });
+                uibtn.onClick.AddListener(action);
             }
         }
 
@@ -96,6 +98,7 @@ public class ToggleScript : MonoBehaviour {
             panel_constract.SetActive(false);
         });
 
+        btnContract.onClick.RemoveListener(action);
         btnContract.onClick.AddListener(() =>
         {
             bool stateLine = panel_line.activeSelf;            

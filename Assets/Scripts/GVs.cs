@@ -25,6 +25,8 @@ class GVs
     public static string GET_JUNIOR_CATEGORY_URL = SERVER_URL + "users/drawing/getJuniorCategory";
     public static string GET_WORD_BY_CATEGORY_URL = SERVER_URL + "users/drawing/getWordByCategory";
     public static string GET_ALL_AVATA_URL = SERVER_URL + "users/english/getAllAvata";
+    public static string GET_ALL_OTHER_APP_URL = SERVER_URL + "users/other/getAllApp";
+    public static string DOWNLOAD_OTHER_URL = SERVER_URL + "users/other/download";
     public static string DOWNLOAD_URL = SERVER_URL + "users/drawing/download";
 
     public static string GET_TEMPLATE_BY_CATEGORY_URL = GVs.SERVER_URL + "users/drawing/getTemplateByCategory";
@@ -54,7 +56,8 @@ class GVs
     public static int SOUND_BG = 1;
     public static float DELAY_TWEEN = 0.3f;
     public static AvataListModel AVATA_LIST_MODEL = new AvataListModel();
-    public static DownloadHistoryStore DOWNLOAD_HISTORY_STORE = new DownloadHistoryStore(); 
+    public static DownloadHistoryStore DOWNLOAD_HISTORY_STORE = new DownloadHistoryStore();
+    public static OtherAppListModel OTHER_APP_LIST_MODEL = new OtherAppListModel();
     //-----------------------
     public static Stack<int> TRACE_SCENE = new Stack<int>();
     public static LinkedList<string> history = new LinkedList<string>();
@@ -67,11 +70,11 @@ class GVs
     public static Dictionary<string, TemplateDrawingList> TEMPLATE_LIST_ALL_CATEGORY;
     public static TemplateDrawingList DRAWING_TEMPLATE_LIST = new TemplateDrawingList();
 }
-public class COLOR
-{
-    public static string RED = "#eb4051";
-    public static string BLUE = "#0066ff";
-    public static string CYAN = "#11cfe8";
-    public static string GRAY = "#5d5d5d";
-    public static string YELLOW = "#ffd916";
-}
+    public class COLOR
+    {
+        public static string RED = "#eb4051";
+        public static string BLUE = "#0066ff";
+        public static string CYAN = "#11cfe8";
+        public static string GRAY = "#5d5d5d";
+        public static string YELLOW = "#ffd916";
+    }
