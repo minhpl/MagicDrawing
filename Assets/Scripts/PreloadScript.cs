@@ -193,31 +193,31 @@ public class PreloadScript : MonoBehaviour
 
     IEnumerator DownloadData()
     {
-        try
-        {
-            if (GVs.CATEGORY_LIST != null && GVs.TEMPLATE_LIST_ALL_CATEGORY != null)
-            {
-                var numCategory = GVs.CATEGORY_LIST.Count();
-                var NumtemplateList = GVs.TEMPLATE_LIST_ALL_CATEGORY.Count;
-                if (numCategory == NumtemplateList && numCategory != 0)
-                {
-                    Utilities.Log("Ready");
-                    ready1 = true;
-                    uiDownload.value = 1;
-                    StartCoroutine(WaitForStartHome());
-                    yield break;
-                }
-            }
-            else
-            {
-                PlayerPrefs.DeleteAll();
-                PlayerPrefs.Save();
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError(ex);
-        }
+        //try
+        //{
+        //    if (GVs.CATEGORY_LIST != null && GVs.TEMPLATE_LIST_ALL_CATEGORY != null)
+        //    {
+        //        var numCategory = GVs.CATEGORY_LIST.Count();
+        //        var NumtemplateList = GVs.TEMPLATE_LIST_ALL_CATEGORY.Count;
+        //        if (numCategory == NumtemplateList && numCategory != 0)
+        //        {
+        //            Utilities.Log("Ready");
+        //            ready1 = true;
+        //            uiDownload.value = 1;
+        //            StartCoroutine(WaitForStartHome());
+        //            yield break;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        PlayerPrefs.DeleteAll();
+        //        PlayerPrefs.Save();
+        //    }
+        //}
+        //catch (Exception ex)
+        //{
+        //    Debug.LogError(ex);
+        //}
 
 
         Utilities.Log("Waiting for downloading");
@@ -236,7 +236,6 @@ public class PreloadScript : MonoBehaviour
         float currentProgress = PROGRESS_DOWNLOAD_AVARTAR_PERCENT;
         if (NET.NetWorkIsAvaiable())
         {
-
             HTTPRequest.Instance.Request(GVs.GET_ALL_CATEGORY_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
             {
                 IObservable<float> stream = null;
@@ -273,6 +272,7 @@ public class PreloadScript : MonoBehaviour
                                         var plusProgress = volumeCategoryProgress * process;
                                         var temp = currentProgress + plusProgress;
                                         uiDownload.value = temp;
+                                        Debug.Log(process);
                                         if (process == 1)
                                         {
                                             plusProgress = volumeCategoryProgress * process;
