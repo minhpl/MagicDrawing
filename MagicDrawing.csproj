@@ -858,6 +858,7 @@
     <Compile Include="Assets\Scripts\ToggleScript.cs" />
     <Compile Include="Assets\Scripts\TrackScene.cs" />
     <Compile Include="Assets\Scripts\TutorialController.cs" />
+    <Compile Include="Assets\Scripts\TutorialScene.cs" />
     <Compile Include="Assets\Scripts\TweenBackButton.cs" />
     <Compile Include="Assets\Scripts\TweenDrawingScene.cs" />
     <Compile Include="Assets\Scripts\TweenHistoryNGUIScene.cs" />
@@ -1100,6 +1101,7 @@
     <None Include="Assets\Demigiant\DOTween\Editor\DOTweenEditor.XML" />
     <None Include="Assets\Demigiant\DOTween\readme.txt" />
     <None Include="Assets\Exported\step1.atlas.txt" />
+    <None Include="Assets\Exported\step2.atlas.txt" />
     <None Include="Assets\FFmpegOut\Internal\Shader\CameraCapture.shader" />
     <None Include="Assets\FacebookSDK\link.xml" />
     <None Include="Assets\LeanTween\Examples\Archived\2dUnlitWithFade.shader" />

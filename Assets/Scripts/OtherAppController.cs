@@ -6,8 +6,11 @@ public class OtherAppController : MonoBehaviour
 {
     public GameObject btnRateMyApp;
     public GameObject item;
+    OtherAppModel oam;
     void Start()
     {
+        GFs.LoadOtherAppList();
+        oam = GVs.OTHER_APP_LIST_MODEL.GetMyApp();
         GVs.OTHER_APP_LIST_MODEL.Clean();
         float h = 1920 - Screen.height * 1080.0f / Screen.width;
         Vector3 lp = item.transform.parent.transform.localPosition;
@@ -39,16 +42,15 @@ public class OtherAppController : MonoBehaviour
 #if UNITY_ANDROID
         Application.OpenURL("market://details?id=" + GVs.OTHER_APP_LIST_MODEL.Get(go.name).packageName);
 #elif UNITY_IPHONE
-		Application.OpenURL("itms-apps://itunes.apple.com/app/id" + GVs.OTHER_APP_LIST_MODEL.Get(go.name).appStore);
+        Application.OpenURL("itms-apps://itunes.apple.com/app/id" + GVs.OTHER_APP_LIST_MODEL.Get(go.name).appStore);
 #endif
     }
     public void RateMyApp(GameObject go)
     {
-        OtherAppModel oam = GVs.OTHER_APP_LIST_MODEL.GetMyApp();
 #if UNITY_ANDROID
         Application.OpenURL("market://details?id=" + oam.packageName);
 #elif UNITY_IPHONE
-		Application.OpenURL("itms-apps://itunes.apple.com/app/id" + oam.appStore);
+        Application.OpenURL("itms-apps://itunes.apple.com/app/id" + oam.appStore);
 #endif
     }
 }

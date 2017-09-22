@@ -34,6 +34,7 @@ c24a21b131bfa67be1162db2cba4b52b UnityEngine.Timeline.dll:UnityEngine.Timeline.T
 361ec5b05caa56d7b4e149d4dd50f3f6 Assembly-CSharp.dll:UnityEngine.UI.Extensions.RadialLayout
 c7be7eecb4c030a38ac64bcde744dd17 Assembly-CSharp.dll:.UIPanel
 722cff3b46d6c479b33ab6236e35a1e9 Assembly-CSharp.dll:.FeatureDemoUI
+f10c835f047a0fb15ba670d133b580c5 Assembly-CSharp.dll:.TutorialScene
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SoundButtonSingletonScript
 4db4eddbab184d463c1433e1bb2af81f Assembly-CSharp.dll:TouchScript.Examples.UI.SetColor
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableMoveTrigger

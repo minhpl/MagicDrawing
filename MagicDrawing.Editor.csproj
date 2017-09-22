@@ -403,6 +403,7 @@
     <None Include="Assets\Demigiant\DOTween\Editor\DOTweenEditor.XML" />
     <None Include="Assets\Demigiant\DOTween\readme.txt" />
     <None Include="Assets\Exported\step1.atlas.txt" />
+    <None Include="Assets\Exported\step2.atlas.txt" />
     <None Include="Assets\FFmpegOut\Internal\Shader\CameraCapture.shader" />
     <None Include="Assets\FacebookSDK\link.xml" />
     <None Include="Assets\LeanTween\Examples\Archived\2dUnlitWithFade.shader" />

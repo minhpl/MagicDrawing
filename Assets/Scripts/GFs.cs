@@ -420,6 +420,8 @@ public class GFs
                     var audioSource = SoundBackgroundSingletonScripts.Instance.audioSource;
                     if (!audioSource.isPlaying && Scene.name != "TutorialScene")
                     {
+                        Debug.Log("Xin chao the gioi tuoi dep");
+
                         audioSource.Play();
                     }
                     if (Scene.name == "DrawingScene")
