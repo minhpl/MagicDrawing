@@ -1,4 +1,4 @@
-iOS
+Android
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.UI.TextureSwitch
 70d9a5dfdd92296522528a98d2f5ed68 Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.PenCursor
 78a28a48c2ded27a3fedcad1f807ebf3 Assembly-CSharp.dll:.LogoCinematic

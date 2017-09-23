@@ -86,6 +86,21 @@ public class MainToolsNGUIScripts : MonoBehaviour {
         {
             progressWaitLongTask.SetActive(true);
             Texture2D texture = GFs.LoadPNGFromPath(path);
+            //Texture2D tex = null;
+            //byte[] fileData;
+            //if (File.Exists(filePath))
+            //{
+            //    fileData = File.ReadAllBytes(filePath);
+            //    tex = new Texture2D(2, 2, TextureFormat.BGRA32, false);
+            //    tex.LoadImage(fileData);
+            //}
+            //else
+            //{
+            //    Debug.Log("File not existed");
+            //}
+            //return tex;
+
+
             Mat image = new Mat(texture.height, texture.width, CvType.CV_8UC3);
             Utils.texture2DToMat(texture, image);
             DrawingScripts.image = image;

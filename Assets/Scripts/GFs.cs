@@ -126,9 +126,16 @@ public class GFs
         {
             GVs.SOUND_SYSTEM = PlayerPrefs.GetInt("SOUND_SYSTEM");
         }
+        else
+        {
+            GVs.SOUND_SYSTEM = 1;
+        }
         if (PlayerPrefs.HasKey("SOUND_BG"))
         {
             GVs.SOUND_BG = PlayerPrefs.GetInt("SOUND_BG");
+        }else
+        {
+            GVs.SOUND_BG = 1;
         }
     }
     public static void SaveSoundConfig()
@@ -249,6 +256,12 @@ public class GFs
         }
         return tex;
     }
+
+    public static Texture2D LoadPNGFromPathAsync(string file)
+    {
+        return null;
+    }
+
 
     public static string getMasterpieceDirPath()
     {
