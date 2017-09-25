@@ -265,7 +265,10 @@ public class GFs
 
     public static string getMasterpieceDirPath()
     {
-        string ANDROID_DIR_PATH_MASTERPIECE = "data/data/" + Application.identifier + "/files/Masterpiece/";
+        string perUserDir = GVs.CURRENT_USER_MODEL.id.ToString();
+
+
+        string ANDROID_DIR_PATH_MASTERPIECE = "data/data/" + Application.identifier + "/files/Masterpiece/"+perUserDir+"/";
         const string IPHONE_DIR_NAME_MASTERPIECE = "masterpiece";
         const string PC_DIR_NAME_MASTERPIECE = "masterpiece";
 
@@ -278,11 +281,11 @@ public class GFs
             var appPath = getAppDataDirPath();
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
-                return appPath + IPHONE_DIR_NAME_MASTERPIECE + "/";
+                return appPath + IPHONE_DIR_NAME_MASTERPIECE + "/" + perUserDir + "/";
             }
             else
             {
-                return appPath + PC_DIR_NAME_MASTERPIECE + "/";
+                return appPath + PC_DIR_NAME_MASTERPIECE + "/" + perUserDir + "/";
             }
         }
     }

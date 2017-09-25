@@ -24,7 +24,7 @@ public class HistoryModel
 
 public class HistoryNGUIScripts : MonoBehaviour {	
     public static LinkedList<HistoryModel> history = null;    
-    private const string KEY = "history";    
+    private const string KEY = "history_";       
     public GameObject item;
     public UIGrid uiGrid;
     private IDisposable cancelCoroutineBackBtnAndroid;
@@ -49,13 +49,22 @@ public class HistoryNGUIScripts : MonoBehaviour {
     }
 
     void Start () {
-        if (history == null)
+        //if (history == null)
         {
-            var json = PlayerPrefs.GetString(KEY);            
+            var user_id = GVs.CURRENT_USER_MODEL.id;
+
+            var json = PlayerPrefs.GetString(getUserHistoryKey());            
             history = JsonConvert.DeserializeObject<LinkedList<HistoryModel>>(json);            
         }
         cancelLoad = Observable.FromMicroCoroutine(load).Subscribe();
     }       
+
+    static private string getUserHistoryKey()
+    {
+        var user_id = GVs.CURRENT_USER_MODEL.id;
+        return KEY + user_id.ToString();
+    }
+
 
     IEnumerator load()
     {
@@ -121,7 +130,7 @@ public class HistoryNGUIScripts : MonoBehaviour {
         const int MAXHISTORY = 30;
         if (history==null)
         {
-            var jsonLoad = PlayerPrefs.GetString(KEY);
+            var jsonLoad = PlayerPrefs.GetString(getUserHistoryKey());
             if (!String.IsNullOrEmpty(jsonLoad))
                 history = JsonConvert.DeserializeObject<LinkedList<HistoryModel>>(jsonLoad);
             if (history == null)
@@ -141,7 +150,7 @@ public class HistoryNGUIScripts : MonoBehaviour {
         while (history.Count > MAXHISTORY)
             history.RemoveLast();        
         var jsonSave = JsonConvert.SerializeObject(history);
-        PlayerPrefs.SetString(KEY, jsonSave);
+        PlayerPrefs.SetString(getUserHistoryKey(), jsonSave);
         PlayerPrefs.Save();
     }
 }

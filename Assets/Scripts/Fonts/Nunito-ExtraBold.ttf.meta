@@ -12,7 +12,9 @@ TrueTypeFontImporter:
   fontName: Nunito
   fontNames:
   - Nunito
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 0ba28f9450e510748a447e209c16cbc6, type: 3}
+  - {fileID: 12800000, guid: 9225bfdca871dfc46a38160d5eeba3ce, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

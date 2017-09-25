@@ -22,5 +22,4 @@ public class TutorialController : MonoBehaviour
         GVs.SCENE_MANAGER.loadPreloadScene();
     }
 
-
 }

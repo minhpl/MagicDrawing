@@ -35,6 +35,7 @@ public class ResultScripts : MonoBehaviour
     public GameObject panel_comfirmDelete;
     public Button btn_okDelete;
     public Button btn_cancelDelete;
+    public AudioSource audioSource;
     private Texture2D texVideo;
     private Mat frame;
     private AspectRatioFitter rawImageAspect;
@@ -49,6 +50,9 @@ public class ResultScripts : MonoBehaviour
     LTDescr ltdescr_AlphaComfirmDeletePanel;
     private void Awake()
     {
+        if (GVs.SOUND_SYSTEM == 1)
+            audioSource.Play();
+
         btnDelete.onClick.AddListener(() =>
         {
             overlayer_comfirmDelete.SetActive(true);

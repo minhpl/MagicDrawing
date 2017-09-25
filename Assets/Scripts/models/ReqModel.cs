@@ -6,6 +6,8 @@ using UnityEngine;
 
 class ReqModel
 {
+    public string identifier = "" + Application.identifier;
+    public string platform = "" + Application.platform;
     public string license = GVs.LICENSE_CODE;
     public string deviceId = "" + SystemInfo.deviceUniqueIdentifier;
     public string deviceName = "" + SystemInfo.deviceName;

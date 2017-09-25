@@ -12,7 +12,9 @@ TrueTypeFontImporter:
   fontName: Quicksand
   fontNames:
   - Quicksand
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: e54b9ae6ff1069e46b63e13f0d82f998, type: 3}
+  - {fileID: 12800000, guid: ca17a408e1273e840bf8d4adf1421951, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

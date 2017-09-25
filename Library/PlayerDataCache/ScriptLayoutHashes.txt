@@ -689,7 +689,7 @@ c4603d4291fec78b607835faaaad680a Assembly-CSharp.dll:Spine.Unity.SkeletonUtility
 60eed870167e94563437af95bcc883f9 Assembly-CSharp.dll:TouchScript.Examples.Portal.Rotator
 48ddff96f17b93c27762041529c640e1 Assembly-UnityScript.dll:.OldGUIExamplesJS
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LanguageSelection
-9dc20abac00263f19bc206882344607e Assembly-CSharp.dll:.ResultScripts
+fc95eaf0d531695e54722da67a28742a Assembly-CSharp.dll:.ResultScripts
 4f52fb13c8876d1fc6a0a4110faf10fc Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.ScreenTransformGesture
 095cccc7064bb073708c24b7b68a2dfb Assembly-CSharp.dll:.PlayTweenAvata
 f68a17b5975cc0ef8e0e0785667aa2eb Assembly-CSharp.dll:.EasyTween
@@ -757,3 +757,6 @@ a37f17210073a9a877f3068e247a471e Assembly-CSharp.dll:UnityEngine.UI.Extensions.D
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TMPro.Examples.SimpleScript
 ffcb82fccd9242220f3d88cf27f8bfe3 Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.PinnedTransformGesture
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.LayerManager
+4ccf37fefcadc873eeb84655a7db5b92 Assembly-CSharp.dll:.BezierPoint
+d4d1592c51241fa70ddfa0b592950c7b Assembly-CSharp.dll:.BezierCurve
+df33e196f1a68dc59ac83ebf9bd8ce6e Assembly-CSharp.dll:.TweenTagram

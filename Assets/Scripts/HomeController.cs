@@ -29,8 +29,8 @@ public class HomeController : MonoBehaviour
         if(TutorialController.isAddedSoundButtonEvent == false)
             GFs.addButtonSoundEventOnSceneLoad();
 
-        // PlayerPrefs.DeleteAll();
-        // PlayerPrefs.Save();
+        //PlayerPrefs.DeleteAll();
+        //PlayerPrefs.Save();
         Screen.orientation = ScreenOrientation.Portrait;
         Screen.autorotateToLandscapeLeft = false;
         Screen.autorotateToLandscapeRight = false;
