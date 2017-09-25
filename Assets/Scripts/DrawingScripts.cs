@@ -421,6 +421,18 @@ public class DrawingScripts : MonoBehaviour
         var w = a.rectTransform.rect.width;
         var needw = w * scaleX;
     }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (isRecording)
+        {
+            if (focus == false)
+                stopWatch.Stop();
+            else
+                stopWatch.Start();
+        }
+    }
+
     private void OnDisable()
     {
         if (cancelCorountineTurnOffTouchInput != null)
