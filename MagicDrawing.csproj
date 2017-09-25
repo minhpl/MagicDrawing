@@ -148,6 +148,9 @@
     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestDirector.cs" />
     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestMainMenu.cs" />
     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestPerformance.cs" />
+    <Compile Include="Assets\BansheeGz\BGCurve\Examples\TestLeanTween.cs" />
+    <Compile Include="Assets\BansheeGz\BGCurve\Examples\TestLineRendererScritps.cs" />
+    <Compile Include="Assets\BansheeGz\BGCurve\Examples\TestTrailRenderer.cs" />
     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursor.cs" />
     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursorChangeLinear.cs" />
     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursorObjectRotate.cs" />
@@ -709,6 +712,7 @@
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\SimpleWB.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\WhiteBalancer.cs" />
     <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\Xphoto.cs" />
+    <Compile Include="Assets\Scenes\TagramAnimationScene\TweenTagramTutorial.cs" />
     <Compile Include="Assets\Scenes\TestScene\CallComponentOfOtherObject.cs" />
     <Compile Include="Assets\Scenes\TestScene\ClickSound.cs" />
     <Compile Include="Assets\Scenes\TestScene\Test2.cs" />
@@ -913,6 +917,7 @@
     <Compile Include="Assets\Scripts\TweenHomeScene.cs" />
     <Compile Include="Assets\Scripts\TweenLibraryScene.cs" />
     <Compile Include="Assets\Scripts\TweenMasterpieceCreationNGUIScene.cs" />
+    <Compile Include="Assets\Scripts\TweenProgressLongWaitTask.cs" />
     <Compile Include="Assets\Scripts\TweenResultScene.cs" />
     <Compile Include="Assets\Scripts\TweenSnapImageScene.cs" />
     <Compile Include="Assets\Scripts\TweenTemplateNGUIScene.cs" />
@@ -920,7 +925,6 @@
     <Compile Include="Assets\Simple Scene Fade Load System\Demo (You don&apos;t have to import this folder)\DemoScript.cs" />
     <Compile Include="Assets\Simple Scene Fade Load System\Scripts\Fader.cs" />
     <Compile Include="Assets\Simple Scene Fade Load System\Scripts\Initiate.cs" />
-    <Compile Include="Assets\SoundControllerScript.cs" />
     <Compile Include="Assets\Spine\spine-csharp\Animation.cs" />
     <Compile Include="Assets\Spine\spine-csharp\AnimationState.cs" />
     <Compile Include="Assets\Spine\spine-csharp\AnimationStateData.cs" />
@@ -1034,8 +1038,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples\Scripts\WarpTextExample.cs" />
-    <Compile Include="Assets\TweenProgressLongWaitTask.cs" />
-    <Compile Include="Assets\TweenTagramTutorial.cs" />
     <Compile Include="Assets\UITween\Prefabs\Click Effect Pref\ClickedWaveAnimation.cs" />
     <Compile Include="Assets\UITween\ScenesExamplesScripts\ActivateOnEnable.cs" />
     <Compile Include="Assets\UITween\ScenesExamplesScripts\CreateAnimImage.cs" />
