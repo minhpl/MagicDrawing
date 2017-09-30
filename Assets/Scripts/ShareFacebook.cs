@@ -164,7 +164,7 @@ public class ShareFacebook : MonoBehaviour
         Debug.Log("size : " + www.size / 1024 / 1024);
         var wwwForm = new WWWForm();
         wwwForm.AddBinaryData("file", www.bytes, "Video.MOV", "multipart/form-data");
-        wwwForm.AddField("title", "Hello World");
+        //wwwForm.AddField("title", "Hello World");
         //wwwForm.AddField("description", ":-) :-)");
 
         FB.API("me/videos", HttpMethod.POST, HandleResult, wwwForm);

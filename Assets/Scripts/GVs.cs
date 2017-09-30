@@ -5,6 +5,8 @@ using System.Text;
 using UnityEngine;
 class GVs
 {
+    
+    public static string CHECK_UPDATE_APP_URL = SERVER_URL + "users/checkUpdateApp";
     public static bool CANCEL_DOWNLOAD = false;
     public static bool DEBUG = true;
     public static string LICENSE_CODE = "";
@@ -16,8 +18,8 @@ class GVs
 #endif
     public static string TRAIN_PATH;
     public static SceneManagerScript SCENE_MANAGER = new SceneManagerScript();
-    public static string SERVER_URL = "http://developer.magicbook.vn/";
-    //public static string SERVER_URL = "http://113.23.71.223:3000/";
+    //public static string SERVER_URL = "http://developer.magicbook.vn/";
+    public static string SERVER_URL = "http://42.112.210.40:3000/";
     public static string LOGIN_URL = SERVER_URL + "login";
     public static string ACTIVE_LICENSE_URL = SERVER_URL + "users/activeLicense";
     public static string CHECK_LICENSE_URL = SERVER_URL + "users/checkLicense";

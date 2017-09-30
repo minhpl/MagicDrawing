@@ -6,15 +6,15 @@ using UnityEngine;
 
 class ReqModel
 {
-    public string identifier = "" + Application.identifier;
-    public string platform = "" + Application.platform;
     public string license = GVs.LICENSE_CODE;
     public string deviceId = "" + SystemInfo.deviceUniqueIdentifier;
     public string deviceName = "" + SystemInfo.deviceName;
     public string deviceType = "" + SystemInfo.deviceType;
     public string deviceModel = "" + SystemInfo.deviceModel;
+    public string identifier = "" + Application.identifier;
+    public string platform = "" + Application.platform;
+    public string version = "" + Application.version;
     public string data = "";
-
     public ReqModel() { }
 
     public ReqModel(string license, int con)

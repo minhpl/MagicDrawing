@@ -44,16 +44,65 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+      <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/Managed/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+      <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\AndroidGallery\Demo\DemoScript.cs" />
      <Compile Include="Assets\AndroidGallery\Scripts\AndroidGallery.cs" />
      <Compile Include="Assets\AndroidGallery\Scripts\Singleton.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCamera.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCcChangeCursorLinear.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveChange.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveClosestPoint.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveDynamic.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveRuntime.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveRuntimeCustomFields.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveShowcase.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestCurveStatic.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestDirector.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestMainMenu.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\Scripts\BGTestPerformance.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\TestLeanTween.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\TestLineRendererScritps.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Examples\TestTrailRenderer.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursorChangeLinear.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursorObjectRotate.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursorObjectScale.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcCursorObjectTranslate.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcSplitterPolyline.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcSweep2D.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcTriangulate2D.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcVisualizationLineRenderer.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcWithCursor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcWithCursorObject.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGCcWithMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGPolylineSplitter.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGPpu.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Cc\BGTriangulator2D.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCc.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurve.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveAdaptiveMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveBaseMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveCalculatorClosestPoint.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveChangedArgs.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveFormulaMath.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveFormulas.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveMathI.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurvePoint.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurvePointComponent.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurvePointField.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurvePointGO.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurvePointI.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveReferenceToPoint.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGCurveSettings.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGReflectionAdapter.cs" />
      <Compile Include="Assets\BezierCurves\Scripts\BezierCurve.cs" />
      <Compile Include="Assets\BezierCurves\Scripts\BezierPoint.cs" />
      <Compile Include="Assets\Demigiant\DOTween\Examples\Basics.cs" />
@@ -582,6 +631,7 @@
      <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\SimpleWB.cs" />
      <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\WhiteBalancer.cs" />
      <Compile Include="Assets\OpenCVForUnity\org\opencv_contrib\xphoto\Xphoto.cs" />
+     <Compile Include="Assets\Scenes\TagramAnimationScene\TweenTagramTutorial.cs" />
      <Compile Include="Assets\Scenes\TestScene\CallComponentOfOtherObject.cs" />
      <Compile Include="Assets\Scenes\TestScene\ClickSound.cs" />
      <Compile Include="Assets\Scenes\TestScene\Test2.cs" />
@@ -708,6 +758,7 @@
      <Compile Include="Assets\Scripts\BackgroundScaleAllSceneScript.cs" />
      <Compile Include="Assets\Scripts\BackHomeScripts.cs" />
      <Compile Include="Assets\Scripts\CheckFPS.cs" />
+     <Compile Include="Assets\Scripts\CheckUpdateAppScript.cs" />
      <Compile Include="Assets\Scripts\ClearButtonTargetScript.cs" />
      <Compile Include="Assets\Scripts\ClearInputScript.cs" />
      <Compile Include="Assets\Scripts\ClearTweenButton.cs" />
@@ -760,6 +811,7 @@
      <Compile Include="Assets\Scripts\PreloadScript.cs" />
      <Compile Include="Assets\Scripts\ProfileScript.cs" />
      <Compile Include="Assets\Scripts\ProgressBarChangeScript.cs" />
+     <Compile Include="Assets\Scripts\ProgressBarScript.cs" />
      <Compile Include="Assets\Scripts\RawInput\Scripts\Ball.cs" />
      <Compile Include="Assets\Scripts\RawInput\Scripts\Spawner.cs" />
      <Compile Include="Assets\Scripts\ResetButtonScale.cs" />
@@ -786,6 +838,7 @@
      <Compile Include="Assets\Scripts\TweenHomeScene.cs" />
      <Compile Include="Assets\Scripts\TweenLibraryScene.cs" />
      <Compile Include="Assets\Scripts\TweenMasterpieceCreationNGUIScene.cs" />
+     <Compile Include="Assets\Scripts\TweenProgressLongWaitTask.cs" />
      <Compile Include="Assets\Scripts\TweenResultScene.cs" />
      <Compile Include="Assets\Scripts\TweenSnapImageScene.cs" />
      <Compile Include="Assets\Scripts\TweenTemplateNGUIScene.cs" />
@@ -793,7 +846,6 @@
      <Compile Include="Assets\Simple Scene Fade Load System\Demo (You don&apos;t have to import this folder)\DemoScript.cs" />
      <Compile Include="Assets\Simple Scene Fade Load System\Scripts\Fader.cs" />
      <Compile Include="Assets\Simple Scene Fade Load System\Scripts\Initiate.cs" />
-     <Compile Include="Assets\SoundControllerScript.cs" />
      <Compile Include="Assets\Spine\spine-csharp\Animation.cs" />
      <Compile Include="Assets\Spine\spine-csharp\AnimationState.cs" />
      <Compile Include="Assets\Spine\spine-csharp\AnimationStateData.cs" />
@@ -907,7 +959,6 @@
      <Compile Include="Assets\TextMesh Pro\Examples\Scripts\VertexShakeB.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples\Scripts\VertexZoom.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples\Scripts\WarpTextExample.cs" />
-     <Compile Include="Assets\TweenProgressLongWaitTask.cs" />
      <Compile Include="Assets\UITween\Prefabs\Click Effect Pref\ClickedWaveAnimation.cs" />
      <Compile Include="Assets\UITween\ScenesExamplesScripts\ActivateOnEnable.cs" />
      <Compile Include="Assets\UITween\ScenesExamplesScripts\CreateAnimImage.cs" />
@@ -1154,6 +1205,7 @@
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_splashscreen.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_video_control_button.xml" />
      <None Include="Assets\Spine\spine-unity\Modules\Ghost\Shaders\Spine-Special-Skeleton-Ghost.shader" />
+     <None Include="Assets\BansheeGz\BGCurve\readme.txt" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Colored.shader" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
@@ -1241,25 +1293,25 @@
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_button_green.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_auth_layout.xml" />
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.TestRunner">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Timeline">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Analytics">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
  </Reference>
  <Reference Include="DOTween">
  <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/Demigiant/DOTween/DOTween.dll</HintPath>

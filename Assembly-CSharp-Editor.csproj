@@ -44,13 +44,73 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+      <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/Managed/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+      <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcCursorChangeLinearEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcCursorDrawer.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcCursorEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcCursorObjectEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcCursorObjectRotateEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcCursorObjectScaleEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcCursorObjectTranslateEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcMathEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcSplitterPolylineEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcSweep2DEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcTriangulate2DEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcVisualizationLineRendererEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\CcInfra\BGCcAddWindow.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\CcInfra\BGCcChangeNameWindow.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\CcInfra\BGCcChoseDrawer.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\CcInfra\BGCcChoseWindow.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\CcInfra\BGCcEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\CcInfra\BGCcTreeView.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGCurveEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGCurveEditorComponents.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGCurveEditorFields.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGCurveEditorPoint.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGCurveEditorPoints.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGCurveEditorPointsSelection.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGCurveEditorSettings.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGCurveEditorTab.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGCurvePointComponentDrawer.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGCurvePointGOEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGCurveReferenceToPointEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGNewPointPositionManager.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Curve\BGRectangularSelection.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Infra\BGChoseComponentWindow.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Infra\BGCurveChosePointWindow.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Infra\BGCurvePainterGizmo.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Infra\BGCurvePainterHandles.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Infra\BGHandlesSettingsDrawer.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Infra\BGPropertyDrawer.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Infra\BGTransformMonitor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Overlay\BGOverlayMessage.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Overlay\BGPopupMenu.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Overlay\BGSceneViewOverlay.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Overlay\BGSceneViewOverlayMenu.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Overlay\BGSceneViewOverlayMenuPoint.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Overlay\BGSceneViewOverlayMenuSelection.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Overlay\BGSceneViewOverlayPointAdd.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Overlay\BGSceneViewOverlayPointAddAtDistance.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Overlay\BGSceneViewOverlayPointAddSnap2D.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Overlay\BGSceneViewOverlayPointAddSnap3D.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Overlay\BGSceneViewOverlayPointInsert.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Settings\BGAbstractSettingsForEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Settings\BGCurveSettingsForEditor.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Settings\BGCurveSettingsForEditorWindow.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Settings\BGCurveSettingsOperations.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Settings\BGCurveSettingsSO.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Utils\BGEditorUtility.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Utils\BGPrivateField.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Utils\BGStartUp.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Utils\BGTableView.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Utils\BGTransition.cs" />
+     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Utils\BGTreeView.cs" />
      <Compile Include="Assets\BezierCurves\Editor\BezierCurveEditor.cs" />
      <Compile Include="Assets\BezierCurves\Editor\BezierPointEditor.cs" />
      <Compile Include="Assets\Editor\CloudBuildHelper.cs" />
@@ -380,6 +440,7 @@
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_splashscreen.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_video_control_button.xml" />
      <None Include="Assets\Spine\spine-unity\Modules\Ghost\Shaders\Spine-Special-Skeleton-Ghost.shader" />
+     <None Include="Assets\BansheeGz\BGCurve\readme.txt" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Colored.shader" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
@@ -467,67 +528,70 @@
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_button_green.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_auth_layout.xml" />
  <Reference Include="UnityEditor.Advertisements">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Networking">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.TestRunner">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/Editor/UnityEditor.TestRunner.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/TestRunner/Editor/UnityEditor.TestRunner.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.TestRunner">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Timeline">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Timeline">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Timeline/Editor/UnityEditor.Timeline.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/Timeline/Editor/UnityEditor.Timeline.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.TreeEditor">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TreeEditor/Editor/UnityEditor.TreeEditor.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/TreeEditor/Editor/UnityEditor.TreeEditor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Analytics">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Analytics">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/Editor/UnityEditor.Analytics.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/UnityAnalytics/Editor/UnityEditor.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.HoloLens">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/Editor/UnityEditor.HoloLens.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/UnityHoloLens/Editor/UnityEditor.HoloLens.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Purchasing">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/Editor/UnityEditor.Purchasing.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/UnityPurchasing/Editor/UnityEditor.Purchasing.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.VR">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Graphs">
- <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Android.Extensions">
- <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions">
- <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.WindowsStandalone.Extensions">
- <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+ <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
  </Reference>
  <Reference Include="TexturePackerImporter">
  <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/codeandweb.com/Editor/TexturePackerImporter.dll</HintPath>
@@ -596,10 +660,10 @@
  <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/Zip/Plugins/Ionic.Zip.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
- <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Common">
- <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll</HintPath>
+ <HintPath>C:/Program Files/Unity 2017.1.1p1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -839,6 +839,7 @@
     <Compile Include="Assets\Scripts\BackgroundScaleAllSceneScript.cs" />
     <Compile Include="Assets\Scripts\BackHomeScripts.cs" />
     <Compile Include="Assets\Scripts\CheckFPS.cs" />
+    <Compile Include="Assets\Scripts\CheckUpdateAppScript.cs" />
     <Compile Include="Assets\Scripts\ClearButtonTargetScript.cs" />
     <Compile Include="Assets\Scripts\ClearInputScript.cs" />
     <Compile Include="Assets\Scripts\ClearTweenButton.cs" />
@@ -891,6 +892,7 @@
     <Compile Include="Assets\Scripts\PreloadScript.cs" />
     <Compile Include="Assets\Scripts\ProfileScript.cs" />
     <Compile Include="Assets\Scripts\ProgressBarChangeScript.cs" />
+    <Compile Include="Assets\Scripts\ProgressBarScript.cs" />
     <Compile Include="Assets\Scripts\RawInput\Scripts\Ball.cs" />
     <Compile Include="Assets\Scripts\RawInput\Scripts\Spawner.cs" />
     <Compile Include="Assets\Scripts\ResetButtonScale.cs" />
