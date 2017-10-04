@@ -65,9 +65,9 @@ namespace Facebook.Unity.Example
             {
                 FB.ShareLink(
                     new Uri("https://developers.facebook.com/"),
-                    "Link Share",
-                    "Look I'm sharing a link",
-                    new Uri("http://i.imgur.com/j4M7vCO.jpg"),
+                     "Link Share",
+                    contentDescription: "Look I'm sharing a link",
+                    photoURL: new Uri("http://i.imgur.com/j4M7vCO.jpg"),
                     callback: this.HandleResult);
             }
 

@@ -1,32 +1,91 @@
 ﻿using Facebook.Unity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShareFacebook : MonoBehaviour
 {
+    public Slider progressSlider;
+    public GameObject panelInputShareFacebook;
+    public InputField InputCommentFacebook;
+    public Button btnOk;
+    public Button btnCancel;
+    public RawImage avartarFacebook;
+    public Text txtFacebookName;
+    public Button btnLogoutFacebook;
+    private Texture2D texture2DFacebookAvartar;
     void Awake()
     {
         if (!FB.IsInitialized)
-        {
-            // Initialize the Facebook SDK
+        {            
             FB.Init(InitCallback, OnHideUnity);
         }
         else
-        {
-            // Already initialized, signal an app activation App Event
+        {            
             FB.ActivateApp();
+            FB.Mobile.ShareDialogMode = ShareDialogMode.AUTOMATIC;
+            FB.Mobile.RefreshCurrentAccessToken((IAccessTokenRefreshResult result) =>
+            {
+                if (FB.IsLoggedIn)
+                {
+                    Debug.Log(result.AccessToken.ExpirationTime.ToString());
+                }
+            });
         }
+
+        btnOk.onClick.AddListener(() =>
+        {
+            StartCoroutine(StartVideoUpload());
+            panelInputShareFacebook.SetActive(false);
+            
+        });
+
+        btnCancel.onClick.AddListener(() =>
+        {            
+            panelInputShareFacebook.SetActive(false);
+        });
+
+        btnLogoutFacebook.onClick.AddListener(() =>
+        {
+            cancelCorountineLogOut = Observable.FromCoroutine(LogOut).Timeout(TimeSpan.FromSeconds(3)).Subscribe(_ => { }, _ =>
+            {
+                Debug.LogFormat("Error is: {0}", _.ToString());
+            }, ()=>
+            {
+                Debug.LogFormat("Logout successfull hehehe");
+            });            
+        });
+    }
+
+    IDisposable cancelCorountineLogOut;
+
+    IEnumerator LogOut()
+    {
+        yield return null;
+        FB.LogOut();
+        while (FB.IsLoggedIn)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        Debug.Log("LogOut is successfully");
     }
 
     private void InitCallback()
     {
         if (FB.IsInitialized)
-        {
-            // Signal an app activation App Event
+        {         
             FB.ActivateApp();
-            // Continue with Facebook SDK
-            // ...
+            FB.Mobile.ShareDialogMode = ShareDialogMode.AUTOMATIC;
+            FB.Mobile.RefreshCurrentAccessToken((IAccessTokenRefreshResult result)=>
+            {
+                if (FB.IsLoggedIn)
+                {
+                    Debug.Log(result.AccessToken.ExpirationTime.ToString());
+                }
+            });            
         }
         else
         {
@@ -37,22 +96,19 @@ public class ShareFacebook : MonoBehaviour
     private void OnHideUnity(bool isGameShown)
     {
         if (!isGameShown)
-        {
-            // Pause the game - we will need to hide
+        {           
             Time.timeScale = 0;
         }
         else
-        {
-            // Resume the game - we're getting focus again
+        {         
             Time.timeScale = 1;
         }
     }
 
     public void onlogin()
     {
-        var perms = new List<string>() { "public_profile", "email", "user_friends" };
-        // FB.LogInWithReadPermissions(perms, AuthCallback);
-        FB.LogInWithReadPermissions(null, AuthCallback);
+        var perms = new List<string>() { "public_profile", "email", "user_friends" };             
+        FB.LogInWithPublishPermissions(new List<string>() { "publish_actions" }, callbackPublicLogin);
     }
 
     private void AuthCallback(ILoginResult result)
@@ -72,8 +128,7 @@ public class ShareFacebook : MonoBehaviour
                     check = 1;
 
                 }
-            }
-            //CallFBLoginForPublish ();
+            }            
             if (check == 1)
             {
                 StartCoroutine(StartVideoUpload());
@@ -91,13 +146,7 @@ public class ShareFacebook : MonoBehaviour
 
     private void CallFBLoginForPublish()
     {
-        // It is generally good behavior to split asking for read and publish
-        // permissions rather than ask for them all at once.
-        //
-        // In your own game, consider postponing this call until the moment
-        // you actually need it.
         FB.LogInWithPublishPermissions(new List<string>() { "publish_actions" }, callbackPublicLogin);
-        //StartCoroutine(StartVideoUpload());
     }
 
     private void callbackPublicLogin(ILoginResult result)
@@ -119,34 +168,27 @@ public class ShareFacebook : MonoBehaviour
         }
         else if (!string.IsNullOrEmpty(result.RawResult))
         {
-            Debug.Log("OK Boy:\n" + result.RawResult);
-            StartCoroutine(StartVideoUpload());
+            FB.API("/me?fields=name", HttpMethod.GET, (IGraphResult a)=>
+                {
+                    Debug.LogFormat("here1 result is: {0}", a.RawResult);
+                    txtFacebookName.text = (string)a.ResultDictionary["name"];
+                });
+
+            FB.API("me/picture", HttpMethod.GET, (IGraphResult a) =>
+            {
+                Debug.LogFormat("here2 result is: {0}", a.RawResult);
+                avartarFacebook.texture = a.Texture;
+            });
+
+            panelInputShareFacebook.SetActive(true);
         }
-    }
-
-    private IEnumerator TakeScreenshot()
-    {
-        yield return new WaitForEndOfFrame();
-
-        var width = Screen.width;
-        var height = Screen.height;
-        var tex = new Texture2D(width, height, TextureFormat.RGB24, false);
-
-        // Read screen contents into the texture
-        tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-        tex.Apply();
-        byte[] screenshot = tex.EncodeToPNG();
-
-        var wwwForm = new WWWForm();
-        wwwForm.AddBinaryData("image", screenshot, "InteractiveConsole.png");
-        wwwForm.AddField("message", "herp derp.  I did a thing!  Did I do this right?");
-        FB.API("me/photos", HttpMethod.POST, HandleResult, wwwForm);
     }
 
     public static string filePath;
 
     private IEnumerator StartVideoUpload()
     {
+        progressSlider.gameObject.SetActive(true);
         yield return new WaitForEndOfFrame();
         var url = "file:///" + filePath;
         if (Application.platform == RuntimePlatform.IPhonePlayer)
@@ -159,19 +201,25 @@ public class ShareFacebook : MonoBehaviour
         {
             yield return null;
             Debug.Log("progress : " + www.progress);
+            progressSlider.value = www.progress;
         }
 
         Debug.Log("size : " + www.size / 1024 / 1024);
         var wwwForm = new WWWForm();
-        wwwForm.AddBinaryData("file", www.bytes, "Video.MOV", "multipart/form-data");
-        //wwwForm.AddField("title", "Hello World");
-        //wwwForm.AddField("description", ":-) :-)");
+        wwwForm.AddBinaryData("filevideo", www.bytes, "Video.MOV", "multipart/form-data");
+        var message = InputCommentFacebook.text;
 
+        if (!string.IsNullOrEmpty(message))
+        {
+            wwwForm.AddField("description",message);
+            wwwForm.AddField("title",message);
+        }        
         FB.API("me/videos", HttpMethod.POST, HandleResult, wwwForm);
     }
 
     void HandleResult(IResult result)
     {
+
         if (result == null)
         {
             Debug.Log("null");
@@ -189,8 +237,21 @@ public class ShareFacebook : MonoBehaviour
         }
         else if (!string.IsNullOrEmpty(result.RawResult))
         {
+            
             Debug.Log("OK Boy:\n" + result.RawResult);
+            Debug.LogFormat("Result tostring is {0}", result.ToString());                                                    
         }
+    }
 
+
+    
+    private void Update()
+    {           
+        //avartarFacebook.texture = texture2DFacebookAvartar;
+    }
+
+    private void OnDisable()
+    {
+        cancelCorountineLogOut.Dispose();
     }
 }

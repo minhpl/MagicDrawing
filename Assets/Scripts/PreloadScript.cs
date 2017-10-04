@@ -382,6 +382,11 @@ public class PreloadScript : MonoBehaviour
                         btnControls[0].SetActive(false);
                         btnControls[2].SetActive(true);
                     }
+
+                    GVs.LICENSE_CODE = code;
+                    GFs.SaveLicenseCode();
+                    btnControls[0].SetActive(false);
+                    btnControls[1].SetActive(true);
                 }
                 catch (System.Exception e)
                 {

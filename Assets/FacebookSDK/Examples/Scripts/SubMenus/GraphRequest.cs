@@ -66,8 +66,7 @@ namespace Facebook.Unity.Example
             if (string.IsNullOrEmpty(result.Error) && result.Texture != null)
             {
                 this.profilePic = result.Texture;
-            }
-
+            }            
             this.HandleResult(result);
         }
 

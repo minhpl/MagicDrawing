@@ -154,7 +154,9 @@ public class ResultScripts : MonoBehaviour
         logoutBtn.onClick.AddListener(() =>
         {
             Debug.Log("facebook logout clicked");
+            Debug.LogFormat("Before call logout, isloggedIn = {0}", FB.IsLoggedIn);
             FB.LogOut();
+            Debug.LogFormat("After call logout, isloggedIn = {0}", FB.IsLoggedIn);
         });
 
         moviePlayer.OnStop += MoviePlayer_OnStop;
@@ -291,5 +293,4 @@ public class ResultScripts : MonoBehaviour
         btnStop.gameObject.SetActive(false);
         btnPlay.gameObject.SetActive(true);
     }
-
 }

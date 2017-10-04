@@ -37,6 +37,7 @@ c7be7eecb4c030a38ac64bcde744dd17 Assembly-CSharp.dll:.UIPanel
 f10c835f047a0fb15ba670d133b580c5 Assembly-CSharp.dll:.TutorialScene
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SoundButtonSingletonScript
 4db4eddbab184d463c1433e1bb2af81f Assembly-CSharp.dll:TouchScript.Examples.UI.SetColor
+86f3bf1dbedaf03967914adea0bfa074 Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestPerformance
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableMoveTrigger
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.DelayTweenScript
 9c54698151b591668a6e0d5d64871674 Assembly-CSharp.dll:.HomeScript
@@ -48,6 +49,7 @@ e2cedfa979a807f36b38fa42170e0942 Assembly-CSharp.dll:Spine.Unity.Modules.Skeleto
 445f780139ebf5524f55eda007c74b5b Assembly-CSharp.dll:.PathBezier2d
 9b22abfbad118144eb5b662a44df47f7 Assembly-CSharp.dll:.UIForwardEvents
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableVisibleTrigger
+ff053ccb04d62dea12ec97ed867877ad Assembly-CSharp.dll:BansheeGz.BGSpline.Curve.BGCurvePointGO
 08712033bfb8d4fd2842041f9a20ded7 Assembly-CSharp.dll:TouchScript.Examples.RawInput.Spawner
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.ShowLicense
 791f3c440cfaeb26cdf2250996e4f589 Assembly-CSharp.dll:.TweenHeight
@@ -57,6 +59,7 @@ ef642f3006e4ec30a3ef768c7ee96cb6 Assembly-CSharp.dll:.UIToggledComponents
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:.SampleInfo
 b533a55bac6b0ef81fc95d63b2d4c3a9 Assembly-CSharp.dll:.UIButtonScale
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.PCAExample
+912c328bcea866b8ea338ca25c706b36 Assembly-CSharp.dll:BansheeGz.BGSpline.Components.BGCcMath
 609883ba9b3462e00c79080cdb51d119 Assembly-CSharp-firstpass.dll:.iTween
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.DontShowPersistantScene
 7d23afdca3cf6a39af5d28bfcbeb1bfb Assembly-CSharp.dll:UnityEngine.UI.Extensions.ColorPickerTester
@@ -72,6 +75,7 @@ b533a55bac6b0ef81fc95d63b2d4c3a9 Assembly-CSharp.dll:.UIButtonScale
 e4769f7f90b4953a6d3d59909d279ab5 Assembly-CSharp.dll:.UIViewport
 0acef123d0f3d5f64e1c09f7043f7121 Assembly-CSharp.dll:.UIWidget
 b6c0ebcb5c2dd3fb6f0e673b00f23208 Assembly-CSharp.dll:OpenCVForUnityExample.WebCamTextureToMatHelper
+1bf7f4921fd2e7fc979f6f01e1475ae2 Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestCurveMath
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TestSaladSeriazable
 0713bfc849ca4427fab58e2f098c9a3c Assembly-CSharp.dll:.SpringPosition
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TweenBackButton
@@ -113,11 +117,14 @@ f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnityEngine.UI.Extensions.ReorderableListElement
 1ee47048d700dd00b56f643026953707 Assembly-CSharp.dll:.SpinWithMouse
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.GrabCutExample
+62e2d546853cf71773e448ed1a85072e Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestCurveClosestPoint
 cf2550431f0f4572a465945ee212f865 Assembly-CSharp-firstpass.dll:.EveryplayAnimatedThumbnailOnGUI
+43eb377669a8a71278ade0ae4df3b428 Assembly-CSharp.dll:BansheeGz.BGSpline.Curve.BGCurveReferenceToPoint
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnityEngine.UI.Extensions.RaycastMask
 bbc93faee0111cf260c318780ab32cc0 Assembly-CSharp.dll:UnityEngine.UI.Extensions.HorizontalScrollSnap
 bd927de58391934c4b4af8c21c273716 Assembly-CSharp.dll:TouchScript.Examples.Cube.LayerDelegate
 e9990767b8d0b4ad59fa048981997084 Assembly-CSharp.dll:.UIDragObject
+5b55ec74b797cc713d268c95f09bdcab Assembly-CSharp.dll:BansheeGz.BGSpline.Components.BGCcTriangulate2D
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
 49cd62a578efc0a599b810a2b66cd49c UnityEngine.UI.dll:UnityEngine.UI.Button
@@ -163,6 +170,7 @@ d42939b584492e64084d1e010e0c63cd Assembly-CSharp.dll:Spine.Unity.Modules.Skeleto
 dac154b38532fd5a92a95b0a9a386115 Assembly-CSharp.dll:TouchScript.Behaviors.Cursors.ObjectCursor
 c45e569ea1905ccd693b2c01ba36253d Assembly-CSharp.dll:.PreloadScript
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Multiuser.Logo
+52a3992701ad401d4123deea2e62a15f Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestCurveStatic
 ae7a0454ef6e3502360ce61e435fa50a Assembly-CSharp.dll:.HistoryNGUIScripts
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.UICenterOnClick
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.TensorFlowWebCamTextureExample
@@ -176,6 +184,7 @@ ae7a0454ef6e3502360ce61e435fa50a Assembly-CSharp.dll:.HistoryNGUIScripts
 daef908f8bf97fa741305285dde8e82f Assembly-CSharp.dll:.WindowAutoYaw
 3fc5e2248049ec4184251b85043f5154 Assembly-CSharp.dll:.GeneralSimpleUiCS
 765037da3d8faeee91e39d672b924c61 Assembly-CSharp.dll:.EnvMapAnimator
+8f55e2b42bd3685dcca8ae1fbf879f2f Assembly-CSharp.dll:BansheeGz.BGSpline.Components.BGCcCursorObjectTranslate
 03fd9fb453aaf08fa0b51d0e62cff2f4 Assembly-CSharp.dll:.Highlight
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservablePointerClickTrigger
 27a260638523ebb27ae13fc3c1fe4312 Assembly-CSharp.dll:.ScharrEdgeDetector
@@ -185,7 +194,6 @@ daef908f8bf97fa741305285dde8e82f Assembly-CSharp.dll:.WindowAutoYaw
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:.Everyplay
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableDestroyTrigger
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.BackButtonGoLibraryScene
-a08f22be5c4ae713f75ac272dd1a9f66 Assembly-CSharp.dll:.SoundControllerScript
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 9f07aaefd0255462bb6e4f9e5da6b2d4 UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack
 8144169769d51429c4aedc8b0f92d47b UnityEngine.Timeline.dll:UnityEngine.Timeline.AnimationPlayableAsset
@@ -265,6 +273,7 @@ ffcb82fccd9242220f3d88cf27f8bfe3 Assembly-CSharp.dll:TouchScript.Gestures.Transf
 1957a9369e72d2661ae9d0de26e7d064 Assembly-CSharp.dll:TMPro.Examples.WarpTextExample
 47aa7529825d58580b94dabd237f34b7 Assembly-CSharp.dll:TouchScript.Examples.Portal.Planet
 50a777fa8bb695dd61b232e551ad576d Assembly-CSharp.dll:.ProfileScript
+e4398c4b6dcb9962bfd06d9a4f15daef Assembly-CSharp.dll:BansheeGz.BGSpline.Components.BGCcVisualizationLineRenderer
 f0bdc1041dee6504f25216b38b2bb3cb TextMeshPro-1.0.55.2017.1.0b12.dll:TMPro.InlineGraphic
 cd5f66d713a060bf891e329290b64cc4 TextMeshPro-1.0.55.2017.1.0b12.dll:TMPro.InlineGraphicManager
 f4bd1aee67eeef7953cce6c44588b3d7 TextMeshPro-1.0.55.2017.1.0b12.dll:TMPro.TextContainer
@@ -332,6 +341,7 @@ a2398cab0afec05bd8b6b70c007a516c Assembly-CSharp.dll:TouchScript.Behaviors.Curso
 5d60379d372a9f6486f3dee512ae55f2 Assembly-CSharp.dll:Spine.Unity.Modules.SkeletonUtilityEyeConstraint
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.OpticalFlowExample
 e7ced6492e9c57ea2d06cc2694771449 Assembly-CSharp.dll:.LoadLevelOnClick
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestMainMenu
 4b8a25749126516ab57c01b82641b0ed Assembly-CSharp.dll:.ExampleDragDropSurface
 1230b7c6e6890d5bccc6aa75979407fb Assembly-CSharp.dll:.PathSplinePerformanceCS
 feea9fa519f717332c191791acaf5381 Assembly-CSharp.dll:.UISnapshotPoint
@@ -339,6 +349,7 @@ feea9fa519f717332c191791acaf5381 Assembly-CSharp.dll:.UISnapshotPoint
 b288608f332c48587b24d43541790fe8 Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample13_ToDoApp
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.BackgroundScaleAllSceneScript
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableDropTrigger
+a1f42fa7f9a775d9500fdd78e6317ab7 Assembly-CSharp.dll:BansheeGz.BGSpline.Components.BGCcCursorObjectScale
 a4679245d992f9784666cfa4339d7268 Assembly-CSharp.dll:.TweenFOV
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:.EveryplayHudCamera
 39ea6e9012ccae3efe9d25e4689e9239 Assembly-CSharp.dll:.FollowClick
@@ -386,11 +397,14 @@ d672cee35261f9935d5ce974c746730f TextMeshPro-1.0.55.2017.1.0b12.dll:TMPro.TMP_Te
 d17ecbd7113facfe3f120c1e80e08d34 Assembly-CSharp.dll:.UIEquipmentSlot
 791f3c440cfaeb26cdf2250996e4f589 Assembly-CSharp.dll:.TweenWidth
 b900ead596b2fb1093b31cb63a678767 Assembly-CSharp.dll:TMPro.Examples.TextMeshProFloatingText
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestCurveChange
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MakePersistentObject
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableBeginDragTrigger
 649cef9362f0588635c5cc8ce80b9931 Assembly-CSharp.dll:.PropertyBinding
+b635f4189588800977770d7880dc7e7b Assembly-CSharp.dll:.TweenTagramTutorial
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Core.DebuggableMonoBehaviour
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableEnableTrigger
+93388dcb3f392f5c792f77b2a674df29 Assembly-CSharp.dll:BansheeGz.BGSpline.Components.BGCcCursor
 3e90e69a06967e19b203638f1bda79ca Assembly-CSharp.dll:Spine.Unity.SkeletonAnimator
 5016a626b7cd63d098ce98143c3caed3 Assembly-CSharp.dll:MagicDrawing.EdgeDetector
 161d81543a4f3cb98ac65429a6a32ff3 Assembly-CSharp.dll:UnityEngine.UI.Extensions.BoundTooltipItem
@@ -460,6 +474,7 @@ f1f86ddbabd6f15d240e83b990131ef8 Assembly-CSharp.dll:.ScriptingDemoUI
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnityEngine.UI.Extensions.ReorderableListContent
 cbe311702101a8fd2b4fe90072451a87 Assembly-CSharp.dll:.UIShowControlScheme
 84acde40329fcf7e2b768582243c0e3c Assembly-CSharp.dll:.TweenMasterpieceCreationNGUIScene
+5dc5d56a2debc8e3759967c57daabd76 Assembly-CSharp.dll:BansheeGz.BGSpline.Curve.BGCurvePointComponent
 1c73b74c9178d66d57f0e003963e8a05 Assembly-CSharp.dll:Kakera.Rotator
 8a50d3d11bf0cc541f5c35347dd25633 Assembly-CSharp.dll:TMPro.Examples.ShaderPropAnimator
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SoundBackgroundSingletonScripts
@@ -478,8 +493,10 @@ c614e2948a9cff52dfd48f2591954d7b Assembly-CSharp.dll:.CloudScript
 34f2f83e9672bb68ede8cd3781a47b3d Assembly-CSharp.dll:.PathSplineTrackCS
 80dce36697fb8d46593f70f0d71d101b Assembly-CSharp.dll:Spine.Unity.AtlasAsset
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Portal.Vortex
+5f267848797e8ce98dbf2a973a37c68b Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestCamera
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.FaceDetectionExample
 76015de5fcb247eeb8df66c001d5a22d Assembly-CSharp.dll:TMPro.Examples.TMP_FrameRateCounter
+7bdd71fff980bb38968d2f8da56311d1 Assembly-CSharp.dll:.TestLeanTween
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableCollisionTrigger
 f1c2b748da64b3f847088e3a9438cd8e Assembly-CSharp.dll:UnityEngine.UI.Extensions.HsvBoxSelector
 b8f04bdad423045528c67dfa4c3dca0d Assembly-CSharp.dll:TMPro.Examples.VertexShakeA
@@ -493,6 +510,7 @@ b8f04bdad423045528c67dfa4c3dca0d Assembly-CSharp.dll:TMPro.Examples.VertexShakeA
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ResetButtonScale
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.CircleDetectionExample
 d32dd1e592cd63449e0027069541b421 Assembly-CSharp.dll:.UIPlaySound
+6f347ba7be7a2d5b881b3dee46ffdf80 Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestDirector
 c1fa312bc75f65840a2d531ca0166207 Assembly-CSharp.dll:TouchScript.Examples.Tap.Spawn
 d78403ea814ebb39fb992bd3488f0709 Assembly-CSharp.dll:.TweenTransform
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
@@ -527,9 +545,11 @@ d633212d6f78342331a42d3de880caf9 Assembly-CSharp.dll:TouchScript.Examples.KillMe
 4274518f8761bb4aa6c968ca5c7615e4 Assembly-CSharp.dll:.UIPopupList
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TrackScene
 5a49f6628bf5bd1cc7c8735de0ad3af9 Assembly-CSharp.dll:.DrawingScripts
+52245570eb64f33c88a808d90d35c111 Assembly-CSharp.dll:.TestTrailRenderer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Colors.Circle
+1c81a12c7eb83a528360fe8cca5f9b04 Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestCurveShowcase
 0189d52198025e02a31dab4f2f816848 Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.Clustered.ClusteredTransformGesture
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ShareFacebook
+d2d9a151ca96bd0fa3acb3bbe468ba45 Assembly-CSharp.dll:.ShareFacebook
 05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Mobile.Android.AndroidFacebookGameObject
 05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.Mobile.Android.AndroidFacebookLoader
 05524b8f659e7bfe5756d1335fec24ba Facebook.Unity.dll:Facebook.Unity.AsyncRequestString
@@ -553,6 +573,7 @@ e42de2fa430ffdc5cba11107db58d22d Assembly-CSharp.dll:TouchScript.Examples.Camera
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TestingRigidbodyCS
 7687b0a06e8996c644005959c3c21919 Assembly-CSharp.dll:UnityEngine.UI.Extensions.Gradient
 5f090821814bc51a9f55429c0fa2da3e Assembly-CSharp.dll:.UIDragDropContainer
+01c2710ba118033aeee6a29c0b821cc3 Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestCurveRuntimeCustomFields
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableTransformChangedTrigger
 7b2d2c2a55e04afd5272f2579a88a0b9 Assembly-CSharp.dll:.Fader
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TutorialController
@@ -625,6 +646,7 @@ d47934e9df58011487fead4708254ce7 Assembly-CSharp.dll:Kakera.PickerController
 4cbcae506ed2e4b803ac23674896027f Assembly-CSharp.dll:UnityEngine.UI.Extensions.AccordionElement
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableFixedUpdateTrigger
 3eaa1cf00397ca06b5be93193c05d09b Assembly-CSharp.dll:.TweenLibraryScene
+d4d1592c51241fa70ddfa0b592950c7b Assembly-CSharp.dll:.BezierCurve
 5eeacec8e729f2f59963b7cac59021a8 Assembly-CSharp.dll:TouchScript.Layers.FullscreenLayer
 b7eb86aae1e536bd0ed95c3ef6abf7ab Assembly-CSharp.dll:.UIWrapContent
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.PolygonFilterExample
@@ -637,9 +659,11 @@ ed5eb281c283ec5c7cc5c07b00278856 Assembly-CSharp.dll:.UISpriteAnimation
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.UIOrthoCamera
 c8afcdf7f1c813179938c6f7097f4bd0 Assembly-CSharp.dll:.UIButtonActivate
 9dc41ecfefe71e0d0e207b5650949483 Assembly-CSharp.dll:TouchScript.Devices.Display.GenericDisplayDevice
+d58f2af1f89b4d2d06d81b9b0e148211 Assembly-CSharp.dll:.CheckUpdateAppScript
 a4679245d992f9784666cfa4339d7268 Assembly-CSharp.dll:.TweenVolume
 c6412662144ce886afb5791f768c7476 Assembly-CSharp.dll:.UserScript
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableDeselectTrigger
+52a3992701ad401d4123deea2e62a15f Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestCurveDynamic
 1d64e023348eb548c41c518624467a77 Assembly-UnityScript.dll:.PathLocalCurveJS
 bb614fa39b39c4954977762d0fc3e0b2 Assembly-CSharp.dll:.UIKeyNavigation
 83671be4916fc969d9f9c2c7460c65b4 Assembly-CSharp.dll:.UIButtonKeys
@@ -652,7 +676,9 @@ a6dc623575719f7f6901ed47b413603b Assembly-CSharp.dll:UnityEngine.UI.Extensions.H
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Examples.Runner
 9dc41ecfefe71e0d0e207b5650949483 Assembly-CSharp.dll:TouchScript.Devices.Display.DisplayDevice
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.HoughLinesPExample
+bc03eed1bbc0305078413df10e1654d0 Assembly-CSharp.dll:BansheeGz.BGSpline.Components.BGCcSweep2D
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample01_ObservableWWW
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestCcChangeCursorLinear
 5cee48d415fc8550234c0a9aedc8ea09 Assembly-CSharp.dll:.AutoHidePanel
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableDragTrigger
 bf0efa3a2b50052bc4430312d3cc0dad Assembly-CSharp.dll:.LagPosition
@@ -660,6 +686,7 @@ bf0efa3a2b50052bc4430312d3cc0dad Assembly-CSharp.dll:.LagPosition
 f9ab08734ff0441703a923df780d4c90 Assembly-CSharp.dll:.UITextList
 d62f60ad5ecff73b76da2ea09c712ada Assembly-CSharp.dll:.UIItemStorage
 75cd0c6c744b9733ef29aa6c59ece2b1 Assembly-CSharp.dll:TMPro.Examples.VertexShakeB
+e0c9af668a91f5ae51354da11904e86b Assembly-CSharp.dll:BansheeGz.BGSpline.Components.BGCcCursorChangeLinear
 6667bbf9ae4f58579da179f3482ec8f1 Assembly-CSharp.dll:.ToggleScript
 9778b00922ba8aae9a3acf3ff3f34ff4 Assembly-CSharp.dll:UnityEngine.UI.Extensions.UILineTextureRenderer
 99fb603e20780b52805fbdf92487e554 Assembly-CSharp.dll:TouchScript.Behaviors.Transformer
@@ -667,6 +694,7 @@ d62f60ad5ecff73b76da2ea09c712ada Assembly-CSharp.dll:.UIItemStorage
 37d65bf29af9dd2fac1cab17987f9faa Assembly-CSharp.dll:.AnimatedAlpha
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample07_OrchestratIEnumerator
 56054d5c8bd19ebccddbb29522d1a093 Assembly-CSharp.dll:UnityEngine.UI.Extensions.NicerOutline
+fe2275cb383ea355f6916ec083bc1b40 Assembly-CSharp.dll:BansheeGz.BGSpline.Curve.BGCurvePointField
 4c04e52107380255d13efd6eec612ba5 Assembly-CSharp.dll:.TweenHomeScene
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Spine.Unity.Modules.SkeletonPartsRenderer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Examples.Sample02_ObservableTriggers
@@ -691,9 +719,12 @@ c4603d4291fec78b607835faaaad680a Assembly-CSharp.dll:Spine.Unity.SkeletonUtility
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LanguageSelection
 fc95eaf0d531695e54722da67a28742a Assembly-CSharp.dll:.ResultScripts
 4f52fb13c8876d1fc6a0a4110faf10fc Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.ScreenTransformGesture
+52a3992701ad401d4123deea2e62a15f Assembly-CSharp.dll:BansheeGz.BGSpline.Example.BGTestCurveRuntime
 095cccc7064bb073708c24b7b68a2dfb Assembly-CSharp.dll:.PlayTweenAvata
 f68a17b5975cc0ef8e0e0785667aa2eb Assembly-CSharp.dll:.EasyTween
 01ca127772bebd003dc266e41c6d18bc Assembly-CSharp.dll:.UIDragCamera
+5a901c2967f690af9ea1bc292978d4f0 Assembly-CSharp.dll:BansheeGz.BGSpline.Components.BGCcSplitterPolyline
+4ccf37fefcadc873eeb84655a7db5b92 Assembly-CSharp.dll:.BezierPoint
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableCanvasGroupChangedTrigger
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.Core.GestureManagerInstance
 a37388e9173444b5bc8fed9952167aed Assembly-CSharp.dll:.UISlider
@@ -704,6 +735,7 @@ bcdcaf8839db68b83c8c16ec5024c6cc Assembly-CSharp.dll:.ActiveAnimation
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:OpenCVForUnityExample.SVMExample
 9ee975c1e8661b5ed7205c71b9244e1e Assembly-CSharp.dll:.MoviePlayer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UniRx.Triggers.ObservableStateMachineTrigger
+a3fe60dbec9a59d74894801d48d34669 Assembly-CSharp.dll:BansheeGz.BGSpline.Curve.BGCurve
 5d0b2f0ad0a91e310d57038f182ef601 Assembly-CSharp.dll:UnityEngine.UI.Extensions.ReorderableListDebug
 1ea0c28c827862689dcc0bc0416f80c7 Assembly-CSharp.dll:.PathSplines
 020550babdb991365f61c5bffe1f4f52 Assembly-CSharp.dll:TMPro.Examples.TextMeshSpawner
@@ -728,6 +760,7 @@ af7666733efcc974926d7d470e1732a6 Assembly-CSharp.dll:TMPro.Examples.SkewTextExam
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnityEngine.UI.Extensions.ToolTip
 e7ae6e9ee8a8a6b2d7860a7212a8416e Assembly-CSharp.dll:.EquipRandomItem
 697b2a99286e9715f6a9eb40c1a24c2f Assembly-CSharp.dll:.UI2DSpriteAnimation
+852a3402936ca8f4de4a7fd73ab28476 Assembly-CSharp.dll:BansheeGz.BGSpline.Components.BGCcCursorObjectRotate
 3eaa1cf00397ca06b5be93193c05d09b Assembly-CSharp.dll:.TweenHistoryNGUIScene
 99ca7431436b7d3343aaef26acba433a Assembly-CSharp.dll:.UISprite
 dbf94a43ec23ca8d598849bce5fbd83b Assembly-CSharp.dll:OpenCVForUnityExample.ArUcoExample
@@ -743,6 +776,7 @@ dd37c508bf2069093e03ff44e9d2fff7 Assembly-CSharp.dll:.SnapImageSceneScripts
 fb2b9e45fdce75465311344db032db12 Assembly-CSharp.dll:.HomeController
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ShowMe
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:LukeWaffel.AndroidGallery.AndroidGallery
+52245570eb64f33c88a808d90d35c111 Assembly-CSharp.dll:.TestLineRendererScritps
 fcffe9bbf1b7b7e4593e31031f78987b Assembly-CSharp.dll:.UISliderColors
 5556d66a043baa172fb0c5ed89ad87ef Assembly-CSharp.dll:UnityEngine.UI.Extensions.SoftMaskScript
 a7522229978e51bd44973c65accc16c7 Assembly-CSharp.dll:.TweenSnapImageScene
@@ -751,12 +785,10 @@ a7522229978e51bd44973c65accc16c7 Assembly-CSharp.dll:.TweenSnapImageScene
 a5eb2cdce9a4d58b1407e8416ca6499b Assembly-CSharp-firstpass.dll:.EveryplaySettings
 a37f17210073a9a877f3068e247a471e Assembly-CSharp.dll:UnityEngine.UI.Extensions.DiamondGraph
 04ccd8ac492e09d4916ccb6e16f9c6e2 Assembly-CSharp.dll:OpenCVForUnityExample.TouchController
+936edbc5552d7dbfe6029ed44d700458 Assembly-CSharp.dll:.ProgressBarScript
 354799ab7253e8d83914c27d4dc65f56 Assembly-CSharp.dll:TouchScript.Examples.Portal.Spawner
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.RealTime
 34e025057ef78b1bf238460cdf6583a3 Assembly-CSharp.dll:TMPro.Examples.ObjectSpin
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TMPro.Examples.SimpleScript
 ffcb82fccd9242220f3d88cf27f8bfe3 Assembly-CSharp.dll:TouchScript.Gestures.TransformGestures.PinnedTransformGesture
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:TouchScript.LayerManager
-4ccf37fefcadc873eeb84655a7db5b92 Assembly-CSharp.dll:.BezierPoint
-d4d1592c51241fa70ddfa0b592950c7b Assembly-CSharp.dll:.BezierCurve
-df33e196f1a68dc59ac83ebf9bd8ce6e Assembly-CSharp.dll:.TweenTagram
