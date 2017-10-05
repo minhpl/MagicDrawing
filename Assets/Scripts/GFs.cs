@@ -11,7 +11,6 @@ using UnityEngine.UI;
 
 public class GFs
 {
-
     public static void LoadData()
     {
         //PlayerPrefs.DeleteAll();
@@ -54,7 +53,6 @@ public class GFs
     }
     public static void SaveOtherAppList()
     {
-
         PlayerPrefs.SetString("OTHER_APP_LIST_MODEL", JsonUtility.ToJson(GVs.OTHER_APP_LIST_MODEL));
         PlayerPrefs.Save();
     }
@@ -266,7 +264,6 @@ public class GFs
     public static string getMasterpieceDirPath()
     {
         string perUserDir = GVs.CURRENT_USER_MODEL.id.ToString();
-
 
         string ANDROID_DIR_PATH_MASTERPIECE = "data/data/" + Application.identifier + "/files/Masterpiece/"+perUserDir+"/";
         const string IPHONE_DIR_NAME_MASTERPIECE = "masterpiece";

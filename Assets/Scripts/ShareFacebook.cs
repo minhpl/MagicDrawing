@@ -16,7 +16,15 @@ public class ShareFacebook : MonoBehaviour
     public RawImage avartarFacebook;
     public Text txtFacebookName;
     public Button btnLogoutFacebook;
-    private Texture2D texture2DFacebookAvartar;
+    public GameObject panelNotification;
+    public Text textNotification;    
+
+    private IDisposable cancelStreamHideNotificationPanel;
+    private IObservable<float> streamHideNotificationPanel;
+    private float timeOutSeconds = 4f;
+    public static string filePath;
+    public enum mode { SHARE_VIDEO, SHARE_IMAGE};
+    public static mode ShareMODE = mode.SHARE_VIDEO;
     void Awake()
     {
         if (!FB.IsInitialized)
@@ -38,9 +46,12 @@ public class ShareFacebook : MonoBehaviour
 
         btnOk.onClick.AddListener(() =>
         {
-            StartCoroutine(StartVideoUpload());
+            Debug.Log("1");
+            StartCoroutine(StartUpload());
+            Debug.Log("2");
             panelInputShareFacebook.SetActive(false);
-            
+            Debug.Log("3");            
+            Debug.Log("4");
         });
 
         btnCancel.onClick.AddListener(() =>
@@ -50,6 +61,7 @@ public class ShareFacebook : MonoBehaviour
 
         btnLogoutFacebook.onClick.AddListener(() =>
         {
+            panelInputShareFacebook.SetActive(false);
             cancelCorountineLogOut = Observable.FromCoroutine(LogOut).Timeout(TimeSpan.FromSeconds(3)).Subscribe(_ => { }, _ =>
             {
                 Debug.LogFormat("Error is: {0}", _.ToString());
@@ -57,6 +69,11 @@ public class ShareFacebook : MonoBehaviour
             {
                 Debug.LogFormat("Logout successfull hehehe");
             });            
+        });
+
+        streamHideNotificationPanel = Observable.Create<float>((IObserver<float> observer) =>
+        {
+            return Disposable.Empty;
         });
     }
 
@@ -111,39 +128,6 @@ public class ShareFacebook : MonoBehaviour
         FB.LogInWithPublishPermissions(new List<string>() { "publish_actions" }, callbackPublicLogin);
     }
 
-    private void AuthCallback(ILoginResult result)
-    {
-        if (FB.IsLoggedIn)
-        {
-            // AccessToken class will have session details
-            var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
-            // Print current access token's User ID
-            Debug.Log(aToken.UserId);
-            var check = 0;
-            foreach (string perm in aToken.Permissions)
-            {
-                Debug.Log(perm);
-                if (perm.Equals("publish_actions"))
-                {
-                    check = 1;
-
-                }
-            }            
-            if (check == 1)
-            {
-                StartCoroutine(StartVideoUpload());
-            }
-            else
-            {
-                CallFBLoginForPublish();
-            }
-        }
-        else
-        {
-            Debug.Log("User cancelled login" + result.Error);
-        }
-    }
-
     private void CallFBLoginForPublish()
     {
         FB.LogInWithPublishPermissions(new List<string>() { "publish_actions" }, callbackPublicLogin);
@@ -181,14 +165,12 @@ public class ShareFacebook : MonoBehaviour
             });
 
             panelInputShareFacebook.SetActive(true);
+            InputCommentFacebook.text = null;
         }
-    }
+    }   
 
-    public static string filePath;
-
-    private IEnumerator StartVideoUpload()
-    {
-        progressSlider.gameObject.SetActive(true);
+    private IEnumerator StartUpload()
+    {        
         yield return new WaitForEndOfFrame();
         var url = "file:///" + filePath;
         if (Application.platform == RuntimePlatform.IPhonePlayer)
@@ -211,13 +193,30 @@ public class ShareFacebook : MonoBehaviour
 
         if (!string.IsNullOrEmpty(message))
         {
-            wwwForm.AddField("description",message);
-            wwwForm.AddField("title",message);
-        }        
-        FB.API("me/videos", HttpMethod.POST, HandleResult, wwwForm);
+            
+        }
+
+        if (ShareMODE == mode.SHARE_VIDEO)
+        {
+            wwwForm.AddField("description", message);
+            wwwForm.AddField("title", message);
+            FB.API("me/videos", HttpMethod.POST, HandleResultUploadVideo, wwwForm);
+        }
+        else
+        {            
+            wwwForm.AddField("caption", message);
+            FB.API("me/photos", HttpMethod.POST, HandleResultUploadVideo, wwwForm);
+        }
+
+        textNotification.text = "Bản vẽ của bạn đang được tải lên trên facebook, xin vui lòng không tắt ứng dụng trong quá trình tải";
+        panelNotification.SetActive(true);
+        cancelStreamHideNotificationPanel = streamHideNotificationPanel.Timeout<float>(TimeSpan.FromSeconds(timeOutSeconds)).Subscribe(_ => { }, _ => {
+            panelNotification.SetActive(false);            
+            Debug.Log("Timeout");
+        });
     }
 
-    void HandleResult(IResult result)
+    void HandleResultUploadVideo(IResult result)
     {
 
         if (result == null)
@@ -236,22 +235,26 @@ public class ShareFacebook : MonoBehaviour
             Debug.Log("Cancelled Response:\n" + result.RawResult);
         }
         else if (!string.IsNullOrEmpty(result.RawResult))
-        {
-            
-            Debug.Log("OK Boy:\n" + result.RawResult);
-            Debug.LogFormat("Result tostring is {0}", result.ToString());                                                    
+        {            
+            Debug.Log("HandleResultUploadVideo: " + result.RawResult);
+            Debug.LogFormat("Result tostring is {0}", result.ToString());
+
+            textNotification.text = "Tải lên facebook thành công";           
+            panelNotification.SetActive(true);            
+            cancelStreamHideNotificationPanel.Dispose();
+            cancelStreamHideNotificationPanel = streamHideNotificationPanel.Timeout<float>(TimeSpan.FromSeconds(timeOutSeconds)).Subscribe(_ => { }, _ =>
+            {
+                panelNotification.SetActive(false);
+                Debug.Log("Timeout");
+            });
         }
-    }
-
-
-    
-    private void Update()
-    {           
-        //avartarFacebook.texture = texture2DFacebookAvartar;
     }
 
     private void OnDisable()
     {
-        cancelCorountineLogOut.Dispose();
+        if(cancelStreamHideNotificationPanel!=null)
+            cancelStreamHideNotificationPanel.Dispose();
+        if(cancelCorountineLogOut!=null)
+            cancelCorountineLogOut.Dispose();
     }
 }

@@ -9,7 +9,19 @@ namespace Consolation
 	/// </summary>
 	class Console : MonoBehaviour
 	{
-		struct Log
+        private void Awake()
+        {
+            if(GVs.DEBUG==true)
+            {
+                this.enabled = true;
+            }
+            else
+            {
+                this.enabled = false;
+            }
+        }
+
+        struct Log
 		{
 			public string message;
 			public string stackTrace;
