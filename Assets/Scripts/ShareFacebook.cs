@@ -17,7 +17,11 @@ public class ShareFacebook : MonoBehaviour
     public Text txtFacebookName;
     public Button btnLogoutFacebook;
     public GameObject panelNotification;
-    public Text textNotification;    
+    public Text textNotification;
+    public GameObject gameObjectPlayerShareFB;
+    public GameObject btnStopPlayerShareFB;
+    public GameObject overlayProcessShareFB;
+    public Button btnCancelUploadFB;
 
     private IDisposable cancelStreamHideNotificationPanel;
     private IObservable<float> streamHideNotificationPanel;
@@ -27,6 +31,7 @@ public class ShareFacebook : MonoBehaviour
     public static mode ShareMODE = mode.SHARE_VIDEO;
     void Awake()
     {
+        
         if (!FB.IsInitialized)
         {            
             FB.Init(InitCallback, OnHideUnity);
@@ -34,24 +39,15 @@ public class ShareFacebook : MonoBehaviour
         else
         {            
             FB.ActivateApp();
-            FB.Mobile.ShareDialogMode = ShareDialogMode.AUTOMATIC;
-            FB.Mobile.RefreshCurrentAccessToken((IAccessTokenRefreshResult result) =>
-            {
-                if (FB.IsLoggedIn)
-                {
-                    Debug.Log(result.AccessToken.ExpirationTime.ToString());
-                }
-            });
+            FB.Mobile.ShareDialogMode = ShareDialogMode.WEB;
         }
 
         btnOk.onClick.AddListener(() =>
         {
-            Debug.Log("1");
-            StartCoroutine(StartUpload());
-            Debug.Log("2");
-            panelInputShareFacebook.SetActive(false);
-            Debug.Log("3");            
-            Debug.Log("4");
+            overlayProcessShareFB.SetActive(true);
+            btnOk.gameObject.SetActive(false);
+            btnCancel.gameObject.SetActive(false);
+            StartCoroutine(StartUpload());            
         });
 
         btnCancel.onClick.AddListener(() =>
@@ -71,10 +67,55 @@ public class ShareFacebook : MonoBehaviour
             });            
         });
 
+        btnCancelUploadFB.onClick.AddListener(() =>
+        {
+            var go = GameObject.Find("UnityFacebookSDKPlugin");
+            Debug.Log(go.gameObject.name);
+            Destroy(go);
+        });
+
         streamHideNotificationPanel = Observable.Create<float>((IObserver<float> observer) =>
         {
             return Disposable.Empty;
         });
+
+        var rimgPlayerShareFB = gameObjectPlayerShareFB.GetComponent<RawImage>();
+        rimgPlayerShareFB.texture = ResultScripts.texture;
+        var aspectRatioFitterPlayerShareFB = gameObjectPlayerShareFB.GetComponent<AspectRatioFitter>();
+        aspectRatioFitterPlayerShareFB.aspectRatio = (float)Screen.width / (float)Screen.height;
+        var btnPlayerShareFB = gameObjectPlayerShareFB.GetComponent<Button>();
+        if (!string.IsNullOrEmpty(ResultScripts.videoPath))
+        {
+            btnStopPlayerShareFB.SetActive(true);
+            var moviePlayer = gameObjectPlayerShareFB.GetComponent<MoviePlayer>();
+            moviePlayer.Load(ResultScripts.videoPath);
+            moviePlayer.play = false;
+            moviePlayer.loop = false;
+            btnPlayerShareFB.onClick.AddListener(() =>
+            {
+                btnStopPlayerShareFB.SetActive(!btnStopPlayerShareFB.activeSelf);
+            });
+
+            btnPlayerShareFB.onClick.AddListener(() =>
+            {
+                if (btnStopPlayerShareFB.activeSelf == false)
+                {
+                    moviePlayer.play = true;
+                    moviePlayer.loop = true;
+                    rimgPlayerShareFB.texture = null;
+                }
+                else
+                {
+                    moviePlayer.play = false;
+                    moviePlayer.videoFrame = 0;
+                    rimgPlayerShareFB.texture = ResultScripts.texture;
+                }
+            });
+        }
+        else
+        {
+            btnStopPlayerShareFB.gameObject.SetActive(false);
+        }
     }
 
     IDisposable cancelCorountineLogOut;
@@ -87,22 +128,15 @@ public class ShareFacebook : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
         }
-        Debug.Log("LogOut is successfully");
+        Debug.LogFormat("LogOut is successfully?  {0}", !FB.IsLoggedIn);
     }
 
-    private void InitCallback()
+    public void InitCallback()
     {
         if (FB.IsInitialized)
         {         
             FB.ActivateApp();
-            FB.Mobile.ShareDialogMode = ShareDialogMode.AUTOMATIC;
-            FB.Mobile.RefreshCurrentAccessToken((IAccessTokenRefreshResult result)=>
-            {
-                if (FB.IsLoggedIn)
-                {
-                    Debug.Log(result.AccessToken.ExpirationTime.ToString());
-                }
-            });            
+            FB.Mobile.ShareDialogMode = ShareDialogMode.WEB;
         }
         else
         {
@@ -110,7 +144,7 @@ public class ShareFacebook : MonoBehaviour
         }
     }
 
-    private void OnHideUnity(bool isGameShown)
+    public void OnHideUnity(bool isGameShown)
     {
         if (!isGameShown)
         {           
@@ -125,15 +159,11 @@ public class ShareFacebook : MonoBehaviour
     public void onlogin()
     {
         var perms = new List<string>() { "public_profile", "email", "user_friends" };             
-        FB.LogInWithPublishPermissions(new List<string>() { "publish_actions" }, callbackPublicLogin);
+        FB.LogInWithPublishPermissions(new List<string>() { "publish_actions" }, callbackLoginWithPubplishPerm);
     }
 
-    private void CallFBLoginForPublish()
-    {
-        FB.LogInWithPublishPermissions(new List<string>() { "publish_actions" }, callbackPublicLogin);
-    }
 
-    private void callbackPublicLogin(ILoginResult result)
+    public void callbackLoginWithPubplishPerm(ILoginResult result)
     {
         if (result == null)
         {
@@ -152,22 +182,29 @@ public class ShareFacebook : MonoBehaviour
         }
         else if (!string.IsNullOrEmpty(result.RawResult))
         {
-            FB.API("/me?fields=name", HttpMethod.GET, (IGraphResult a)=>
-                {
-                    Debug.LogFormat("here1 result is: {0}", a.RawResult);
-                    txtFacebookName.text = (string)a.ResultDictionary["name"];
-                });
-
-            FB.API("me/picture", HttpMethod.GET, (IGraphResult a) =>
-            {
-                Debug.LogFormat("here2 result is: {0}", a.RawResult);
-                avartarFacebook.texture = a.Texture;
-            });
-
-            panelInputShareFacebook.SetActive(true);
-            InputCommentFacebook.text = null;
+            onLoggedInSuccess();
         }
     }   
+
+    public void onLoggedInSuccess()
+    {
+        Debug.Log("here1");
+        FB.API("/me?fields=name", HttpMethod.GET, (IGraphResult a) =>
+        {         
+            txtFacebookName.text = (string)a.ResultDictionary["name"];
+        });
+
+        FB.API("me/picture", HttpMethod.GET, (IGraphResult a) =>
+        {          
+            avartarFacebook.texture = a.Texture;
+        });
+
+        btnOk.gameObject.SetActive(true);
+        btnCancel.gameObject.SetActive(true);
+        panelInputShareFacebook.SetActive(true);
+        InputCommentFacebook.text = null;
+        Debug.Log("here2");
+    }
 
     private IEnumerator StartUpload()
     {        
@@ -207,13 +244,7 @@ public class ShareFacebook : MonoBehaviour
             wwwForm.AddField("caption", message);
             FB.API("me/photos", HttpMethod.POST, HandleResultUploadVideo, wwwForm);
         }
-
-        textNotification.text = "Bản vẽ của bạn đang được tải lên trên facebook, xin vui lòng không tắt ứng dụng trong quá trình tải";
-        panelNotification.SetActive(true);
-        cancelStreamHideNotificationPanel = streamHideNotificationPanel.Timeout<float>(TimeSpan.FromSeconds(timeOutSeconds)).Subscribe(_ => { }, _ => {
-            panelNotification.SetActive(false);            
-            Debug.Log("Timeout");
-        });
+                
     }
 
     void HandleResultUploadVideo(IResult result)
@@ -239,14 +270,8 @@ public class ShareFacebook : MonoBehaviour
             Debug.Log("HandleResultUploadVideo: " + result.RawResult);
             Debug.LogFormat("Result tostring is {0}", result.ToString());
 
-            textNotification.text = "Tải lên facebook thành công";           
-            panelNotification.SetActive(true);            
-            cancelStreamHideNotificationPanel.Dispose();
-            cancelStreamHideNotificationPanel = streamHideNotificationPanel.Timeout<float>(TimeSpan.FromSeconds(timeOutSeconds)).Subscribe(_ => { }, _ =>
-            {
-                panelNotification.SetActive(false);
-                Debug.Log("Timeout");
-            });
+            overlayProcessShareFB.SetActive(false);
+            panelInputShareFacebook.SetActive(false);
         }
     }
 

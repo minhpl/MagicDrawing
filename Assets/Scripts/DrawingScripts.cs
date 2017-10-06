@@ -42,6 +42,8 @@ public class DrawingScripts : MonoBehaviour
     public GameObject Pnl_Tool;
     public AudioSource audioSource;
     public Image img_progress_cutvideo;
+    public RawImage rigm_watermark;
+
     private Threshold threshold;
     private AdaptiveThreshold athreshold;
     WarpPerspective warpPerspective;
@@ -79,7 +81,7 @@ public class DrawingScripts : MonoBehaviour
     private int numberFrameSave = 0;
     private Mat frame;
     private Size size;
-    private const int FRAME_SKIP = 10;
+    private const int FRAME_SKIP = 2;
     private const int MAX_LENGTH_RESULT_VIDEO = 30; //seconds 
     public UIPlayTween[] popupPlayTween;
 
@@ -555,96 +557,122 @@ public class DrawingScripts : MonoBehaviour
         LeanTween.rotateAround(img_progress_cutvideo.gameObject, Vector3.forward, 360, 1)
             .setOnStart(() => { img_progress_cutvideo.gameObject.SetActive(true); })
             .setRepeat(-1).setEaseLinear();
+
+        Texture2D texture2DWatermark = (Texture2D)rigm_watermark.texture;
+        Debug.Log(texture2DWatermark.width);
+        Debug.Log(texture2DWatermark.height);
+     
+        Mat a = new Mat(texture2DWatermark.height, texture2DWatermark.width, CvType.CV_8UC3);
+        Utils.texture2DToMat(texture2DWatermark, a);
+        Imgcodecs.imwrite("E:\\a.jpg", a);
         var cutvideo = Observable.Start(() =>
         {
-           if (redundanceFrame > 0)
-           {
-               var filePath1 = masterPieceDirPath + WebcamVideoCapture.filenameWithoutExt + ".avi";
-               var filePath2 = masterPieceDirPath + WebcamVideoCapture.filenameWithoutExt + "_2.avi";
-               System.IO.File.Move(filePath1, filePath2);
+            if (lengthInSeconds >= 3)
+            {
+                var filePath1 = masterPieceDirPath + WebcamVideoCapture.filenameWithoutExt + ".avi";
+                var filePath2 = masterPieceDirPath + WebcamVideoCapture.filenameWithoutExt + "_2.avi";
+                //System.IO.File.Move(filePath1, filePath2);
+                var writer = new VideoWriter(filePath1, VideoWriter.fourcc('M', 'J', 'P', 'G'), WebcamVideoCapture.FPS, size);
+                VideoCapture cap = new VideoCapture();
+                cap.open(filePath2);
+                if (redundanceFrame > 0)
+                {
+                    Debug.LogFormat("number frame of first video is {0}", cap.get(7));
+                    var count = 0;
+                    var count2 = 0;
 
-               var writer = new VideoWriter(filePath1, VideoWriter.fourcc('M', 'J', 'P', 'G'), WebcamVideoCapture.FPS, size);
-               VideoCapture cap = new VideoCapture();
-               cap.open(filePath2);
-               Debug.LogFormat("number frame of first video is {0}", cap.get(7));
-               var count = 0;
-               var count2 = 0;
+                    if (maxNumberFrame > redundanceFrame)
+                    {
+                        float ratio = _numberFrameSave / (float)redundanceFrame;
+                        int ratioFloor = (int)Math.Floor(ratio);
+                        int j = 1;
+                        float du = 0;
+                        for (; ; j++)
+                        {
+                            cap.read(frame);
+                            if (frame.empty())
+                            {
+                                break;
+                            }
 
-               if (maxNumberFrame > redundanceFrame)
-               {
-                   float ratio = _numberFrameSave / (float)redundanceFrame;
-                   int ratioFloor = (int)Math.Floor(ratio);
-                   int j = 1;
-                   float du = 0;
-                   for (; ; j++)
-                   {
-                       cap.read(frame);
-                       if (frame.empty())
-                       {
-                           break;
-                       }
+                            count++;
+                            if (count != ratioFloor)
+                            {
+                                count2++;
+                                writer.write(frame);
+                            }
+                            else
+                            {
+                                ratioFloor = (int)Math.Floor(ratio + du);
+                                du = ratio + du - ratioFloor;
+                                Debug.Log(j);
+                                Debug.LogFormat("ratio Floor is {0}", ratioFloor);
+                                count = 0;
+                            }
 
-                       count++;
-                       if (count != ratioFloor)
-                       {
-                           count2++;
-                           writer.write(frame);
+                            if (count2 >= maxNumberFrame)
+                                break;
+                        }
+                        Debug.LogFormat("J = {0}", j);
+                    }
+                    else
+                    {
+                        float ratio = _numberFrameSave / (float)maxNumberFrame;
+                        int ratioFloor = (int)Math.Floor(ratio);
+                        count = 0;
+                        float du = 0;
+                        int j = 1;
+                        for (; ; j++)
+                        {
+                            cap.read(frame);
+                            if (frame.empty())
+                            {
+                                break;
+                            }
 
+                            count++;
+                            if (count == ratioFloor)
+                            {
+                                count2++;
+                                writer.write(frame);
 
-                       }
-                       else
-                       {
-                           ratioFloor = (int)Math.Floor(ratio + du);
-                           du = ratio + du - ratioFloor;
-                           Debug.Log(j);
-                           Debug.LogFormat("ratio Floor is {0}", ratioFloor);
-                           count = 0;
-                       }
-
-                       if (count2 >= maxNumberFrame)
-                           break;
-                   }
-                   Debug.LogFormat("J = {0}", j);
-               }
-               else
-               {
-                   float ratio = _numberFrameSave / (float)maxNumberFrame;
-                   int ratioFloor = (int)Math.Floor(ratio);
-                   count = 0;
-                   float du = 0;
-                   int j = 1;
-                   for (; ; j++)
-                   {
-                       cap.read(frame);
-                       if (frame.empty())
-                       {
-                           break;
-                       }
-
-                       count++;
-                       if (count == ratioFloor)
-                       {
-                           count2++;
-                           writer.write(frame);
-
-                           ratioFloor = (int)Math.Floor(ratio + du);
-                           du = ratio + du - ratioFloor;
-                           count = 0;
-                           Debug.LogFormat("ratioFloor is {0}", ratioFloor);
+                                ratioFloor = (int)Math.Floor(ratio + du);
+                                du = ratio + du - ratioFloor;
+                                count = 0;
+                                Debug.LogFormat("ratioFloor is {0}", ratioFloor);
                                 //Debug.LogFormat("ratioFloor is {0}, ratio is {1}", ratioFloor, ratio);
                             }
 
-                       if (count2 >= maxNumberFrame)
-                           break;
-                   }
-                   Debug.LogFormat("J = {0}", j);
-               }
-               Debug.LogFormat("Number frame of new video is {0}", count2);
-               writer.release();
-               writer.Dispose();
-               cap.release();
-               File.Delete(filePath2);
-           }
+                            if (count2 >= maxNumberFrame)
+                                break;
+                        }
+                        Debug.LogFormat("J = {0}", j);
+                    }
+                    Debug.LogFormat("Number frame of new video is {0}", count2);
+                    
+                }
+                else 
+                {
+                    //for (; ; )
+                    //{
+                    //    cap.read(frame);
+                    //    if (frame.empty())
+                    //    {
+                    //        break;
+                    //    }
+                    //    a.copyTo(frame);
+                    //    //a.copyTo(frame.submat(new OpenCVForUnity.Rect(10, a.width(), 10, a.height())));
+                    //    //Debug.Log("here" + frame.channels());
+                    //    writer.write(frame);
+                    //}
+
+                }
+
+                writer.release();
+                writer.Dispose();
+                cap.release();
+                File.Delete(filePath2);
+            }
            Thread.Sleep(500);
        });
         Observable.WhenAll(cutvideo)

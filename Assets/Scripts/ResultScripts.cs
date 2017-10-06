@@ -26,7 +26,7 @@ public class ResultScripts : MonoBehaviour
     public UnityEngine.UI.Text tit;
     public RawImage rimgTitle;
     public MoviePlayer moviePlayer;
-    public GameObject gameObjectPlayerOnShareFacebook;
+    public GameObject gameObjectPlayerShareFB;
     public Button btnShareFacebooks;
     public Button btnDelete;
     public GameObject Pnl_Popup;
@@ -37,7 +37,7 @@ public class ResultScripts : MonoBehaviour
     public Button btn_cancelDelete;
     public AudioSource audioSource;
     public GameObject panelInputShareFacebook;
-
+    
     private Texture2D texVideo;
     private Mat frame;
     private AspectRatioFitter rawImageAspect;
@@ -146,26 +146,7 @@ public class ResultScripts : MonoBehaviour
                 btnDelete.gameObject.SetActive(true);
             }
 
-            btnShareFacebooks.onClick.AddListener(() =>
-            {
-                if (!string.IsNullOrEmpty(videoPath))
-                {
-                    ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_VIDEO;
-                    ShareFacebook.filePath = videoPath;
-                }
-                else
-                {
-                    ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_IMAGE;
-                    ShareFacebook.filePath = imagePath;
-                }
-                var isVideoExist = File.Exists(videoPath);
-                Debug.LogFormat("is video exist ?? {0}", isVideoExist);
-                var shareFacebook = GetComponent<ShareFacebook>();
-                panelInputShareFacebook.gameObject.SetActive(true);
-                //shareFacebook.onlogin();
-            });
-
-
+          
             moviePlayer.OnStop += MoviePlayer_OnStop;
 
             if (Application.platform == RuntimePlatform.Android)
@@ -189,17 +170,7 @@ public class ResultScripts : MonoBehaviour
                             GFs.BackToPreviousScene();
                         }
                     });
-            }
-
-            var rimgDisplayOnShareFB = gameObjectPlayerOnShareFacebook.GetComponent<RawImage>();
-            rimgDisplayOnShareFB.texture = texture;
-            if (!string.IsNullOrEmpty(videoPath))
-            {
-                var moviePlayer = gameObjectPlayerOnShareFacebook.GetComponent<MoviePlayer>();
-                moviePlayer.Load(videoPath);
-                moviePlayer.play = false;
-                moviePlayer.loop = false;
-            }
+            }           
 
         }
         catch (Exception e)
@@ -262,6 +233,43 @@ public class ResultScripts : MonoBehaviour
             moviePlayer.loop = false;
         }
         else btnPlay.SetActive(false);
+
+        btnShareFacebooks.onClick.AddListener(() =>
+        {
+            if (!string.IsNullOrEmpty(videoPath))
+            {
+                ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_VIDEO;
+                ShareFacebook.filePath = videoPath;
+            }
+            else
+            {
+                ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_IMAGE;
+                ShareFacebook.filePath = imagePath;
+            }
+            var isVideoExist = File.Exists(videoPath);
+            Debug.LogFormat("is video exist ?? {0}", isVideoExist);
+            var shareFacebook = GetComponent<ShareFacebook>();
+            panelInputShareFacebook.gameObject.SetActive(true);
+
+
+            if (!FB.IsInitialized)
+            {
+                FB.Init(shareFacebook.InitCallback, shareFacebook.OnHideUnity);
+            }
+            else
+            {                
+                FB.ActivateApp();                         
+            }
+
+            if (FB.IsLoggedIn)
+            {
+                shareFacebook.onLoggedInSuccess();
+            }
+            else
+            {
+                shareFacebook.onlogin();
+            }
+        });
     }
 
     private void OnDisable()
