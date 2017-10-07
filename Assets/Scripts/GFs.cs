@@ -250,7 +250,7 @@ public class GFs
         }
         else
         {
-            Debug.Log("File not existed");
+            Debug.LogFormat("File not existed : {0}", filePath);            
         }
         return tex;
     }
@@ -299,6 +299,18 @@ public class GFs
         }
     }
 
+    public static void load_APP_PATH_VAR()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            GVs.APP_PATH = "data/data/" + Application.identifier + "/files";
+        }
+        else
+        {
+            GVs.APP_PATH = Application.persistentDataPath;
+        }
+    }
+
     public static string getSnapImageDirPath()
     {
         const string IPHONE_DIR_NAME_SNAPIMAGE = "snapimages";
@@ -320,6 +332,12 @@ public class GFs
                 return appPath + PC_DIR_NAME_SNAPIMAGE + "/";
             }
         }
+    }
+
+    public static string getlogoPath()
+    {
+        var logoPath = GVs.APP_PATH + "/logo.png";
+        return logoPath;
     }
 
     public static void GoHomeSceneScripts()

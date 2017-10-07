@@ -33,14 +33,7 @@ public class PreloadScript : MonoBehaviour
         GFs.LoadData();
         if (GVs.DEBUG) Debug.Log("Application.persistentDataPath;: " + Application.persistentDataPath);
         // getApplicationContext().getFilesDir().getAbsolutePath()
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            GVs.APP_PATH = "data/data/" + Application.identifier + "/files";
-        }
-        else
-        {
-            GVs.APP_PATH = Application.persistentDataPath;
-        }
+        GFs.load_APP_PATH_VAR();
 
         StartCheckApp();
     }
@@ -115,6 +108,10 @@ public class PreloadScript : MonoBehaviour
             {
                 popupRequireNetwork.SetActive(true);
             }
+            else if (!System.IO.File.Exists(GVs.APP_PATH + "/logo.png"))
+            {
+                popupRequireNetwork.SetActive(true);
+            }
             else
             {
                 GVs.SCENE_MANAGER.StartHomeScene();
@@ -155,14 +152,30 @@ public class PreloadScript : MonoBehaviour
             });
         });
 
-        streamDownloadOtherApp.Subscribe(_ => { }, () =>
-        {
-            streamDownloadAvartarProfile.Subscribe(_ => { }, () =>
-            {
-                cancelCorountineDownloadData = Observable.FromCoroutine(DownloadData).Subscribe();
-            });
-        });
 
+        Observable.Concat<float>(streamDownloadOtherApp,
+            streamDownloadAvartarProfile,
+            Observable.FromCoroutine<float>(DownloadData)
+            ).Subscribe((_) => { Debug.Log("herheeeeee"); }, () =>
+            {
+                Debug.LogFormat("Calldownload logo function");
+                HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_LOGO))), (d, process) =>
+                {
+                    if (process == 1)
+                    {
+                        var logoPath = GVs.APP_PATH + "/logo.png";
+                        Debug.LogFormat("logoPath is {0}", logoPath);
+                        StartCoroutine(WaitForStartHome());
+                    }
+                });
+            });
+        //streamDownloadOtherApp.Subscribe(_ => { }, () =>
+        //{
+        //    streamDownloadAvartarProfile.Subscribe(_ => { }, () =>
+        //    {
+        //        cancelCorountineDownloadData = Observable.FromCoroutine<float>(DownloadData).Subscribe();
+        //    });
+        //});
     }
 
     private IObservable<float> streamDownloadOtherApp = Observable.Create<float>((IObserver<float> observer) =>
@@ -191,7 +204,7 @@ public class PreloadScript : MonoBehaviour
         return Disposable.Empty;
     });
 
-    IEnumerator DownloadData()
+    IEnumerator DownloadData(IObserver<float> ob)
     {
         //try
         //{
@@ -319,7 +332,7 @@ public class PreloadScript : MonoBehaviour
                             var json = JsonConvert.SerializeObject(templateListsAllCategory);
                             popupRequireNetwork.SetActive(false);
                             ready1 = true;
-                            StartCoroutine(WaitForStartHome());
+                            ob.OnCompleted();                            
                         });
                 }
                 catch (Exception e)
@@ -334,6 +347,19 @@ public class PreloadScript : MonoBehaviour
         }
     }
 
+    void DownloadLogo()
+    {
+        Debug.LogFormat("Calldownload logo function");
+        HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_LOGO))), (d, process) =>
+        {
+            if (process == 1)
+            {
+                var logoPath = GVs.APP_PATH + "/logo.png";
+                Debug.LogFormat("logoPath is {0}", logoPath);
+                StartCoroutine(WaitForStartHome());
+            }
+        });
+    }
 
     IEnumerator WaitForStartHome()
     {

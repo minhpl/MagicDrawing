@@ -158,8 +158,9 @@ public class ShareFacebook : MonoBehaviour
 
     public void onlogin()
     {
-        var perms = new List<string>() { "public_profile", "email", "user_friends" };             
+        var perms = new List<string>() { "public_profile", "email", "user_friends" };
         FB.LogInWithPublishPermissions(new List<string>() { "publish_actions" }, callbackLoginWithPubplishPerm);
+        //FB.LogInWithPublishPermissions(perms, callbackLoginWithPubplishPerm);
     }
 
 
@@ -191,7 +192,9 @@ public class ShareFacebook : MonoBehaviour
         Debug.Log("here1");
         FB.API("/me?fields=name", HttpMethod.GET, (IGraphResult a) =>
         {         
-            txtFacebookName.text = (string)a.ResultDictionary["name"];
+            var name = (string)a.ResultDictionary["name"];
+            txtFacebookName.text = name;
+            Debug.LogFormat("name is {0}", name);
         });
 
         FB.API("me/picture", HttpMethod.GET, (IGraphResult a) =>
@@ -249,7 +252,6 @@ public class ShareFacebook : MonoBehaviour
 
     void HandleResultUploadVideo(IResult result)
     {
-
         if (result == null)
         {
             Debug.Log("null");

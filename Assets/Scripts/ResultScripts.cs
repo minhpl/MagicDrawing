@@ -258,7 +258,8 @@ public class ResultScripts : MonoBehaviour
             }
             else
             {                
-                FB.ActivateApp();                         
+                FB.ActivateApp();
+                FB.Mobile.ShareDialogMode = ShareDialogMode.WEB;
             }
 
             if (FB.IsLoggedIn)
