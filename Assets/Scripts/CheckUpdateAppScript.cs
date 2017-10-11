@@ -5,6 +5,7 @@ using UnityEngine;
 public class CheckUpdateAppScript : MonoBehaviour
 {
     public GameObject goUpdatePopup;
+    public UILabel text;
     public UIPlayTween[] updatePlayTween;
     private OtherAppModel oam;
     // Use this for initialization
@@ -13,7 +14,7 @@ public class CheckUpdateAppScript : MonoBehaviour
         if (!NET.NetWorkIsAvaiable()) return;
         HTTPRequest.Instance.Request(GVs.CHECK_UPDATE_APP_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
         {
-            Debug.Log(data);
+            if (GVs.DEBUG) Debug.Log(data);
             ResModel resModel = JsonUtility.FromJson<ResModel>(data);
             if (resModel.success == 1)
             {
@@ -21,6 +22,7 @@ public class CheckUpdateAppScript : MonoBehaviour
                 oam = GVs.OTHER_APP_LIST_MODEL.GetMyApp();
                 if (oam != null)
                 {
+                    text.text = resModel.msg;
                     goUpdatePopup.SetActive(true);
                     GFs.PlayTweens(updatePlayTween, true);
                 }

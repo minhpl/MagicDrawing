@@ -158,9 +158,8 @@ public class ShareFacebook : MonoBehaviour
 
     public void onlogin()
     {
-        var perms = new List<string>() { "public_profile", "email", "user_friends" };
-        FB.LogInWithPublishPermissions(new List<string>() { "publish_actions" }, callbackLoginWithPubplishPerm);
-        //FB.LogInWithPublishPermissions(perms, callbackLoginWithPubplishPerm);
+        var perms = new List<string>() { "public_profile", "email", "user_friends" };             
+        FB.LogInWithPublishPermissions(new List<string>() {"publish_actions"}, callbackLoginWithPubplishPerm);
     }
 
 
@@ -252,6 +251,7 @@ public class ShareFacebook : MonoBehaviour
 
     void HandleResultUploadVideo(IResult result)
     {
+
         if (result == null)
         {
             Debug.Log("null");

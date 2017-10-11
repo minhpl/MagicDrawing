@@ -39,6 +39,7 @@ using System.Collections.Generic;
 namespace Spine.Unity {
 	public static class SpineMesh {
 		internal const HideFlags MeshHideflags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
+		//internal const HideFlags MeshHideflags = HideFlags.NotEditable;
 
 		/// <summary>Factory method for creating a new mesh for use in Spine components. This can be called in field initializers.</summary>
 		public static Mesh NewMesh () {
@@ -265,7 +266,7 @@ namespace Spine.Unity {
 			bool hasSeparators = separatorCount > 0;
 
 			int clippingAttachmentSource = -1;
-			int lastPreActiveClipping = -1;
+			int lastPreActiveClipping = -1; // The index of the last slot that had an active ClippingAttachment.
 			SlotData clippingEndSlot = null;
 			int submeshIndex = 0;
 			var drawOrderItems = drawOrder.Items;
@@ -327,7 +328,7 @@ namespace Spine.Unity {
 				}
 
 				if (noRender) {
-					if (current.forceSeparate && generateMeshOverride && current.rawVertexCount > 0) {
+					if (current.forceSeparate && generateMeshOverride) { // && current.rawVertexCount > 0) {
 						{ // Add
 							current.endSlot = i;
 							current.preActiveClippingSlotSource = lastPreActiveClipping;

@@ -10,11 +10,11 @@ using UnityEngine.UI;
 
 public class HistoryModel
 {
-    public enum IMAGETYPE { SNAP, MODEL};
+    public enum IMAGETYPE { SNAP, MODEL };
     public string filePath;
     public string thumbPath;
     public IMAGETYPE imgType;
-    public HistoryModel(string filePath,string thumbPath, IMAGETYPE imgType = IMAGETYPE.SNAP)
+    public HistoryModel(string filePath, string thumbPath, IMAGETYPE imgType = IMAGETYPE.SNAP)
     {
         this.filePath = filePath;
         this.imgType = imgType;
@@ -22,9 +22,10 @@ public class HistoryModel
     }
 }
 
-public class HistoryNGUIScripts : MonoBehaviour {	
-    public static LinkedList<HistoryModel> history = null;    
-    private const string KEY = "history_";       
+public class HistoryNGUIScripts : MonoBehaviour
+{
+    public static LinkedList<HistoryModel> history = null;
+    private const string KEY = "history_";
     public GameObject item;
     public UIGrid uiGrid;
     private IDisposable cancelCoroutineBackBtnAndroid;
@@ -48,16 +49,17 @@ public class HistoryNGUIScripts : MonoBehaviour {
         });
     }
 
-    void Start () {
+    void Start()
+    {
         //if (history == null)
         {
             var user_id = GVs.CURRENT_USER_MODEL.id;
 
-            var json = PlayerPrefs.GetString(getUserHistoryKey());            
-            history = JsonConvert.DeserializeObject<LinkedList<HistoryModel>>(json);            
+            var json = PlayerPrefs.GetString(getUserHistoryKey());
+            history = JsonConvert.DeserializeObject<LinkedList<HistoryModel>>(json);
         }
         cancelLoad = Observable.FromMicroCoroutine(load).Subscribe();
-    }       
+    }
 
     static private string getUserHistoryKey()
     {
@@ -69,50 +71,61 @@ public class HistoryNGUIScripts : MonoBehaviour {
     IEnumerator load()
     {
         yield return null;
-        if(history==null)
+        if (history == null)
         {
-            yield break;            
+            yield break;
         }
         for (var a = history.First; a != null; a = a.Next)
-        {           
+        {
             yield return null;
-            var historyModel = a.Value;            
-            GameObject cloneItem = Instantiate(item);
-            cloneItem.transform.parent = item.transform.parent;
-            cloneItem.transform.localScale = item.transform.localScale;
-            var thumbPath = historyModel.thumbPath;
-            var filePath = historyModel.filePath;
-			string loadPath = null;
-			if (historyModel.imgType == HistoryModel.IMAGETYPE.SNAP) {
-				loadPath = filePath;
-			} else {
-				loadPath = thumbPath;
-			}
-			Texture2D texture = GFs.LoadPNGFromPath(loadPath);
-            Mat image = new Mat(texture.height, texture.width, CvType.CV_8UC4);
-            Utils.texture2DToMat(texture, image);
-            var rimgGameObject = cloneItem.transform.Find("icon");
-            rimgGameObject.GetComponent<UITexture>().mainTexture = texture;        
-            cloneItem.SetActive(true);
-            uiGrid.Reposition();
-
-            cloneItem.GetComponent<UIButton>().onClick.Add(new EventDelegate(() =>
+            try
             {
-                if (historyModel.imgType == HistoryModel.IMAGETYPE.MODEL)
+                var historyModel = a.Value;
+                GameObject cloneItem = Instantiate(item);
+                cloneItem.transform.parent = item.transform.parent;
+                cloneItem.transform.localScale = item.transform.localScale;
+                var thumbPath = historyModel.thumbPath;
+                var filePath = historyModel.filePath;
+                string loadPath = null;
+                if (historyModel.imgType == HistoryModel.IMAGETYPE.SNAP)
                 {
-                    DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;
-                    DrawingScripts.imgModelPath = filePath;
-                    AddHistoryItem(new HistoryModel(filePath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                    loadPath = filePath;
                 }
                 else
                 {
-                    DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
-                    DrawingScripts.image = image;
-                    DrawingScripts.texModel = texture;
-                    AddHistoryItem(new HistoryModel(filePath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                    loadPath = thumbPath;
                 }
-                GVs.SCENE_MANAGER.loadDrawingScene();
-            }));
+                Texture2D texture = GFs.LoadPNGFromPath(loadPath);
+                Mat image = new Mat(texture.height, texture.width, CvType.CV_8UC4);
+                Utils.texture2DToMat(texture, image);
+                var rimgGameObject = cloneItem.transform.Find("icon");
+                rimgGameObject.GetComponent<UITexture>().mainTexture = texture;
+                cloneItem.SetActive(true);
+                uiGrid.Reposition();
+
+                cloneItem.GetComponent<UIButton>().onClick.Add(new EventDelegate(() =>
+                {
+                    if (historyModel.imgType == HistoryModel.IMAGETYPE.MODEL)
+                    {
+                        DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_MODEL;
+                        DrawingScripts.imgModelPath = filePath;
+                        AddHistoryItem(new HistoryModel(filePath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                    }
+                    else
+                    {
+                        DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_IMAGE;
+                        DrawingScripts.image = image;
+                        DrawingScripts.texModel = texture;
+                        AddHistoryItem(new HistoryModel(filePath, thumbPath, HistoryModel.IMAGETYPE.MODEL));
+                    }
+                    GVs.SCENE_MANAGER.loadDrawingScene();
+                }));
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogFormat("Error is {0}", e.ToString());
+                Debug.LogFormat("Stack trace is {0}", e.StackTrace.ToString());
+            }
         }
         Destroy(item);
     }
@@ -128,7 +141,7 @@ public class HistoryNGUIScripts : MonoBehaviour {
     public static void AddHistoryItem(HistoryModel historyModel)
     {
         const int MAXHISTORY = 30;
-        if (history==null)
+        if (history == null)
         {
             var jsonLoad = PlayerPrefs.GetString(getUserHistoryKey());
             if (!String.IsNullOrEmpty(jsonLoad))
@@ -142,13 +155,13 @@ public class HistoryNGUIScripts : MonoBehaviour {
             {
                 history.Remove(a);
                 break;
-            }                            
+            }
         }
         //var a = history.Find(historyModel);
         //if (a != null) history.Remove(a);
         history.AddFirst(historyModel);
         while (history.Count > MAXHISTORY)
-            history.RemoveLast();        
+            history.RemoveLast();
         var jsonSave = JsonConvert.SerializeObject(history);
         PlayerPrefs.SetString(getUserHistoryKey(), jsonSave);
         PlayerPrefs.Save();
