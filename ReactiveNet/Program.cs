@@ -11,14 +11,7 @@ namespace ReactiveNet
     class Program
     {
         static void Main(string[] args)
-        {
-            Observable.Create<string>((IObserver<string> observer) =>
-            {
-                return () =>
-                {
-
-                };
-            });
+        {          
 
             Console.ReadLine();
         }
