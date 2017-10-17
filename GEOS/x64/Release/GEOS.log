@@ -1,0 +1,4 @@
+﻿  Source.cpp
+Source.cpp(11): error C2248: 'geos::geom::MultiPolygon::MultiPolygon': cannot access protected member declared in class 'geos::geom::MultiPolygon'
+  E:\WorkspaceMinh\MagicDrawing\geos-3.6.2\include\geos\geom\MultiPolygon.h(115): note: see declaration of 'geos::geom::MultiPolygon::MultiPolygon'
+  E:\WorkspaceMinh\MagicDrawing\geos-3.6.2\include\geos\geom\MultiPolygon.h(60): note: see declaration of 'geos::geom::MultiPolygon'
