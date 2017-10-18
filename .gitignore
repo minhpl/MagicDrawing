@@ -5,7 +5,6 @@
 /obj/
 /Debug/
 /bin/
-/.vs/
 *.0.0.zip
 /Assets/NGUI/
 /OpenCV-android-sdk/
