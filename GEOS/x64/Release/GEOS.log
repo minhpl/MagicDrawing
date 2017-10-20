@@ -1,7 +1,11 @@
 ﻿  Source.cpp
+Source.cpp(27): warning C4101: 'Parallelogram': unreferenced local variable
+Source.cpp(25): warning C4101: 'SmallTriangular1': unreferenced local variable
+Source.cpp(28): warning C4101: 'square': unreferenced local variable
+Source.cpp(26): warning C4101: 'SmallTriangular2': unreferenced local variable
   Generating code
-  5 of 5 functions (100.0%) were compiled, the rest were copied from previous compilation.
-    4 functions were new in current compilation
+  2 of 7 functions (28.6%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   GEOS.vcxproj -> E:\WorkspaceMinh\MagicDrawing\x64\Release\GEOS.exe
