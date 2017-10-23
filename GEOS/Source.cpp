@@ -1,11 +1,13 @@
 #include <iostream>
 #include <geos\geom\MultiPolygon.h>
 #include <geos\geom\GeometryFactory.h>
-#include "geos.h"
+#include <geos.h>
 #include <math.h>
+#include <geos\algorithm\CGAlgorithms.h>
 
 using namespace geos::geom;
 using namespace std;
+using namespace geos::algorithm;
 
 int main()
 {
@@ -19,7 +21,9 @@ int main()
 	double sizeShortParallelogram = 10;
 	double sizeLongParallelogram = 10 * sqrt(2);
 	double distanceParallelogram = 5 * sqrt(2);
-
+	
+	MultiPolygon* silhouette;
+	double sizeSquareSilhouette = 20 * sqrt(2);
 	LinearRing* LargeTriangular1;
 	LinearRing* LargeTriangular2;
 	LinearRing* MediumTriangular;
@@ -31,21 +35,21 @@ int main()
 	
 	auto coordSeqLargeTriang1 = coordinateSequenceFactory->create();
 	coordSeqLargeTriang1->add(Coordinate(0, 0));
-	coordSeqLargeTriang1->add(Coordinate(sizeLargeTriangular, 0));
 	coordSeqLargeTriang1->add(Coordinate(0, sizeLargeTriangular));
+	coordSeqLargeTriang1->add(Coordinate(sizeLargeTriangular, 0));
 	coordSeqLargeTriang1->add(Coordinate(0, 0));
 	LargeTriangular1 = geometryFactory->createLinearRing(coordSeqLargeTriang1);
 	LargeTriangular2 = dynamic_cast<LinearRing *>(LargeTriangular1->clone());
 	auto coordSeqMediumTriang = coordinateSequenceFactory->create();
 	coordSeqMediumTriang->add(Coordinate(0, 0));
-	coordSeqMediumTriang->add(Coordinate(sizeMediumTriangular, 0));
 	coordSeqMediumTriang->add(Coordinate(0, sizeMediumTriangular));
+	coordSeqMediumTriang->add(Coordinate(sizeMediumTriangular,0));
 	coordSeqMediumTriang->add(Coordinate(0, 0));
 	MediumTriangular = geometryFactory->createLinearRing(coordSeqMediumTriang);
 	auto coordSeqSmallTriang = coordinateSequenceFactory->create();
 	coordSeqSmallTriang->add(Coordinate(0, 0));
-	coordSeqSmallTriang->add(Coordinate(sizeSmallTriangular, 0));
 	coordSeqSmallTriang->add(Coordinate(0, sizeSmallTriangular));
+	coordSeqSmallTriang->add(Coordinate(sizeSmallTriangular,0));
 	coordSeqSmallTriang->add(Coordinate(0, 0));
 	SmallTriangular1 = geometryFactory->createLinearRing(coordSeqSmallTriang);
 	SmallTriangular2 = dynamic_cast<LinearRing*>(SmallTriangular1->clone());
@@ -67,16 +71,30 @@ int main()
 	coordSeqSquare->add(Coordinate(0, 0));
 	coordSeqSquare->add(Coordinate(0, 10));
 	coordSeqSquare->add(Coordinate(10, 10));
-	coordSeqSquare->add(Coordinate(0, 10));
+	coordSeqSquare->add(Coordinate(10, 0));
 	coordSeqSquare->add(Coordinate(0, 0));
-	Square = geometryFactory->createLinearRing((coordSeqSquare);
+	Square = geometryFactory->createLinearRing(coordSeqSquare);
 
+	auto coordSeqSquareSilhouette = coordinateSequenceFactory->create();
+	coordSeqSquareSilhouette->add(Coordinate(0, 0));	
+	coordSeqSquareSilhouette->add(Coordinate(0, sizeSquareSilhouette));
+	coordSeqSquareSilhouette->add(Coordinate(sizeSquareSilhouette, sizeSquareSilhouette));
+	coordSeqSquareSilhouette->add(Coordinate(sizeSquareSilhouette, 0));
+	coordSeqSquareSilhouette->add(Coordinate(0, 0));
+	std::vector<Geometry*> *geos = new vector<Geometry*>();
+	auto geometry = (Geometry*)geometryFactory->createLinearRing(coordSeqSquareSilhouette);
+	geos->push_back(geometry);
+	silhouette = geometryFactory->createMultiPolygon(geos);
+	
+
+	auto isCCW = CGAlgorithms::isCCW(LargeTriangular1->getCoordinatesRO());
 	std::cout << (LargeTriangular1 == nullptr) << std::endl;
 	std::cout << (LargeTriangular2 == nullptr) << std::endl;
 	std::cout << (LargeTriangular2 == nullptr) << std::endl;
 	std::cout << (coordSeqLargeTriang1 == coordSeqMediumTriang) << std::endl;
 	std::cout << (Parallelogram1->isClosed()) << std::endl;
-
-	//LinearRing a(*LargeTriangular1);
-	//LargeTriangular2 = &a;
+	std::cout << isCCW << std::endl;
+	std::cout << LargeTriangular1->getCoordinatesRO()->getDimension() << std::endl;
+	std::cout << jtsport() << std::endl;
+	
 }
