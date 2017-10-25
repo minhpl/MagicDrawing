@@ -7,8 +7,8 @@ APP_PROJECT_PATH := $(call my-dir)
 APP_OPTIM := release
 
 APP_PLATFORM 	:= android-14
-APP_STL 		:= gnustl_static
+APP_STL 		:= c++_static
 APP_CPPFLAGS 	:= -fexceptions -frtti -std=c++11
 
 APP_ABI 		:= all
-APP_MODULES     := tang
+APP_MODULES     := tangram
