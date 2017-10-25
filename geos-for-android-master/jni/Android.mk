@@ -1,6 +1,6 @@
 LOCAL_PATH := $(call my-dir)
 
-include $(CLEAR_VARS)
+LOCAL_PATH := $(call my-dir)
 # ./configure --build=x86_64-pc-linux-gnu --host=arm-linux-eabi
 # find $(GEOS_PATH)/ -name "*.cpp" | grep -Ev "tests|doc" | sort | awk '{ print "\t"$1" \\" }'
 GEOS_PATH := E:/WorkspaceMinh/MagicDrawing/geos-3.6.2
