@@ -1,0 +1,1 @@
+xcopy obj\local\*.a ..\libs_geos /sy
