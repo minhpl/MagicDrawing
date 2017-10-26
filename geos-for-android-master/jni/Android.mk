@@ -1,9 +1,8 @@
 LOCAL_PATH := $(call my-dir)
-
-# include $(CLEAR_VARS)
+include $(CLEAR_VARS)
 # ./configure --build=x86_64-pc-linux-gnu --host=arm-linux-eabi
 # find $(GEOS_PATH)/ -name "*.cpp" | grep -Ev "tests|doc" | sort | awk '{ print "\t"$1" \\" }'
-GEOS_PATH := E:/WorkspaceMinh/MagicDrawing/geos-3.6.2
+GEOS_PATH := E:/WorkspaceMinh/MagicDrawing/libs/geos-3.6.2
 LOCAL_MODULE := geos
 LOCAL_SHORT_COMMANDS := true
 APP_SHORT_COMMANDS := true
@@ -13,6 +12,48 @@ LOCAL_C_INCLUDES := \
 LOCAL_CFLAGS := \
 	$(LOCAL_C_INCLUDES:%=-I%) \
 	-DHAVE_LONG_LONG_INT_64
+
+# include $(BUILD_STATIC_LIBRARY)
+# include $(PREBUILT_SHARED_LIBRARY)
+# TARGET_ARCH
+# TARGET_PLATFORM := android-14
+# TARGET_ARCH_ABI
+# TARGET_ARCH_ABI := arm64-v8a
+# TARGET_ABI := android-22-arm64-v8a
+# LOCAL_MODULE_FILENAME := libnewfoo
+# LOCAL_CPP_EXTENSION := .cxx .cpp .cc
+# LOCAL_CPP_FEATURES := rtti features
+# LOCAL_C_INCLUDES := $(LOCAL_PATH)//foo  # or LOCAL_C_INCLUDES := sources/foo
+# LOCAL_CFLAGS += -I<path>,
+# LOCAL_STATIC_LIBRARIES
+# LOCAL_SHARED_LIBRARIES
+# LOCAL_WHOLE_STATIC_LIBRARIES
+# LOCAL_LDLIBS := -lz
+# LOCAL_LDFLAGS += -fuse-ld=bfd
+# LOCAL_ALLOW_UNDEFINED_SYMBOLS
+# LOCAL_ARM_MODE
+# LOCAL_ARM_NEON
+# LOCAL_DISABLE_NO_EXECUTE
+# LOCAL_DISABLE_RELRO
+# LOCAL_DISABLE_FORMAT_STRING_CHECKS
+# LOCAL_EXPORT_CFLAGS
+# LOCAL_EXPORT_CPPFLAGS
+# LOCAL_EXPORT_C_INCLUDES
+# LOCAL_EXPORT_LDFLAGS
+# LOCAL_EXPORT_LDLIBS
+# LOCAL_SHORT_COMMANDS
+# LOCAL_THIN_ARCHIVE
+# LOCAL_FILTER_ASM
+
+# function  $(call <function>)
+	# my-dir
+	# all-subdir-makefiles
+	# this-makefile
+	# parent-makefile
+	# grand-parent-makefile
+	# import-module
+
+
 LOCAL_SRC_FILES := \
     $(GEOS_PATH)/capi/geos_c.cpp \
 $(GEOS_PATH)/capi/geos_ts_c.cpp \
