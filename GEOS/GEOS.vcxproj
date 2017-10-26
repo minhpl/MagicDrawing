@@ -118,12 +118,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\WorkspaceMinh\MagicDrawing\lib\geos-3.6.2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>E:\WorkspaceMinh\MagicDrawing\lib\geos-3.6.2\src</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\src</AdditionalLibraryDirectories>
       <AdditionalDependencies>geos_c_i_d.lib;geos_d.lib;geos_i_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -136,14 +136,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\WorkspaceMinh\MagicDrawing\lib\geos-3.6.2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>geos.lib;geos_c_i.lib;geos_i.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>E:\WorkspaceMinh\MagicDrawing\lib\geos-3.6.2\src</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\src</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
