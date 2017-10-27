@@ -2,3 +2,7 @@
 /geos-3.6.2/
 /geos-3.3.6/
 /libs_geos/
+/boost_1_65_1/
+/win/
+*.tar.bz2
+*.7z

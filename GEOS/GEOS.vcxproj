@@ -138,7 +138,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\WorkspaceMinh\MagicDrawing\libs\boost_1_65_1;E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,8 +148,7 @@
       <AdditionalLibraryDirectories>E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\src</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>echo "fff"
-call $(SolutionDir)GEOS\buildAndroid\build.cmd</Command>
+      <Command>call $(SolutionDir)GEOS\buildAndroid\build.cmd</Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>echo "hahaha"</Command>
