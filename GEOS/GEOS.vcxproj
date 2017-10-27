@@ -82,6 +82,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <CustomBuildAfterTargets>PostBuildEvent</CustomBuildAfterTargets>
+    <CustomBuildBeforeTargets>PreBuildEvent</CustomBuildBeforeTargets>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -145,6 +147,14 @@
       <AdditionalDependencies>geos.lib;geos_c_i.lib;geos_i.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\src</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>echo "fff"
+call $(SolutionDir)GEOS\buildAndroid\build.cmd</Command>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>echo "hahaha"</Command>
+      <TreatOutputAsContent>false</TreatOutputAsContent>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />

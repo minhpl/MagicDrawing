@@ -10,6 +10,6 @@ APP_PLATFORM 	:= android-16
 APP_STL 		:= gnustl_static
 APP_CPPFLAGS 	:= -fexceptions -frtti -std=c++11
 
-APP_ABI 		:= all
+APP_ABI 		:= x86 armeabi-v7a  
 APP_MODULES     := tangram
 APP_PIE := true
