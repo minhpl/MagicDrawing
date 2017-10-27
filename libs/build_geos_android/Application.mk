@@ -7,7 +7,7 @@ APP_OPTIM := release
 APP_PLATFORM 	:= android-14
 APP_STL 		:= gnustl_static
 APP_CPPFLAGS 	:= -fexceptions -frtti
-APP_ABI 		:= x86_64
+APP_ABI 		:= all
 APP_MODULES     := geos
 # APP_PROJECT_PATH
 # APP_MODULES
