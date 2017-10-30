@@ -148,7 +148,7 @@
       <AdditionalLibraryDirectories>E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\src</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>call $(SolutionDir)GEOS\buildAndroid\build.cmd</Command>
+      <Command>rem $(SolutionDir)GEOS\buildAndroid\build.cmd</Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>echo "hahaha"</Command>
@@ -157,6 +157,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Source2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

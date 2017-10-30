@@ -24,20 +24,8 @@ using namespace boost::geometry;
 using namespace geos::geom;
 using namespace std;
 using namespace geos::algorithm;
-namespace trans = boost::geometry::strategy::transform;
 
-typedef boost::geometry::model::d2::point_xy<double> point, vector2d;
-typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>> polygon;
-const long double pi = boost::math::constants::pi<double>();
-
-inline double angle(const vector2d& v1,const vector2d& v2)
-{
-	auto dot = dot_product(v1, v2);
-	auto det = v1.x()*v2.y() - v1.y()*v2.x();
-	return atan2(det, dot);
-}
-
-int main()
+int test()
 {
 	//auto geometryFactory = GeometryFactory::create();
 	//auto coordinateSequenceFactory = geometryFactory->getCoordinateSequenceFactory();
@@ -124,21 +112,23 @@ int main()
 	//std::cout << (Parallelogram1->isClosed()) << std::endl;
 	//std::cout << isCCW << std::endl;
 	//std::cout << LargeTriangular1->getCoordinatesRO()->getDimension() << std::endl;
-	//std::cout << jtsport() << std::endl;	
+	//std::cout << jtsport() << std::endl;
+
+	typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>> polygon;
 
 	polygon largeTriangular1{ { { 0,0 },{ sizeLargeTriangular, 0 } ,{ 0, sizeLargeTriangular },{ 0,0 } } };
 	polygon largeTriangular2{ largeTriangular1 };
-	polygon mediumTriangular{ { { 0, 0 },{ 0,sizeMediumTriangular },{ sizeMediumTriangular ,0 },{ 0,0 } } };
+	polygon mediumTriangular{ {{ 0, 0 },{0,sizeMediumTriangular },{ sizeMediumTriangular ,0},{0,0}} };
 	polygon smallTriangular1{ { { 0, 0 },{ 0,sizeSmallTriangular },{ sizeSmallTriangular ,0 },{ 0,0 } } };
 	polygon smallTriangular2{ smallTriangular1 };
-	polygon parallelogram1{ { { 0, distanceParallelogram },{ 0 ,sizeLongParallelogram + distanceParallelogram },
-	{ distanceParallelogram,sizeLongParallelogram },{ distanceParallelogram,0 },{ 0,distanceParallelogram } } };
-	polygon parallelogram2{ { { 0,0 },{ 0,sizeLongParallelogram },
-	{ distanceParallelogram,distanceParallelogram + sizeLongParallelogram },{ distanceParallelogram,distanceParallelogram },{ 0,0 } } };
-	polygon square{ { { 0,0 },{ 0,sizeSquare },{ sizeSquare,sizeSquare },{ sizeSquare,0 },{ 0,0 } } };
+	polygon parallelogram1{ {{ 0, distanceParallelogram },{ 0 ,sizeLongParallelogram + distanceParallelogram},
+	{distanceParallelogram,sizeLongParallelogram},{distanceParallelogram,0},{0,distanceParallelogram}} };
+	polygon parallelogram2{ {{0,0},{0,sizeLongParallelogram},
+	{distanceParallelogram,distanceParallelogram + sizeLongParallelogram},{distanceParallelogram,distanceParallelogram},{0,0}} };
+	polygon square{ {{0,0},{0,sizeSquare},{sizeSquare,sizeSquare},{sizeSquare,0},{0,0}} };
 
-	polygon silhouettePolygon{ { { 0,0 },{ 0,sizeSquareSilhouette },{ sizeSquareSilhouette,sizeSquareSilhouette },
-	{ sizeSquareSilhouette,0 },{ 0,0 } } };
+	polygon silhouettePolygon{ {{0,0},{0,sizeSquareSilhouette},{sizeSquareSilhouette,sizeSquareSilhouette},
+	{sizeSquareSilhouette,0},{0,0}} };
 
 	if (!is_valid(largeTriangular1)) correct(largeTriangular1);
 	if (!is_valid(largeTriangular2)) correct(largeTriangular2);
@@ -150,65 +140,50 @@ int main()
 	if (!is_valid(square)) correct(square);
 	if (!is_valid(silhouettePolygon)) correct(silhouettePolygon);
 
-	vector<polygon> tagramPieces;
-	tagramPieces.push_back(largeTriangular1);
-	tagramPieces.push_back(largeTriangular2);
-	tagramPieces.push_back(parallelogram1);
-	//tagramPieces.push_back(parallelogram2);
-	tagramPieces.push_back(mediumTriangular);
-	tagramPieces.push_back(square);
-	tagramPieces.push_back(smallTriangular1);
-	tagramPieces.push_back(smallTriangular2);
-
-	auto outerRing = silhouettePolygon.outer();
+	auto outerRing = largeTriangular1.outer();
 	if (num_points(outerRing) > 1) {
-		for (auto it = outerRing.begin(); it != outerRing.end()-1 ; it++)
+		for (auto it = outerRing.begin(); it != outerRing.end() - 2; it++)
 		{
-			auto& p1 = *it;
-			auto p2 = *(it + 1);
-			auto& vectorEdge = p2;
-			subtract_point(vectorEdge,p1);
-			//std::cout << vectorEdge.x() << "  " <<vectorEdge.y()<<std::endl;
-			BOOST_FOREACH(auto& a, tagramPieces)
-			{				
-				auto outerTagramPieces = a.outer();
-				for (auto it2 = outerTagramPieces.begin(); it2 != outerTagramPieces.end() - 1; it2++)
-				{
-					auto pPiece1 = *it2;
-					auto pPiece2 = *(it2 + 1);
-					auto& vectorEdgePieces = pPiece2;
-					subtract_point(vectorEdgePieces , pPiece1);
-					auto ang = angle(vectorEdgePieces,vectorEdge );
-					auto degree = ang * 180 / pi;
-					std::cout << degree << std::endl;
-					trans::rotate_transformer<boost::geometry::degree, double, 2, 2> rotate(-degree);
-					auto dp = p1;
-					subtract_point(dp, pPiece1);
-					trans::translate_transformer<double, 2, 2> translate(dp.x(), dp.y());
-					auto matrix = rotate.matrix()*translate.matrix();
-					trans::matrix_transformer<double, 2, 2> translateRotate(matrix);
-					polygon b;
-					transform(a, b, translateRotate);
-					std::cout << dsv(b) << std::endl;
-					std::cout << within(b,outerRing) << std::endl;
-				}				
-				break;
-			}
-			break;
+			auto p1 = outerRing.at(0);
+			auto p2 = outerRing.at(1);
+			auto p3 = outerRing.at(2);
+
+			auto v1 = p2;
+			subtract_point(v1, p1);			
+			auto v2 = p3;
+			subtract_point(v2, p2);
+			auto v3 = p1;
+			subtract_point(v3, p3);
+
+			//std::cout << v1.x() << " " << v1.y() << std::endl;
+			//std::cout << v2.x() << " " << v2.y() << std::endl;
+			//std::cout << v3.x() << " " << v3.y() << std::endl;
+
+			auto dot = dot_product(v1, v2);
+			auto det = v1.x()*v2.y() - v1.y()*v2.x();
+			auto angle = atan2(det, dot);
+			
+			
+
+			auto lengV1 = v1.x()*v1.x() + v1.y()*v1.y();
+			auto lengV2 = v2.x()*v2.x() + v2.y()*v2.y();
+			auto angle2 = acos(dot / sqrt(lengV1*lengV2));
 		}
 	}
+	
 
-	//	auto  outerRing = largeTriangular1.outer();
-	//	auto blackSize = outerRing.size();
-	//	std::cout << blackSize << std::endl;
-	//	auto innerRings = largeTriangular1.inners();
-	//	auto numInnerRings = innerRings.size();
-	//
-	//	auto iswithin = within(largeTriangular1, largeTriangular2);
-	//std:cout << " is within : ? " << iswithin << std::endl;
-	//
-	//	const auto& remain = silhouettePolygon.outer();
-	//	
+
+//	auto  outerRing = largeTriangular1.outer();
+//	auto blackSize = outerRing.size();
+//	std::cout << blackSize << std::endl;
+//	auto innerRings = largeTriangular1.inners();
+//	auto numInnerRings = innerRings.size();
+//
+//	auto iswithin = within(largeTriangular1, largeTriangular2);
+//std:cout << " is within : ? " << iswithin << std::endl;
+//
+//	const auto& remain = silhouettePolygon.outer();
+//	
 	//std::list<polygon> output;
 	//boost::geometry::difference(green, green, output);
 	//
