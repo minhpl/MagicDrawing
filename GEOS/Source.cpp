@@ -28,13 +28,30 @@ namespace trans = boost::geometry::strategy::transform;
 
 typedef boost::geometry::model::d2::point_xy<double> point, vector2d;
 typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>> polygon;
-const long double pi = boost::math::constants::pi<double>();
+const double pi = boost::math::constants::pi<double>();
 
 inline double angle(const vector2d& v1,const vector2d& v2)
 {
 	auto dot = dot_product(v1, v2);
 	auto det = v1.x()*v2.y() - v1.y()*v2.x();
 	return atan2(det, dot);
+}
+
+//template<int D>
+//inline double round(const double& value)
+//{
+//	int t = pow(10, D);
+//	return round(value*t) / t;	
+//}
+
+template<int D>
+inline void round(point& p)
+{
+	using boost::geometry::get;
+	using boost::geometry::set;
+	int t = pow(10,D);		
+	set<0>(p, round(p.x()*t) / t);
+	set<1>(p, round(p.y()*t) / t);
 }
 
 int main()
@@ -50,7 +67,8 @@ int main()
 	double sizeLongParallelogram = 10 * sqrt(2);
 	double distanceParallelogram = 5 * sqrt(2);
 	double sizeSquareSilhouette = 20 * sqrt(2);
-
+	//std::cout << sizeMediumTriangular << std::endl;
+	//std::cout << sizeSquareSilhouette << std::endl;
 	//MultiPolygon* silhouette;
 
 	//LinearRing* LargeTriangular1;
@@ -160,6 +178,8 @@ int main()
 	tagramPieces.push_back(smallTriangular1);
 	tagramPieces.push_back(smallTriangular2);
 
+
+
 	auto outerRing = silhouettePolygon.outer();
 	if (num_points(outerRing) > 1) {
 		for (auto it = outerRing.begin(); it != outerRing.end()-1 ; it++)
@@ -178,17 +198,20 @@ int main()
 					auto pPiece2 = *(it2 + 1);
 					auto& vectorEdgePieces = pPiece2;
 					subtract_point(vectorEdgePieces , pPiece1);
-					auto ang = angle(vectorEdgePieces,vectorEdge );
+					auto ang = angle(vectorEdge,vectorEdgePieces);
 					auto degree = ang * 180 / pi;
 					std::cout << degree << std::endl;
-					trans::rotate_transformer<boost::geometry::degree, double, 2, 2> rotate(-degree);
+					trans::rotate_transformer<boost::geometry::degree, double, 2, 2> rotate(degree);
 					auto dp = p1;
 					subtract_point(dp, pPiece1);
 					trans::translate_transformer<double, 2, 2> translate(dp.x(), dp.y());
 					auto matrix = rotate.matrix()*translate.matrix();
-					trans::matrix_transformer<double, 2, 2> translateRotate(matrix);
+					trans::matrix_transformer<double, 2, 2> rotateTranslate(matrix);
 					polygon b;
-					transform(a, b, translateRotate);
+					transform(a, b, rotateTranslate);
+					for_each_point(b, [](point& p) {
+						round<5>(p);
+					});
 					std::cout << dsv(b) << std::endl;
 					std::cout << within(b,outerRing) << std::endl;
 				}				
