@@ -138,14 +138,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\WorkspaceMinh\MagicDrawing\libs\boost_1_65_1;E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\WorkspaceMinh\MagicDrawing\libs\boost_1_65_1;E:\WorkspaceMinh\MagicDrawing\libs\opencv\build\include;E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>geos.lib;geos_c_i.lib;geos_i.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\src</AdditionalLibraryDirectories>
+      <AdditionalDependencies>geos.lib;geos_c_i.lib;geos_i.lib;opencv_world320.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:\WorkspaceMinh\MagicDrawing\libs\opencv\build\x64\vc14\lib;E:\WorkspaceMinh\MagicDrawing\libs\geos-3.6.2\src</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>rem $(SolutionDir)GEOS\buildAndroid\build.cmd</Command>

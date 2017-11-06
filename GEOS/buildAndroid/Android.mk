@@ -3,7 +3,7 @@
 GEOS_PATH := E:/WorkspaceMinh/MagicDrawing/libs/geos-3.6.2
 GEOS_SOURCE:= E:/WorkspaceMinh/MagicDrawing/GEOS
 BOOST_PATH := E:/WorkspaceMinh/MagicDrawing/libs/boost_1_65_1
-
+OPENCVROOT:= E:\WorkspaceMinh\MagicDrawing\libs\OpenCV-android-sdk
 
 LOCAL_PATH := $(call my-dir)
 
@@ -22,6 +22,11 @@ LOCAL_C_INCLUDES := \
 		$(GEOS_PATH)/src \
     $(GEOS_PATH)/include\
     $(BOOST_PATH)
+
+OPENCV_CAMERA_MODULES:=on
+OPENCV_INSTALL_MODULES:=on
+OPENCV_LIB_TYPE:=SHARED
+include ${OPENCVROOT}/sdk/native/jni/OpenCV.mk
 LOCAL_MODULE    := tangram
 LOCAL_SRC_FILES := $(GEOS_SOURCE)/Source.cpp
 LOCAL_STATIC_LIBRARIES := geos
