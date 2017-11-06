@@ -397,6 +397,10 @@
   <ItemGroup>
     <None Include="Assets\BansheeGz\BGCurve\readme.txt" />
     <None Include="Assets\BezierCurves\readme.txt" />
+    <None Include="Assets\Bunny Example Scene\Licence.txt" />
+    <None Include="Assets\Cinema Suite\Cinema Mocap\ChangeLog.txt" />
+    <None Include="Assets\Cinema Suite\Cinema Mocap\READ ME FIRST.txt" />
+    <None Include="Assets\Delicode NI mate\Instructions.txt" />
     <None Include="Assets\Demigiant\DOTween\DOTween.XML" />
     <None Include="Assets\Demigiant\DOTween\DOTween43.xml" />
     <None Include="Assets\Demigiant\DOTween\DOTween46.xml" />

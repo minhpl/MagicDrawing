@@ -1,0 +1,17 @@
+v1.3.0.1
+=============
+- Added support for Kinect 2 sensor.
+
+v1.1.1.0
+=============
+- Fixed some issues with scaling and head rotation.
+
+v1.1.0.0
+=============
+- Exports now compatible with Maya and Blender.
+
+v1.0.1.0
+=============
+- Reduced jitter in captured animations.
+- Fixed bug where you couldn't build when plugin present.
+- Fixed various minor bugs.

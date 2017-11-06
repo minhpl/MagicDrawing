@@ -186,6 +186,9 @@
     <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Curve\BGReflectionAdapter.cs" />
     <Compile Include="Assets\BezierCurves\Scripts\BezierCurve.cs" />
     <Compile Include="Assets\BezierCurves\Scripts\BezierPoint.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Mocap\System\Runtime\RealtimeHumanoidPosing.cs" />
+    <Compile Include="Assets\Delicode NI mate\NImateFeed.cs" />
+    <Compile Include="Assets\Delicode NI mate\NImateReceiver.cs" />
     <Compile Include="Assets\Demigiant\DOTween\Examples\Basics.cs" />
     <Compile Include="Assets\Demigiant\DOTween\Examples\Sequences.cs" />
     <Compile Include="Assets\Examples\Scripts\AttackSpineboy.cs" />
@@ -1182,6 +1185,10 @@
   <ItemGroup>
     <None Include="Assets\BansheeGz\BGCurve\readme.txt" />
     <None Include="Assets\BezierCurves\readme.txt" />
+    <None Include="Assets\Bunny Example Scene\Licence.txt" />
+    <None Include="Assets\Cinema Suite\Cinema Mocap\ChangeLog.txt" />
+    <None Include="Assets\Cinema Suite\Cinema Mocap\READ ME FIRST.txt" />
+    <None Include="Assets\Delicode NI mate\Instructions.txt" />
     <None Include="Assets\Demigiant\DOTween\DOTween.XML" />
     <None Include="Assets\Demigiant\DOTween\DOTween43.xml" />
     <None Include="Assets\Demigiant\DOTween\DOTween46.xml" />
