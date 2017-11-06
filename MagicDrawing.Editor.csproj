@@ -127,6 +127,15 @@
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
+    <Reference Include="CinemaMocap">
+      <HintPath>Assets\Cinema Suite\Cinema Mocap\System\Editor\CinemaMocap.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNI.Net">
+      <HintPath>Assets\Cinema Suite\Cinema Mocap\System\Editor\Zigfu\OpenNI.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="ZDK_Editor">
+      <HintPath>Assets\Cinema Suite\Cinema Mocap\System\Editor\Zigfu\ZDK_Editor.dll</HintPath>
+    </Reference>
     <Reference Include="TexturePackerImporter">
       <HintPath>Assets\codeandweb.com\Editor\TexturePackerImporter.dll</HintPath>
     </Reference>
@@ -192,15 +201,6 @@
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>Assets\Zip\Plugins\Ionic.Zip.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenNI.Net">
-      <HintPath>Assets\Cinema Suite\Cinema Mocap\System\Editor\Zigfu\OpenNI.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="ZDK_Editor">
-      <HintPath>Assets\Cinema Suite\Cinema Mocap\System\Editor\Zigfu\ZDK_Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="CinemaMocap">
-      <HintPath>Assets\Cinema Suite\Cinema Mocap\System\Editor\CinemaMocap.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-UnityScript">
       <HintPath>Library\ScriptAssemblies\Assembly-UnityScript.dll</HintPath>
