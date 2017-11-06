@@ -6,3 +6,5 @@
 /win/
 *.tar.bz2
 *.7z
+/OpenCV-android-sdk/
+*.3.1-android-sdk.zip
