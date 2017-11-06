@@ -1,2 +1,0 @@
-﻿Threshold.obj : error LNK2001: unresolved external symbol "void __cdecl fmt::print(class fmt::BasicCStringRef<char>,class fmt::ArgList)" (?print@fmt@@YAXV?$BasicCStringRef@D@1@VArgList@1@@Z)
-E:\WorkspaceMinh\MagicDrawing\x64\Release\OpenCV.exe : fatal error LNK1120: 1 unresolved externals
