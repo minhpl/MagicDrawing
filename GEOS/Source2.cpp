@@ -1,67 +1,77 @@
-//#include <algorithm>  
-//#include <iostream>  
-//#include <vector>  
-//#include <string>  
+//#include <iostream>
+//#include <geos\geom\MultiPolygon.h>
+//#include <geos\geom\GeometryFactory.h>
+//#include <geos.h>
+//#include <math.h>
+//#include <geos\algorithm\CGAlgorithms.h>
 //
+//#include <list>
+//#include <boost/geometry.hpp>
+//#include <boost/geometry/geometries/point_xy.hpp>
+//#include <boost/geometry/geometries/polygon.hpp>
+//#include <boost/foreach.hpp>
+//
+//#include <opencv2/core/core.hpp>
+//#include <opencv2/highgui/highgui.hpp>
+//#include <opencv2/imgproc/imgproc.hpp>
+//#include <exception>
+//using namespace cv;
+//using namespace boost::geometry;
+//using namespace geos::geom;
 //using namespace std;
+//using namespace geos::algorithm;
+//namespace trans = boost::geometry::strategy::transform;
 //
-//template <typename C> void print(const string& s, const C& c) {
-//	cout << s;
+//typedef boost::geometry::model::d2::point_xy<double> point, vector2d;
+//typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>> polygon;
+//typedef boost::geometry::model::multi_polygon<polygon> mpolygon;
+//const long double pi = boost::math::constants::pi<long double>();
 //
-//	for (const auto& e : c) {
-//		cout << e << " ";
+//double division(int a, int b) {
+//	if (b == 0) {
+//		throw " sd ";
+//	}
+//	return (a / b);
+//}
+//
+//void imgwrite(cv::Mat mat,const polygon& poly)
+//{
+//	//auto outer = poly.outer();
+//	//auto inners = poly.inners();
+//	//cv::Point pt_outer[1][30];
+//	//const cv::Point *pts[1] = { pt_outer[0] };
+//	//
+//	//auto num = num_points(outer);
+//	if (3 > 2) {
+//		throw "cannot print the poly, because numpoints exceed limit ";
+//		return;
+//	}
+//	/*int npts[1] = { num };
+//
+//	for (int i =0;i<num-1;i++)
+//	{
+//	auto p = outer.at(i);
+//	pt_outer[0][i] = cv::Point(p.x()*10, p.y()*10);
 //	}
 //
-//	cout << endl;
+//	cv::fillPoly(mat, pts, npts, 1, Scalar(255, 255, 255), 1);*/
+//	//auto b = imwrite("./a.png", mat);
+//	//std::cout << "is writed ? " << b << std::endl;
 //}
 //
-//void fillVector(vector<int>& v)
-//{
-//	// A local static variable.  
-//	static int nextValue = 1;
+//int main() {
+//	int x = 50;
+//	int y = 0;
+//	double z = 0;
+//	polygon poly;
+//	try {
+//		imgwrite(Mat::zeros(1,1,CV_8UC3), poly);
+//		z = division(x, y);
+//		cout << z << endl;
+//	}
+//	catch (const char* msg) {
+//		cerr << msg << endl;
+//	}
 //
-//	// The lambda expression that appears in the following call to  
-//	// the generate function modifies and uses the local static   
-//	// variable nextValue.  
-//	generate(v.begin(), v.end(), [] { return nextValue++; });
-//	//WARNING: this is not thread-safe and is shown for illustration only  
-//}
-//
-//int main()
-//{
-//	// The number of elements in the vector.  
-//	const int elementCount = 9;
-//
-//	// Create a vector object with each element set to 1.  
-//	vector<int> v(elementCount, 1);
-//
-//	// These variables hold the previous two elements of the vector.  
-//	int x = 1;
-//	int y = 1;
-//
-//	// Sets each element in the vector to the sum of the   
-//	// previous two elements.  
-//	generate_n(v.begin() + 2,
-//		elementCount - 2,
-//		[=]() mutable throw() -> int { // lambda is the 3rd parameter  
-//									   // Generate current value.  
-//		int n = x + y;
-//		// Update previous two values.  
-//		x = y;
-//		y = n;
-//		return n;
-//	});
-//	print("vector v after call to generate_n() with lambda: ", v);
-//
-//	// Print the local variables x and y.  
-//	// The values of x and y hold their initial values because   
-//	// they are captured by value.  
-//	cout << "x: " << x << " y: " << y << endl;
-//
-//	// Fill the vector with a sequence of numbers  
-//	fillVector(v);
-//	print("vector v after 1st call to fillVector(): ", v);
-//	// Fill the vector with the next sequence of numbers  
-//	fillVector(v);
-//	print("vector v after 2nd call to fillVector(): ", v);
+//	return 0;
 //}

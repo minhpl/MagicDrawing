@@ -5,26 +5,18 @@
 #include <math.h>
 #include <geos\algorithm\CGAlgorithms.h>
 
-
-#include <boost/geometry.hpp>
-#include <boost/geometry/geometries/point_xy.hpp>
-#include <boost/geometry/geometries/polygon.hpp>
-
 #include <list>
-
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/geometry/geometries/polygon.hpp>
-
 #include <boost/foreach.hpp>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <exception>
 using namespace cv;
-
 using namespace boost::geometry;
-
 using namespace geos::geom;
 using namespace std;
 using namespace geos::algorithm;
@@ -32,6 +24,7 @@ namespace trans = boost::geometry::strategy::transform;
 
 typedef boost::geometry::model::d2::point_xy<double> point, vector2d;
 typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>> polygon;
+typedef boost::geometry::model::multi_polygon<polygon> mpolygon;
 const long double pi = boost::math::constants::pi<long double>();
 
 inline double angle(const vector2d& v1,const vector2d& v2)
@@ -56,6 +49,41 @@ inline void round(point& p)
 	int t = pow(10,D);		
 	set<0>(p, round(p.x()*t) / t);
 	set<1>(p, round(p.y()*t) / t);
+}
+
+const int MAXSIZE = 600;
+
+void imgwrite(cv::Mat& mat, const polygon& poly)
+{
+	auto outer = poly.outer();
+	auto inners = poly.inners();
+	cv::Point pt_outer[1][30];
+	const cv::Point *pts[1] = { pt_outer[0] };
+	
+	auto num = num_points(outer);
+	if (num > 30) throw "cannot print the poly, because numpoints exceed limit ";
+	
+	int npts[1] = { num };
+
+	for (int i =0;i<num-1;i++)
+	{
+		auto p = outer.at(i);
+		pt_outer[0][i] = cv::Point(p.x()*10, p.y()*10);
+	}	 
+	
+	cv::fillPoly(mat, pts, npts, 1, Scalar(255, 255, 255), 1);
+	//auto b = imwrite("./a.png", mat);
+	//std::cout << "is writed ? " << b << std::endl;
+}
+
+inline void imgwrite(const std::string& filename, const polygon& poly)
+{
+	
+}
+
+inline void imgwrite(const std::string& filename, const mpolygon& mpoly)
+{
+
 }
 
 int main()
@@ -183,6 +211,16 @@ int main()
 	tagramPieces.push_back(smallTriangular2);
 
 	auto outerRing = silhouettePolygon.outer();
+
+	Mat mat = Mat::zeros(MAXSIZE, MAXSIZE, CV_8UC3);
+	try {
+		imgwrite(mat, silhouettePolygon);
+	}
+	catch (char* e)
+	{
+		std::cout << e << std::endl;
+	}
+
 	if (num_points(outerRing) > 1) {
 		for (auto it = outerRing.begin(); it != outerRing.end()-1 ; it++)
 		{
@@ -253,7 +291,7 @@ int main()
 	const cv::Point* ppt[1] = { rook_points[0] };
 	int npt[] = { 20 };
 
-	fillPoly(image, ppt, npt, 1, Scalar(255, 255, 255), 8);
+	cv::fillPoly(image, ppt, npt, 1, Scalar(255, 255, 255), 8);
 	auto b = imwrite("/data/local/tmp/output.png", image);
 	std::cout << "Xin chao tat ca the gioi nay :" << b << std::endl;
 
@@ -291,5 +329,3 @@ int main()
 
 	//return 0;
 }
-
-
