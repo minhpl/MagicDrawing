@@ -154,6 +154,9 @@
       <Command>echo "hahaha"</Command>
       <TreatOutputAsContent>false</TreatOutputAsContent>
     </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>if not exist  $(SolutionDir)\GEOS\image\ mkdir $(SolutionDir)\GEOS\image\</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
