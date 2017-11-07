@@ -25,6 +25,7 @@ typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<dou
 typedef boost::geometry::model::multi_polygon<polygon, std::vector> mpolygon;
 const long double pi = boost::math::constants::pi<long double>();
 
+const int MAX_NUMPOINTS = 35;
 const int MAXSIZE = 600;
 cv::Point polygonarray[1][35];
 const double MIN_AREA_THRESHOLD = 0.1f;
@@ -53,19 +54,19 @@ inline void round(point& p)
 	set<1>(p, round(p.y()*t) / t);
 }
 
+cv::Point polygonarray[1][30];
+const cv::Point *pts[1] = { polygonarray[0] };
+int npts[1];
 
 inline void polywrite(cv::Mat mat, const polygon& poly, Scalar& color = Scalar(0, 255, 255))
 {
 	auto outer = poly.outer();
 	auto inners = poly.inners();
-	cv::Point polygonarray[1][30];
-	const cv::Point *pts[1] = { polygonarray[0] };
-
+	
 	auto num = num_points(outer) - 1;
-	std::cout << "num = " << num << std::endl;
-	if (num > 35) throw "cannot print the poly, because num points exceed limit ";
+	if (num > MAX_NUMPOINTS) throw "cannot print the poly, because num points exceed limit ";
 
-	int npts[1] = { num };
+	npts[0] = num;
 
 	for (int i = 0; i < num; i++)
 	{
@@ -74,13 +75,13 @@ inline void polywrite(cv::Mat mat, const polygon& poly, Scalar& color = Scalar(0
 		std::cout << "point "<<i<<" :"<<p.x() << " " << p.y() << std::endl;
 	}
 	
-	cv::fillPoly(mat, pts, npts, 1, color, 8);
+	cv::fillPoly(mat, pts, npts, 1, color, 1);
 
-	BOOST_FOREACH(auto ring, inners)
+	BOOST_FOREACH(const auto& ring, inners)
 	{
 		std::cout << "are you here???";
-		num = num_points(ring);
-		if (num > 30) throw "cannot print the poly, because num points exceed limit ";
+		num = num_points(ring) - 1;
+		if (num > MAX_NUMPOINTS) throw "cannot print the poly, because num points exceed limit ";
 		npts[0] = num;
 		for (int i = 0; i < num; i++)
 		{
@@ -96,7 +97,7 @@ inline void polywrite(cv::Mat mat, const polygon& poly, Scalar& color = Scalar(0
 
 inline void polywrite(cv::Mat& mat, const mpolygon& mpoly)
 {
-	BOOST_FOREACH(auto poly, mpoly)
+	BOOST_FOREACH(const auto& poly, mpoly)
 	{
 		polywrite(mat, poly);
 	}
@@ -124,8 +125,8 @@ int main()
 	{ distanceParallelogram,distanceParallelogram + sizeLongParallelogram },{ distanceParallelogram,distanceParallelogram },{ 0,0 } } };
 	polygon square{ { { 0,0 },{ 0,sizeSquare },{ sizeSquare,sizeSquare },{ sizeSquare,0 },{ 0,0 } } };
 
-	polygon silhouettePolygon{ { { 0,0 },{ 0,sizeSquareSilhouette },{ sizeSquareSilhouette,sizeSquareSilhouette },
-	{ sizeSquareSilhouette,0 },{ 0,0 } } };
+	mpolygon silhouettePolygon{ {{ { 0,0 },{ 0,sizeSquareSilhouette },{ sizeSquareSilhouette,sizeSquareSilhouette },
+	{ sizeSquareSilhouette,0 },{ 0,0 } }} };
 
 	if (!is_valid(largeTriangular1)) correct(largeTriangular1);
 	if (!is_valid(largeTriangular2)) correct(largeTriangular2);
@@ -148,13 +149,6 @@ int main()
 	tagramPieces.push_back(smallTriangular2);
 
 	auto outerRing = silhouettePolygon.outer();
-
-	//std::cout << dsv(outerRing) << std::endl;
-	//std::cout << dsv(largeTriangular1) << std::endl;
-	//std::vector<polygon> dif;
-	//difference(outerRing, largeTriangular1, dif);
-	//std::cout << area(dif[0]) << std::endl;
-
 
 	Mat mat = Mat::zeros(MAXSIZE, MAXSIZE, CV_8UC3);
 	try {
