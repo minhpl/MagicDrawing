@@ -41,7 +41,8 @@ polygon tagramArr[TAGRAM_PIECES];
 mpolygon silhouettePolygon;
 bool usedarr[TAGRAM_PIECES];
 std::pair<int, polygon> resultArray[TAGRAM_PIECES];
-Scalar colorsTagramArr[TAGRAM_PIECES] = { Scalar(247,147,30),Scalar(0,0,255),Scalar(0,255,0),Scalar(255,0,255),Scalar(255,0,255),Scalar(204,51,51),Scalar(240,252,0),Scalar(0,255,255) };
+Scalar colorsTagramArr[TAGRAM_PIECES] = { Scalar(30,147,247),Scalar(255,0,0),Scalar(0,255,0)
+,Scalar(255,0,255),Scalar(255,0,255),Scalar(51,51,204),Scalar(0,252,240),Scalar(255,255,0) };
 std::string nameTagramArr[TAGRAM_PIECES] = { "LARGE_TRI1","LARGE_TRI2","MEDIUM_TRI","PARALLELOGRAM1","PARALLELOGRAM2","SQUARE","SMALL_TRI1","SMALL_TRI2" };
 
 inline double angle(const vector2d& v1, const vector2d& v2)
@@ -81,7 +82,7 @@ inline void polywrite(cv::Mat& mat, const polygon& poly, Scalar& color = Scalar(
 	for (int i = 0; i < num; i++)
 	{
 		auto p = outer.at(i);
-		polygonarray[0][i] = cv::Point(p.x() * 10, p.y() * 10);		
+		polygonarray[0][i] = cv::Point(p.x() * 10, MAXSIZE - p.y() * 10);
 	}
 	
 	cv::fillPoly(mat, pts, npts, 1, color, 1);
@@ -131,11 +132,13 @@ inline void TRY(int partialNum,const mpolygon& silhouette)
 	if (partialNum > 7) return;
 	BOOST_FOREACH(auto poly, silhouette)
 	{
-		std::cout << dsv(silhouette) << std::endl;
+		//std::cout << dsv(silhouette) << std::endl;
 		auto outerRing = poly.outer();
 		if (num_points(outerRing) > 1) {
+			int index = 0;
 			for (auto it = outerRing.begin(); it != outerRing.end() - 1; it++)
 			{
+				index++;
 				auto& p1 = *it;
 				auto p2 = *(it + 1);
 				auto& vectorEdge = p2;
@@ -146,31 +149,53 @@ inline void TRY(int partialNum,const mpolygon& silhouette)
 					if ((i == index_parallelogram1 && usedarr[index_parallelogram2] == true) || (i == index_parallelogram2 && usedarr[index_parallelogram1] == true)) continue;					
 					auto& tagramP = tagramArr[i];
 					auto outerTagramPieces = tagramP.outer();
-					for (auto it2 = outerTagramPieces.begin(); it2 != outerTagramPieces.end() - 1; it2++)
+					auto numOuterTagramPieces = num_points(outerTagramPieces) - 1;
+					correct(outerTagramPieces);
+					for (int i_outerTagramPieces =0; i_outerTagramPieces<numOuterTagramPieces; i_outerTagramPieces++)
 					{
-						auto pPiece1 = *it2;
-						auto pPiece2 = *(it2 + 1);
-						auto& vectorEdgePieces = pPiece2;
+						step++;
+						
+						auto& pPiece1 = outerTagramPieces[i_outerTagramPieces];
+						auto pPiece2 = outerTagramPieces[i_outerTagramPieces + 1];
+						if (step == 4)
+						{						
+							//std::cout << dsv(pPiece1) << "   " << dsv(pPiece2) << std::endl;
+						}
+						auto vectorEdgePieces = pPiece2;
 						subtract_point(vectorEdgePieces, pPiece1);
-						auto ang = angle(vectorEdge, vectorEdgePieces);
-						//auto degree = ang * 180 / pi;
+						auto ang = angle(vectorEdge, vectorEdgePieces);						
+						auto degree = ang * 180 / pi;
+						
 						trans::rotate_transformer<boost::geometry::radian, double, 2, 2> rotate(ang);
+						polygon rotatedPoly;
+						transform(tagramP, rotatedPoly, rotate);
+						auto& newPPieces1 = rotatedPoly.outer()[i_outerTagramPieces];
 						auto translateVector = p1;
-						subtract_point(translateVector, pPiece1);
-						trans::translate_transformer<double, 2, 2> translate(translateVector.x(), translateVector.y());
-						auto matrix = rotate.matrix()*translate.matrix();
-						trans::matrix_transformer<double, 2, 2> rotateTranslate(matrix);
-						polygon transformedPoly;
-						transform(tagramP, transformedPoly, rotateTranslate);
-						for_each_point(transformedPoly, [](point& p) {
+						subtract_point(translateVector, newPPieces1);
+						trans::translate_transformer<double, 2, 2> translate(translateVector.x(), translateVector.y());						
+						polygon translatedPoly;
+						transform(rotatedPoly, translatedPoly, translate);
+						
+						if (step == 4 )
+						{
+							std::cout << dsv(silhouette) << std::endl;	
+							std::cout << dsv(vectorEdge) << std::endl;
+							std::cout << dsv(outerTagramPieces) << std::endl;
+							std::cout << dsv(pPiece1) << "   "<<dsv(pPiece2)<< dsv(vectorEdgePieces) << std::endl;
+							std::cout << degree << std::endl;
+							std::cout << dsv(translateVector) << std::endl;
+							std::cout << i << std::endl;
+						}
+
+						
+						for_each_point(translatedPoly, [](point& p) {
 							round<5>(p);							
 						});
-
 						mpolygon differs;
-						bool isWithin = within(transformedPoly, silhouette);
+						bool isWithin = within(translatedPoly, silhouette);
 						if (isWithin == false) {
 							differs.clear();
-							difference(transformedPoly, silhouette, differs);
+							difference(translatedPoly, silhouette, differs);
 							if (differs.size() == 0)
 							{
 								isWithin = true;
@@ -191,59 +216,57 @@ inline void TRY(int partialNum,const mpolygon& silhouette)
 						}						
 						if (isWithin == true)
 						{	
-							resultArray[partialNum - 1] = std::pair<int, polygon>(i, transformedPoly);
-							step++;
-							
 
+							resultArray[partialNum - 1] = std::pair<int, polygon>(i, translatedPoly);
 							if (partialNum == 7)
-							{								
+							{		
+								std::cout << "fill one: " << step<<std::endl;
 								break;
 							}
+
+
+							{
+								Mat mat = STANDARDMAT.clone();
+								polywrite(mat, silhouette);
+								for (int j = 0; j < partialNum; j++)
+								{
+									polywrite(mat, resultArray[j].second, colorsTagramArr[resultArray[j].first]);
+								}
+								polywrite(mat, translatedPoly, colorsTagramArr[i]);
+								std::string name = "./image/" + std::to_string(step) + ".png";
+								imwrite(name, mat);
+							}
+
+
+
 							differs.clear();
-							boost::geometry::difference(silhouette, transformedPoly, differs);
+							boost::geometry::difference(silhouette, translatedPoly, differs);
 							if (differs.size() > 0)
 							{								
-								for (auto it = differs.begin(); it != differs.end();)
+								for (auto it3 = differs.begin(); it3 != differs.end();)
 								{
-									if (area(*it) < MIN_AREA_THRESHOLD) {
-										it = differs.erase(it);
+									if (area(*it3) < MIN_AREA_THRESHOLD) {
+										it3 = differs.erase(it3);
 									}
 									else {
-										++it;
+										++it3;
 									}
 								}
 
 								if (differs.size() > 0)
 								{	
-									//if (partialNum == 5)
-									{
-										if (step == 4)
-										{
-											std::cout << partialNum << std::endl;
-											//break;;
-										}
-										if (!is_valid(differs))
-										{
-											std::cout << "invalid" << std::endl;
-											correct(differs);
-										}
-										Mat mat = STANDARDMAT.clone();										
-										polywrite(mat, silhouettePolygon);
-										//for (int j = 0; j < partialNum; j++)
-										//{
-										//	polywrite(mat, resultArray[j].second, colorsTagramArr[resultArray[j].first]);
-										//}
-										polywrite(mat, differs, Scalar(150, 0, 0));
-										std::string name = "./image/" + std::to_string(step) + ".png";
-										imwrite(name, mat);										
-									}
-
-
 									usedarr[i] = true;
+									if (!is_valid(differs))
+									{
+										std::cout << "invalid" << std::endl;
+										correct(differs);
+									}
 									TRY(partialNum + 1, differs);
 									usedarr[i] = false;
 								}
 							}
+							
+
 						}
 					}					
 				}				
