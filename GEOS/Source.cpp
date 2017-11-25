@@ -28,6 +28,7 @@ const long double pi = boost::math::constants::pi<long double>();
 const int TAGRAM_PIECES = 8;
 const int MAX_NUMPOINTS = 35;
 const int MAXSIZE = 600;
+const int OFFSET = 200;
 const cv::Mat STANDARDMAT(MAXSIZE, MAXSIZE, CV_8UC3);
 const double MIN_AREA_THRESHOLD = 0.1f;
 cv::Point polygonarray[1][MAX_NUMPOINTS];
@@ -82,7 +83,7 @@ inline void polywrite(cv::Mat& mat, const polygon& poly, Scalar& color = Scalar(
 	for (int i = 0; i < num; i++)
 	{
 		auto p = outer.at(i);
-		polygonarray[0][i] = cv::Point(p.x() * 10, MAXSIZE - p.y() * 10);
+		polygonarray[0][i] = cv::Point(p.x() * 10 + OFFSET, MAXSIZE - (p.y() * 10 + OFFSET));
 	}
 	
 	cv::fillPoly(mat, pts, npts, 1, color, 1);
@@ -132,7 +133,6 @@ inline void TRY(int partialNum,const mpolygon& silhouette)
 	if (partialNum > 7) return;
 	BOOST_FOREACH(auto poly, silhouette)
 	{
-		//std::cout << dsv(silhouette) << std::endl;
 		auto outerRing = poly.outer();
 		if (num_points(outerRing) > 1) {
 			int index = 0;
@@ -153,19 +153,13 @@ inline void TRY(int partialNum,const mpolygon& silhouette)
 					correct(outerTagramPieces);
 					for (int i_outerTagramPieces =0; i_outerTagramPieces<numOuterTagramPieces; i_outerTagramPieces++)
 					{
-						step++;
-						
+						step++;						
 						auto& pPiece1 = outerTagramPieces[i_outerTagramPieces];
 						auto pPiece2 = outerTagramPieces[i_outerTagramPieces + 1];
-						if (step == 4)
-						{						
-							//std::cout << dsv(pPiece1) << "   " << dsv(pPiece2) << std::endl;
-						}
 						auto vectorEdgePieces = pPiece2;
 						subtract_point(vectorEdgePieces, pPiece1);
 						auto ang = angle(vectorEdge, vectorEdgePieces);						
-						auto degree = ang * 180 / pi;
-						
+						auto degree = ang * 180 / pi;						
 						trans::rotate_transformer<boost::geometry::radian, double, 2, 2> rotate(ang);
 						polygon rotatedPoly;
 						transform(tagramP, rotatedPoly, rotate);
@@ -174,19 +168,7 @@ inline void TRY(int partialNum,const mpolygon& silhouette)
 						subtract_point(translateVector, newPPieces1);
 						trans::translate_transformer<double, 2, 2> translate(translateVector.x(), translateVector.y());						
 						polygon translatedPoly;
-						transform(rotatedPoly, translatedPoly, translate);
-						
-						if (step == 4 )
-						{
-							std::cout << dsv(silhouette) << std::endl;	
-							std::cout << dsv(vectorEdge) << std::endl;
-							std::cout << dsv(outerTagramPieces) << std::endl;
-							std::cout << dsv(pPiece1) << "   "<<dsv(pPiece2)<< dsv(vectorEdgePieces) << std::endl;
-							std::cout << degree << std::endl;
-							std::cout << dsv(translateVector) << std::endl;
-							std::cout << i << std::endl;
-						}
-
+						transform(rotatedPoly, translatedPoly, translate);						
 						
 						for_each_point(translatedPoly, [](point& p) {
 							round<5>(p);							
@@ -209,14 +191,12 @@ inline void TRY(int partialNum,const mpolygon& silhouette)
 								}
 								if (area < MIN_AREA_THRESHOLD)
 								{
-									
 									isWithin == true;
 								}
 							}
 						}						
 						if (isWithin == true)
 						{	
-
 							resultArray[partialNum - 1] = std::pair<int, polygon>(i, translatedPoly);
 							if (partialNum == 7)
 							{		
@@ -236,8 +216,6 @@ inline void TRY(int partialNum,const mpolygon& silhouette)
 								std::string name = "./image/" + std::to_string(step) + ".png";
 								imwrite(name, mat);
 							}
-
-
 
 							differs.clear();
 							boost::geometry::difference(silhouette, translatedPoly, differs);
@@ -265,7 +243,6 @@ inline void TRY(int partialNum,const mpolygon& silhouette)
 									usedarr[i] = false;
 								}
 							}
-							
 
 						}
 					}					
@@ -324,7 +301,6 @@ int main()
 	{
 		usedarr[i] = false;
 	}
-
 	
 	TRY(1,silhouettePolygon);
 }

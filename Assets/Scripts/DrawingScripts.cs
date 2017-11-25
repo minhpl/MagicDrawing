@@ -43,6 +43,7 @@ public class DrawingScripts : MonoBehaviour
     public AudioSource audioSource;
     public Image img_progress_cutvideo;
     public RawImage rigm_watermark;
+    public Button getPosSize; 
 
     private Threshold threshold;
     private AdaptiveThreshold athreshold;
@@ -160,6 +161,7 @@ public class DrawingScripts : MonoBehaviour
             }));
 
         });
+
         tickBtn.onClick.AddListener(() =>
         {
 
@@ -170,6 +172,7 @@ public class DrawingScripts : MonoBehaviour
             }
             else
             {
+                isolateBoundary();
                 IDisposable cancelCorountineSnapImage = Observable.FromCoroutine(SaveMasterpiece).Subscribe();
             }
         });
@@ -204,7 +207,91 @@ public class DrawingScripts : MonoBehaviour
                 cancelCorountineBlinkTime = Observable.FromCoroutine(blinkTime).Subscribe();
             }
         });
+
+        getPosSize.onClick.AddListener(() =>
+        {
+            isolateBoundary();
+        });
     }
+
+    void isolateBoundary()
+    {
+        // lấy tọa độ, kích thước của ảnh mask        
+        // ảnh mask là ảnh mấy được vẽ, định dạng của ảnh mask là png
+        Debug.Log(rimgcam.rectTransform.rect.size);
+        
+        var offsetMin = rimgmodel.rectTransform.offsetMin;
+        var offsetMax = rimgmodel.rectTransform.offsetMax;
+        Debug.LogFormat("offsetMin is {0}", offsetMin);
+        Debug.LogFormat("offsetMax is {0}", offsetMax);
+        var left = offsetMin.x;
+        var bottom = -offsetMin.y + rimgcam.rectTransform.rect.size.y;
+        var top = -offsetMax.y;
+        var right = offsetMax.x + rimgcam.rectTransform.rect.size.x;        
+        var width = right - left;        
+        var height = bottom - top;
+        var center_x = left + width / 2;
+        var center_y = top + height / 2;
+        var scale = rimgmodel.transform.localScale.x;
+        var real_width = width * scale;
+        var real_height = height * scale;
+        var real_left = center_x - (real_width / 2);
+        var real_top = center_y - (real_height / 2);
+
+        Debug.LogFormat("real_left is {0}, real_top is {1}, real_width is {2}, real_height is {3}", real_left, real_top,real_width,real_height);
+        Debug.LogFormat("image snaped have width = {0}, height = {1}, ratio = {2}", cropRect.width, cropRect.height, cropRect.width/(float)cropRect.height);
+        var scal = cropRect.width / rimgcam.rectTransform.rect.size.x;
+        int x = (int)(real_left * scal);
+        int y = (int)(real_top * scal);
+        int w = (int)(real_width * scal);
+        int h = (int)(real_height * scal);
+
+        int x_end = x + w > cropRect.width ? cropRect.width : x + w;
+        x = x < 0 ? 0 : x;
+        int y_end = y + h > cropRect.height ? cropRect.height : y + h;
+        y = y < 0 ? 0 : y;
+
+        Mat aaa = displayMat.colRange(x, x_end).rowRange(y, y_end);        
+        
+
+        Debug.LogFormat("x = {0}, y = {1}, w = {2}, h = {3}", x, y, w, h);
+        Debug.LogFormat("DisplayMat width = {0}, DisplayMat height = {1}",displayMat.width(),displayMat.height());
+
+        
+
+        //đầu vào là 1.cái mat(ảnh) chụp được, 2.vùng muốn tách, 3.mat(ảnh) của vùng muốn tách
+        //đầu ra là cái mat(ảnh) tách được.
+
+        // giải:
+        //1: DisplayMat
+
+
+
+
+        //Debug.LogFormat("width is {0}, height is {1}", width, height);
+
+        //Utilities.Log("left = {0}, top = {1}, right = {2}, bottom = {3}", left, top, right, bottom);
+
+        //var left = rimgmodel.rectTransform.offsetMin.x;
+        //var top = -rimgmodel.rectTransform.offsetMax.y;
+        //Utilities.Log("left = {0},top = {1}", left, top);
+        //var size = rimgmodel.rectTransform.rect.size;
+        //Utilities.Log("Width = {0},height = {1}", size.x, size.y);
+        //var rotateAngle = rimgmodel.transform.rotation.eulerAngles.z;
+        //Utilities.Log("Rotate =  {0}", rotateAngle);
+
+        //Utilities.Log("Scale =  {0}", scale.x);
+        //Debug.Log(rimgmodel.rectTransform.offsetMin);
+        //Debug.Log(rimgmodel.rectTransform.offsetMax);
+
+        Mat a = Mat.zeros(new Size(800, 880), CvType.CV_8UC3);
+        Mat img = Imgcodecs.imread("C:/Users/mv duc/Desktop/rocket/rocket/noel.png");
+        //Debug.Log(img.width());
+        //Debug.Log(img.height());
+        img.copyTo(a, Mat.ones(img.height(), img.cols(), CvType.CV_8UC3));
+        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/a.png", aaa);
+    }
+
 
     void Start()
     {
@@ -581,7 +668,6 @@ public class DrawingScripts : MonoBehaviour
             .setOnStart(() => { img_progress_cutvideo.gameObject.SetActive(true); })
             .setRepeat(-1).setEaseLinear();
 
-
         var cutvideo = Observable.Start(() =>
         {
             if (lengthInSeconds >= 3)
@@ -740,5 +826,10 @@ public class DrawingScripts : MonoBehaviour
             yield return new WaitForSeconds(1);
             textTimeGameObj.SetActive(!textTimeGameObj.activeSelf);
         }
+    }
+
+    void separateUserDraw()
+    {
+
     }
 }
