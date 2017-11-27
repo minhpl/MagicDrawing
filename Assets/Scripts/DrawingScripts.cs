@@ -15,6 +15,7 @@ using System.IO;
 using TMPro;
 using System.Threading;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class DrawingScripts : MonoBehaviour
 {
@@ -214,10 +215,25 @@ public class DrawingScripts : MonoBehaviour
         });
     }
 
+
+    void rotateMat(Mat src, Mat des, float angleDegree)
+    {
+        Point center = new Point(src.cols() / 2f, src.rows() / 2f);
+        Mat rot = Imgproc.getRotationMatrix2D(center, angleDegree, 1);
+        OpenCVForUnity.Rect bbox = new RotatedRect(center, src.size(), angleDegree).boundingRect();
+
+        rot.put(0, 2, rot.get(0, 2)[0] + bbox.width / 2f - center.x);
+        rot.put(1, 2, rot.get(1, 2)[0] + bbox.height / 2f - center.y);
+
+        Mat dst = new Mat();
+        Imgproc.warpAffine(src, des, rot, bbox.size());
+    }
+
     void isolateBoundary()
     {
         // lấy tọa độ, kích thước của ảnh mask        
         // ảnh mask là ảnh mấy được vẽ, định dạng của ảnh mask là png
+        Debug.Log(displayMat.size());
         Debug.Log(rimgcam.rectTransform.rect.size);
         
         var offsetMin = rimgmodel.rectTransform.offsetMin;
@@ -246,50 +262,52 @@ public class DrawingScripts : MonoBehaviour
         int w = (int)(real_width * scal);
         int h = (int)(real_height * scal);
 
-        int x_end = x + w > cropRect.width ? cropRect.width : x + w;
-        x = x < 0 ? 0 : x;
-        int y_end = y + h > cropRect.height ? cropRect.height : y + h;
-        y = y < 0 ? 0 : y;
+        var rotateDegree = rimgmodel.rectTransform.localRotation.eulerAngles.z;        
+        OpenCVForUnity.Rect bbox = new RotatedRect(new Point(x+w/2f,y+h/2f), new Size(w,h), rotateDegree).boundingRect();
+        x = bbox.x;
+        y = bbox.y;
+        w = bbox.width;
+        h = bbox.height;
 
-        Mat aaa = displayMat.colRange(x, x_end).rowRange(y, y_end);        
-        
+        Debug.Log(bbox);
+
+        int x_end = x + w > cropRect.width ? cropRect.width : x + w;
+        int x_begin = x < 0 ? 0 : x;
+        int y_end = y + h > cropRect.height ? cropRect.height : y + h;
+        int y_begin = y < 0 ? 0 : y;
+
+        Mat mask = new Mat();
+        Imgproc.resize(image, mask, new Size(real_width * scal, real_height * scal));
+
+        List<Mat> channels = new List<Mat>();
+        Core.split(mask, channels);
+        channels[0] = channels[3];
+        channels[1] = channels[3];
+        channels[2] = channels[3];
+        Core.merge(channels, mask);
+
+        Mat mask_rotated = new Mat();
+        rotateMat(mask, mask_rotated, rotateDegree);
+
+        Mat aaa = new Mat();
+
+        displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end).copyTo(aaa, mask_rotated.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y));
+        //displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end).copyTo(aaa);
+        //Tạo Mask, 
 
         Debug.LogFormat("x = {0}, y = {1}, w = {2}, h = {3}", x, y, w, h);
         Debug.LogFormat("DisplayMat width = {0}, DisplayMat height = {1}",displayMat.width(),displayMat.height());
 
-        
-
-        //đầu vào là 1.cái mat(ảnh) chụp được, 2.vùng muốn tách, 3.mat(ảnh) của vùng muốn tách
-        //đầu ra là cái mat(ảnh) tách được.
-
-        // giải:
-        //1: DisplayMat
-
-
-
-
-        //Debug.LogFormat("width is {0}, height is {1}", width, height);
-
-        //Utilities.Log("left = {0}, top = {1}, right = {2}, bottom = {3}", left, top, right, bottom);
-
-        //var left = rimgmodel.rectTransform.offsetMin.x;
-        //var top = -rimgmodel.rectTransform.offsetMax.y;
-        //Utilities.Log("left = {0},top = {1}", left, top);
-        //var size = rimgmodel.rectTransform.rect.size;
-        //Utilities.Log("Width = {0},height = {1}", size.x, size.y);
-        //var rotateAngle = rimgmodel.transform.rotation.eulerAngles.z;
-        //Utilities.Log("Rotate =  {0}", rotateAngle);
-
-        //Utilities.Log("Scale =  {0}", scale.x);
-        //Debug.Log(rimgmodel.rectTransform.offsetMin);
-        //Debug.Log(rimgmodel.rectTransform.offsetMax);
-
         Mat a = Mat.zeros(new Size(800, 880), CvType.CV_8UC3);
-        Mat img = Imgcodecs.imread("C:/Users/mv duc/Desktop/rocket/rocket/noel.png");
+        Mat img = Imgcodecs.imread("C:/Users/phamleminh/Desktop/rocket/rocket/noel.png");
         //Debug.Log(img.width());
         //Debug.Log(img.height());
         img.copyTo(a, Mat.ones(img.height(), img.cols(), CvType.CV_8UC3));
-        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/a.png", aaa);
+        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/a.png", aaa);
+        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/mask.png", mask);
+
+        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/mask_rotated.png", mask_rotated);
+
     }
 
 

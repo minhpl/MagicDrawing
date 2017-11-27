@@ -17,8 +17,8 @@ class GVs
 #endif
     public static string TRAIN_PATH;
     public static SceneManagerScript SCENE_MANAGER = new SceneManagerScript();
-    //public static string SERVER_URL = "http://developer.magicbook.vn/";
-    public static string SERVER_URL = "http://42.112.210.40:3000/";
+    public static string SERVER_URL = "http://developer.magicbook.vn/";
+    //public static string SERVER_URL = "http://42.112.210.40:3000/";
     public static string LOGIN_URL = SERVER_URL + "login";
     public static string CHECK_UPDATE_APP_URL = SERVER_URL + "users/checkUpdateApp";
     public static string ACTIVE_LICENSE_URL = SERVER_URL + "users/activeLicense";
