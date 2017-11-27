@@ -16,6 +16,7 @@ using TMPro;
 using System.Threading;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using Spine.Unity;
 
 public class DrawingScripts : MonoBehaviour
 {
@@ -86,6 +87,9 @@ public class DrawingScripts : MonoBehaviour
     private const int FRAME_SKIP = 10;
     private const int MAX_LENGTH_RESULT_VIDEO = 30; //seconds 
     public UIPlayTween[] popupPlayTween;
+
+
+    public SkeletonAnimation skeletonAnimation;
 
     private void Awake()
     {
@@ -229,13 +233,15 @@ public class DrawingScripts : MonoBehaviour
         Imgproc.warpAffine(src, des, rot, bbox.size());
     }
 
+    int texModelWidth;
+    int texModelHeight;
     void isolateBoundary()
     {
         // lấy tọa độ, kích thước của ảnh mask        
         // ảnh mask là ảnh mấy được vẽ, định dạng của ảnh mask là png
         Debug.Log(displayMat.size());
         Debug.Log(rimgcam.rectTransform.rect.size);
-        
+
         var offsetMin = rimgmodel.rectTransform.offsetMin;
         var offsetMax = rimgmodel.rectTransform.offsetMax;
         Debug.LogFormat("offsetMin is {0}", offsetMin);
@@ -243,8 +249,8 @@ public class DrawingScripts : MonoBehaviour
         var left = offsetMin.x;
         var bottom = -offsetMin.y + rimgcam.rectTransform.rect.size.y;
         var top = -offsetMax.y;
-        var right = offsetMax.x + rimgcam.rectTransform.rect.size.x;        
-        var width = right - left;        
+        var right = offsetMax.x + rimgcam.rectTransform.rect.size.x;
+        var width = right - left;
         var height = bottom - top;
         var center_x = left + width / 2;
         var center_y = top + height / 2;
@@ -254,27 +260,34 @@ public class DrawingScripts : MonoBehaviour
         var real_left = center_x - (real_width / 2);
         var real_top = center_y - (real_height / 2);
 
-        Debug.LogFormat("real_left is {0}, real_top is {1}, real_width is {2}, real_height is {3}", real_left, real_top,real_width,real_height);
-        Debug.LogFormat("image snaped have width = {0}, height = {1}, ratio = {2}", cropRect.width, cropRect.height, cropRect.width/(float)cropRect.height);
+        Debug.LogFormat("real_left is {0}, real_top is {1}, real_width is {2}, real_height is {3}", real_left, real_top, real_width, real_height);
+        Debug.LogFormat("image snaped have width = {0}, height = {1}, ratio = {2}", cropRect.width, cropRect.height, cropRect.width / (float)cropRect.height);
         var scal = cropRect.width / rimgcam.rectTransform.rect.size.x;
         int x = (int)(real_left * scal);
         int y = (int)(real_top * scal);
         int w = (int)(real_width * scal);
         int h = (int)(real_height * scal);
 
-        var rotateDegree = rimgmodel.rectTransform.localRotation.eulerAngles.z;        
-        OpenCVForUnity.Rect bbox = new RotatedRect(new Point(x+w/2f,y+h/2f), new Size(w,h), rotateDegree).boundingRect();
+        var rotateDegree = rimgmodel.rectTransform.localRotation.eulerAngles.z;
+        OpenCVForUnity.Rect bbox = new RotatedRect(new Point(x + w / 2f, y + h / 2f), new Size(w, h), rotateDegree).boundingRect();
         x = bbox.x;
         y = bbox.y;
         w = bbox.width;
         h = bbox.height;
 
         Debug.Log(bbox);
+        int cx = x + w / 2;
+        int cy = y + h / 2;
 
         int x_end = x + w > cropRect.width ? cropRect.width : x + w;
         int x_begin = x < 0 ? 0 : x;
         int y_end = y + h > cropRect.height ? cropRect.height : y + h;
         int y_begin = y < 0 ? 0 : y;
+
+        int cx2 = (x_end + x_begin) / 2;
+        int cy2 = (y_end + y_begin) / 2;
+        Debug.LogFormat("x = {0}, y = {1}, w = {2}, h = {3}", x, y, w, h);
+        Debug.LogFormat("cx = {0}, cy = {1}, cx2 = {2}, cy2 = {3}", cx, cy, cx2, cy2);
 
         Mat mask = new Mat();
         Imgproc.resize(image, mask, new Size(real_width * scal, real_height * scal));
@@ -284,32 +297,74 @@ public class DrawingScripts : MonoBehaviour
         channels[0] = channels[3];
         channels[1] = channels[3];
         channels[2] = channels[3];
+        channels[3] = channels[3];
         Core.merge(channels, mask);
 
         Mat mask_rotated = new Mat();
         rotateMat(mask, mask_rotated, rotateDegree);
 
         Mat aaa = new Mat();
+        Mat mask2 = mask_rotated.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y);
+        Mat displayMat2 = displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end);
+        displayMat2.copyTo(aaa, mask2);
 
-        displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end).copyTo(aaa, mask_rotated.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y));
-        //displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end).copyTo(aaa);
-        //Tạo Mask, 
+        int dx = cx2 - cx;
+        int dy = cy2 - cy;
+        
+        Debug.Log(mask2.channels());
+        Debug.Log(mask2.type() == CvType.CV_8UC4);
+        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/display.png", displayMat2);
+        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/result.png", aaa);
+        rotateMat(aaa, aaa, -rotateDegree);
+        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/result_rotated.png", aaa);
+        w = (int)(real_width * scal);
+        h = (int)(real_height * scal);
 
-        Debug.LogFormat("x = {0}, y = {1}, w = {2}, h = {3}", x, y, w, h);
-        Debug.LogFormat("DisplayMat width = {0}, DisplayMat height = {1}",displayMat.width(),displayMat.height());
+        Debug.LogFormat("w = {0}, h = {1}", w, h);
 
-        Mat a = Mat.zeros(new Size(800, 880), CvType.CV_8UC3);
-        Mat img = Imgcodecs.imread("C:/Users/phamleminh/Desktop/rocket/rocket/noel.png");
-        //Debug.Log(img.width());
-        //Debug.Log(img.height());
-        img.copyTo(a, Mat.ones(img.height(), img.cols(), CvType.CV_8UC3));
-        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/a.png", aaa);
-        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/mask.png", mask);
+        int x2 = aaa.width()/2 - dx - w / 2;
+        int y2 = aaa.height()/2 - dy - h / 2;
 
-        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/mask_rotated.png", mask_rotated);
+        int x2_end = x2 + w > aaa.width() ? aaa.width() : x2 + w;
+        int y2_end = y2 + h > aaa.height() ? aaa.height() : y2 + h;
+        x2 = x2 < 0 ? 0 : x2;
+        y2 = y2 < 0 ? 0 : y2;
+        Debug.LogFormat("x2 = {0}, x2_end = {1}, y2 = {2}, y2_end = {3}", x2, x2_end, y2, y2_end);
+        Mat result = aaa.colRange(x2, x2_end).rowRange(y2, y2_end);
+
+        Imgproc.resize(result, result, new Size(texModelWidth, texModelHeight));
+
+        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/result2.png", result);
+        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/mask.png", mask2);
+
+
+        var texture = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
+        Debug.LogFormat("{0}, {1}",texture.width,texture.height);
+        Mat textureMat = new Mat(texture.height, texture.width,CvType.CV_8UC3);
+        Utils.texture2DToMat(texture, textureMat);
+
+        result.copyTo(textureMat.submat(2, 2 + result.width(), 2, 2 + result.height()));
+        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/textureMat.png", textureMat);
+        Texture2D texure_a = new Texture2D(textureMat.width(), textureMat.height(), TextureFormat.RGBA32,false);
+        Utils.matToTexture2D(textureMat, texure_a);
+        skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texure_a;
+
+
+        //Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/mask_rotated.png", mask_rotated);
+
+        //Mat mask = Imgcodecs.imread("C:/Users/mv duc/Desktop/rocket/rocket/mask.png", Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+        //Mat display = Imgcodecs.imread("C:/Users/mv duc/Desktop/rocket/rocket/display.png", Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+        //List<Mat> a = new List<Mat>();
+        //Core.split(mask, a);
+        //a[0] = a[3];
+        //a[1] = a[3];
+        //a[2] = a[3];
+        //Core.merge(a, mask);
+        //Mat result = new Mat();
+        //display.copyTo(result, mask);
+        //Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/result.png", result);
 
     }
-
 
     void Start()
     {
@@ -403,6 +458,8 @@ public class DrawingScripts : MonoBehaviour
             texModel = GFs.LoadPNGFromPath(imgPath);
             int w = texModel.width;
             int h = texModel.height;
+            texModelWidth = w;
+            texModelHeight = h;
             var rat = w / (float)h;
             var restrictMaxSize = 640;
             if (rat > 1)
