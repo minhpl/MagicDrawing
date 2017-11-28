@@ -45,7 +45,10 @@ public class DrawingScripts : MonoBehaviour
     public AudioSource audioSource;
     public Image img_progress_cutvideo;
     public RawImage rigm_watermark;
-    public Button getPosSize; 
+    public Button getPosSize;
+    public Toggle btnTurnOnAnim;
+    public Toggle btnTurnOnPreview;
+    public RawImage preview;
 
     private Threshold threshold;
     private AdaptiveThreshold athreshold;
@@ -217,6 +220,18 @@ public class DrawingScripts : MonoBehaviour
         {
             isolateBoundary();
         });
+
+        btnTurnOnAnim.onValueChanged.AddListener((bool check)=>
+        {
+            var obj = skeletonAnimation.gameObject;
+            obj.SetActive(check);
+        });
+
+        btnTurnOnPreview.onValueChanged.AddListener((bool check) =>
+        {
+            var obj = skeletonAnimation.gameObject;
+            preview.gameObject.SetActive(check);            
+        });
     }
 
 
@@ -237,15 +252,11 @@ public class DrawingScripts : MonoBehaviour
     int texModelHeight;
     void isolateBoundary()
     {
-        // lấy tọa độ, kích thước của ảnh mask        
-        // ảnh mask là ảnh mấy được vẽ, định dạng của ảnh mask là png
         Debug.Log(displayMat.size());
         Debug.Log(rimgcam.rectTransform.rect.size);
 
         var offsetMin = rimgmodel.rectTransform.offsetMin;
         var offsetMax = rimgmodel.rectTransform.offsetMax;
-        Debug.LogFormat("offsetMin is {0}", offsetMin);
-        Debug.LogFormat("offsetMax is {0}", offsetMax);
         var left = offsetMin.x;
         var bottom = -offsetMin.y + rimgcam.rectTransform.rect.size.y;
         var top = -offsetMax.y;
@@ -260,8 +271,6 @@ public class DrawingScripts : MonoBehaviour
         var real_left = center_x - (real_width / 2);
         var real_top = center_y - (real_height / 2);
 
-        Debug.LogFormat("real_left is {0}, real_top is {1}, real_width is {2}, real_height is {3}", real_left, real_top, real_width, real_height);
-        Debug.LogFormat("image snaped have width = {0}, height = {1}, ratio = {2}", cropRect.width, cropRect.height, cropRect.width / (float)cropRect.height);
         var scal = cropRect.width / rimgcam.rectTransform.rect.size.x;
         int x = (int)(real_left * scal);
         int y = (int)(real_top * scal);
@@ -275,7 +284,6 @@ public class DrawingScripts : MonoBehaviour
         w = bbox.width;
         h = bbox.height;
 
-        Debug.Log(bbox);
         int cx = x + w / 2;
         int cy = y + h / 2;
 
@@ -305,6 +313,11 @@ public class DrawingScripts : MonoBehaviour
 
         Mat aaa = new Mat();
         Mat mask2 = mask_rotated.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y);
+
+        Imgproc.threshold(mask2, mask2, 1, 255, Imgproc.THRESH_BINARY);
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS,new Size(1000, 1000));
+        Imgproc.morphologyEx(mask2, mask2, Imgproc.MORPH_ERODE, kernel);        
+
         Mat displayMat2 = displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end);
         displayMat2.copyTo(aaa, mask2);
 
@@ -340,29 +353,14 @@ public class DrawingScripts : MonoBehaviour
 
         var texture = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
         Debug.LogFormat("{0}, {1}",texture.width,texture.height);
-        Mat textureMat = new Mat(texture.height, texture.width,CvType.CV_8UC3);
+        Mat textureMat = new Mat(texture.height, texture.width,CvType.CV_8UC4);
         Utils.texture2DToMat(texture, textureMat);
 
-        result.copyTo(textureMat.submat(2, 2 + result.width(), 2, 2 + result.height()));
+        result.copyTo(textureMat.submat(2, 2 + result.height(), 2, 2 + result.width()));
         Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/textureMat.png", textureMat);
         Texture2D texure_a = new Texture2D(textureMat.width(), textureMat.height(), TextureFormat.RGBA32,false);
         Utils.matToTexture2D(textureMat, texure_a);
         skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texure_a;
-
-
-        //Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/mask_rotated.png", mask_rotated);
-
-        //Mat mask = Imgcodecs.imread("C:/Users/mv duc/Desktop/rocket/rocket/mask.png", Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
-        //Mat display = Imgcodecs.imread("C:/Users/mv duc/Desktop/rocket/rocket/display.png", Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
-        //List<Mat> a = new List<Mat>();
-        //Core.split(mask, a);
-        //a[0] = a[3];
-        //a[1] = a[3];
-        //a[2] = a[3];
-        //Core.merge(a, mask);
-        //Mat result = new Mat();
-        //display.copyTo(result, mask);
-        //Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/result.png", result);
 
     }
 
@@ -549,6 +547,7 @@ public class DrawingScripts : MonoBehaviour
         }
     }
     int numberFrame = 0;
+    int count = 0;
     IEnumerator Worker()
     {
         while (true)
@@ -560,8 +559,13 @@ public class DrawingScripts : MonoBehaviour
                 warp = warpPerspective.warpPerspective(rgbaMat);
                 displayMat = warp.submat(cropRect);
                 Utils.matToTexture2D(displayMat, texCamCrop, bufferColor);
-                if (isRecording)
+                if (++count == 1)
                 {
+                    Debug.Log("hehehehehhe");
+                    Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/displayImage.png", displayMat);
+                }
+                if (isRecording)
+                {                                  
                     numberFrame++;
                     if (numberFrame % FRAME_SKIP == 0)
                     {
