@@ -82,18 +82,6 @@
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
-    <Reference Include="DOTween">
-      <HintPath>Assets\Demigiant\DOTween\DOTween.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween43">
-      <HintPath>Assets\Demigiant\DOTween\DOTween43.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween46">
-      <HintPath>Assets\Demigiant\DOTween\DOTween46.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween50">
-      <HintPath>Assets\Demigiant\DOTween\DOTween50.dll</HintPath>
-    </Reference>
     <Reference Include="TexturePacker">
       <HintPath>Assets\Extensions\TexturePacker\Lib\TexturePacker.dll</HintPath>
     </Reference>
@@ -397,13 +385,6 @@
   <ItemGroup>
     <None Include="Assets\BansheeGz\BGCurve\readme.txt" />
     <None Include="Assets\BezierCurves\readme.txt" />
-    <None Include="Assets\Bunny Example Scene\Licence.txt" />
-    <None Include="Assets\Demigiant\DOTween\DOTween.XML" />
-    <None Include="Assets\Demigiant\DOTween\DOTween43.xml" />
-    <None Include="Assets\Demigiant\DOTween\DOTween46.xml" />
-    <None Include="Assets\Demigiant\DOTween\DOTween50.xml" />
-    <None Include="Assets\Demigiant\DOTween\Editor\DOTweenEditor.XML" />
-    <None Include="Assets\Demigiant\DOTween\readme.txt" />
     <None Include="Assets\Examples\Spine\Dragon\dragon.atlas.txt" />
     <None Include="Assets\Examples\Spine\Dragon\license.txt" />
     <None Include="Assets\Examples\Spine\Eyes\eyes.atlas.txt" />
@@ -422,7 +403,6 @@
     <None Include="Assets\Examples\Spine\spineboy-unity\spineboy.atlas.txt" />
     <None Include="Assets\Exported\step1.atlas.txt" />
     <None Include="Assets\Exported\step2.atlas.txt" />
-    <None Include="Assets\FFmpegOut\Internal\Shader\CameraCapture.shader" />
     <None Include="Assets\FacebookSDK\link.xml" />
     <None Include="Assets\LeanTween\Examples\Archived\2dUnlitWithFade.shader" />
     <None Include="Assets\LeanTween\License.txt" />
@@ -472,9 +452,6 @@
     <None Include="Assets\OpenCVForUnity\OpenCV_LICENSE.txt" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\haarcascade_frontalface_alt.xml" />
     <None Include="Assets\OpenCVForUnity\StreamingAssets\lbpcascade_frontalface.xml" />
-    <None Include="Assets\OpenCVForUnity\StreamingAssets\text\trained_classifierNM1.xml" />
-    <None Include="Assets\OpenCVForUnity\StreamingAssets\text\trained_classifierNM2.xml" />
-    <None Include="Assets\OpenCVForUnity\StreamingAssets\text\trained_classifier_erGrouping.xml" />
     <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\Unimgpicker\AndroidManifest.xml" />
@@ -570,7 +547,7 @@
     <None Include="Assets\Plugins\Everyplay\Helpers\Shaders\EveryplayCrossfade.shader" />
     <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
     <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
-    <None Include="Assets\Scenes\SpineResource\unity_export\skeleton.atlas.txt" />
+    <None Include="Assets\Scenes\SpineResource\santa-claus2\skeleton.atlas.txt" />
     <None Include="Assets\Scenes\TouchScript\Examples\_misc\Shaders\BorderDiffuse.shader" />
     <None Include="Assets\Scenes\TouchScript\Examples\_misc\Shaders\UnlitColor.shader" />
     <None Include="Assets\Scenes\TouchScript\Shaders\Cursor.shader" />
@@ -579,7 +556,6 @@
     <None Include="Assets\Scenes\TouchScript\Shaders\DebugMultiplyNoDepthTest.shader" />
     <None Include="Assets\Scenes\TouchScript\Shaders\DebugNoDepthTest.shader" />
     <None Include="Assets\Scenes\TouchScript\license.txt" />
-    <None Include="Assets\Simple Scene Fade Load System\ReadMeFirst.txt" />
     <None Include="Assets\Spine\spine-unity\Editor\Resources\SpineAssetDatabaseMarker.txt" />
     <None Include="Assets\Spine\spine-unity\Modules\CustomMaterials\SkeletonRendererCustomMaterials.txt" />
     <None Include="Assets\Spine\spine-unity\Modules\Ghost\Shaders\Spine-Special-Skeleton-Ghost.shader" />
@@ -639,7 +615,6 @@
     <None Include="Assets\UTJ\FrameCapturer\Shaders\CopyFrameBuffer.shader" />
     <None Include="Assets\Unimgpicker\Editor\NSPhotoLibraryUsageDescription.txt" />
     <None Include="Assets\UnityPackages\link.xml" />
-    <None Include="Assets\codeandweb.com\Editor\SettingsTexturePackerImporter.txt" />
     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShader.shader" />
     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShaderText.shader" />
     <None Include="Assets\unity-ui-extensions\Shaders\UIImageCrop.shader" />

@@ -232,6 +232,8 @@ public class DrawingScripts : MonoBehaviour
             var obj = skeletonAnimation.gameObject;
             preview.gameObject.SetActive(check);            
         });
+
+
     }
 
 
@@ -252,9 +254,6 @@ public class DrawingScripts : MonoBehaviour
     int texModelHeight;
     void isolateBoundary()
     {
-        Debug.Log(displayMat.size());
-        Debug.Log(rimgcam.rectTransform.rect.size);
-
         var offsetMin = rimgmodel.rectTransform.offsetMin;
         var offsetMax = rimgmodel.rectTransform.offsetMax;
         var left = offsetMin.x;
@@ -277,25 +276,10 @@ public class DrawingScripts : MonoBehaviour
         int w = (int)(real_width * scal);
         int h = (int)(real_height * scal);
 
-        var rotateDegree = rimgmodel.rectTransform.localRotation.eulerAngles.z;
-        OpenCVForUnity.Rect bbox = new RotatedRect(new Point(x + w / 2f, y + h / 2f), new Size(w, h), rotateDegree).boundingRect();
-        x = bbox.x;
-        y = bbox.y;
-        w = bbox.width;
-        h = bbox.height;
-
-        int cx = x + w / 2;
-        int cy = y + h / 2;
-
         int x_end = x + w > cropRect.width ? cropRect.width : x + w;
         int x_begin = x < 0 ? 0 : x;
         int y_end = y + h > cropRect.height ? cropRect.height : y + h;
         int y_begin = y < 0 ? 0 : y;
-
-        int cx2 = (x_end + x_begin) / 2;
-        int cy2 = (y_end + y_begin) / 2;
-        Debug.LogFormat("x = {0}, y = {1}, w = {2}, h = {3}", x, y, w, h);
-        Debug.LogFormat("cx = {0}, cy = {1}, cx2 = {2}, cy2 = {3}", cx, cy, cx2, cy2);
 
         Mat mask = new Mat();
         Imgproc.resize(image, mask, new Size(real_width * scal, real_height * scal));
@@ -308,82 +292,64 @@ public class DrawingScripts : MonoBehaviour
         channels[3] = channels[3];
         Core.merge(channels, mask);
 
-        Mat mask_rotated = new Mat();
-        rotateMat(mask, mask_rotated, rotateDegree);
+        Mat aDisplayMat = new Mat();
+        Mat mask2 = mask.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y);
 
-        Mat aaa = new Mat();
-        Mat mask2 = mask_rotated.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y);
-
-        Imgproc.threshold(mask2, mask2, 1, 255, Imgproc.THRESH_BINARY);
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS,new Size(1, 1));
+        //Imgproc.threshold(mask2, mask2, 1, 255, Imgproc.THRESH_BINARY);
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS,new Size(8, 8));
         Imgproc.morphologyEx(mask2, mask2, Imgproc.MORPH_DILATE, kernel);
 
-        
-
-
         Mat displayMat2 = displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end);
-        displayMat2.copyTo(aaa, mask2);
+        displayMat2.copyTo(aDisplayMat, mask2);
 
-        Mat aaa2 = new Mat();
-        Imgproc.cvtColor(aaa, aaa2, Imgproc.COLOR_RGBA2BGR);
-
-        kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(480, 480));
+        var kernel2 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(70,70));        
         Mat bg = new Mat();
-        Imgproc.morphologyEx(aaa2, bg, Imgproc.MORPH_ERODE, kernel);
-        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/bg.png", bg);
+        Imgproc.morphologyEx(displayMat2, bg, Imgproc.MORPH_CLOSE, kernel2);
+        var kernel3 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(50, 50));
+        Imgproc.morphologyEx(bg, bg, Imgproc.MORPH_CLOSE, kernel3);
+               
+        Mat DisplayMat3 = displayMat.clone();
+        bg.copyTo(DisplayMat3.colRange(x_begin, x_end).rowRange(y_begin, y_end),mask2);
+        Imgproc.GaussianBlur(DisplayMat3, DisplayMat3, new Size(10, 10  ), 0);               
 
-
-
-        Texture2D aaaTexture = new Texture2D(aaa.width(), aaa.height(), TextureFormat.BGRA32, false);
-        Utils.matToTexture2D(bg, aaaTexture);
+        Texture2D aaaTexture = new Texture2D(DisplayMat3.width(), DisplayMat3.height(), TextureFormat.BGRA32, false);
+        Utils.matToTexture2D(DisplayMat3, aaaTexture);
         preview.texture = aaaTexture;
-        preview.gameObject.GetComponent<AspectRatioFitter>().aspectRatio = aaa.width() / (float)aaa.height();
-
-        int dx = cx2 - cx;
-        int dy = cy2 - cy;
+        preview.gameObject.GetComponent<AspectRatioFitter>().aspectRatio = DisplayMat3.width() / (float)DisplayMat3.height();
         
-        Debug.Log(mask2.channels());
-        Debug.Log(mask2.type() == CvType.CV_8UC4);
-        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/display.png", displayMat2);
-        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/result.png", aaa);
-        rotateMat(aaa, aaa, -rotateDegree);
-        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/result_rotated.png", aaa);
         w = (int)(real_width * scal);
         h = (int)(real_height * scal);
+        
 
-        Debug.LogFormat("w = {0}, h = {1}", w, h);
+        int x2 = aDisplayMat.width()/2 - w / 2;
+        int y2 = aDisplayMat.height()/2 - h / 2;
 
-        int x2 = aaa.width()/2 - dx - w / 2;
-        int y2 = aaa.height()/2 - dy - h / 2;
-
-        int x2_end = x2 + w > aaa.width() ? aaa.width() : x2 + w;
-        int y2_end = y2 + h > aaa.height() ? aaa.height() : y2 + h;
+        int x2_end = x2 + w > aDisplayMat.width() ? aDisplayMat.width() : x2 + w;
+        int y2_end = y2 + h > aDisplayMat.height() ? aDisplayMat.height() : y2 + h;
         x2 = x2 < 0 ? 0 : x2;
-        y2 = y2 < 0 ? 0 : y2;
-        Debug.LogFormat("x2 = {0}, x2_end = {1}, y2 = {2}, y2_end = {3}", x2, x2_end, y2, y2_end);
-        Mat result = aaa.colRange(x2, x2_end).rowRange(y2, y2_end);
+        y2 = y2 < 0 ? 0 : y2;        
 
+        Mat result = aDisplayMat.colRange(x2, x2_end).rowRange(y2, y2_end);
         Imgproc.resize(result, result, new Size(texModelWidth, texModelHeight));
 
-        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/result2.png", result);
-        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/mask.png", mask2);
-
-
         var texture = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
-        Debug.LogFormat("{0}, {1}",texture.width,texture.height);
         Mat textureMat = new Mat(texture.height, texture.width,CvType.CV_8UC4);
         Utils.texture2DToMat(texture, textureMat);
 
-        result.copyTo(textureMat.submat(2, 2 + result.height(), 2, 2 + result.width()));
-        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/textureMat.png", textureMat);
+        result.copyTo(textureMat.submat(0, result.height(), 0,result.width()));        
         Texture2D texure_a = new Texture2D(textureMat.width(), textureMat.height(), TextureFormat.RGBA32,false);
         Utils.matToTexture2D(textureMat, texure_a);
         skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texure_a;
-
     }
 
     void Start()
     {
+        var size = skeletonAnimation.GetComponent<MeshRenderer>().bounds.size;
+        Debug.LogFormat("Size is {0}", size);
+        Debug.LogFormat("name is {0}", skeletonAnimation.gameObject.name);
+        Debug.LogFormat("Size is {0}", skeletonAnimation.GetComponent<MeshRenderer>().material.mainTexture.width);
+
+
         rimgcam = goDisplayCamera.GetComponent<RawImage>();
         rimgmodel = goDisplayModel.GetComponent<RawImage>();
         rimgmodel.color = new Color(255, 255, 255, opaque);
@@ -580,7 +546,7 @@ public class DrawingScripts : MonoBehaviour
                 if (++count == 1)
                 {
                     Debug.Log("hehehehehhe");
-                    Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/displayImage.png", displayMat);
+                    Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/displayImage.png", displayMat);
                 }
                 if (isRecording)
                 {                                  
@@ -698,9 +664,13 @@ public class DrawingScripts : MonoBehaviour
         timeCounterSnap.text = null;
         webCamTextureToMatHelper.Pause();
         audioSource.Play();
+        Pnl_Snap.SetActive(false);
+        isolateBoundary();
+        yield break;
+
         goDisplayCamera.GetComponent<RawImage>().texture = null;
         yield return new WaitForSeconds(periods);
-        Pnl_Snap.SetActive(false);
+        
         Mat resultMat = warp.submat(cropRect);
         Texture2D resultTexture = new Texture2D(cropRect.width, cropRect.height, TextureFormat.BGRA32, false);
 
@@ -727,7 +697,7 @@ public class DrawingScripts : MonoBehaviour
         logoResized.copyTo(rect, maskCopyMask);
         Imgproc.cvtColor(logoResized, logoResized, Imgproc.COLOR_RGBA2BGR);        
         Utils.matToTexture2D(resultMat, resultTexture);
-
+        
         string name = null;
         if (WebcamVideoCapture.filenameWithoutExt != null)
         {
@@ -758,12 +728,14 @@ public class DrawingScripts : MonoBehaviour
         var maxNumberFrame = MAX_LENGTH_RESULT_VIDEO * WebcamVideoCapture.FPS;
         var redundanceFrame = _numberFrameSave - maxNumberFrame;
 
-        Debug.LogFormat("RedundanceFrame is {0}", redundanceFrame);
+        
+
+        yield break;
 
         img_progress_cutvideo.GetComponent<RectTransform>().eulerAngles = Vector3.zero;
         LeanTween.rotateAround(img_progress_cutvideo.gameObject, Vector3.forward, 360, 1)
             .setOnStart(() => { img_progress_cutvideo.gameObject.SetActive(true); })
-            .setRepeat(-1).setEaseLinear();
+            .setRepeat(-1).setEaseLinear();        
 
         var cutvideo = Observable.Start(() =>
         {
