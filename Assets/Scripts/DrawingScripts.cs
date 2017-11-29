@@ -315,21 +315,39 @@ public class DrawingScripts : MonoBehaviour
         Mat mask2 = mask_rotated.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y);
 
         Imgproc.threshold(mask2, mask2, 1, 255, Imgproc.THRESH_BINARY);
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS,new Size(1000, 1000));
-        Imgproc.morphologyEx(mask2, mask2, Imgproc.MORPH_ERODE, kernel);        
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS,new Size(1, 1));
+        Imgproc.morphologyEx(mask2, mask2, Imgproc.MORPH_DILATE, kernel);
+
+        
+
 
         Mat displayMat2 = displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end);
         displayMat2.copyTo(aaa, mask2);
+
+        Mat aaa2 = new Mat();
+        Imgproc.cvtColor(aaa, aaa2, Imgproc.COLOR_RGBA2BGR);
+
+        kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(480, 480));
+        Mat bg = new Mat();
+        Imgproc.morphologyEx(aaa2, bg, Imgproc.MORPH_ERODE, kernel);
+        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/bg.png", bg);
+
+
+
+        Texture2D aaaTexture = new Texture2D(aaa.width(), aaa.height(), TextureFormat.BGRA32, false);
+        Utils.matToTexture2D(bg, aaaTexture);
+        preview.texture = aaaTexture;
+        preview.gameObject.GetComponent<AspectRatioFitter>().aspectRatio = aaa.width() / (float)aaa.height();
 
         int dx = cx2 - cx;
         int dy = cy2 - cy;
         
         Debug.Log(mask2.channels());
         Debug.Log(mask2.type() == CvType.CV_8UC4);
-        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/display.png", displayMat2);
-        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/result.png", aaa);
+        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/display.png", displayMat2);
+        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/result.png", aaa);
         rotateMat(aaa, aaa, -rotateDegree);
-        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/result_rotated.png", aaa);
+        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/result_rotated.png", aaa);
         w = (int)(real_width * scal);
         h = (int)(real_height * scal);
 
@@ -347,8 +365,8 @@ public class DrawingScripts : MonoBehaviour
 
         Imgproc.resize(result, result, new Size(texModelWidth, texModelHeight));
 
-        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/result2.png", result);
-        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/mask.png", mask2);
+        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/result2.png", result);
+        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/mask.png", mask2);
 
 
         var texture = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
@@ -357,7 +375,7 @@ public class DrawingScripts : MonoBehaviour
         Utils.texture2DToMat(texture, textureMat);
 
         result.copyTo(textureMat.submat(2, 2 + result.height(), 2, 2 + result.width()));
-        Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/textureMat.png", textureMat);
+        Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/textureMat.png", textureMat);
         Texture2D texure_a = new Texture2D(textureMat.width(), textureMat.height(), TextureFormat.RGBA32,false);
         Utils.matToTexture2D(textureMat, texure_a);
         skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texure_a;
@@ -562,7 +580,7 @@ public class DrawingScripts : MonoBehaviour
                 if (++count == 1)
                 {
                     Debug.Log("hehehehehhe");
-                    Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/displayImage.png", displayMat);
+                    Imgcodecs.imwrite("C:/Users/phamleminh/Desktop/rocket/rocket/displayImage.png", displayMat);
                 }
                 if (isRecording)
                 {                                  
