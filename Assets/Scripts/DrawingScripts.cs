@@ -49,6 +49,13 @@ public class DrawingScripts : MonoBehaviour
     public Toggle btnTurnOnAnim;
     public Toggle btnTurnOnPreview;
     public RawImage preview;
+    public RawImage imgUserDraw;
+    public RawImage background;
+    public GameObject reindeer;
+    public AudioSource chrimasSong;
+    public RawImage bigStar;
+    public RawImage smallStar;
+    public GameObject firework;
 
     private Threshold threshold;
     private AdaptiveThreshold athreshold;
@@ -179,8 +186,7 @@ public class DrawingScripts : MonoBehaviour
                 webCamTextureToMatHelper.Pause();
             }
             else
-            {
-                isolateBoundary();
+            {                
                 IDisposable cancelCorountineSnapImage = Observable.FromCoroutine(SaveMasterpiece).Subscribe();
             }
         });
@@ -292,54 +298,92 @@ public class DrawingScripts : MonoBehaviour
         channels[3] = channels[3];
         Core.merge(channels, mask);
 
-        Mat aDisplayMat = new Mat();
+        Mat cropBoundaryMat2 = new Mat();
         Mat mask2 = mask.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y);
 
         //Imgproc.threshold(mask2, mask2, 1, 255, Imgproc.THRESH_BINARY);
         Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS,new Size(8, 8));
         Imgproc.morphologyEx(mask2, mask2, Imgproc.MORPH_DILATE, kernel);
 
-        Mat displayMat2 = displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end);
-        displayMat2.copyTo(aDisplayMat, mask2);
+        Mat cropBoundary = displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end);
+        cropBoundary.copyTo(cropBoundaryMat2, mask2);
 
         var kernel2 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(70,70));        
         Mat bg = new Mat();
-        Imgproc.morphologyEx(displayMat2, bg, Imgproc.MORPH_CLOSE, kernel2);
+        Imgproc.morphologyEx(cropBoundary, bg, Imgproc.MORPH_CLOSE, kernel2);
         var kernel3 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(50, 50));
         Imgproc.morphologyEx(bg, bg, Imgproc.MORPH_CLOSE, kernel3);
                
-        Mat DisplayMat3 = displayMat.clone();
-        bg.copyTo(DisplayMat3.colRange(x_begin, x_end).rowRange(y_begin, y_end),mask2);
-        Imgproc.GaussianBlur(DisplayMat3, DisplayMat3, new Size(10, 10  ), 0);               
+        Mat backgroundMat3 = displayMat.clone();
+        bg.copyTo(backgroundMat3.colRange(x_begin, x_end).rowRange(y_begin, y_end),mask2);
+        Imgproc.GaussianBlur(backgroundMat3, backgroundMat3, new Size(10, 10  ), 0);               
 
-        Texture2D aaaTexture = new Texture2D(DisplayMat3.width(), DisplayMat3.height(), TextureFormat.BGRA32, false);
-        Utils.matToTexture2D(DisplayMat3, aaaTexture);
-        preview.texture = aaaTexture;
-        preview.gameObject.GetComponent<AspectRatioFitter>().aspectRatio = DisplayMat3.width() / (float)DisplayMat3.height();
-        
-        w = (int)(real_width * scal);
-        h = (int)(real_height * scal);
-        
+        Texture2D backgroundTexture = new Texture2D(backgroundMat3.width(), backgroundMat3.height(), TextureFormat.BGRA32, false);
+        Utils.matToTexture2D(backgroundMat3, backgroundTexture);
+        preview.texture = backgroundTexture;
+        preview.gameObject.GetComponent<AspectRatioFitter>().aspectRatio = backgroundMat3.width() / (float)backgroundMat3.height();        
 
-        int x2 = aDisplayMat.width()/2 - w / 2;
-        int y2 = aDisplayMat.height()/2 - h / 2;
+        Imgproc.resize(cropBoundaryMat2, cropBoundaryMat2, new Size(texModelWidth, texModelHeight));      
+        var textureAtlasSpine = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
+        Mat textureAtlasSpineMat = new Mat(textureAtlasSpine.height, textureAtlasSpine.width,CvType.CV_8UC4);
+        Utils.texture2DToMat(textureAtlasSpine, textureAtlasSpineMat);
 
-        int x2_end = x2 + w > aDisplayMat.width() ? aDisplayMat.width() : x2 + w;
-        int y2_end = y2 + h > aDisplayMat.height() ? aDisplayMat.height() : y2 + h;
-        x2 = x2 < 0 ? 0 : x2;
-        y2 = y2 < 0 ? 0 : y2;        
+        cropBoundaryMat2.copyTo(textureAtlasSpineMat.submat(0, cropBoundaryMat2.height(), 0, cropBoundaryMat2.width()));        
+        Utils.matToTexture2D(textureAtlasSpineMat, textureAtlasSpine);
+        skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = textureAtlasSpine;
 
-        Mat result = aDisplayMat.colRange(x2, x2_end).rowRange(y2, y2_end);
-        Imgproc.resize(result, result, new Size(texModelWidth, texModelHeight));
 
-        var texture = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
-        Mat textureMat = new Mat(texture.height, texture.width,CvType.CV_8UC4);
-        Utils.texture2DToMat(texture, textureMat);
+        //-----------------------------------------------------------------------------------------------------------------------
 
-        result.copyTo(textureMat.submat(0, result.height(), 0,result.width()));        
-        Texture2D texure_a = new Texture2D(textureMat.width(), textureMat.height(), TextureFormat.RGBA32,false);
-        Utils.matToTexture2D(textureMat, texure_a);
-        skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texure_a;
+        rimgcam.texture = backgroundTexture;
+
+        //Animation
+        imgUserDraw.gameObject.transform.position = goDisplayModel.transform.position;
+        imgUserDraw.rectTransform.sizeDelta = rimgmodel.rectTransform.rect.size;
+        Texture2D userDrawTexture = new Texture2D(cropBoundaryMat2.width(), cropBoundaryMat2.height(), TextureFormat.RGBA32, false);
+        Utils.matToTexture2D(cropBoundaryMat2, userDrawTexture);
+        imgUserDraw.texture = userDrawTexture;
+        imgUserDraw.gameObject.SetActive(true);
+
+        //---------------------------------
+        skeletonAnimation.gameObject.SetActive(true);
+        skeletonAnimation.gameObject.SetActive(false);
+        var sizeAnimation = skeletonAnimation.gameObject.GetComponent<MeshRenderer>().bounds.size;
+        var sizeAnimation2 = new Vector2(sizeAnimation.x, sizeAnimation.y);
+        Debug.Log(sizeAnimation);
+    
+
+        var widthUserDraw = imgUserDraw.rectTransform.sizeDelta.x;
+        var scal_ = sizeAnimation.x / widthUserDraw;      
+        var posAnimation = skeletonAnimation.gameObject.transform.position;
+        var newPos = new Vector3(posAnimation.x, posAnimation.y + sizeAnimation.y / 2f);
+
+        var seq = LeanTween.sequence();
+        seq.append(() =>
+        {
+            LeanTween.move(imgUserDraw.gameObject, newPos, 2f);
+            LeanTween.scale(imgUserDraw.gameObject, new Vector3(scal_, scal_, scal_), 2f);
+        });
+        seq.append(2);
+        seq.append(() => {
+            LeanTween.alpha(rimgcam.rectTransform, 0, 3f);
+            LeanTween.alpha(background.rectTransform, 1, 3f);            
+        });
+        seq.append(3f);
+        seq.append(() =>
+        {
+            firework.gameObject.SetActive(true);
+            LeanTween.alpha(bigStar.rectTransform, 1, 0.4f).setLoopPingPong();
+            LeanTween.alpha(smallStar.rectTransform, 1, 0.4f).setLoopPingPong().setDelay(0.2f);
+            LeanTween.rotateZ(reindeer, -reindeer.transform.localRotation.eulerAngles.z, 10).setLoopClamp();
+            skeletonAnimation.gameObject.SetActive(true);
+            skeletonAnimation.AnimationName = "animation";
+            imgUserDraw.gameObject.SetActive(false);
+            chrimasSong.Play();
+            chrimasSong.loop = true;
+        });
+
+        //imgUserDraw.gameObject.transform.position = skeletonAnimation.gameObject.transform.position;
     }
 
     void Start()
@@ -663,6 +707,7 @@ public class DrawingScripts : MonoBehaviour
         yield return new WaitForSeconds(periods);
         timeCounterSnap.text = null;
         webCamTextureToMatHelper.Pause();
+        webCamTextureToMatHelper.Stop();        
         audioSource.Play();
         Pnl_Snap.SetActive(false);
         isolateBoundary();
@@ -727,8 +772,6 @@ public class DrawingScripts : MonoBehaviour
         }
         var maxNumberFrame = MAX_LENGTH_RESULT_VIDEO * WebcamVideoCapture.FPS;
         var redundanceFrame = _numberFrameSave - maxNumberFrame;
-
-        
 
         yield break;
 
@@ -895,10 +938,5 @@ public class DrawingScripts : MonoBehaviour
             yield return new WaitForSeconds(1);
             textTimeGameObj.SetActive(!textTimeGameObj.activeSelf);
         }
-    }
-
-    void separateUserDraw()
-    {
-
     }
 }
