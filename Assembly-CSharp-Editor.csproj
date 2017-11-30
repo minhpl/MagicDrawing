@@ -208,6 +208,8 @@
      <Compile Include="Assets\OpenCVForUnity\Editor\iOS_BuildPostprocessor.cs" />
      <Compile Include="Assets\OpenCVForUnity\Editor\OpenCVForUnityMenuItem.cs" />
      <Compile Include="Assets\OpenCVForUnity\Editor\WSA_BuildPostprocessor.cs" />
+     <Compile Include="Assets\OSSC\Source\Editor\SoundControllerEditor.cs" />
+     <Compile Include="Assets\OSSC\Source\Editor\SoundObjectEditor.cs" />
      <Compile Include="Assets\Scenes\TouchScript\Editor\Behaviors\Cursors\CursorManagerEditor.cs" />
      <Compile Include="Assets\Scenes\TouchScript\Editor\Behaviors\TransformerEditor.cs" />
      <Compile Include="Assets\Scenes\TouchScript\Editor\Debugging\PointerDebuggerWindow.cs" />
@@ -348,6 +350,7 @@
      <None Include="Assets\Scenes\TouchScript\license.txt" />
      <None Include="Assets\Examples\Spine\Goblins\goblins.atlas.txt" />
      <None Include="Assets\Examples\Spine\Strechyman\stretchyman-diffuse-pma.atlas.txt" />
+     <None Include="Assets\Fireworks\Prefabs\_Update 2 - Sound - Optimized\Simple Particle Scale\Simple Particle Scale - Readme.txt" />
      <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShader.shader" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_video_endscreen_install_button.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_facecam_timeline.xml" />
@@ -385,6 +388,7 @@
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_video_timeline_stream_progress_track.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_social_topbar.xml" />
      <None Include="Assets\Spine\spine-unity\version.txt" />
+     <None Include="Assets\Fireworks\Fireworks - Readme.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_video_endscreen.xml" />
      <None Include="Assets\BezierCurves\readme.txt" />
      <None Include="Assets\Spine\spine-unity\Modules\Shaders\Sprite\SpritesPixelLit.shader" />
@@ -564,9 +568,6 @@
  </Reference>
  <Reference Include="UnityEditor.WindowsStandalone.Extensions">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
- </Reference>
- <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
- <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
  </Reference>
  <Reference Include="TexturePacker">
  <HintPath>E:/WorkspaceMinh/MagicDrawing/Assets/Extensions/TexturePacker/Lib/TexturePacker.dll</HintPath>
