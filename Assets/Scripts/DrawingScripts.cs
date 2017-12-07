@@ -120,6 +120,8 @@ public class DrawingScripts : MonoBehaviour
             OnContrastSliderValueChange(sliderContrast);
         });
 
+
+
         backBtn.onClick = new Button.ButtonClickedEvent();
         backBtn.onClick.AddListener(() =>
         {

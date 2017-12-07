@@ -7,8 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ShareFacebook : MonoBehaviour
-{
-    public Slider progressSlider;
+{    
     public GameObject panelInputShareFacebook;
     public InputField InputCommentFacebook;
     public Button btnOk;
@@ -84,6 +83,9 @@ public class ShareFacebook : MonoBehaviour
         var aspectRatioFitterPlayerShareFB = gameObjectPlayerShareFB.GetComponent<AspectRatioFitter>();
         aspectRatioFitterPlayerShareFB.aspectRatio = (float)Screen.width / (float)Screen.height;
         var btnPlayerShareFB = gameObjectPlayerShareFB.GetComponent<Button>();
+
+        Utilities.Log("VIdeo paht is ! null ? {0}", !string.IsNullOrEmpty(ResultScripts.videoPath));
+
         if (!string.IsNullOrEmpty(ResultScripts.videoPath))
         {
             btnStopPlayerShareFB.SetActive(true);
@@ -220,8 +222,7 @@ public class ShareFacebook : MonoBehaviour
         while (!www.isDone)
         {
             yield return null;
-            Debug.Log("progress : " + www.progress);
-            progressSlider.value = www.progress;
+            Debug.Log("progress : " + www.progress);            
         }
 
         Debug.Log("size : " + www.size / 1024 / 1024);

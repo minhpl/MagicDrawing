@@ -38,7 +38,7 @@ public class ResultScripts : MonoBehaviour
     public Button btn_cancelDelete;
     public AudioSource audioSource;
     public Button backBtn;
-
+    public GameObject pnlShareFB;
 
     private Texture2D texVideo;
     private Mat frame;
@@ -137,31 +137,47 @@ public class ResultScripts : MonoBehaviour
             rimg.texture = texture;
         });
         
-
         btnShareFB.onClick.AddListener(() =>
         {
-            if (videoPath != null)
+            if (!string.IsNullOrEmpty(videoPath))
             {
-                Debug.Log(videoPath);
+                ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_VIDEO;
                 ShareFacebook.filePath = videoPath;
-                ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_VIDEO;
-            }else if(animPath!=null)
+            }
+            else if(!string.IsNullOrEmpty(animPath))
             {
-                Debug.Log(animPath);
+                ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_VIDEO;
                 ShareFacebook.filePath = animPath;
-                ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_VIDEO;
             }
-            else 
+            else
             {
-                Debug.Log(imagePath);
-                ShareFacebook.filePath = imagePath;
                 ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_IMAGE;
+                ShareFacebook.filePath = imagePath;
             }
-            
             var isVideoExist = File.Exists(videoPath);
             Debug.LogFormat("is video exist ?? {0}", isVideoExist);
             var shareFacebook = GetComponent<ShareFacebook>();
-            shareFacebook.onlogin();
+            pnlShareFB.gameObject.SetActive(true);
+
+
+            if (!FB.IsInitialized)
+            {
+                FB.Init(shareFacebook.InitCallback, shareFacebook.OnHideUnity);
+            }
+            else
+            {
+                FB.ActivateApp();
+                FB.Mobile.ShareDialogMode = ShareDialogMode.WEB;
+            }
+
+            if (FB.IsLoggedIn)
+            {
+                shareFacebook.onLoggedInSuccess();
+            }
+            else
+            {
+                shareFacebook.onlogin();
+            }
         });
 
         logoutBtn.onClick.AddListener(() =>
