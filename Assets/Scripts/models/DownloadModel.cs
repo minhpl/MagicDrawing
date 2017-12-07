@@ -11,6 +11,7 @@ public class DownloadModel
     public static int DOWNLOAD_AVATAS = 3;
     public static int DOWNLOAD_OTHER_APP_ICON = 10;
     public static int DOWNLOAD_LOGO = 4;
+    public static int DOWNLOAD_FRAMES = 5;    
 
     public int downloadType;
     public string _id;

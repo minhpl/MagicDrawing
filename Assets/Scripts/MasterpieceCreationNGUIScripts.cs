@@ -23,9 +23,7 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour
     }
 
     void Start()
-    {
-        // DontDestroyOnLoad(canvas);
-        // DontDestroyOnLoad(UIRoot);
+    {      
         cancelMCoroutineLoadMasterpiece = Observable.FromMicroCoroutine(LoadMasterpieceDrawing).Subscribe();
         var canvasRect = canvas.GetComponent<RectTransform>().rect;
         var canvasRat = (float)canvasRect.width / (float)canvasRect.height;
@@ -57,6 +55,7 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour
             .Where(s => s.EndsWith(".png"));
         foreach (var f in imagefiles)
         {
+          
             yield return null;
             GameObject go = Instantiate(item) as GameObject;
             go.transform.SetParent(item.transform.parent.transform);
@@ -78,14 +77,34 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour
             Debug.Log(f);
             go.GetComponent<UIButton>().onClick.Add(new EventDelegate(() =>
             {
-                ResultScripts.texture = texture;
-                ResultScripts.videoPath = videoPath;
+                string vidAnim = null;
+
+                if (f.EndsWith("_anim.png"))
+                {
+                    var length = f.Length - 9;
+                    var pathNoExt = f.Substring(0, length);
+                    vidAnim = pathNoExt + ".mp4";                    
+                    ResultScripts.mode = ResultScripts.MODE.ANIM;                    
+                    ResultScripts.texture = texture;                    
+
+                    var datetime = DateTime.ParseExact(fileNameWithouExtension.Substring(0,fileNameWithouExtension.Length-5), Utilities.customFmts, new CultureInfo(0x042A));
+                    var datemonthyear = string.Format("{0}", datetime.Date.ToString("d-M-yyyy"));
+                    Debug.Log(datemonthyear);
+                    ResultScripts.title = datemonthyear;
+                    
+                }
+                else
+                {
+                    ResultScripts.texture = texture;
+                    ResultScripts.videoPath = videoPath;                    
+                    ResultScripts.mode = ResultScripts.MODE.REWATCH_RESULT;
+                    var datetime = DateTime.ParseExact(fileNameWithouExtension, Utilities.customFmts, new CultureInfo(0x042A));
+                    var datemonthyear = string.Format("{0}", datetime.Date.ToString("d-M-yyyy"));
+                    Debug.Log(datemonthyear);
+                    ResultScripts.title = datemonthyear;                    
+                }
                 ResultScripts.imagePath = f;
-                ResultScripts.mode = ResultScripts.MODE.REWATCH_RESULT;
-                var datetime = DateTime.ParseExact(fileNameWithouExtension, Utilities.customFmts, new CultureInfo(0x042A));
-                var datemonthyear = string.Format("{0}", datetime.Date.ToString("d-M-yyyy"));
-                Debug.Log(datemonthyear);
-                ResultScripts.title = datemonthyear;
+                ResultScripts.animPath = vidAnim;
                 GVs.SCENE_MANAGER.loadResultScene();
             }));
 

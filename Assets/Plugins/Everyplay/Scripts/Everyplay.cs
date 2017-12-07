@@ -385,6 +385,7 @@ public class Everyplay : MonoBehaviour
         return false;
     }
 
+    [Obsolete("Everyplay HUD-less functionality is no longer maintained and may not function properly.")]
     public static bool SnapshotRenderbuffer()
     {
         if (EveryplayInstance != null && hasMethods == true)

@@ -35,6 +35,8 @@ public class EveryplayHudCamera : MonoBehaviour
 
     void Awake()
     {
+        Debug.Log("Everyplay HUD-less functionality is no longer maintained and may not function properly.");
+
         Subscribe(true);
         readyForRecording = Everyplay.IsReadyForRecording();
         #if EVERYPLAY_NATIVE_PLUGIN
@@ -88,6 +90,7 @@ public class EveryplayHudCamera : MonoBehaviour
 
     void OnPreRender()
     {
+        #pragma warning disable 612,618
         if (readyForRecording)
         {
             #if EVERYPLAY_NATIVE_PLUGIN
@@ -110,6 +113,7 @@ public class EveryplayHudCamera : MonoBehaviour
             Everyplay.SnapshotRenderbuffer();
             #endif
         }
+        #pragma warning restore 612,618
     }
 
     #if EVERYPLAY_NATIVE_PLUGIN

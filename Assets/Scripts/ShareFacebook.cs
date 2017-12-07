@@ -204,8 +204,7 @@ public class ShareFacebook : MonoBehaviour
         btnOk.gameObject.SetActive(true);
         btnCancel.gameObject.SetActive(true);
         panelInputShareFacebook.SetActive(true);
-        InputCommentFacebook.text = null;
-        Debug.Log("here2");
+        InputCommentFacebook.text = null;        
     }
 
     private IEnumerator StartUpload()
@@ -245,13 +244,11 @@ public class ShareFacebook : MonoBehaviour
         {            
             wwwForm.AddField("caption", message);
             FB.API("me/photos", HttpMethod.POST, HandleResultUploadVideo, wwwForm);
-        }
-                
+        }                
     }
 
     void HandleResultUploadVideo(IResult result)
     {
-
         if (result == null)
         {
             Debug.Log("null");

@@ -13,6 +13,7 @@ public class ResultScripts : MonoBehaviour
 {
     public static string videoPath = null;
     public static string imagePath = null;
+    public static string animPath = null;
     public static Texture2D texture;
     public static string title;
 
@@ -26,7 +27,7 @@ public class ResultScripts : MonoBehaviour
     public UnityEngine.UI.Text tit;
     public RawImage rimgTitle;
     public MoviePlayer moviePlayer;
-    public Button btnShareFacebooks;
+    public Button btnShareFB;
     public Button btnDelete;
     public GameObject Pnl_Popup;
     public Button OKButton;
@@ -36,10 +37,13 @@ public class ResultScripts : MonoBehaviour
     public Button btn_okDelete;
     public Button btn_cancelDelete;
     public AudioSource audioSource;
+    public Button backBtn;
+
+
     private Texture2D texVideo;
     private Mat frame;
     private AspectRatioFitter rawImageAspect;
-    public enum MODE { FISRT_RESULT, REWATCH_RESULT };
+    public enum MODE { FISRT_RESULT, REWATCH_RESULT, ANIM};
     public static MODE mode;
     private int FPS = 60;
     private float currentFPS = 0;
@@ -52,6 +56,11 @@ public class ResultScripts : MonoBehaviour
     {
         if (GVs.SOUND_SYSTEM == 1)
             audioSource.Play();
+
+        backBtn.onClick.AddListener(() =>
+        {
+            Debug.Log("fuck all");
+        });
 
         btnDelete.onClick.AddListener(() =>
         {
@@ -109,8 +118,10 @@ public class ResultScripts : MonoBehaviour
 
         btnPlay.GetComponent<Button>().onClick.AddListener(() =>
         {
-            btnStop.gameObject.SetActive(true);
-            btnPlay.gameObject.SetActive(false);
+            if(mode == MODE.FISRT_RESULT || mode == MODE.REWATCH_RESULT) { 
+                btnStop.gameObject.SetActive(true);
+                btnPlay.gameObject.SetActive(false);
+            }
         });
 
         btnStop.GetComponent<Button>().onClick.AddListener(() =>
@@ -124,6 +135,41 @@ public class ResultScripts : MonoBehaviour
             moviePlayer.play = false;
             moviePlayer.videoFrame = 0;
             rimg.texture = texture;
+        });
+        
+
+        btnShareFB.onClick.AddListener(() =>
+        {
+            if (videoPath != null)
+            {
+                Debug.Log(videoPath);
+                ShareFacebook.filePath = videoPath;
+                ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_VIDEO;
+            }else if(animPath!=null)
+            {
+                Debug.Log(animPath);
+                ShareFacebook.filePath = animPath;
+                ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_VIDEO;
+            }
+            else 
+            {
+                Debug.Log(imagePath);
+                ShareFacebook.filePath = imagePath;
+                ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_IMAGE;
+            }
+            
+            var isVideoExist = File.Exists(videoPath);
+            Debug.LogFormat("is video exist ?? {0}", isVideoExist);
+            var shareFacebook = GetComponent<ShareFacebook>();
+            shareFacebook.onlogin();
+        });
+
+        logoutBtn.onClick.AddListener(() =>
+        {
+            Debug.Log("facebook logout clicked");
+            Debug.LogFormat("Before call logout, isloggedIn = {0}", FB.IsLoggedIn);
+            FB.LogOut();
+            Debug.LogFormat("After call logout, isloggedIn = {0}", FB.IsLoggedIn);
         });
 
         if (mode == MODE.REWATCH_RESULT)
@@ -142,24 +188,8 @@ public class ResultScripts : MonoBehaviour
             btnDelete.gameObject.SetActive(true);
         }
 
-        btnShareFacebooks.onClick.AddListener(() =>
-        {
-            ShareFacebook.filePath = videoPath;
-            var isVideoExist = File.Exists(videoPath);
-            Debug.LogFormat("is video exist ?? {0}", isVideoExist);
-            var shareFacebook = GetComponent<ShareFacebook>();
-            shareFacebook.onlogin();
-        });
-
-
         Debug.Log(logoutBtn == null);
-        logoutBtn.onClick.AddListener(() =>
-        {
-            Debug.Log("facebook logout clicked");
-            Debug.LogFormat("Before call logout, isloggedIn = {0}", FB.IsLoggedIn);
-            FB.LogOut();
-            Debug.LogFormat("After call logout, isloggedIn = {0}", FB.IsLoggedIn);
-        });
+
 
         moviePlayer.OnStop += MoviePlayer_OnStop;
 
@@ -231,16 +261,24 @@ public class ResultScripts : MonoBehaviour
         {
             rimg.texture = texture;
         }
-        if (!string.IsNullOrEmpty(videoPath))
+
+        if (mode == MODE.FISRT_RESULT || mode == MODE.REWATCH_RESULT)
         {
-            frame = new Mat();
+            if (!string.IsNullOrEmpty(videoPath))
+            {
+                frame = new Mat();
+                btnPlay.SetActive(true);
+                moviePlayer.Load(videoPath);
+                moviePlayer.play = false;
+                moviePlayer.loop = false;
+            }
+            else btnPlay.SetActive(false);
+        }else if(mode == MODE.ANIM)
+        {
             btnPlay.SetActive(true);
-            moviePlayer.Load(videoPath);
-            moviePlayer.play = false;
-            moviePlayer.loop = false;
         }
-        else btnPlay.SetActive(false);
     }
+
 
     private void OnDisable()
     {
@@ -269,13 +307,20 @@ public class ResultScripts : MonoBehaviour
 
     public void OnPlayBtnClicked()
     {
-        rimg.texture = null;
-        var isPlay = moviePlayer.play;
-        if (isPlay == false)
+        if (mode == MODE.FISRT_RESULT || mode == MODE.REWATCH_RESULT)
         {
-            moviePlayer.loop = true;
-            moviePlayer.play = true;
-            moviePlayer.OnLoop += MoviePlayer_OnLoop;
+            rimg.texture = null;
+            var isPlay = moviePlayer.play;
+            if (isPlay == false)
+            {
+                moviePlayer.loop = true;
+                moviePlayer.play = true;
+                moviePlayer.OnLoop += MoviePlayer_OnLoop;
+            }
+        }
+        else if(mode == MODE.ANIM)
+        {
+            Handheld.PlayFullScreenMovie(animPath);
         }
     }
 

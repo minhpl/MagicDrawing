@@ -90,7 +90,6 @@ public class HTTPRequest : MonoBehaviour
             {
                 try
                 {
-
                     if (url.Equals(GVs.DOWNLOAD_URL))
                     {
                         if (www.downloadedBytes != 0)
@@ -119,13 +118,13 @@ public class HTTPRequest : MonoBehaviour
                 }
                 catch (System.Exception ex)
                 {
-                    handler("null data");
+                    handler("Exception data");
                 }
             }
         }
         else
         {
-            handler("null data");
+            handler("null data from data");
         }
 
         www.Dispose();

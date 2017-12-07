@@ -23,6 +23,7 @@ public class GFs
         LoadSoundConfig();
         GFs.LoadCategoryList();
         GFs.LoadAllTemplateList();
+        GFs.LoadAllFramesList();
     }
 
     public static void LoadDownloadHistoryStore()
@@ -187,6 +188,8 @@ public class GFs
 
     private const string ALL_TEMPLATE_LIST = "ALL_TEMPLATE_LIST";
     private const string CATEGORY_LIST = "CATEGORY_LIST";
+    private const string ALL_FRAME_LIST = "ALL_FRAME_LIST";
+
     public static void LoadAllTemplateList()
     {
         if (PlayerPrefs.HasKey(ALL_TEMPLATE_LIST))
@@ -238,6 +241,34 @@ public class GFs
             SaveCategoryList();
     }
 
+
+    public static void SaveAllFramesList()
+    {
+        var json = JsonConvert.SerializeObject(GVs.listFrame);
+        PlayerPrefs.SetString(ALL_FRAME_LIST, json);
+        PlayerPrefs.Save();        
+    }
+
+
+    public static void LoadAllFramesList()
+    {
+        if (PlayerPrefs.HasKey(ALL_FRAME_LIST))
+        {
+            try
+            {
+                string s = PlayerPrefs.GetString(ALL_FRAME_LIST);
+                GVs.listFrame = JsonConvert.DeserializeObject<FrameList>(s);
+                
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("Exception is " + ex.ToString());
+            }
+        }
+        else
+            SaveAllFramesList();
+    }
+   
     public static Texture2D LoadPNGFromPath(string filePath)
     {
         Texture2D tex = null;
@@ -316,22 +347,31 @@ public class GFs
         const string IPHONE_DIR_NAME_SNAPIMAGE = "snapimages";
         const string ANDROID_DIR_PATH_SNAPIMAGE = "/storage/emulated/0/DCIM/MagicDrawing/MasterPieceModel/";
         const string PC_DIR_NAME_SNAPIMAGE = "snapimages";
+        string dir = null;
         if (Application.platform == RuntimePlatform.Android)
         {
-            return ANDROID_DIR_PATH_SNAPIMAGE;
+            dir =  ANDROID_DIR_PATH_SNAPIMAGE;
         }
         else
         {
             var appPath = getAppDataDirPath();
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
-                return appPath + IPHONE_DIR_NAME_SNAPIMAGE + "/";
+                dir = appPath + IPHONE_DIR_NAME_SNAPIMAGE + "/";
             }
             else
             {
-                return appPath + PC_DIR_NAME_SNAPIMAGE + "/";
+                dir = appPath + PC_DIR_NAME_SNAPIMAGE + "/";
             }
         }
+
+
+        if (!Directory.Exists(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
+
+        return dir;
     }
 
     public static string getlogoPath()

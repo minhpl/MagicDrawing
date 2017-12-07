@@ -7,7 +7,7 @@ class GVs
 {
 
     public static bool CANCEL_DOWNLOAD = false;
-    public static bool DEBUG = false;
+    public static bool DEBUG = true;
     public static string LICENSE_CODE = "";
     public static string APP_PATH =
 #if UNITY_ANDROID
@@ -31,7 +31,8 @@ class GVs
     public static string DOWNLOAD_OTHER_URL = SERVER_URL + "users/other/download";
     public static string DOWNLOAD_URL = SERVER_URL + "users/drawing/download";
     public static string CHECK_AVAIABLE_URL = SERVER_URL + "users/checkAvaiable";
-
+    public static string DOWNLOAD_KHUNGANH = SERVER_URL + "users/drawing/getAllFrames";
+    public static string GET_ALL_FRAME_URL = SERVER_URL + "users/drawing/getAllFrames";
 
     public static string GET_TEMPLATE_BY_CATEGORY_URL = GVs.SERVER_URL + "users/drawing/getTemplateByCategory";
     public static string KEY = "12345678123456781234567812345678";
@@ -73,6 +74,7 @@ class GVs
     public static CategoryList CATEGORY_LIST = new CategoryList();
     public static Dictionary<string, TemplateDrawingList> TEMPLATE_LIST_ALL_CATEGORY;
     public static TemplateDrawingList DRAWING_TEMPLATE_LIST = new TemplateDrawingList();
+    public static FrameList listFrame = new FrameList();
 }
 public class COLOR
 {

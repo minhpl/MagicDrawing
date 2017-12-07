@@ -1,34 +1,7 @@
 fileFormatVersion: 2
-guid: 6c128661e8f7aa1469632074041ee4c1
-timeCreated: 1505108693
-licenseType: Free
-PluginImporter:
-  serializedVersion: 2
-  iconMap: {}
-  executionOrder: {}
-  isPreloaded: 0
-  isOverridable: 0
-  platformData:
-    data:
-      first:
-        Android: Android
-      second:
-        enabled: 0
-        settings:
-          CPU: ARMv7
-    data:
-      first:
-        Any: 
-      second:
-        enabled: 0
-        settings: {}
-    data:
-      first:
-        Editor: Editor
-      second:
-        enabled: 0
-        settings:
-          DefaultValueInitialized: true
+guid: 7a539e80a6d1a594d93f8e7dc9d515ed
+timeCreated: 18446744011573954816
+DefaultImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 

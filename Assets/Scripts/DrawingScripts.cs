@@ -7,14 +7,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TouchScript.Gestures.TransformGestures;
 using TouchScript.Behaviors;
-using TouchScript.Layers;
 using TouchScript.Layers.UI;
-using TouchScript;
 using TouchScript.Gestures;
 using System.IO;
 using TMPro;
 using System.Threading;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using Spine.Unity;
 
@@ -46,8 +43,8 @@ public class DrawingScripts : MonoBehaviour
     public Image img_progress_cutvideo;
     public RawImage rigm_watermark;
     public Button getPosSize;
-    public Toggle btnTurnOnAnim;
-    public Toggle btnTurnOnPreview;
+    public Toggle btnTurnRecord;
+    public Toggle btnStopRecord;
     public RawImage preview;
     public RawImage imgUserDraw;
     public RawImage background;
@@ -55,7 +52,11 @@ public class DrawingScripts : MonoBehaviour
     public AudioSource chrimasSong;
     public RawImage bigStar;
     public RawImage smallStar;
-    public GameObject firework;
+    public ParticleSystem firework;
+    public ParticleSystem snowCircle;
+    public ParticleSystem snowFlower;
+    public UIPlayTween[] popupPlayTween;
+    public SkeletonAnimation skeletonAnimation;
 
     private Threshold threshold;
     private AdaptiveThreshold athreshold;
@@ -71,7 +72,7 @@ public class DrawingScripts : MonoBehaviour
     RawImage rimgcam;
     RawImage rimgmodel;
     Utilities utilities;
-    WebCamTextureToMatHelper webCamTextureToMatHelper;
+    WebCamTextureToMatHelper wcHelper;
     bool loaded = false;
     WebcamVideoCapture webcamVideoCapture;
     Mat warp;
@@ -80,29 +81,31 @@ public class DrawingScripts : MonoBehaviour
     private float opaque = 0.25f;
     private OpenCVForUnity.Rect cropRect;
     //private float opaque = 0.4f;
-    public enum DRAWMODE { DRAW_MODEL, DRAW_IMAGE };
-    public static DRAWMODE drawMode = DRAWMODE.DRAW_MODEL;
+    public enum DRAWMODE { DRAW_MODEL, DRAW_IMAGE, DRAW_SPECIAL };
+    public static DRAWMODE drawMode = DRAWMODE.DRAW_SPECIAL;
     public enum FILTERMODE { LINE, BLEND };
     public static FILTERMODE filtermode = FILTERMODE.LINE;
-    private System.Diagnostics.Stopwatch stopWatch;
+    private System.Diagnostics.Stopwatch CountVidRec;
     private bool isRecording = false;
     private IDisposable cancelCorountineWorker;
     private IDisposable cancelCorountineTurnOffTouchInput;
     private IDisposable cancelCorountineBlinkTime;
     private IDisposable cancelCoroutineBackBtnAndroid;
-    private IDisposable cancelCorountineSnapImage;    
+    private IDisposable cancelCorountineSnapImage;
     private int numberFrameSave = 0;
     private Mat frame;
     private Size size;
     private const int FRAME_SKIP = 10;
-    private const int MAX_LENGTH_RESULT_VIDEO = 30; //seconds 
-    public UIPlayTween[] popupPlayTween;
-
-
-    public SkeletonAnimation skeletonAnimation;
-
+    private const int MAX_LENGTH_RESULT_VIDEO = 30; 
+    private string nameMasterPiece = null;
+    private string nameNoExt = "default";
+    private bool istest = false;
     private void Awake()
     {
+        firework.Stop();
+        snowCircle.Stop();
+        snowFlower.Stop();
+
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         frame = new Mat();
         filtermode = FILTERMODE.LINE;
@@ -115,7 +118,7 @@ public class DrawingScripts : MonoBehaviour
         onSliderContrastValueStream.Sample(TimeSpan.FromMilliseconds(delayTime)).Subscribe((float f) =>
         {
             OnContrastSliderValueChange(sliderContrast);
-        });        
+        });
 
         backBtn.onClick = new Button.ButtonClickedEvent();
         backBtn.onClick.AddListener(() =>
@@ -151,7 +154,7 @@ public class DrawingScripts : MonoBehaviour
                     popupPlayTween[i].Play(true);
                 }
             });
-        }       
+        }
 
         aggre.onClick.AddListener(() =>
         {
@@ -182,18 +185,18 @@ public class DrawingScripts : MonoBehaviour
 
             if (!cancelBtn.gameObject.activeSelf)
             {
-                stopWatch.Stop();
-                webCamTextureToMatHelper.Pause();
+                CountVidRec.Stop();
+                wcHelper.Pause();
             }
             else
-            {                
+            {
                 IDisposable cancelCorountineSnapImage = Observable.FromCoroutine(SaveMasterpiece).Subscribe();
             }
         });
         cancelBtn.onClick.AddListener(() =>
         {
-            webCamTextureToMatHelper.Play();
-            stopWatch.Start();
+            wcHelper.Play();
+            CountVidRec.Start();
         });
         if (sliderTest)
         {
@@ -210,56 +213,108 @@ public class DrawingScripts : MonoBehaviour
             if (!pause.activeSelf)
             {
                 isRecording = true;
-                stopWatch.Start();
+                CountVidRec.Start();
                 if (cancelCorountineBlinkTime != null)
                     cancelCorountineBlinkTime.Dispose();
             }
             else
             {
                 isRecording = false;
-                stopWatch.Stop();
+                CountVidRec.Stop();
                 cancelCorountineBlinkTime = Observable.FromCoroutine(blinkTime).Subscribe();
             }
         });
 
         getPosSize.onClick.AddListener(() =>
         {
-            isolateBoundary();
+            Everyplay.StopRecording();
+            Everyplay.PlayLastRecording();
         });
 
-        btnTurnOnAnim.onValueChanged.AddListener((bool check)=>
+        btnTurnRecord.onValueChanged.AddListener((bool check) =>
         {
-            var obj = skeletonAnimation.gameObject;
-            obj.SetActive(check);
+            Everyplay.StartRecording();
         });
 
-        btnTurnOnPreview.onValueChanged.AddListener((bool check) =>
+        btnStopRecord.onValueChanged.AddListener((bool check) =>
         {
-            var obj = skeletonAnimation.gameObject;
-            preview.gameObject.SetActive(check);            
-        });
-
-
+            Everyplay.StopRecording();
+            GetVideoPath();
+        });        
     }
 
 
-    void rotateMat(Mat src, Mat des, float angleDegree)
+    void Start()
     {
-        Point center = new Point(src.cols() / 2f, src.rows() / 2f);
-        Mat rot = Imgproc.getRotationMatrix2D(center, angleDegree, 1);
-        OpenCVForUnity.Rect bbox = new RotatedRect(center, src.size(), angleDegree).boundingRect();
+        ScreenshotHelper.iSetMainOnCapturedCallback((Sprite sprite) =>
+        {
+            string save_path = new FilePathName().SaveTextureAs(sprite.texture, FilePathName.SaveFormat.PNG);
+            Utilities.Log(save_path);
+            preview.texture = sprite.texture;
+            Utilities.Log("Width is {0}, height is {1}", sprite.texture.width, sprite.texture.height);
+            var animPath = GFs.getMasterpieceDirPath() + nameNoExt + "_anim.png";
+            File.Move(save_path, animPath);
+        });
 
-        rot.put(0, 2, rot.get(0, 2)[0] + bbox.width / 2f - center.x);
-        rot.put(1, 2, rot.get(1, 2)[0] + bbox.height / 2f - center.y);
-
-        Mat dst = new Mat();
-        Imgproc.warpAffine(src, des, rot, bbox.size());
+        var size = skeletonAnimation.GetComponent<MeshRenderer>().bounds.size;
+        rimgcam = goDisplayCamera.GetComponent<RawImage>();
+        rimgmodel = goDisplayModel.GetComponent<RawImage>();
+        rimgmodel.color = new Color(255, 255, 255, opaque);
+        wcHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
+        warpPerspective = gameObject.GetComponent<WarpPerspective>();
+        utilities = new Utilities();
+        threshold = GetComponent<Threshold>();
+        GFs.LoadCategoryList();
+        GFs.LoadAllTemplateList();
+        MainThreadDispatcher.StartUpdateMicroCoroutine(loadCameraAndModel());
+        Everyplay.Initialize();
     }
 
-    int texModelWidth;
-    int texModelHeight;
+    private string GetVideoPath()
+    {
+        string everyplayDir = null;
+
+#if UNITY_IOS
+ 
+         var root = new DirectoryInfo(Application.persistentDataPath).Parent.FullName;
+         everyplayDir = root + "/tmp/Everyplay/session";
+ 
+#elif UNITY_ANDROID
+ 
+         var root = new DirectoryInfo(Application.temporaryCachePath).FullName;
+         everyplayDir = root + "/sessions";
+ 
+#endif
+
+        var files = new DirectoryInfo(everyplayDir).GetFiles("*.mp4", SearchOption.AllDirectories);
+        var videoLocation = "";
+
+        // Should only be one video, if there is one at all
+        foreach (var file in files)
+        {
+#if UNITY_ANDROID
+             videoLocation = "file://" + file.FullName;
+            videoLocation = file.FullName;
+#else
+            videoLocation = file.FullName;
+#endif
+            Utilities.LogFormat("Videos Location is {0}", videoLocation);
+            //break;
+        }
+
+        string masterpieceFolder = GFs.getMasterpieceDirPath();
+        string fileName = masterpieceFolder + nameNoExt + ".mp4";
+        File.Copy(videoLocation, fileName,true);
+        bool isExist = File.Exists(fileName);
+        return videoLocation;
+    }
+
+
+    int texModelW;
+    int texModelH;
     void isolateBoundary()
     {
+        Everyplay.StartRecording();
         var offsetMin = rimgmodel.rectTransform.offsetMin;
         var offsetMax = rimgmodel.rectTransform.offsetMax;
         var left = offsetMin.x;
@@ -296,47 +351,40 @@ public class DrawingScripts : MonoBehaviour
         channels[1] = channels[3];
         channels[2] = channels[3];
         channels[3] = channels[3];
-        Core.merge(channels, mask);
-
+        Core.merge(channels, mask);        
         Mat cropBoundaryMat2 = new Mat();
         Mat mask2 = mask.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y);
-
-        //Imgproc.threshold(mask2, mask2, 1, 255, Imgproc.THRESH_BINARY);
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS,new Size(8, 8));
+        
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(8, 8));
         Imgproc.morphologyEx(mask2, mask2, Imgproc.MORPH_DILATE, kernel);
 
         Mat cropBoundary = displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end);
         cropBoundary.copyTo(cropBoundaryMat2, mask2);
 
-        var kernel2 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(70,70));        
+        var kernel2 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(70, 70));
         Mat bg = new Mat();
         Imgproc.morphologyEx(cropBoundary, bg, Imgproc.MORPH_CLOSE, kernel2);
         var kernel3 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(50, 50));
         Imgproc.morphologyEx(bg, bg, Imgproc.MORPH_CLOSE, kernel3);
-               
+
         Mat backgroundMat3 = displayMat.clone();
-        bg.copyTo(backgroundMat3.colRange(x_begin, x_end).rowRange(y_begin, y_end),mask2);
-        Imgproc.GaussianBlur(backgroundMat3, backgroundMat3, new Size(10, 10  ), 0);               
-
-        Texture2D backgroundTexture = new Texture2D(backgroundMat3.width(), backgroundMat3.height(), TextureFormat.BGRA32, false);
-        Utils.matToTexture2D(backgroundMat3, backgroundTexture);
-        preview.texture = backgroundTexture;
+        bg.copyTo(backgroundMat3.colRange(x_begin, x_end).rowRange(y_begin, y_end), mask2);
+        Imgproc.GaussianBlur(backgroundMat3, backgroundMat3, new Size(10, 10), 0);        
+        Texture2D bgTture = new Texture2D(backgroundMat3.width(), backgroundMat3.height(), TextureFormat.BGRA32, false);
+        Utils.matToTexture2D(backgroundMat3, bgTture);
+        preview.texture = bgTture;
         preview.gameObject.GetComponent<AspectRatioFitter>().aspectRatio = backgroundMat3.width() / (float)backgroundMat3.height();        
-
-        Imgproc.resize(cropBoundaryMat2, cropBoundaryMat2, new Size(texModelWidth, texModelHeight));      
+        Imgproc.resize(cropBoundaryMat2, cropBoundaryMat2, new Size(texModelW, texModelH));
         var textureAtlasSpine = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
-        Mat textureAtlasSpineMat = new Mat(textureAtlasSpine.height, textureAtlasSpine.width,CvType.CV_8UC4);
-        Utils.texture2DToMat(textureAtlasSpine, textureAtlasSpineMat);
-
-        cropBoundaryMat2.copyTo(textureAtlasSpineMat.submat(0, cropBoundaryMat2.height(), 0, cropBoundaryMat2.width()));        
-        Utils.matToTexture2D(textureAtlasSpineMat, textureAtlasSpine);
+        Mat textureAtlasSpineMat = new Mat(textureAtlasSpine.height, textureAtlasSpine.width, CvType.CV_8UC4);
+        Utils.texture2DToMat(textureAtlasSpine, textureAtlasSpineMat);        
+        cropBoundaryMat2.copyTo(textureAtlasSpineMat.submat(0, cropBoundaryMat2.height(), 0, cropBoundaryMat2.width()));
+        Utils.matToTexture2D(textureAtlasSpineMat, textureAtlasSpine);        
         skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = textureAtlasSpine;
 
 
-        //-----------------------------------------------------------------------------------------------------------------------
-
-        rimgcam.texture = backgroundTexture;
-
+        //-----------------------------------------------------------------------------------------------------------------------        
+        rimgcam.texture = bgTture;
         //Animation
         imgUserDraw.gameObject.transform.position = goDisplayModel.transform.position;
         imgUserDraw.rectTransform.sizeDelta = rimgmodel.rectTransform.rect.size;
@@ -344,17 +392,15 @@ public class DrawingScripts : MonoBehaviour
         Utils.matToTexture2D(cropBoundaryMat2, userDrawTexture);
         imgUserDraw.texture = userDrawTexture;
         imgUserDraw.gameObject.SetActive(true);
-
         //---------------------------------
         skeletonAnimation.gameObject.SetActive(true);
         skeletonAnimation.gameObject.SetActive(false);
         var sizeAnimation = skeletonAnimation.gameObject.GetComponent<MeshRenderer>().bounds.size;
         var sizeAnimation2 = new Vector2(sizeAnimation.x, sizeAnimation.y);
         Debug.Log(sizeAnimation);
-    
 
         var widthUserDraw = imgUserDraw.rectTransform.sizeDelta.x;
-        var scal_ = sizeAnimation.x / widthUserDraw;      
+        var scal_ = sizeAnimation.x / widthUserDraw;
         var posAnimation = skeletonAnimation.gameObject.transform.position;
         var newPos = new Vector3(posAnimation.x, posAnimation.y + sizeAnimation.y / 2f);
 
@@ -365,14 +411,19 @@ public class DrawingScripts : MonoBehaviour
             LeanTween.scale(imgUserDraw.gameObject, new Vector3(scal_, scal_, scal_), 2f);
         });
         seq.append(2);
-        seq.append(() => {
+        seq.append(() =>
+        {
             LeanTween.alpha(rimgcam.rectTransform, 0, 3f);
-            LeanTween.alpha(background.rectTransform, 1, 3f);            
+            LeanTween.alpha(background.rectTransform, 1, 3f);
         });
         seq.append(3f);
         seq.append(() =>
         {
             firework.gameObject.SetActive(true);
+            snowCircle.gameObject.SetActive(true);
+            snowFlower.gameObject.SetActive(true);
+
+            firework.GetComponent<ParticleSystem>().Play(true);
             LeanTween.alpha(bigStar.rectTransform, 1, 0.4f).setLoopPingPong();
             LeanTween.alpha(smallStar.rectTransform, 1, 0.4f).setLoopPingPong().setDelay(0.2f);
             LeanTween.rotateZ(reindeer, -reindeer.transform.localRotation.eulerAngles.z, 10).setLoopClamp();
@@ -380,56 +431,47 @@ public class DrawingScripts : MonoBehaviour
             skeletonAnimation.AnimationName = "animation";
             imgUserDraw.gameObject.SetActive(false);
             chrimasSong.Play();
-            chrimasSong.loop = true;
+            chrimasSong.loop = false;
+
+
+            Observable.Timeout<float>(Observable.Never<float>(), TimeSpan.FromSeconds(2)).Subscribe((float f) =>
+            { }, (Exception ex) =>
+            {                
+                ScreenshotHelper.iCaptureScreen();               
+            });
+
+
+            Observable.Timeout<float>(Observable.Never<float>(), TimeSpan.FromSeconds(5)).Subscribe((float f) =>
+             { }, (Exception ex) =>
+             {
+                 Everyplay.StopRecording();
+                 GetVideoPath();
+                 Observable.FromMicroCoroutine(SaveMasterPiece2).Subscribe();
+             });
         });
-
-        //imgUserDraw.gameObject.transform.position = skeletonAnimation.gameObject.transform.position;
     }
 
-    void Start()
-    {
-        var size = skeletonAnimation.GetComponent<MeshRenderer>().bounds.size;
-        Debug.LogFormat("Size is {0}", size);
-        Debug.LogFormat("name is {0}", skeletonAnimation.gameObject.name);
-        Debug.LogFormat("Size is {0}", skeletonAnimation.GetComponent<MeshRenderer>().material.mainTexture.width);
-
-
-        rimgcam = goDisplayCamera.GetComponent<RawImage>();
-        rimgmodel = goDisplayModel.GetComponent<RawImage>();
-        rimgmodel.color = new Color(255, 255, 255, opaque);
-        webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
-        warpPerspective = gameObject.GetComponent<WarpPerspective>();
-        utilities = new Utilities();
-        threshold = GetComponent<Threshold>();
-        GFs.LoadCategoryList();
-        GFs.LoadAllTemplateList();
-        MainThreadDispatcher.StartUpdateMicroCoroutine(loadCameraAndModel());
-    }
     void OnDestroy()
-    {
+    {        
         if (cancelCorountineWorker != null)
             cancelCorountineWorker.Dispose();
-        webCamTextureToMatHelper.Stop();
-        webCamTextureToMatHelper.Dispose();
+        wcHelper.Stop();
+        wcHelper.Dispose();
     }
     IEnumerator loadCameraAndModel()
     {
+
         yield return null;
-        if (!webCamTextureToMatHelper.IsInitialized())
+        if (!wcHelper.IsInitialized())
         {
-            webCamTextureToMatHelper.onInitialized.AddListener(() =>
+            wcHelper.onInitialized.AddListener(() =>
             {
-                var rgbaMat = webCamTextureToMatHelper.GetMat();
+                var rgbaMat = wcHelper.GetMat();
                 var captureWidth = rgbaMat.width();
                 var captureHeight = rgbaMat.height();
-                var captureRatio = captureWidth / (float)captureHeight;
-                Utilities.LogFormat("camera width is {0}, height is {1}", captureWidth, captureHeight);
-                //var aspectRatioFitter = goCam.GetComponent<AspectRatioFitter>();
-                //aspectRatioFitter.aspectRatio = (float)rgbaMat.width() / (float)rgbaMat.height();
-                //aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
-
-                warpPerspective.Init(webCamTextureToMatHelper.GetMat());
-                Mat camMat = webCamTextureToMatHelper.GetMat();
+                var captureRatio = captureWidth / (float)captureHeight;                
+                warpPerspective.Init(wcHelper.GetMat());
+                Mat camMat = wcHelper.GetMat();
 
                 var rawImageCamera = goDisplayCamera.GetComponent<RawImage>();
                 int rawImageWidth = (int)rawImageCamera.rectTransform.rect.width;
@@ -462,12 +504,14 @@ public class DrawingScripts : MonoBehaviour
                 size = new Size(subWidth, subHeight);
                 webcamVideoCapture = new WebcamVideoCapture(size, true);
                 cancelCorountineWorker = Observable.FromMicroCoroutine(Worker).Subscribe();
-                stopWatch = new System.Diagnostics.Stopwatch();
+                CountVidRec = new System.Diagnostics.Stopwatch();
             });
-            webCamTextureToMatHelper.Initialize(null, 640, 640, true, 60);
+            wcHelper.Initialize(null, 640, 640, true, 60);
         }
 
-        if (drawMode == DRAWMODE.DRAW_MODEL)
+        
+
+        if (drawMode == DRAWMODE.DRAW_MODEL || istest)
         {
             string imgPath;
             if (imgModelPath != null)
@@ -484,8 +528,8 @@ public class DrawingScripts : MonoBehaviour
             texModel = GFs.LoadPNGFromPath(imgPath);
             int w = texModel.width;
             int h = texModel.height;
-            texModelWidth = w;
-            texModelHeight = h;
+            texModelW = w;
+            texModelH = h;
             var rat = w / (float)h;
             var restrictMaxSize = 640;
             if (rat > 1)
@@ -507,27 +551,14 @@ public class DrawingScripts : MonoBehaviour
         }
         else
         {
-
+            texModelW = texModel.width;
+            texModelH = texModel.height;
         }
 
-        float width = image.width();
-        float heigh = image.height();
-        float modelAreaWidth = rimgmodel.rectTransform.rect.width;
-        float modelAreaHeight = rimgmodel.rectTransform.rect.height;
-        float ratio = width / heigh;
-        float ratioDisplay = modelAreaWidth / modelAreaHeight;
-        if (ratio > ratioDisplay)
-        {
-            var newWidth = modelAreaWidth;
-            var newHeight = modelAreaWidth * (heigh / width);
-            rimgmodel.rectTransform.sizeDelta = new Vector2(newWidth - modelAreaWidth, newHeight - modelAreaHeight);
-        }
-        else
-        {
-            var newHeight = modelAreaHeight;
-            var newWidth = modelAreaHeight * ratio;
-            rimgmodel.rectTransform.sizeDelta = new Vector2(newWidth - modelAreaWidth, newHeight - modelAreaHeight);
-        }
+
+        rimgmodel.GetComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+        rimgmodel.GetComponent<AspectRatioFitter>().aspectRatio = image.width() / (float)image.height();
+        rimgmodel.GetComponent<AspectRatioFitter>().enabled = true;
 
         athreshold = GetComponent<AdaptiveThreshold>();
         athreshold.setParameter(sliderLine.value);
@@ -575,33 +606,28 @@ public class DrawingScripts : MonoBehaviour
         }
     }
     int numberFrame = 0;
-    int count = 0;
+    
     IEnumerator Worker()
     {
         while (true)
         {
             yield return null;
-            if (webCamTextureToMatHelper.IsPlaying() && webCamTextureToMatHelper.DidUpdateThisFrame())
+            if (wcHelper.IsPlaying() && wcHelper.DidUpdateThisFrame())
             {
-                Mat rgbaMat = webCamTextureToMatHelper.GetMat();
+                Mat rgbaMat = wcHelper.GetMat();
                 warp = warpPerspective.warpPerspective(rgbaMat);
                 displayMat = warp.submat(cropRect);
                 Utils.matToTexture2D(displayMat, texCamCrop, bufferColor);
-                if (++count == 1)
-                {
-                    Debug.Log("hehehehehhe");
-                    Imgcodecs.imwrite("C:/Users/mv duc/Desktop/rocket/rocket/displayImage.png", displayMat);
-                }
+
                 if (isRecording)
-                {                                  
+                {
                     numberFrame++;
                     if (numberFrame % FRAME_SKIP == 0)
                     {
-                        numberFrameSave++;
-                        //Debug.LogFormat("Number Save Frame = {0}", numberFrameSave);
+                        numberFrameSave++;                        
                         webcamVideoCapture.write(displayMat);
                     }
-                    var timeLapse = (int)stopWatch.Elapsed.TotalSeconds;
+                    var timeLapse = (int)CountVidRec.Elapsed.TotalSeconds;
                     string minSec = string.Format("{0}:{1:00}", (int)(timeLapse / 60f), (int)timeLapse % 60);
                     txtTime.text = minSec;
                 }
@@ -610,22 +636,14 @@ public class DrawingScripts : MonoBehaviour
         }
     }
 
-    public void ScaleGoCam(float scaleX)
-    {
-        RawImage a = goDisplayCamera.GetComponent<RawImage>();
-        a.rectTransform.localScale = new Vector3(scaleX, 1, 1);
-        var w = a.rectTransform.rect.width;
-        var needw = w * scaleX;
-    }
-
     private void OnApplicationFocus(bool focus)
     {
         if (isRecording)
         {
             if (focus == false)
-                stopWatch.Stop();
+                CountVidRec.Stop();
             else
-                stopWatch.Start();
+                CountVidRec.Start();
         }
     }
 
@@ -649,7 +667,7 @@ public class DrawingScripts : MonoBehaviour
         }
         Destroy(texEdges);
         Destroy(texModel);
-        Destroy(webCamTextureToMatHelper);
+        Destroy(wcHelper);
         if (webcamVideoCapture != null)
         {
             webcamVideoCapture.filePath = null;
@@ -659,6 +677,7 @@ public class DrawingScripts : MonoBehaviour
             }
         }
     }
+
     public void OnContrastBtnClicked()
     {
         if (filtermode == FILTERMODE.LINE)
@@ -676,6 +695,7 @@ public class DrawingScripts : MonoBehaviour
             rimgmodel.texture = texModel;
         }
     }
+
     public void OnSliderBtnClicked()
     {
         filtermode = FILTERMODE.LINE;
@@ -689,12 +709,11 @@ public class DrawingScripts : MonoBehaviour
     bool preserveTexture = false;
     IEnumerator SaveMasterpiece()
     {
-        var _numberFrameSave = numberFrameSave;
         if (webcamVideoCapture.writer != null && !webcamVideoCapture.writer.IsDisposed)
         {
             webcamVideoCapture.writer.release();
         }
-        webCamTextureToMatHelper.Play();
+        wcHelper.Play();
         Pnl_Snap.SetActive(true);
         Pnl_Tool.SetActive(false);
         backBtn.gameObject.SetActive(false);
@@ -706,16 +725,38 @@ public class DrawingScripts : MonoBehaviour
         timeCounterSnap.text = "1";
         yield return new WaitForSeconds(periods);
         timeCounterSnap.text = null;
-        webCamTextureToMatHelper.Pause();
-        webCamTextureToMatHelper.Stop();        
+        wcHelper.Pause();
+        wcHelper.Stop();
         audioSource.Play();
         Pnl_Snap.SetActive(false);
-        isolateBoundary();
-        yield break;
 
-        goDisplayCamera.GetComponent<RawImage>().texture = null;
-        yield return new WaitForSeconds(periods);
         
+        if (WebcamVideoCapture.filenameWithoutExt != null)
+        {
+            nameNoExt = WebcamVideoCapture.filenameWithoutExt;
+        }
+        else
+        {
+            nameNoExt = DateTime.Now.ToString(Utilities.customFmts);
+        }
+        nameMasterPiece = nameNoExt + ".png";
+
+        if (drawMode == DRAWMODE.DRAW_SPECIAL)
+        {
+            isolateBoundary();
+        }
+        else
+        {
+            yield return SaveMasterPiece2();
+        }
+    }
+
+    IEnumerator SaveMasterPiece2()
+    {
+        yield return null;
+        var _numberFrameSave = numberFrameSave;
+        goDisplayCamera.GetComponent<RawImage>().texture = null;
+
         Mat resultMat = warp.submat(cropRect);
         Texture2D resultTexture = new Texture2D(cropRect.width, cropRect.height, TextureFormat.BGRA32, false);
 
@@ -740,21 +781,15 @@ public class DrawingScripts : MonoBehaviour
         Core.extractChannel(logoResized, maskCopyMask, 3);
         maskCopyMask = maskCopyMask - new Scalar(230);
         logoResized.copyTo(rect, maskCopyMask);
-        Imgproc.cvtColor(logoResized, logoResized, Imgproc.COLOR_RGBA2BGR);        
+        Imgproc.cvtColor(logoResized, logoResized, Imgproc.COLOR_RGBA2BGR);
         Utils.matToTexture2D(resultMat, resultTexture);
-        
-        string name = null;
-        if (WebcamVideoCapture.filenameWithoutExt != null)
-        {
-            name = String.Format("{0}.png", WebcamVideoCapture.filenameWithoutExt);
-        }
-        else
-        {
-            name = String.Format("{0}.png", DateTime.Now.ToString(Utilities.customFmts));
-        }
+
         var masterPieceDirPath = GFs.getMasterpieceDirPath();
-        var imagePath = masterPieceDirPath + name;
+        var imagePath = masterPieceDirPath + nameMasterPiece ;
         File.WriteAllBytes(imagePath, resultTexture.EncodeToPNG());
+
+        Debug.Log("IMAGE PATH IS " + imagePath);
+
 
         ResultScripts.texture = resultTexture;
         ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;
@@ -773,12 +808,10 @@ public class DrawingScripts : MonoBehaviour
         var maxNumberFrame = MAX_LENGTH_RESULT_VIDEO * WebcamVideoCapture.FPS;
         var redundanceFrame = _numberFrameSave - maxNumberFrame;
 
-        yield break;
-
         img_progress_cutvideo.GetComponent<RectTransform>().eulerAngles = Vector3.zero;
         LeanTween.rotateAround(img_progress_cutvideo.gameObject, Vector3.forward, 360, 1)
             .setOnStart(() => { img_progress_cutvideo.gameObject.SetActive(true); })
-            .setRepeat(-1).setEaseLinear();        
+            .setRepeat(-1).setEaseLinear();
 
         var cutvideo = Observable.Start(() =>
         {
@@ -858,7 +891,7 @@ public class DrawingScripts : MonoBehaviour
                                 ratioFloor = (int)Math.Floor(ratio + du);
                                 du = ratio + du - ratioFloor;
                                 count = 0;
-                                Debug.LogFormat("ratioFloor is {0}", ratioFloor);                               
+                                Debug.LogFormat("ratioFloor is {0}", ratioFloor);
                             }
 
                             if (count2 >= maxNumberFrame)
@@ -867,35 +900,33 @@ public class DrawingScripts : MonoBehaviour
                         Debug.LogFormat("J = {0}", j);
                     }
                     Debug.LogFormat("Number frame of new video is {0}", count2);
-                    
+
                 }
-                else 
+                else
                 {
-                    for (;;)
+                    for (; ; )
                     {
                         cap.read(frame);
                         Debug.LogFormat("Frame width is {0}, height is {1}", frame.width(), frame.height());
                         if (frame.empty())
-                        {                            
+                        {
                             break;
                         }
                         rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logoResized.height() - 10, logoResized.width(), logoResized.height()));
-                        logoResized.copyTo(rect,maskCopyMask);                        
+                        logoResized.copyTo(rect, maskCopyMask);
                         writer.write(frame);
                     }
 
                 }
                 logo.release();
                 logo.Dispose();
-                //grayLogo.release();
-                //grayLogo.Dispose();
                 writer.release();
                 writer.Dispose();
                 cap.release();
                 File.Delete(filePath2);
             }
-           Thread.Sleep(500);
-       });
+            Thread.Sleep(500);
+        });
         Observable.WhenAll(cutvideo)
             .ObserveOnMainThread().Subscribe(_ =>
             {
@@ -912,6 +943,7 @@ public class DrawingScripts : MonoBehaviour
             Utils.matToTexture2D(blueMat, texEdges, colorsBuffer);
             rimgmodel.texture = texEdges;
         }
+        rimgmodel.GetComponent<AspectRatioFitter>().enabled = false;
         rimgmodel.GetComponent<ScreenTransformGesture>().enabled = true;
         rimgmodel.GetComponent<Transformer>().enabled = true;
     }

@@ -39,3 +39,18 @@ public class CategoryList
         return data.Count;
     }
 }
+
+public class Frame
+{
+    public string id;
+    public string thumb;
+    public string image;
+    public int _v;
+}
+
+public class FrameList
+{
+    public int success;
+    public string dir;
+    public List<Frame> data;
+}

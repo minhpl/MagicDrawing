@@ -20,13 +20,13 @@ public class HomeController : MonoBehaviour
     public GameObject downloadPopUp;
     public UISlider UISliderProgressDownload;
     IDisposable cancelCorountineDownloadData;
-
+    public UIButton specialButton;
     public GameObject root;
 
     private void Awake()
     {
         GFs.LoadData();
-        if(TutorialController.isAddedSoundButtonEvent == false)
+        if (TutorialController.isAddedSoundButtonEvent == false)
             GFs.addButtonSoundEventOnSceneLoad();
 
         //PlayerPrefs.DeleteAll();
@@ -57,6 +57,13 @@ public class HomeController : MonoBehaviour
             }
         }));
 
+        specialButton.onClick.Add(new EventDelegate(() =>
+        {
+            Debug.Log("here1");
+            LibraryScriptsNGUI.mode = LibraryScriptsNGUI.MODE.SPECIAL;
+            GVs.SCENE_MANAGER.loadLibrarySpecialScene();
+        }));
+
         var masterPieceDirPath = GFs.getMasterpieceDirPath();
         if (!Directory.Exists(masterPieceDirPath))
         {
@@ -83,14 +90,18 @@ public class HomeController : MonoBehaviour
         }
 
         var videoFiles = Directory.GetFiles(masterPieceDirPath, "*.*", SearchOption.TopDirectoryOnly)
-    .Where(s => s.EndsWith(".avi"));
+    .Where(s => s.EndsWith(".avi") || s.EndsWith(".mp4"));
         foreach (var videoPath in videoFiles)
-        {
+        {       
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(videoPath);
             var imageCorresponding = masterPieceDirPath + fileNameWithoutExtension + ".png";
-            if (!File.Exists(imageCorresponding))
+            var anim = masterPieceDirPath + fileNameWithoutExtension + "_anim.png";
+            if (!File.Exists(imageCorresponding) && !File.Exists(anim))
             {
+                if (videoPath.EndsWith(".mp4"))
+                    Utilities.Log("THIS VIDEO IS DELETED : "+videoPath);
                 File.Delete(videoPath);
+                Utilities.Log("Deleted video is {0}",videoPath);
             }
         }
     }

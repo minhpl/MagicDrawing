@@ -87,6 +87,12 @@ public class SceneManagerScript
         //SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    public void loadLibrarySpecialScene()
+    {
+        SceneManager.LoadScene("LibrarySpecialModeScene");
+        //SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {

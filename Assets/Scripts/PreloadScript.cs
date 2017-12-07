@@ -17,7 +17,7 @@ public class PreloadScript : MonoBehaviour
     public GameObject[] btnControls;
     IDisposable cancelCorountineDownloadData;
     IDisposable cancelCorountineLoadSoundButton;
-    bool ready1 = false;   //ready download data
+    bool ready1 = false;
     IDisposable cancelCorountineQuitApplication;
 
     private const float PROGRESS_DOWNLOAD_AVARTAR_PERCENT = 0.03f;
@@ -27,14 +27,11 @@ public class PreloadScript : MonoBehaviour
         cancelCorountineQuitApplication = GFs.BackButtonAndroidQuitApplication();
     }
 
-    // Use this for initialization
     void Start()
     {
         GFs.LoadData();
         if (GVs.DEBUG) Debug.Log("Application.persistentDataPath;: " + Application.persistentDataPath);
-        // getApplicationContext().getFilesDir().getAbsolutePath()
         GFs.load_APP_PATH_VAR();
-
         StartCheckApp();
     }
 
@@ -53,7 +50,6 @@ public class PreloadScript : MonoBehaviour
         if (NET.NetWorkIsAvaiable()) popupRequireNetwork.SetActive(false);
         if (GVs.LICENSE_CODE.Equals(""))
         {
-
             if (!NET.NetWorkIsAvaiable())
             {
                 popupRequireNetwork.SetActive(true);
@@ -152,9 +148,8 @@ public class PreloadScript : MonoBehaviour
             });
         });
 
-
         Observable.Concat<float>(streamDownloadOtherApp,
-            streamDownloadAvartarProfile,
+            streamDownloadAvartarProfile,streamDownloadFrames,
             Observable.FromCoroutine<float>(DownloadData)
             ).Subscribe((_) => { Debug.Log("herheeeeee"); }, () =>
             {
@@ -169,14 +164,27 @@ public class PreloadScript : MonoBehaviour
                     }
                 });
             });
-        //streamDownloadOtherApp.Subscribe(_ => { }, () =>
-        //{
-        //    streamDownloadAvartarProfile.Subscribe(_ => { }, () =>
-        //    {
-        //        cancelCorountineDownloadData = Observable.FromCoroutine<float>(DownloadData).Subscribe();
-        //    });
-        //});
     }
+
+    private IObservable<float> streamDownloadFrames = Observable.Create<float>((IObserver<float> iobserver) =>
+    {
+        HTTPRequest.Instance.Request(GVs.DOWNLOAD_KHUNGANH, JsonUtility.ToJson(new ReqModel()), (data) =>
+        {
+            GVs.listFrame = JsonConvert.DeserializeObject<FrameList>(data);
+            GFs.SaveAllFramesList();    
+            HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_FRAMES))), (d, process) =>
+            {
+                if (process == 1)
+                {                    
+                    
+                    iobserver.OnCompleted();
+                }
+            });
+        });
+
+        return Disposable.Empty;
+    });
+
 
     private IObservable<float> streamDownloadOtherApp = Observable.Create<float>((IObserver<float> observer) =>
     {
@@ -204,35 +212,35 @@ public class PreloadScript : MonoBehaviour
         return Disposable.Empty;
     });
 
+
+    //private void DownloadOtherApp()
+    //{
+    //    HTTPRequest.Instance.Request(GVs.GET_ALL_OTHER_APP_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
+    //    {
+    //        try
+    //        {
+    //            GVs.OTHER_APP_LIST_MODEL = (JsonUtility.FromJson<OtherAppListModel>(data));
+    //            GFs.SaveOtherAppList();
+    //            text.text = "Cập nhật dữ liệu";
+    //            HTTPRequest.Instance.Download(GVs.DOWNLOAD_OTHER_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_OTHER_APP_ICON))), (data2, process) =>
+    //            {
+    //                UpdateProgressDownload(process, 0);
+    //                if (process == 1 || process == -404)
+    //                {
+    //                    DownLoadML();
+    //                }
+    //            });
+    //        }
+    //        catch (System.Exception e)
+    //        {
+    //            DownLoadML();
+    //            Debug.Log(e);
+    //        }
+    //    });
+    //}
+
     IEnumerator DownloadData(IObserver<float> ob)
     {
-        //try
-        //{
-        //    if (GVs.CATEGORY_LIST != null && GVs.TEMPLATE_LIST_ALL_CATEGORY != null)
-        //    {
-        //        var numCategory = GVs.CATEGORY_LIST.Count();
-        //        var NumtemplateList = GVs.TEMPLATE_LIST_ALL_CATEGORY.Count;
-        //        if (numCategory == NumtemplateList && numCategory != 0)
-        //        {
-        //            Utilities.Log("Ready");
-        //            ready1 = true;
-        //            uiDownload.value = 1;
-        //            StartCoroutine(WaitForStartHome());
-        //            yield break;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        PlayerPrefs.DeleteAll();
-        //        PlayerPrefs.Save();
-        //    }
-        //}
-        //catch (Exception ex)
-        //{
-        //    Debug.LogError(ex);
-        //}
-
-
         Utilities.Log("Waiting for downloading");
         Dictionary<string, TemplateDrawingList> templateListsAllCategory = new Dictionary<string, TemplateDrawingList>();
         List<IObservable<float>> ListStreamDownloadTemplate = new List<IObservable<float>>();
@@ -332,7 +340,7 @@ public class PreloadScript : MonoBehaviour
                             var json = JsonConvert.SerializeObject(templateListsAllCategory);
                             popupRequireNetwork.SetActive(false);
                             ready1 = true;
-                            ob.OnCompleted();                            
+                            ob.OnCompleted();
                         });
                 }
                 catch (Exception e)

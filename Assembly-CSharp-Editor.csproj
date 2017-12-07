@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_1;UNITY_2017_1;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;PLATFORM_ANDROID;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;UNITY_HAS_GOOGLEVR</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_1;UNITY_2017_1;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;PLATFORM_ANDROID;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;EVERYPLAY_ANDROID;UNITY_HAS_GOOGLEVR</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -51,6 +51,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\AVProMovieCapture\Scripts\Editor\AVProMovieCaptureBaseEditor.cs" />
+     <Compile Include="Assets\AVProMovieCapture\Scripts\Editor\AVProMovieCaptureEditorWindow.cs" />
+     <Compile Include="Assets\AVProMovieCapture\Scripts\Editor\AVProMovieCaptureFromCameraEditor.cs" />
+     <Compile Include="Assets\AVProMovieCapture\Scripts\Editor\AVProMovieCaptureFromSceneEditor.cs" />
      <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcCursorChangeLinearEditor.cs" />
      <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcCursorDrawer.cs" />
      <Compile Include="Assets\BansheeGz\BGCurve\Scripts\Editor\Cc\BGCcCursorEditor.cs" />
@@ -114,7 +118,29 @@
      <Compile Include="Assets\BezierCurves\Editor\BezierCurveEditor.cs" />
      <Compile Include="Assets\BezierCurves\Editor\BezierPointEditor.cs" />
      <Compile Include="Assets\Editor\CloudBuildHelper.cs" />
+     <Compile Include="Assets\Editor\Everyplay\Scripts\EveryplayImport.cs" />
+     <Compile Include="Assets\Editor\Everyplay\Scripts\EveryplayLegacyCleanup.cs" />
+     <Compile Include="Assets\Editor\Everyplay\Scripts\EveryplayPostprocessor.cs" />
+     <Compile Include="Assets\Editor\Everyplay\Scripts\EveryplaySettingsEditor.cs" />
+     <Compile Include="Assets\Editor\Everyplay\Scripts\EveryplayWelcome.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\PBXBuildFile.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\PBXBuildPhase.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\PBXDictionary.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\PBXFileReference.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\PBXGroup.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\PBXList.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\PBXObject.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\PBXParser.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\PBXProject.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\XCBuildConfiguration.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\XCConfigurationList.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\XCFileOperationQueue.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\XCMod.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\XCProject.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\XCSourceFile.cs" />
+     <Compile Include="Assets\Editor\Everyplay\XCodeEditor\XCTarget.cs" />
      <Compile Include="Assets\LeanTween\Editor\LeanTweenDocumentationEditor.cs" />
+     <Compile Include="Assets\MoviePlayer\Editor\WelcomePopup.cs" />
      <Compile Include="Assets\MoviePlayer\Scripts\Editor\DuplicateFrameRemoverWindow.cs" />
      <Compile Include="Assets\MoviePlayer\Scripts\Editor\MoviePlayerEditor.cs" />
      <Compile Include="Assets\MoviePlayer\Scripts\Editor\MovieStreamerEditor.cs" />
@@ -324,6 +350,7 @@
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
      <None Include="Assets\LeanTween\Examples\Archived\2dUnlitWithFade.shader" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Premultiplied Colored 3.shader" />
+     <None Include="Assets\AVProMovieCapture\Resources\AVProMovieCapture_MotionBlur_Add.shader" />
      <None Include="Assets\Spine\spine-unity\Modules\SkeletonGraphic\Shaders\Spine-SkeletonGraphic-TintBlack.shader" />
      <None Include="Assets\NGUI\Examples\Atlases\Wooden\Arimo18.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_video_timeline_tracker_button_pressed.xml" />
@@ -333,6 +360,7 @@
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_topbar_notification.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_editor_buttons.xml" />
      <None Include="Assets\Spine\spine-unity\Modules\Shaders\Sprite\ShaderShared.cginc" />
+     <None Include="Assets\AVProMovieCapture\Shaders\AVProMovieCapture_RGBA2YCbCr.shader" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_text_input.xml" />
      <None Include="Assets\Spine\spine-unity\Modules\CustomMaterials\SkeletonRendererCustomMaterials.txt" />
      <None Include="Assets\Unimgpicker\Editor\NSPhotoLibraryUsageDescription.txt" />
@@ -360,6 +388,7 @@
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Masked 3.shader" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_video_button_bar.xml" />
      <None Include="Assets\Scenes\TouchScript\Shaders\Cursor.shader" />
+     <None Include="Assets\AVProMovieCapture\Shaders\AVProMovieCapture_RedBlueSwap.shader" />
      <None Include="Assets\Examples\Spine\Raptor\raptor.atlas.txt" />
      <None Include="Assets\Spine\spine-unity\Modules\Shaders\Sprite\CGIncludes\SpriteLighting.cginc" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_editor_processing_bg.xml" />
@@ -393,6 +422,7 @@
      <None Include="Assets\BezierCurves\readme.txt" />
      <None Include="Assets\Spine\spine-unity\Modules\Shaders\Sprite\SpritesPixelLit.shader" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_action_list.xml" />
+     <None Include="Assets\AVProMovieCapture\Resources\AVProMovieCapture_MotionBlur_Div.shader" />
      <None Include="Assets\TextMesh Pro\Fonts\Oswald-Bold - OFL.txt" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Text 3.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
@@ -429,9 +459,11 @@
      <None Include="Assets\Plugins\Android\everyplay\res\values-zh-rCN\everyplay_strings.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_facecam_countdown.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_button_shape.xml" />
+     <None Include="Assets\AVProMovieCapture\Resources\CubemapToEquirectangular.shader" />
      <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
      <None Include="Assets\Plugins\Android\everyplay\build.xml" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Text.shader" />
+     <None Include="Assets\AVProMovieCapture\Shaders\AVProMovieCapture_Shared.cginc" />
      <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_editor_microphone.xml" />
      <None Include="Assets\Examples\Spine\Dragon\dragon.atlas.txt" />
@@ -445,6 +477,7 @@
      <None Include="Assets\Spine\spine-unity\Modules\Shaders\Sprite\CameraDepthNormalsTexture.shader" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_video_header.xml" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed 3.shader" />
+     <None Include="Assets\MoviePlayer\Version Changes.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_action_list_destructive.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\values-ja\everyplay_strings.xml" />
      <None Include="Assets\Spine\spine-unity\Shaders\Spine-Skeleton-TintBlack.shader" />
@@ -456,11 +489,13 @@
      <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_video_timeline_tracker_button.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_theme_sidemenu_button.xml" />
+     <None Include="Assets\AVProMovieCapture\Resources\AVProMovieCapture_Invisible.shader" />
      <None Include="Assets\FacebookSDK\link.xml" />
      <None Include="Assets\LeanTween\License.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_editor_processing.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_progressbar_horizontal.xml" />
      <None Include="Assets\Scenes\TouchScript\Shaders\DebugMultiplyNoDepthTest.shader" />
+     <None Include="Assets\MoviePlayer\Readme.txt" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_trashcan_background_active.xml" />
      <None Include="Assets\Plugins\Android\everyplay\res\drawable\everyplay_editor_trimmer_background_track.xml" />
      <None Include="Assets\Spine\spine-unity\Modules\Shaders\Sprite\CameraNormalsTexture.shader" />
@@ -494,7 +529,7 @@
      <None Include="Assets\Spine\spine-unity\Modules\Shaders\Sprite\SpriteDepthNormalsTexture.shader" />
      <None Include="Assets\Plugins\Android\everyplay\res\layout\everyplay_browser_layout.xml" />
      <None Include="Assets\NGUI\Examples\Models\Orc Armor\Orc Armor.shader" />
-     <None Include="Assets\Scenes\SpineResource\santa-claus2\skeleton.atlas.txt" />
+     <None Include="Assets\SpecialCategory\onggianoel\spine\skeleton.atlas.txt" />
      <None Include="Assets\Spine\spine-unity\Shaders\Spine-SkeletonLit.shader" />
      <None Include="Assets\Spine\spine-unity\Modules\Shaders\Sprite\CGIncludes\SpriteSpecular.cginc" />
      <None Include="Assets\NGUI\Examples\Resources\Localization.txt" />
