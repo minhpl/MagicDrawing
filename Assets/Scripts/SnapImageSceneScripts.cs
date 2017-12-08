@@ -104,6 +104,9 @@ public class SnapImageSceneScripts : MonoBehaviour
                 Destroy(khungAnh2.texture);
                 khungAnh.texture = txImg;
                 khungAnh2.texture = txImg2;
+                khung.GetComponent<RectTransform>().localScale = Vector3.one;
+                khung.transform.localEulerAngles = Vector3.zero;
+                khung.transform.localPosition = Vector3.zero;
                 khungAnh.GetComponent<AspectRatioFitter>().aspectRatio = txImg.width / (float)txImg.height;
                 khungAnh2.GetComponent<AspectRatioFitter>().aspectRatio = txImg2.width / (float)txImg2.height;
                 khungAnh.GetComponent<AspectRatioFitter>().enabled = true;

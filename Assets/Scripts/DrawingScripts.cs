@@ -88,7 +88,6 @@ public class DrawingScripts : MonoBehaviour
     private System.Diagnostics.Stopwatch CountVidRec;
     private bool isRecording = false;
     private IDisposable cancelCorountineWorker;
-    private IDisposable cancelCorountineTurnOffTouchInput;
     private IDisposable cancelCorountineBlinkTime;
     private IDisposable cancelCoroutineBackBtnAndroid;
     private IDisposable cancelCorountineSnapImage;
@@ -256,6 +255,7 @@ public class DrawingScripts : MonoBehaviour
             Utilities.Log("Width is {0}, height is {1}", sprite.texture.width, sprite.texture.height);
             var animPath = GFs.getMasterpieceDirPath() + nameNoExt + "_anim.png";
             File.Move(save_path, animPath);
+            ScreenshotHelper.iClear();
         });
 
         var size = skeletonAnimation.GetComponent<MeshRenderer>().bounds.size;
@@ -306,10 +306,51 @@ public class DrawingScripts : MonoBehaviour
 
         string masterpieceFolder = GFs.getMasterpieceDirPath();
         string fileName = masterpieceFolder + nameNoExt + ".mp4";
-        File.Copy(videoLocation, fileName,true);
-        bool isExist = File.Exists(fileName);
+        string vd = Application.persistentDataPath + "/" + nameNoExt + ".mp4";
+        File.Copy(videoLocation, fileName, true);
+        File.Copy(fileName, vd, true);
+        // Handheld.PlayFullScreenMovie("file://" + videoLocation);
+        bool isExist = File.Exists(vd);
+        Utilities.Log("File name is {0}", fileName);
+        Utilities.Log("video location is {0}", videoLocation);
+        Utilities.Log("File is exist ? {0}", isExist);
+        Utilities.Log("Temp folder is {0}", Application.temporaryCachePath);
+        string tempVid = everyplayDir + "/" + nameNoExt + ".mp4";
+        Utilities.Log("temp vid  is {0}", tempVid);
+        File.Copy(videoLocation, tempVid, true);
+        Handheld.PlayFullScreenMovie("file://" + tempVid);
+        StartCoroutine(DownloadAndPlayVideo(tempVid));
+        var lengthOri = new FileInfo(videoLocation).Length;
+        var lengthCopy = new FileInfo(tempVid).Length;
+        var lengthCopy2 = new FileInfo(fileName).Length;
+        Utilities.Log("Size if original file is {0}, tempvid file is {1}, filename is {2}", lengthOri, lengthCopy, lengthCopy2);
+
         return videoLocation;
     }
+
+    private Color bgColor = Color.black;
+    private FullScreenMovieControlMode controlMode = FullScreenMovieControlMode.Full;
+    private FullScreenMovieScalingMode scalingMode = FullScreenMovieScalingMode.AspectFill;
+    IEnumerator DownloadAndPlayVideo(string videoFile)
+    {
+        string playVideoFile = videoFile;
+#if UNITY_IPHONE
+        playVideoFile = "file://" + videoFile;
+#endif
+
+        Utilities.Log("xin chao the gioi");
+
+        WWW www = new WWW("http://www.example.com/video.mp4");
+        yield return www;
+        if (www != null && www.isDone && www.error == null)
+        {
+            FileStream stream = new FileStream(videoFile, FileMode.Create);
+            stream.Write(www.bytes, 0, www.bytes.Length);
+            stream.Close();
+        }
+        Handheld.PlayFullScreenMovie(playVideoFile, bgColor, controlMode, scalingMode);
+    }
+
 
 
     int texModelW;
@@ -449,6 +490,7 @@ public class DrawingScripts : MonoBehaviour
                  Everyplay.StopRecording();
                  GetVideoPath();
                  Observable.FromMicroCoroutine(SaveMasterPiece2).Subscribe();
+                 
              });
         });
     }
@@ -557,7 +599,6 @@ public class DrawingScripts : MonoBehaviour
             texModelH = texModel.height;
         }
 
-
         rimgmodel.GetComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.FitInParent;
         rimgmodel.GetComponent<AspectRatioFitter>().aspectRatio = image.width() / (float)image.height();
         rimgmodel.GetComponent<AspectRatioFitter>().enabled = true;
@@ -574,17 +615,8 @@ public class DrawingScripts : MonoBehaviour
         goDisplayModel.SetActive(true);
         loaded = true;
 
-        cancelCorountineTurnOffTouchInput = Observable.FromMicroCoroutine(turnOffTouchInput).Subscribe();
     }
 
-    IEnumerator turnOffTouchInput()
-    {
-        while (eventSystem && eventSystem.GetComponent<TouchScriptInputModule>() == null)
-        {
-            yield return null;
-        }
-        eventSystem.GetComponent<TouchScriptInputModule>().enabled = false;
-    }
 
     public void OnContrastSliderValueChange(Slider slider)
     {
@@ -651,8 +683,6 @@ public class DrawingScripts : MonoBehaviour
 
     private void OnDisable()
     {
-        if (cancelCorountineTurnOffTouchInput != null)
-            cancelCorountineTurnOffTouchInput.Dispose();
         if (cancelCorountineBlinkTime != null)
             cancelCorountineBlinkTime.Dispose();
         if (cancelCoroutineBackBtnAndroid != null)
@@ -944,7 +974,7 @@ public class DrawingScripts : MonoBehaviour
             Mat blueMat = utilities.makeMonoAlphaMat(edges, Utilities.MonoColor.BLUE);
             Utils.matToTexture2D(blueMat, texEdges, colorsBuffer);
             rimgmodel.texture = texEdges;
-        }
+        }        
         rimgmodel.GetComponent<AspectRatioFitter>().enabled = false;
         rimgmodel.GetComponent<ScreenTransformGesture>().enabled = true;
         rimgmodel.GetComponent<Transformer>().enabled = true;

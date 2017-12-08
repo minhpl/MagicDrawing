@@ -39,6 +39,8 @@ public class ResultScripts : MonoBehaviour
     public AudioSource audioSource;
     public Button backBtn;
     public GameObject pnlShareFB;
+    public Button btnTest;
+
 
     private Texture2D texVideo;
     private Mat frame;
@@ -56,6 +58,11 @@ public class ResultScripts : MonoBehaviour
     {
         if (GVs.SOUND_SYSTEM == 1)
             audioSource.Play();
+
+        btnTest.onClick.AddListener(() =>
+        {
+            Utilities.Log("Xin chao, clicked ?");
+        });
 
         backBtn.onClick.AddListener(() =>
         {
