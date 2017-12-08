@@ -170,13 +170,13 @@ public class PreloadScript : MonoBehaviour
     {
         HTTPRequest.Instance.Request(GVs.DOWNLOAD_KHUNGANH, JsonUtility.ToJson(new ReqModel()), (data) =>
         {
+            Debug.LogFormat("data is {0}",data);
             GVs.listFrame = JsonConvert.DeserializeObject<FrameList>(data);
             GFs.SaveAllFramesList();    
             HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_FRAMES))), (d, process) =>
             {
                 if (process == 1)
-                {                    
-                    
+                {                                        
                     iobserver.OnCompleted();
                 }
             });

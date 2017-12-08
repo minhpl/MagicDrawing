@@ -82,7 +82,7 @@ public class DrawingScripts : MonoBehaviour
     private OpenCVForUnity.Rect cropRect;
     //private float opaque = 0.4f;
     public enum DRAWMODE { DRAW_MODEL, DRAW_IMAGE, DRAW_SPECIAL };
-    public static DRAWMODE drawMode = DRAWMODE.DRAW_SPECIAL;
+    public static DRAWMODE drawMode = DRAWMODE.DRAW_MODEL;
     public enum FILTERMODE { LINE, BLEND };
     public static FILTERMODE filtermode = FILTERMODE.LINE;
     private System.Diagnostics.Stopwatch CountVidRec;

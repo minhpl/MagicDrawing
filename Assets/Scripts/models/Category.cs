@@ -44,7 +44,8 @@ public class Frame
 {
     public string id;
     public string thumb;
-    public string image;
+    public string image1;
+    public string image2;
     public int _v;
 }
 

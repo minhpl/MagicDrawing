@@ -25,6 +25,8 @@ public class SnapImageSceneScripts : MonoBehaviour
     public IDisposable cancelCoroutineBackAndroid;
     public GameObject imageItem;
     public RawImage khungAnh;
+    public RawImage khungAnh2;
+    public GameObject khung;
     public Button btnChapAnh;
     public Camera camera;
     public GameObject scroll;
@@ -39,7 +41,6 @@ public class SnapImageSceneScripts : MonoBehaviour
 
     private void Awake()
     {
-
         oriWidth = khungAnh.GetComponent<RectTransform>().rect.width;
         oriHeight = khungAnh.GetComponent<RectTransform>().rect.height;
         Debug.LogFormat("Original width is {0}, orginal height is {1}", oriWidth, oriHeight);
@@ -54,7 +55,6 @@ public class SnapImageSceneScripts : MonoBehaviour
             chapMat();
             ScreenshotHelper.iCaptureWithCamera(camera);
         });
-
     }
 
     void Start()
@@ -96,12 +96,19 @@ public class SnapImageSceneScripts : MonoBehaviour
             thumb.GetComponent<AspectRatioFitter>().aspectRatio = (float)texture.width / (float)texture.height;
 
             clone.GetComponent<Button>().onClick.AddListener(() => {                
-                var imagePath = dir + frame.image;
-                Texture2D txImg = GFs.LoadPNGFromPath(imagePath);
+                var imgP = dir + frame.image1;
+                var imgP2 = dir + frame.image2;
+                Texture2D txImg = GFs.LoadPNGFromPath(imgP);
+                Texture2D txImg2 = GFs.LoadPNGFromPath(imgP2);
                 Destroy(khungAnh.texture);
+                Destroy(khungAnh2.texture);
                 khungAnh.texture = txImg;
+                khungAnh2.texture = txImg2;
                 khungAnh.GetComponent<AspectRatioFitter>().aspectRatio = txImg.width / (float)txImg.height;
-                khungAnh.gameObject.SetActive(true);
+                khungAnh2.GetComponent<AspectRatioFitter>().aspectRatio = txImg2.width / (float)txImg2.height;
+                khungAnh.GetComponent<AspectRatioFitter>().enabled = true;
+                khungAnh2.GetComponent<AspectRatioFitter>().enabled = true;
+                khung.SetActive(true);
                 textureKhungAnh = txImg;
                 mode = SnapMode.FRAME;
             });            
@@ -112,7 +119,7 @@ public class SnapImageSceneScripts : MonoBehaviour
         imageItem.GetComponent<Button>().onClick.AddListener(() =>
         {
             mode = SnapMode.NOFRAME;
-            khungAnh.gameObject.SetActive(false);
+            khung.SetActive(false);
             Destroy(khungAnh.texture);
         });
     }
@@ -384,12 +391,10 @@ public class SnapImageSceneScripts : MonoBehaviour
 
 
     public void OnContinueBtnClicked()
-    {
-  
+    {  
         string dirPathSnapImage = GFs.getSnapImageDirPath();  
         var dateTimeNow = DateTime.Now.ToString(Utilities.customFmts);
         var MPModelPath = dirPathSnapImage + dateTimeNow + ".png";
-
         if (mode == SnapMode.NOFRAME)
         {
             if (snapMat != null)
@@ -408,7 +413,6 @@ public class SnapImageSceneScripts : MonoBehaviour
                     Imgproc.cvtColor(snapMat, snapMat, Imgproc.COLOR_BGR2RGB);
                     Imgcodecs.imwrite(MPModelPath, snapMat);
                 }
-
                 HistoryNGUIScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
                 GVs.SCENE_MANAGER.loadDrawingScene();
             }
