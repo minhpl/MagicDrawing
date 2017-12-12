@@ -26,7 +26,7 @@ public class DrawingScripts : MonoBehaviour
     public TextMeshProUGUI txtTimeTMPro;
     public Button backBtn;
     public GameObject panelComfirm;
-    public Button aggre;
+    public Button agrre;
     public Button cancel;
     public GameObject eventSystem;
     public TapGesture tapGesture;
@@ -57,6 +57,7 @@ public class DrawingScripts : MonoBehaviour
     public ParticleSystem snowFlower;
     public UIPlayTween[] popupPlayTween;
     public SkeletonAnimation skeletonAnimation;
+    public ScreenTransformGesture scrTransGes;
 
     private Threshold threshold;
     private AdaptiveThreshold athreshold;
@@ -88,6 +89,7 @@ public class DrawingScripts : MonoBehaviour
     private System.Diagnostics.Stopwatch CountVidRec;
     private bool isRecording = false;
     private IDisposable cancelCorountineWorker;
+    private IDisposable cancelCorountineTurnOffTouchInput;
     private IDisposable cancelCorountineBlinkTime;
     private IDisposable cancelCoroutineBackBtnAndroid;
     private IDisposable cancelCorountineSnapImage;
@@ -95,7 +97,7 @@ public class DrawingScripts : MonoBehaviour
     private Mat frame;
     private Size size;
     private const int FRAME_SKIP = 10;
-    private const int MAX_LENGTH_RESULT_VIDEO = 30; 
+    private const int MAX_LENGTH_RESULT_VIDEO = 30;
     private string nameMasterPiece = null;
     private string nameNoExt = "default";
     private bool istest = false;
@@ -119,8 +121,6 @@ public class DrawingScripts : MonoBehaviour
             OnContrastSliderValueChange(sliderContrast);
         });
 
-
-
         backBtn.onClick = new Button.ButtonClickedEvent();
         backBtn.onClick.AddListener(() =>
         {
@@ -133,7 +133,6 @@ public class DrawingScripts : MonoBehaviour
 
         cancel.onClick.AddListener(() =>
         {
-
             for (int i = 0; i < popupPlayTween.Length; i++)
             {
                 popupPlayTween[i].Play(false);
@@ -143,6 +142,7 @@ public class DrawingScripts : MonoBehaviour
                 panelComfirm.SetActive(false);
                 popupPlayTween[0].onFinished.Clear();
             }));
+
         });
 
         if (Application.platform == RuntimePlatform.Android)
@@ -157,8 +157,13 @@ public class DrawingScripts : MonoBehaviour
             });
         }
 
-        aggre.onClick.AddListener(() =>
+        agrre.onClick.AddListener(() =>
         {
+            if (cancelGVidP != null)
+                cancelGVidP.Dispose();
+            if (cancelSaveMP2 != null)
+                cancelSaveMP2.Dispose();
+
             if (webcamVideoCapture.filePath != null)
             {
                 if (webcamVideoCapture != null && webcamVideoCapture.writer != null)
@@ -178,7 +183,6 @@ public class DrawingScripts : MonoBehaviour
                 popupPlayTween[0].onFinished.Clear();
                 GFs.BackToPreviousScene();
             }));
-
         });
 
         tickBtn.onClick.AddListener(() =>
@@ -225,23 +229,6 @@ public class DrawingScripts : MonoBehaviour
                 cancelCorountineBlinkTime = Observable.FromCoroutine(blinkTime).Subscribe();
             }
         });
-
-        getPosSize.onClick.AddListener(() =>
-        {
-            Everyplay.StopRecording();
-            Everyplay.PlayLastRecording();
-        });
-
-        btnTurnRecord.onValueChanged.AddListener((bool check) =>
-        {
-            Everyplay.StartRecording();
-        });
-
-        btnStopRecord.onValueChanged.AddListener((bool check) =>
-        {
-            Everyplay.StopRecording();
-            GetVideoPath();
-        });        
     }
 
 
@@ -250,9 +237,6 @@ public class DrawingScripts : MonoBehaviour
         ScreenshotHelper.iSetMainOnCapturedCallback((Sprite sprite) =>
         {
             string save_path = new FilePathName().SaveTextureAs(sprite.texture, FilePathName.SaveFormat.PNG);
-            Utilities.Log(save_path);
-            preview.texture = sprite.texture;
-            Utilities.Log("Width is {0}, height is {1}", sprite.texture.width, sprite.texture.height);
             var animPath = GFs.getMasterpieceDirPath() + nameNoExt + "_anim.png";
             File.Move(save_path, animPath);
             ScreenshotHelper.iClear();
@@ -272,30 +256,26 @@ public class DrawingScripts : MonoBehaviour
         Everyplay.Initialize();
     }
 
-    private string GetVideoPath()
+    IEnumerator GetVideoPath()
     {
+        yield return null;
+        if (Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.IPhonePlayer)
+            yield break;
         string everyplayDir = null;
-
 #if UNITY_IOS
- 
-         var root = new DirectoryInfo(Application.persistentDataPath).Parent.FullName;
-         everyplayDir = root + "/tmp/Everyplay/session";
- 
-#elif UNITY_ANDROID
- 
+        var root = new DirectoryInfo(Application.persistentDataPath).Parent.FullName;
+        everyplayDir = root + "/tmp/Everyplay/session";
+#elif UNITY_ANDROID 
          var root = new DirectoryInfo(Application.temporaryCachePath).FullName;
          everyplayDir = root + "/sessions";
- 
 #endif
-
         var files = new DirectoryInfo(everyplayDir).GetFiles("*.mp4", SearchOption.AllDirectories);
         var videoLocation = "";
-
         // Should only be one video, if there is one at all
         foreach (var file in files)
         {
 #if UNITY_ANDROID
-             videoLocation = "file://" + file.FullName;
+            //videoLocation = "file://" + file.FullName;
             videoLocation = file.FullName;
 #else
             videoLocation = file.FullName;
@@ -303,61 +283,29 @@ public class DrawingScripts : MonoBehaviour
             Utilities.LogFormat("Videos Location is {0}", videoLocation);
             //break;
         }
-
-        string masterpieceFolder = GFs.getMasterpieceDirPath();
-        string fileName = masterpieceFolder + nameNoExt + ".mp4";
-        string vd = Application.persistentDataPath + "/" + nameNoExt + ".mp4";
-        File.Copy(videoLocation, fileName, true);
-        File.Copy(fileName, vd, true);
-        // Handheld.PlayFullScreenMovie("file://" + videoLocation);
-        bool isExist = File.Exists(vd);
-        Utilities.Log("File name is {0}", fileName);
-        Utilities.Log("video location is {0}", videoLocation);
-        Utilities.Log("File is exist ? {0}", isExist);
-        Utilities.Log("Temp folder is {0}", Application.temporaryCachePath);
-        string tempVid = everyplayDir + "/" + nameNoExt + ".mp4";
-        Utilities.Log("temp vid  is {0}", tempVid);
-        File.Copy(videoLocation, tempVid, true);
-        Handheld.PlayFullScreenMovie("file://" + tempVid);
-        StartCoroutine(DownloadAndPlayVideo(tempVid));
-        var lengthOri = new FileInfo(videoLocation).Length;
-        var lengthCopy = new FileInfo(tempVid).Length;
-        var lengthCopy2 = new FileInfo(fileName).Length;
-        Utilities.Log("Size if original file is {0}, tempvid file is {1}, filename is {2}", lengthOri, lengthCopy, lengthCopy2);
-
-        return videoLocation;
-    }
-
-    private Color bgColor = Color.black;
-    private FullScreenMovieControlMode controlMode = FullScreenMovieControlMode.Full;
-    private FullScreenMovieScalingMode scalingMode = FullScreenMovieScalingMode.AspectFill;
-    IEnumerator DownloadAndPlayVideo(string videoFile)
-    {
-        string playVideoFile = videoFile;
-#if UNITY_IPHONE
-        playVideoFile = "file://" + videoFile;
-#endif
-
-        Utilities.Log("xin chao the gioi");
-
-        WWW www = new WWW("http://www.example.com/video.mp4");
-        yield return www;
-        if (www != null && www.isDone && www.error == null)
+        WWW www = new WWW("file://" + videoLocation);
+        yield return www;        
+        var mpdir = GFs.getMasterpieceDirPath();
+        var file_name = mpdir + nameNoExt + ".mp4";
+        EveryplayLocalSave.SaveTo(file_name);        
+        //yield return new WaitForSeconds(2);        
+        Utilities.Log("The path is {0}, is file exist ? {1}", file_name, File.Exists(file_name));
+        Utilities.Log("The original is {0}, is file exist ? {1}", videoLocation, File.Exists(videoLocation));
+        if (Application.platform == RuntimePlatform.Android)
         {
-            FileStream stream = new FileStream(videoFile, FileMode.Create);
-            stream.Write(www.bytes, 0, www.bytes.Length);
-            stream.Close();
+            Handheld.PlayFullScreenMovie(file_name);            
         }
-        Handheld.PlayFullScreenMovie(playVideoFile, bgColor, controlMode, scalingMode);
+        else if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            Utilities.Log("Is file exist ?? {0}", File.Exists(file_name));
+            Handheld.PlayFullScreenMovie("file://" + file_name);
+        }
     }
-
-
 
     int texModelW;
     int texModelH;
     void isolateBoundary()
     {
-        Everyplay.StartRecording();
         var offsetMin = rimgmodel.rectTransform.offsetMin;
         var offsetMax = rimgmodel.rectTransform.offsetMax;
         var left = offsetMin.x;
@@ -394,10 +342,10 @@ public class DrawingScripts : MonoBehaviour
         channels[1] = channels[3];
         channels[2] = channels[3];
         channels[3] = channels[3];
-        Core.merge(channels, mask);        
+        Core.merge(channels, mask);
         Mat cropBoundaryMat2 = new Mat();
         Mat mask2 = mask.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y);
-        
+
         Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(8, 8));
         Imgproc.morphologyEx(mask2, mask2, Imgproc.MORPH_DILATE, kernel);
 
@@ -412,21 +360,19 @@ public class DrawingScripts : MonoBehaviour
 
         Mat backgroundMat3 = displayMat.clone();
         bg.copyTo(backgroundMat3.colRange(x_begin, x_end).rowRange(y_begin, y_end), mask2);
-        Imgproc.GaussianBlur(backgroundMat3, backgroundMat3, new Size(10, 10), 0);        
+        Imgproc.GaussianBlur(backgroundMat3, backgroundMat3, new Size(10, 10), 0);
         Texture2D bgTture = new Texture2D(backgroundMat3.width(), backgroundMat3.height(), TextureFormat.BGRA32, false);
-        Utils.matToTexture2D(backgroundMat3, bgTture);
-        preview.texture = bgTture;
-        preview.gameObject.GetComponent<AspectRatioFitter>().aspectRatio = backgroundMat3.width() / (float)backgroundMat3.height();        
+        Utils.matToTexture2D(backgroundMat3, bgTture);    
         Imgproc.resize(cropBoundaryMat2, cropBoundaryMat2, new Size(texModelW, texModelH));
+        
         var textureAtlasSpine = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
         Mat textureAtlasSpineMat = new Mat(textureAtlasSpine.height, textureAtlasSpine.width, CvType.CV_8UC4);
-        Utils.texture2DToMat(textureAtlasSpine, textureAtlasSpineMat);        
+        Utils.texture2DToMat(textureAtlasSpine, textureAtlasSpineMat);
         cropBoundaryMat2.copyTo(textureAtlasSpineMat.submat(0, cropBoundaryMat2.height(), 0, cropBoundaryMat2.width()));
-        Utils.matToTexture2D(textureAtlasSpineMat, textureAtlasSpine);        
-        skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = textureAtlasSpine;
-
-
-        //-----------------------------------------------------------------------------------------------------------------------        
+        Texture2D texture = new Texture2D(textureAtlasSpine.width, textureAtlasSpine.height, TextureFormat.ARGB32, false);
+        Utils.matToTexture2D(textureAtlasSpineMat, texture);
+        skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texture;
+        //-----------------------------------------------------------------------------------------------------------------------                
         rimgcam.texture = bgTture;
         //Animation
         imgUserDraw.gameObject.transform.position = goDisplayModel.transform.position;
@@ -456,6 +402,13 @@ public class DrawingScripts : MonoBehaviour
         seq.append(2);
         seq.append(() =>
         {
+            if (Everyplay.IsRecording() || Everyplay.IsPaused())
+            {
+                Utilities.Log("HereHere");
+                Everyplay.StopRecording();
+            }
+            Everyplay.StartRecording();
+            Utilities.Log("is recording0 ? {0}", Everyplay.IsRecording());
             LeanTween.alpha(rimgcam.rectTransform, 0, 3f);
             LeanTween.alpha(background.rectTransform, 1, 3f);
         });
@@ -475,36 +428,74 @@ public class DrawingScripts : MonoBehaviour
             imgUserDraw.gameObject.SetActive(false);
             chrimasSong.Play();
             chrimasSong.loop = false;
-
-
             Observable.Timeout<float>(Observable.Never<float>(), TimeSpan.FromSeconds(2)).Subscribe((float f) =>
             { }, (Exception ex) =>
-            {                
-                ScreenshotHelper.iCaptureScreen();               
+            {
+                ScreenshotHelper.iCaptureScreen();
             });
-
-
             Observable.Timeout<float>(Observable.Never<float>(), TimeSpan.FromSeconds(5)).Subscribe((float f) =>
              { }, (Exception ex) =>
              {
                  Everyplay.StopRecording();
-                 GetVideoPath();
-                 Observable.FromMicroCoroutine(SaveMasterPiece2).Subscribe();
-                 
+                 Utilities.Log("is recording ? {0}", Everyplay.IsRecording());
+                 cancelGVidP = Observable.FromCoroutine(GetVideoPath).Subscribe((_) => { }, () =>
+                  {
+                      //cancelSaveMP2 = Observable.FromMicroCoroutine(SaveMasterPiece2).Subscribe();
+                  });
              });
         });
     }
 
-    void OnDestroy()
+    IDisposable cancelGVidP;
+    IDisposable cancelSaveMP2;
+        
+    private void OnDisable()
     {        
+        if (Everyplay.IsRecording() || Everyplay.IsPaused())
+        {
+            Utilities.Log("Here in Ondestroy: is recording? {0}, is paused ? {1}", Everyplay.IsRecording(), Everyplay.IsPaused());
+            Everyplay.StopRecording();
+        }
+        Everyplay.StopRecording();
+        Utilities.Log("Here");
         if (cancelCorountineWorker != null)
             cancelCorountineWorker.Dispose();
+        if (cancelGVidP != null)
+            cancelGVidP.Dispose();
+        if (cancelSaveMP2 != null)
+            cancelSaveMP2.Dispose();
         wcHelper.Stop();
         wcHelper.Dispose();
+        if (cancelCorountineTurnOffTouchInput != null)
+            cancelCorountineTurnOffTouchInput.Dispose();
+        if (cancelCorountineBlinkTime != null)
+            cancelCorountineBlinkTime.Dispose();
+        if (cancelCoroutineBackBtnAndroid != null)
+            cancelCoroutineBackBtnAndroid.Dispose();
+        if (cancelCorountineSnapImage != null)
+            cancelCorountineSnapImage.Dispose();
+        image.release();
+        image.Dispose();
+        edges.Dispose();
+        image = null;
+        if (!preserveTexture)
+        {
+            Destroy(texCam);
+        }
+        Destroy(texEdges);
+        Destroy(texModel);
+        Destroy(wcHelper);
+        if (webcamVideoCapture != null)
+        {
+            webcamVideoCapture.filePath = null;
+            if (webcamVideoCapture.writer != null && !webcamVideoCapture.writer.IsDisposed)
+            {
+                webcamVideoCapture.writer.release();
+            }
+        }
     }
     IEnumerator loadCameraAndModel()
     {
-
         yield return null;
         if (!wcHelper.IsInitialized())
         {
@@ -513,7 +504,7 @@ public class DrawingScripts : MonoBehaviour
                 var rgbaMat = wcHelper.GetMat();
                 var captureWidth = rgbaMat.width();
                 var captureHeight = rgbaMat.height();
-                var captureRatio = captureWidth / (float)captureHeight;                
+                var captureRatio = captureWidth / (float)captureHeight;
                 warpPerspective.Init(wcHelper.GetMat());
                 Mat camMat = wcHelper.GetMat();
 
@@ -553,7 +544,14 @@ public class DrawingScripts : MonoBehaviour
             wcHelper.Initialize(null, 640, 640, true, 60);
         }
 
-        
+        if (drawMode == DRAWMODE.DRAW_SPECIAL)
+        {
+            scrTransGes.Type = TransformGesture.TransformType.Translation | TransformGesture.TransformType.Scaling;
+        }
+        else
+        {
+            scrTransGes.Type = TransformGesture.TransformType.Rotation | TransformGesture.TransformType.Scaling | TransformGesture.TransformType.Translation;
+        }
 
         if (drawMode == DRAWMODE.DRAW_MODEL || istest)
         {
@@ -615,8 +613,17 @@ public class DrawingScripts : MonoBehaviour
         goDisplayModel.SetActive(true);
         loaded = true;
 
+        cancelCorountineTurnOffTouchInput = Observable.FromMicroCoroutine(turnOffTouchInput).Subscribe();
     }
 
+    IEnumerator turnOffTouchInput()
+    {
+        while (eventSystem && eventSystem.GetComponent<TouchScriptInputModule>() == null)
+        {
+            yield return null;
+        }
+        eventSystem.GetComponent<TouchScriptInputModule>().enabled = false;
+    }
 
     public void OnContrastSliderValueChange(Slider slider)
     {
@@ -640,7 +647,7 @@ public class DrawingScripts : MonoBehaviour
         }
     }
     int numberFrame = 0;
-    
+
     IEnumerator Worker()
     {
         while (true)
@@ -658,7 +665,7 @@ public class DrawingScripts : MonoBehaviour
                     numberFrame++;
                     if (numberFrame % FRAME_SKIP == 0)
                     {
-                        numberFrameSave++;                        
+                        numberFrameSave++;
                         webcamVideoCapture.write(displayMat);
                     }
                     var timeLapse = (int)CountVidRec.Elapsed.TotalSeconds;
@@ -678,35 +685,6 @@ public class DrawingScripts : MonoBehaviour
                 CountVidRec.Stop();
             else
                 CountVidRec.Start();
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (cancelCorountineBlinkTime != null)
-            cancelCorountineBlinkTime.Dispose();
-        if (cancelCoroutineBackBtnAndroid != null)
-            cancelCoroutineBackBtnAndroid.Dispose();
-        if (cancelCorountineSnapImage != null)
-            cancelCorountineSnapImage.Dispose();
-        image.release();
-        image.Dispose();
-        edges.Dispose();
-        image = null;
-        if (!preserveTexture)
-        {
-            Destroy(texCam);
-        }
-        Destroy(texEdges);
-        Destroy(texModel);
-        Destroy(wcHelper);
-        if (webcamVideoCapture != null)
-        {
-            webcamVideoCapture.filePath = null;
-            if (webcamVideoCapture.writer != null && !webcamVideoCapture.writer.IsDisposed)
-            {
-                webcamVideoCapture.writer.release();
-            }
         }
     }
 
@@ -748,7 +726,7 @@ public class DrawingScripts : MonoBehaviour
         wcHelper.Play();
         Pnl_Snap.SetActive(true);
         Pnl_Tool.SetActive(false);
-        backBtn.gameObject.SetActive(false);
+        // backBtn.gameObject.SetActive(false);
         goDisplayModel.SetActive(false);
         float periods = 1f;
         yield return new WaitForSeconds(periods);
@@ -762,7 +740,7 @@ public class DrawingScripts : MonoBehaviour
         audioSource.Play();
         Pnl_Snap.SetActive(false);
 
-        
+
         if (WebcamVideoCapture.filenameWithoutExt != null)
         {
             nameNoExt = WebcamVideoCapture.filenameWithoutExt;
@@ -817,12 +795,12 @@ public class DrawingScripts : MonoBehaviour
         Utils.matToTexture2D(resultMat, resultTexture);
 
         var masterPieceDirPath = GFs.getMasterpieceDirPath();
-        var imagePath = masterPieceDirPath + nameMasterPiece ;
+        var imagePath = masterPieceDirPath + nameMasterPiece;
         File.WriteAllBytes(imagePath, resultTexture.EncodeToPNG());
 
         Debug.Log("IMAGE PATH IS " + imagePath);
 
-
+        DecorateScene.texture = resultTexture;
         ResultScripts.texture = resultTexture;
         ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;
         ResultScripts.imagePath = imagePath;
@@ -963,7 +941,7 @@ public class DrawingScripts : MonoBehaviour
             .ObserveOnMainThread().Subscribe(_ =>
             {
                 img_progress_cutvideo.gameObject.SetActive(false);
-                GVs.SCENE_MANAGER.loadResultScene();
+                GVs.SCENE_MANAGER.loadDecorateScene();
             });
     }
 
@@ -974,7 +952,7 @@ public class DrawingScripts : MonoBehaviour
             Mat blueMat = utilities.makeMonoAlphaMat(edges, Utilities.MonoColor.BLUE);
             Utils.matToTexture2D(blueMat, texEdges, colorsBuffer);
             rimgmodel.texture = texEdges;
-        }        
+        }
         rimgmodel.GetComponent<AspectRatioFitter>().enabled = false;
         rimgmodel.GetComponent<ScreenTransformGesture>().enabled = true;
         rimgmodel.GetComponent<Transformer>().enabled = true;

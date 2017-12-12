@@ -24,7 +24,7 @@ public static class NativeGallery
     private static extern void _VideoWriteToAlbum(string path);
 #endif
 
-	public static void SaveToGallery( byte[] mediaBytes, string directoryName, string filenameFormatted, bool isImage )
+	public static string SaveToGallery( byte[] mediaBytes, string directoryName, string filenameFormatted, bool isImage )
 	{
 		if( mediaBytes == null || mediaBytes.Length == 0 )
 			throw new ArgumentException( "Parameter 'mediaBytes' is null or empty!" );
@@ -40,9 +40,10 @@ public static class NativeGallery
 		File.WriteAllBytes( path, mediaBytes );
 
 		SaveToGallery( path, isImage );
+        return path;
 	}
 
-	public static void SaveToGallery( string existingMediaPath, string directoryName, string filenameFormatted, bool isImage )
+	public static string SaveToGallery( string existingMediaPath, string directoryName, string filenameFormatted, bool isImage )
 	{
 		if( !File.Exists( existingMediaPath ) )
 			throw new FileNotFoundException( "File not found at " + existingMediaPath );
@@ -58,19 +59,22 @@ public static class NativeGallery
 		File.Copy( existingMediaPath, path, true );
 
 		SaveToGallery( path, isImage );
+        return path;
 	}
 
-	public static void SaveToGallery( Texture2D image, string directoryName, string filenameFormatted )
+	public static string SaveToGallery( Texture2D image, string directoryName, string filenameFormatted )
 	{
 		if( image == null )
 			throw new ArgumentException( "Parameter 'image' is null!" );
-
+        string path = null;
 		if( filenameFormatted.EndsWith( ".jpeg" ) || filenameFormatted.EndsWith( ".jpg" ) )
-			SaveToGallery( image.EncodeToJPG( 100 ), directoryName, filenameFormatted, true );
+			 path = SaveToGallery( image.EncodeToJPG( 100 ), directoryName, filenameFormatted, true );
 		else if( filenameFormatted.EndsWith( ".png" ) )
-			SaveToGallery( image.EncodeToPNG(), directoryName, filenameFormatted, true );
+			path = SaveToGallery( image.EncodeToPNG(), directoryName, filenameFormatted, true );
 		else
-			SaveToGallery( image.EncodeToPNG(), directoryName, filenameFormatted + ".png", true );
+			path = SaveToGallery( image.EncodeToPNG(), directoryName, filenameFormatted + ".png", true );
+
+        return path;
 	}
 
 	public static void DeleteFromGallery( string path, bool isImage )
@@ -111,8 +115,10 @@ public static class NativeGallery
 #endif
 	}
 
+    
+
 	private static string GetSavePath( string directoryName, string filenameFormatted )
-	{
+	{        
 		string saveDir;
 #if !UNITY_EDITOR && UNITY_ANDROID
 		saveDir = AJC.CallStatic<string>( "GetMediaPath", directoryName );

@@ -19,8 +19,11 @@ public class TweenResultScene : MonoBehaviour {
         LeanTween.moveY(btnHome.GetComponent<RectTransform>(), 132f, GVs.DURATION_TWEEN_UNIFY).setFrom(-62f).pause()
             .setDelay(GVs.DELAY_TWEEN_UNIFY).setEaseInOutQuad();
 
-        LeanTween.moveY(btnDelete.GetComponent<RectTransform>(),-49,GVs.DURATION_TWEEN_UNIFY).setFrom(130).pause()
-            .setDelay(GVs.DELAY_TWEEN_UNIFY).setEaseInOutQuad();
+        if (btnDelete != null)
+        {
+            LeanTween.moveY(btnDelete.GetComponent<RectTransform>(), -49, GVs.DURATION_TWEEN_UNIFY).setFrom(130).pause()
+                .setDelay(GVs.DELAY_TWEEN_UNIFY).setEaseInOutQuad();
+        }
 
         LeanTween.moveY(title.GetComponent<RectTransform>(),749,GVs.DURATION_TWEEN_UNIFY).setFrom(1002).pause()
             .setDelay(GVs.DELAY_TWEEN_UNIFY).setEaseInOutQuad();

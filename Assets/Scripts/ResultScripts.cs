@@ -42,10 +42,9 @@ public class ResultScripts : MonoBehaviour
     public Button btnTest;
 
 
-    private Texture2D texVideo;
-    private Mat frame;
+    private Texture2D texVideo;    
     private AspectRatioFitter rawImageAspect;
-    public enum MODE { FISRT_RESULT, REWATCH_RESULT, ANIM};
+    public enum MODE { FISRT_RESULT, REWATCH_RESULT, ANIM };
     public static MODE mode;
     private int FPS = 60;
     private float currentFPS = 0;
@@ -125,7 +124,8 @@ public class ResultScripts : MonoBehaviour
 
         btnPlay.GetComponent<Button>().onClick.AddListener(() =>
         {
-            if(mode == MODE.FISRT_RESULT || mode == MODE.REWATCH_RESULT) { 
+            if (mode == MODE.FISRT_RESULT || mode == MODE.REWATCH_RESULT)
+            {
                 btnStop.gameObject.SetActive(true);
                 btnPlay.gameObject.SetActive(false);
             }
@@ -143,7 +143,7 @@ public class ResultScripts : MonoBehaviour
             moviePlayer.videoFrame = 0;
             rimg.texture = texture;
         });
-        
+
         btnShareFB.onClick.AddListener(() =>
         {
             if (!string.IsNullOrEmpty(videoPath))
@@ -151,7 +151,7 @@ public class ResultScripts : MonoBehaviour
                 ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_VIDEO;
                 ShareFacebook.filePath = videoPath;
             }
-            else if(!string.IsNullOrEmpty(animPath))
+            else if (!string.IsNullOrEmpty(animPath))
             {
                 ShareFacebook.ShareMODE = ShareFacebook.mode.SHARE_VIDEO;
                 ShareFacebook.filePath = animPath;
@@ -289,14 +289,15 @@ public class ResultScripts : MonoBehaviour
         {
             if (!string.IsNullOrEmpty(videoPath))
             {
-                frame = new Mat();
+                
                 btnPlay.SetActive(true);
                 moviePlayer.Load(videoPath);
                 moviePlayer.play = false;
                 moviePlayer.loop = false;
             }
             else btnPlay.SetActive(false);
-        }else if(mode == MODE.ANIM)
+        }
+        else if (mode == MODE.ANIM)
         {
             btnPlay.SetActive(true);
         }
@@ -341,9 +342,18 @@ public class ResultScripts : MonoBehaviour
                 moviePlayer.OnLoop += MoviePlayer_OnLoop;
             }
         }
-        else if(mode == MODE.ANIM)
+        else if (mode == MODE.ANIM)
         {
-            Handheld.PlayFullScreenMovie(animPath);
+            Utilities.Log("Animation Path is {0}", animPath);
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                Handheld.PlayFullScreenMovie(animPath);
+            }
+            else if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                Utilities.Log("Is file exist ?? {0}", File.Exists(animPath));
+                Handheld.PlayFullScreenMovie("file://" + animPath);
+            }
         }
     }
 

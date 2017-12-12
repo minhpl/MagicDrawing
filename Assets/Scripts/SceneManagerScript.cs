@@ -120,6 +120,12 @@ public class SceneManagerScript
         SceneManager.LoadScene("ResultScene");
     }
 
+    public void loadDecorateScene()
+    {
+        SceneManager.LoadScene("DecorateScene");
+    }
+
+
     public void loadSnapImageScene()
     {
         SceneManager.LoadScene("SnapImageScene");

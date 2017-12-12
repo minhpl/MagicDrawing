@@ -20,7 +20,6 @@ public class HomeController : MonoBehaviour
     public GameObject downloadPopUp;
     public UISlider UISliderProgressDownload;
     IDisposable cancelCorountineDownloadData;
-    public UIButton specialButton;
     public GameObject root;
 
     private void Awake()
@@ -55,13 +54,6 @@ public class HomeController : MonoBehaviour
             {
                 requireNetworl_panel.SetActive(false);
             }
-        }));
-
-        specialButton.onClick.Add(new EventDelegate(() =>
-        {
-            Debug.Log("here1");
-            LibraryScriptsNGUI.mode = LibraryScriptsNGUI.MODE.SPECIAL;
-            GVs.SCENE_MANAGER.loadLibrarySpecialScene();
         }));
 
         var masterPieceDirPath = GFs.getMasterpieceDirPath();

@@ -198,25 +198,29 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         Debug.LogErrorFormat("Stacktrace is {0}", e.StackTrace.ToString());
                     }
                 }
-
-            scrollView.GetComponent<UIGrid>().Reposition();
-            Destroy(imageItem);
+            imageItem.GetComponent<TweenAlpha>().delay = 0.5f;
+            if (mode == MODE.CATEGORY)
+            {
+                imageItem.gameObject.SetActive(true);
+                imageItem.GetComponent<UIButton>().onClick.Add(new EventDelegate(()=>
+                {
+                    LibraryScriptsNGUI.mode = MODE.SPECIAL;
+                    GVs.SCENE_MANAGER.loadLibrarySpecialScene();
+                }));
+            }
+            scrollView.GetComponent<UIGrid>().Reposition();            
         }
         else 
         {
             itemSatan.gameObject.SetActive(true);
             itemSatan.onClick.Clear();
             itemSatan.onClick.Add(new EventDelegate(() =>
-            {
-                Debug.Log("here2");
-
-
+            {                
                 TextAsset asset = Resources.Load("satan") as TextAsset;
                 Texture2D tex = new Texture2D(2, 2, TextureFormat.BGRA32, false);
                 tex.LoadImage(asset.bytes);
                 Mat mat = new Mat(tex.height, tex.width, CvType.CV_8UC4);
-                Utils.texture2DToMat(tex,mat);
-                Imgcodecs.imwrite("E:/a.png", mat);
+                Utils.texture2DToMat(tex,mat);                
                 DrawingScripts.texModel = tex;
                 DrawingScripts.image = mat;
                 DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_SPECIAL;

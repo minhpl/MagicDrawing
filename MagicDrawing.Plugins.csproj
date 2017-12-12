@@ -128,6 +128,8 @@
     <Compile Include="Assets\Plugins\Everyplay\Scripts\EveryplayRecButtons.cs" />
     <Compile Include="Assets\Plugins\Everyplay\Scripts\EveryplaySettings.cs" />
     <Compile Include="Assets\Plugins\Everyplay\Scripts\EveryplayTest.cs" />
+    <Compile Include="Assets\Plugins\EveryplayLocalSave.cs" />
+    <Compile Include="Assets\Plugins\EveryplayLocalSaveHelper.cs" />
     <Compile Include="Assets\Plugins\LeanTween\LeanAudio.cs" />
     <Compile Include="Assets\Plugins\LeanTween\LeanTest.cs" />
     <Compile Include="Assets\Plugins\LeanTween\LeanTween.cs" />

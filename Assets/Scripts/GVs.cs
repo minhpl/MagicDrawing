@@ -68,6 +68,7 @@ class GVs
     public const float ridTopPercent = 0.09f;
     public const float bonusScale = 1.2f;
     public const float DURATION_TWEEN_UNIFY = 0.3f;
+    public static string GALLARY_IOS_PATH = "";
     //public const float DURATION_TWEEN_UNIFY = 3f;
     public const float DELAY_TWEEN_UNIFY = 0.3f;
     public static CategoryList CATEGORY_LIST = new CategoryList();

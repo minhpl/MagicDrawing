@@ -24,6 +24,7 @@ public class GFs
         GFs.LoadCategoryList();
         GFs.LoadAllTemplateList();
         GFs.LoadAllFramesList();
+        loadIOSGalaryDir();
     }
 
     public static void LoadDownloadHistoryStore()
@@ -189,6 +190,8 @@ public class GFs
     private const string ALL_TEMPLATE_LIST = "ALL_TEMPLATE_LIST";
     private const string CATEGORY_LIST = "CATEGORY_LIST";
     private const string ALL_FRAME_LIST = "ALL_FRAME_LIST";
+    private const string IOS_GALLARY_PATH = "IOS_GALLARY_PATH";
+
 
     public static void LoadAllTemplateList()
     {
@@ -268,7 +271,26 @@ public class GFs
         else
             SaveAllFramesList();
     }
-   
+
+
+    public static void saveIOSGalaryDir()
+    {
+        PlayerPrefs.SetString(IOS_GALLARY_PATH, GVs.GALLARY_IOS_PATH);
+        PlayerPrefs.Save();
+    }
+
+    public static void loadIOSGalaryDir()
+    {
+        if (PlayerPrefs.HasKey(IOS_GALLARY_PATH))
+        {
+            GVs.GALLARY_IOS_PATH = PlayerPrefs.GetString(IOS_GALLARY_PATH);
+        }
+        else
+        {
+            saveIOSGalaryDir();
+        }
+    }
+
     public static Texture2D LoadPNGFromPath(string filePath)
     {
         Texture2D tex = null;
@@ -290,7 +312,6 @@ public class GFs
     {
         return null;
     }
-
 
     public static string getMasterpieceDirPath()
     {
@@ -373,6 +394,7 @@ public class GFs
 
         return dir;
     }
+
 
     public static string getlogoPath()
     {

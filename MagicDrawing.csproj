@@ -772,6 +772,7 @@
     <Compile Include="Assets\Scripts\CloudScript.cs" />
     <Compile Include="Assets\Scripts\Console.cs" />
     <Compile Include="Assets\Scripts\DataBind.cs" />
+    <Compile Include="Assets\Scripts\DecorateScene.cs" />
     <Compile Include="Assets\Scripts\DelayTweenScript.cs" />
     <Compile Include="Assets\Scripts\DontShowPersistantScene.cs" />
     <Compile Include="Assets\Scripts\DrawingScripts.cs" />
@@ -840,6 +841,7 @@
     <Compile Include="Assets\Scripts\TutorialController.cs" />
     <Compile Include="Assets\Scripts\TutorialScene.cs" />
     <Compile Include="Assets\Scripts\TweenBackButton.cs" />
+    <Compile Include="Assets\Scripts\TweenDecorateScene.cs" />
     <Compile Include="Assets\Scripts\TweenDrawingScene.cs" />
     <Compile Include="Assets\Scripts\TweenHistoryNGUIScene.cs" />
     <Compile Include="Assets\Scripts\TweenHomeScene.cs" />
