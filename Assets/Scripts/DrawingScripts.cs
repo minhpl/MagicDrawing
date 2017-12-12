@@ -17,7 +17,7 @@ using Spine.Unity;
 
 public class DrawingScripts : MonoBehaviour
 {
-    public GameObject goDisplayCamera;
+    public GameObject goCam;
     public GameObject goDisplayModel;
     public Slider sliderLine;
     public Slider sliderContrast;
@@ -69,7 +69,7 @@ public class DrawingScripts : MonoBehaviour
     private Mat edges;
     public static Texture2D texModel;
     private Texture2D texCam;
-    private Texture2D texCamCrop;
+    private Texture2D texCamDisplay;
     RawImage rimgcam;
     RawImage rimgmodel;
     Utilities utilities;
@@ -243,7 +243,7 @@ public class DrawingScripts : MonoBehaviour
         });
 
         var size = skeletonAnimation.GetComponent<MeshRenderer>().bounds.size;
-        rimgcam = goDisplayCamera.GetComponent<RawImage>();
+        rimgcam = goCam.GetComponent<RawImage>();
         rimgmodel = goDisplayModel.GetComponent<RawImage>();
         rimgmodel.color = new Color(255, 255, 255, opaque);
         wcHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
@@ -508,7 +508,7 @@ public class DrawingScripts : MonoBehaviour
                 warpPerspective.Init(wcHelper.GetMat());
                 Mat camMat = wcHelper.GetMat();
 
-                var rawImageCamera = goDisplayCamera.GetComponent<RawImage>();
+                var rawImageCamera = goCam.GetComponent<RawImage>();
                 int rawImageWidth = (int)rawImageCamera.rectTransform.rect.width;
                 int rawImageHeight = (int)rawImageCamera.rectTransform.rect.height;
                 var matWidth = rgbaMat.width();
@@ -533,7 +533,7 @@ public class DrawingScripts : MonoBehaviour
                 int subHeight = matHeight - (offsetY << 1);
                 cropRect = new OpenCVForUnity.Rect(offsetX, offsetY, subWidth, subHeight);
 
-                texCamCrop = new Texture2D(subWidth, subHeight, TextureFormat.RGBA32, false);
+                texCamDisplay = new Texture2D(subWidth, subHeight, TextureFormat.RGBA32, false);
                 texCam = new Texture2D(matWidth, matHeight, TextureFormat.RGBA32, false);
                 bufferColor = new Color32[subWidth * subHeight];
                 size = new Size(subWidth, subHeight);
@@ -658,7 +658,7 @@ public class DrawingScripts : MonoBehaviour
                 Mat rgbaMat = wcHelper.GetMat();
                 warp = warpPerspective.warpPerspective(rgbaMat);
                 displayMat = warp.submat(cropRect);
-                Utils.matToTexture2D(displayMat, texCamCrop, bufferColor);
+                Utils.matToTexture2D(displayMat, texCamDisplay, bufferColor);
 
                 if (isRecording)
                 {
@@ -672,7 +672,7 @@ public class DrawingScripts : MonoBehaviour
                     string minSec = string.Format("{0}:{1:00}", (int)(timeLapse / 60f), (int)timeLapse % 60);
                     txtTime.text = minSec;
                 }
-                rimgcam.texture = texCamCrop;
+                rimgcam.texture = texCamDisplay;
             }
         }
     }
@@ -765,43 +765,32 @@ public class DrawingScripts : MonoBehaviour
     {
         yield return null;
         var _numberFrameSave = numberFrameSave;
-        goDisplayCamera.GetComponent<RawImage>().texture = null;
+        goCam.GetComponent<RawImage>().texture = null;
 
         Mat resultMat = warp.submat(cropRect);
         Texture2D resultTexture = new Texture2D(cropRect.width, cropRect.height, TextureFormat.BGRA32, false);
-
         GFs.load_APP_PATH_VAR();
         var logoPath = GFs.getlogoPath();
-        Texture2D texture2DWatermark = GFs.LoadPNGFromPath(logoPath);
-        Debug.Log(texture2DWatermark.width);
-        Debug.Log(texture2DWatermark.height);
-
-        rigm_watermark.texture = texture2DWatermark;
-        Mat logo = new Mat(texture2DWatermark.height, texture2DWatermark.width, CvType.CV_8UC4);
+        Texture2D txtWMark = GFs.LoadPNGFromPath(logoPath);
+        rigm_watermark.texture = txtWMark;
+        Mat logo = new Mat(txtWMark.height, txtWMark.width, CvType.CV_8UC4);
         var width = resultMat.width();
         int newWidthlogo = (int)(width / 5f);
         int newHeightlogo = (int)(logo.height() * (newWidthlogo / (float)logo.width()));
+        Utils.texture2DToMat(txtWMark, logo);
+        Destroy(txtWMark);        
+        Imgproc.resize(logo, logo, new Size(newWidthlogo, newHeightlogo));        
+        var rect = resultMat.submat(new OpenCVForUnity.Rect(10, resultMat.height() - logo.height() - 10, logo.width(), logo.height()));
+        Mat maskCopyMask = new Mat(logo.height(), logo.width(), CvType.CV_8UC1);
+        Core.extractChannel(logo, maskCopyMask, 3);
 
-        Utils.texture2DToMat(texture2DWatermark, logo);
-        Mat logoResized = new Mat(newWidthlogo, newHeightlogo, CvType.CV_8UC4);
-        Imgproc.resize(logo, logoResized, new Size(newWidthlogo, newHeightlogo));
-        Debug.LogFormat("Result mat width is {0}, height is {1}", resultMat.width(), resultMat.height());
-        var rect = resultMat.submat(new OpenCVForUnity.Rect(10, resultMat.height() - logoResized.height() - 10, logoResized.width(), logoResized.height()));
-        Mat maskCopyMask = new Mat(logoResized.height(), logoResized.width(), CvType.CV_8UC1);
-        Core.extractChannel(logoResized, maskCopyMask, 3);
-        maskCopyMask = maskCopyMask - new Scalar(230);
-        logoResized.copyTo(rect, maskCopyMask);
-        Imgproc.cvtColor(logoResized, logoResized, Imgproc.COLOR_RGBA2BGR);
-        Utils.matToTexture2D(resultMat, resultTexture);
 
         var masterPieceDirPath = GFs.getMasterpieceDirPath();
-        var imagePath = masterPieceDirPath + nameMasterPiece;
-        File.WriteAllBytes(imagePath, resultTexture.EncodeToPNG());
+        var imagePath = masterPieceDirPath + nameMasterPiece;                
 
-        Debug.Log("IMAGE PATH IS " + imagePath);
-
-        DecorateScene.texture = resultTexture;
-        ResultScripts.texture = resultTexture;
+        DecorateScene.texture = texCamDisplay;
+        DecorateScene.imagePath = imagePath;
+        ResultScripts.texture = texCamDisplay;
         ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;
         ResultScripts.imagePath = imagePath;
         if (webcamVideoCapture != null)
@@ -857,8 +846,8 @@ public class DrawingScripts : MonoBehaviour
                             if (count != ratioFloor)
                             {
                                 count2++;
-                                rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logoResized.height() - 10, logoResized.width(), logoResized.height()));
-                                logoResized.copyTo(rect, maskCopyMask);
+                                rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logo.height() - 10, logo.width(), logo.height()));
+                                logo.copyTo(rect, maskCopyMask);
                                 writer.write(frame);
                             }
                             else
@@ -894,8 +883,8 @@ public class DrawingScripts : MonoBehaviour
                             if (count == ratioFloor)
                             {
                                 count2++;
-                                rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logoResized.height() - 10, logoResized.width(), logoResized.height()));
-                                logoResized.copyTo(rect, maskCopyMask);
+                                rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logo.height() - 10, logo.width(), logo.height()));
+                                logo.copyTo(rect, maskCopyMask);
                                 writer.write(frame);
 
                                 ratioFloor = (int)Math.Floor(ratio + du);
@@ -922,8 +911,8 @@ public class DrawingScripts : MonoBehaviour
                         {
                             break;
                         }
-                        rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logoResized.height() - 10, logoResized.width(), logoResized.height()));
-                        logoResized.copyTo(rect, maskCopyMask);
+                        rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logo.height() - 10, logo.width(), logo.height()));
+                        logo.copyTo(rect, maskCopyMask);
                         writer.write(frame);
                     }
 
