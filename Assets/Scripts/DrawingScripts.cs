@@ -18,18 +18,15 @@ using Spine.Unity;
 public class DrawingScripts : MonoBehaviour
 {
     public GameObject goCam;
-    public GameObject goDisplayModel;
+    public GameObject goModel;
     public Slider sliderLine;
     public Slider sliderContrast;
-    public Slider sliderTest;
     public UnityEngine.UI.Text txtTime;
-    public TextMeshProUGUI txtTimeTMPro;
     public Button backBtn;
-    public GameObject panelComfirm;
-    public Button agrre;
+    public GameObject pnlCfirm;
+    public Button agr;
     public Button cancel;
-    public GameObject eventSystem;
-    public TapGesture tapGesture;
+    public GameObject eventSystem;    
     public Button tickBtn;
     public Button cancelBtn;
     public UnityEngine.UI.Text txtComfirmText;
@@ -96,7 +93,7 @@ public class DrawingScripts : MonoBehaviour
     private int numberFrameSave = 0;
     private Mat frame;
     private Size size;
-    private const int FRAME_SKIP = 10;
+    private const int FRAME_SKIP = 1;
     private const int MAX_LENGTH_RESULT_VIDEO = 30;
     private string nameMasterPiece = null;
     private string nameNoExt = "default";
@@ -124,7 +121,7 @@ public class DrawingScripts : MonoBehaviour
         backBtn.onClick = new Button.ButtonClickedEvent();
         backBtn.onClick.AddListener(() =>
         {
-            panelComfirm.SetActive(true);
+            pnlCfirm.SetActive(true);
             for (int i = 0; i < popupPlayTween.Length; i++)
             {
                 popupPlayTween[i].Play(true);
@@ -139,7 +136,7 @@ public class DrawingScripts : MonoBehaviour
             }
             popupPlayTween[0].onFinished.Add(new EventDelegate(() =>
             {
-                panelComfirm.SetActive(false);
+                pnlCfirm.SetActive(false);
                 popupPlayTween[0].onFinished.Clear();
             }));
 
@@ -149,7 +146,7 @@ public class DrawingScripts : MonoBehaviour
         {
             cancelCoroutineBackBtnAndroid = Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Escape) == true).Subscribe(_ =>
             {
-                panelComfirm.SetActive(true);
+                pnlCfirm.SetActive(true);
                 for (int i = 0; i < popupPlayTween.Length; i++)
                 {
                     popupPlayTween[i].Play(true);
@@ -157,7 +154,7 @@ public class DrawingScripts : MonoBehaviour
             });
         }
 
-        agrre.onClick.AddListener(() =>
+        agr.onClick.AddListener(() =>
         {
             if (cancelGVidP != null)
                 cancelGVidP.Dispose();
@@ -179,7 +176,7 @@ public class DrawingScripts : MonoBehaviour
             }
             popupPlayTween[0].onFinished.Add(new EventDelegate(() =>
             {
-                panelComfirm.SetActive(false);
+                pnlCfirm.SetActive(false);
                 popupPlayTween[0].onFinished.Clear();
                 GFs.BackToPreviousScene();
             }));
@@ -203,16 +200,7 @@ public class DrawingScripts : MonoBehaviour
             wcHelper.Play();
             CountVidRec.Start();
         });
-        if (sliderTest)
-        {
-            var onSliderTeststream = sliderTest.onValueChanged.AsObservable();
-            onSliderTeststream.Subscribe((float i) =>
-            {
-                var scale = 1 + i;
-                Utilities.Log("Scale is {0}", scale);
-                rimgcam.rectTransform.localScale = new Vector3(scale, scale, scale);
-            });
-        }
+
         Button_Recording.onClick.AddListener(() =>
         {
             if (!pause.activeSelf)
@@ -244,7 +232,7 @@ public class DrawingScripts : MonoBehaviour
 
         var size = skeletonAnimation.GetComponent<MeshRenderer>().bounds.size;
         rimgcam = goCam.GetComponent<RawImage>();
-        rimgmodel = goDisplayModel.GetComponent<RawImage>();
+        rimgmodel = goModel.GetComponent<RawImage>();
         rimgmodel.color = new Color(255, 255, 255, opaque);
         wcHelper = gameObject.GetComponent<WebCamTextureToMatHelper>();
         warpPerspective = gameObject.GetComponent<WarpPerspective>();
@@ -375,7 +363,7 @@ public class DrawingScripts : MonoBehaviour
         //-----------------------------------------------------------------------------------------------------------------------                
         rimgcam.texture = bgTture;
         //Animation
-        imgUserDraw.gameObject.transform.position = goDisplayModel.transform.position;
+        imgUserDraw.gameObject.transform.position = goModel.transform.position;
         imgUserDraw.rectTransform.sizeDelta = rimgmodel.rectTransform.rect.size;
         Texture2D userDrawTexture = new Texture2D(cropBoundaryMat2.width(), cropBoundaryMat2.height(), TextureFormat.RGBA32, false);
         Utils.matToTexture2D(cropBoundaryMat2, userDrawTexture);
@@ -610,7 +598,7 @@ public class DrawingScripts : MonoBehaviour
         Utils.matToTexture2D(redMat, texEdges, colorsBuffer);
         rimgmodel.texture = texEdges;
         utilities = new Utilities();
-        goDisplayModel.SetActive(true);
+        goModel.SetActive(true);
         loaded = true;
 
         cancelCorountineTurnOffTouchInput = Observable.FromMicroCoroutine(turnOffTouchInput).Subscribe();
@@ -727,7 +715,7 @@ public class DrawingScripts : MonoBehaviour
         Pnl_Snap.SetActive(true);
         Pnl_Tool.SetActive(false);
         // backBtn.gameObject.SetActive(false);
-        goDisplayModel.SetActive(false);
+        goModel.SetActive(false);
         float periods = 1f;
         yield return new WaitForSeconds(periods);
         timeCounterSnap.text = "2";
@@ -783,12 +771,16 @@ public class DrawingScripts : MonoBehaviour
         var rect = resultMat.submat(new OpenCVForUnity.Rect(10, resultMat.height() - logo.height() - 10, logo.width(), logo.height()));
         Mat maskCopyMask = new Mat(logo.height(), logo.width(), CvType.CV_8UC1);
         Core.extractChannel(logo, maskCopyMask, 3);
+        maskCopyMask = maskCopyMask - new Scalar(230);
+        logo.copyTo(rect, maskCopyMask);
+        Utils.matToTexture2D(resultMat, resultTexture);
+        ResultScripts.texture = resultTexture;
 
-
+        Imgcodecs.imwrite("E:\\b.png", maskCopyMask);
         var masterPieceDirPath = GFs.getMasterpieceDirPath();
         var imagePath = masterPieceDirPath + nameMasterPiece;                
 
-        DecorateScene.texture = texCamDisplay;
+        DecorateScene.texture = resultTexture;
         DecorateScene.imagePath = imagePath;
         ResultScripts.texture = texCamDisplay;
         ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;
@@ -848,6 +840,8 @@ public class DrawingScripts : MonoBehaviour
                                 count2++;
                                 rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logo.height() - 10, logo.width(), logo.height()));
                                 logo.copyTo(rect, maskCopyMask);
+                                Imgcodecs.imwrite(string.Format("E:\\A{0}.png", count2++), frame);
+                                Debug.Log("fffff");
                                 writer.write(frame);
                             }
                             else
@@ -885,8 +879,9 @@ public class DrawingScripts : MonoBehaviour
                                 count2++;
                                 rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logo.height() - 10, logo.width(), logo.height()));
                                 logo.copyTo(rect, maskCopyMask);
+                                Imgcodecs.imwrite(string.Format("E:\\A{0}.png", count2++), frame);
+                                Debug.Log("fffff");
                                 writer.write(frame);
-
                                 ratioFloor = (int)Math.Floor(ratio + du);
                                 du = ratio + du - ratioFloor;
                                 count = 0;
@@ -911,8 +906,9 @@ public class DrawingScripts : MonoBehaviour
                         {
                             break;
                         }
-                        rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logo.height() - 10, logo.width(), logo.height()));
-                        logo.copyTo(rect, maskCopyMask);
+                        var rect2 = frame.submat(new OpenCVForUnity.Rect(10, resultMat.height() - logo.height() - 10, logo.width(), logo.height()));
+                        logo.copyTo(rect2, maskCopyMask);
+                        Imgcodecs.imwrite(string.Format("E:\\A{0}.png", ++iii), frame);
                         writer.write(frame);
                     }
 
@@ -933,7 +929,7 @@ public class DrawingScripts : MonoBehaviour
                 GVs.SCENE_MANAGER.loadDecorateScene();
             });
     }
-
+    int iii = 0;
     public void OnPushBtnClicked()
     {
         if (filtermode == FILTERMODE.LINE)
