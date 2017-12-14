@@ -26,7 +26,7 @@ public class DrawingScripts : MonoBehaviour
     public GameObject pnlCfirm;
     public Button agr;
     public Button cancel;
-    public GameObject eventSystem;    
+    public GameObject eventSystem;
     public Button tickBtn;
     public Button cancelBtn;
     public UnityEngine.UI.Text txtComfirmText;
@@ -45,6 +45,7 @@ public class DrawingScripts : MonoBehaviour
     public RawImage imgUserDraw;
     public RawImage background;
     public GameObject reindeer;
+    public GameObject pnSpec;  
     public AudioSource chrimasSong;
     public RawImage bigStar;
     public RawImage smallStar;
@@ -79,7 +80,7 @@ public class DrawingScripts : MonoBehaviour
     private OpenCVForUnity.Rect cropRect;
     //private float opaque = 0.4f;
     public enum DRAWMODE { DRAW_MODEL, DRAW_IMAGE, DRAW_SPECIAL };
-    public static DRAWMODE drawMode = DRAWMODE.DRAW_MODEL;
+    public static DRAWMODE drawMode = DRAWMODE.DRAW_SPECIAL;
     public enum FILTERMODE { LINE, BLEND };
     public static FILTERMODE filtermode = FILTERMODE.LINE;
     private System.Diagnostics.Stopwatch CountVidRec;
@@ -92,11 +93,9 @@ public class DrawingScripts : MonoBehaviour
     private int numberFrameSave = 0;
     private Mat frame;
     private Size size;
-    private const int FRAME_SKIP = 1;
     private const int MAX_LENGTH_RESULT_VIDEO = 30;
     private string nameMasterPiece = null;
     private string nameNoExt = "default";
-    private bool istest = false;
     private void Awake()
     {
         firework.Stop();
@@ -191,7 +190,7 @@ public class DrawingScripts : MonoBehaviour
             }
             else
             {
-                IDisposable cancelCorountineSnapImage = Observable.FromCoroutine(SaveMasterpiece).Subscribe();
+                IDisposable cancelCorountineSnapImage = Observable.FromCoroutine(CountDown).Subscribe();
                 backBtn.gameObject.SetActive(false);
             }
         });
@@ -235,209 +234,14 @@ public class DrawingScripts : MonoBehaviour
         Everyplay.Initialize();
     }
 
-    IEnumerator GetVideoPath()
-    {
-        yield return null;
-        if (Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.IPhonePlayer)
-            yield break;
-        string everyplayDir = null;
-#if UNITY_IOS
-        var root = new DirectoryInfo(Application.persistentDataPath).Parent.FullName;
-        everyplayDir = root + "/tmp/Everyplay/session";
-#elif UNITY_ANDROID 
-         var root = new DirectoryInfo(Application.temporaryCachePath).FullName;
-         everyplayDir = root + "/sessions";
-#endif
-        var files = new DirectoryInfo(everyplayDir).GetFiles("*.mp4", SearchOption.AllDirectories);
-        var videoLocation = "";
-        // Should only be one video, if there is one at all
-        foreach (var file in files)
-        {
-#if UNITY_ANDROID
-            //videoLocation = "file://" + file.FullName;
-            videoLocation = file.FullName;
-#else
-            videoLocation = file.FullName;
-#endif
-            Utilities.LogFormat("Videos Location is {0}", videoLocation);
-            //break;
-        }
-        if(Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            WWW www = new WWW("file://" + videoLocation);
-            yield return www;
-        }       
-        var mpdir = GFs.getMasterpieceDirPath();
-        var file_name = mpdir + nameNoExt + ".mp4";
-        //EveryplayLocalSave.SaveTo(file_name);        
-        yield return EveryplayLocalSave.SaveToAsync(file_name);        
-        Utilities.Log("The path is {0}, is file exist ? {1}", file_name, File.Exists(file_name));
-        Utilities.Log("The original is {0}, is file exist ? {1}", videoLocation, File.Exists(videoLocation));
-        //if (Application.platform == RuntimePlatform.Android)
-        //{
-        //    Handheld.PlayFullScreenMovie(file_name);            
-        //}
-        //else if (Application.platform == RuntimePlatform.IPhonePlayer)
-        //{
-        //    Handheld.PlayFullScreenMovie("file://" + file_name);
-        //}
-    }
-
     int texModelW;
     int texModelH;
-    void isolateBoundary()
-    {
-        var offsetMin = rimgmodel.rectTransform.offsetMin;
-        var offsetMax = rimgmodel.rectTransform.offsetMax;
-        var left = offsetMin.x;
-        var bottom = -offsetMin.y + rimgcam.rectTransform.rect.size.y;
-        var top = -offsetMax.y;
-        var right = offsetMax.x + rimgcam.rectTransform.rect.size.x;
-        var width = right - left;
-        var height = bottom - top;
-        var center_x = left + width / 2;
-        var center_y = top + height / 2;
-        var scale = rimgmodel.transform.localScale.x;
-        var real_width = width * scale;
-        var real_height = height * scale;
-        var real_left = center_x - (real_width / 2);
-        var real_top = center_y - (real_height / 2);
-
-        var scal = cropRect.width / rimgcam.rectTransform.rect.size.x;
-        int x = (int)(real_left * scal);
-        int y = (int)(real_top * scal);
-        int w = (int)(real_width * scal);
-        int h = (int)(real_height * scal);
-
-        int x_end = x + w > cropRect.width ? cropRect.width : x + w;
-        int x_begin = x < 0 ? 0 : x;
-        int y_end = y + h > cropRect.height ? cropRect.height : y + h;
-        int y_begin = y < 0 ? 0 : y;
-
-        Mat mask = new Mat();
-        Imgproc.resize(image, mask, new Size(real_width * scal, real_height * scal));
-
-        List<Mat> channels = new List<Mat>();
-        Core.split(mask, channels);
-        channels[0] = channels[3];
-        channels[1] = channels[3];
-        channels[2] = channels[3];
-        channels[3] = channels[3];
-        Core.merge(channels, mask);
-        Mat cropBoundaryMat2 = new Mat();
-        Mat mask2 = mask.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y);
-
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(8, 8));
-        Imgproc.morphologyEx(mask2, mask2, Imgproc.MORPH_DILATE, kernel);
-
-        Mat cropBoundary = displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end);
-        cropBoundary.copyTo(cropBoundaryMat2, mask2);
-
-        var kernel2 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(70, 70));
-        Mat bg = new Mat();
-        Imgproc.morphologyEx(cropBoundary, bg, Imgproc.MORPH_CLOSE, kernel2);
-        var kernel3 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(50, 50));
-        Imgproc.morphologyEx(bg, bg, Imgproc.MORPH_CLOSE, kernel3);
-
-        Mat backgroundMat3 = displayMat.clone();
-        bg.copyTo(backgroundMat3.colRange(x_begin, x_end).rowRange(y_begin, y_end), mask2);
-        Imgproc.GaussianBlur(backgroundMat3, backgroundMat3, new Size(10, 10), 0);
-        Texture2D bgTture = new Texture2D(backgroundMat3.width(), backgroundMat3.height(), TextureFormat.BGRA32, false);
-        Utils.matToTexture2D(backgroundMat3, bgTture);    
-        Imgproc.resize(cropBoundaryMat2, cropBoundaryMat2, new Size(texModelW, texModelH));
-        
-        var txtASpine = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
-        Mat txtASpineM = new Mat(txtASpine.height, txtASpine.width, CvType.CV_8UC4);
-        Utils.texture2DToMat(txtASpine, txtASpineM);
-        cropBoundaryMat2.copyTo(txtASpineM.submat(0, cropBoundaryMat2.height(), 0, cropBoundaryMat2.width()));                
-        Texture2D texture = new Texture2D(txtASpine.width, txtASpine.height, TextureFormat.RGBA32, false);
-        Utils.matToTexture2D(txtASpineM, texture);                
-        skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texture;        
-        //-----------------------------------------------------------------------------------------------------------------------                
-        rimgcam.texture = bgTture;
-        //Animation
-        imgUserDraw.gameObject.transform.position = goModel.transform.position;
-        imgUserDraw.rectTransform.sizeDelta = rimgmodel.rectTransform.rect.size;
-        Texture2D userDrawTexture = new Texture2D(cropBoundaryMat2.width(), cropBoundaryMat2.height(), TextureFormat.RGBA32, false);
-        Utils.matToTexture2D(cropBoundaryMat2, userDrawTexture);
-        imgUserDraw.texture = userDrawTexture;
-        imgUserDraw.gameObject.SetActive(true);
-        //---------------------------------
-        skeletonAnimation.gameObject.SetActive(true);
-        skeletonAnimation.gameObject.SetActive(false);
-        var sizeAnimation = skeletonAnimation.gameObject.GetComponent<MeshRenderer>().bounds.size;
-        var sizeAnimation2 = new Vector2(sizeAnimation.x, sizeAnimation.y);
-        Debug.Log(sizeAnimation);
-
-        var widthUserDraw = imgUserDraw.rectTransform.sizeDelta.x;
-        var scal_ = sizeAnimation.x / widthUserDraw;
-        var posAnimation = skeletonAnimation.gameObject.transform.position;
-        var newPos = new Vector3(posAnimation.x, posAnimation.y + sizeAnimation.y / 2f);
-
-        var seq = LeanTween.sequence();
-        seq.append(() =>
-        {
-            LeanTween.move(imgUserDraw.gameObject, newPos, 2f);
-            LeanTween.scale(imgUserDraw.gameObject, new Vector3(scal_, scal_, scal_), 2f);
-        });
-        seq.append(2);
-        seq.append(() =>
-        {
-            if (Everyplay.IsRecording() || Everyplay.IsPaused())
-            {
-                Utilities.Log("HereHere");
-                Everyplay.StopRecording();
-            }
-            Everyplay.StartRecording();
-            Utilities.Log("is recording0 ? {0}", Everyplay.IsRecording());
-            LeanTween.alpha(rimgcam.rectTransform, 0, 3f);
-            LeanTween.alpha(background.rectTransform, 1, 3f);
-        });
-        seq.append(3f);
-        seq.append(() =>
-        {
-            firework.gameObject.SetActive(true);
-            snowCircle.gameObject.SetActive(true);
-            snowFlower.gameObject.SetActive(true);
-
-            firework.GetComponent<ParticleSystem>().Play(true);
-            LeanTween.alpha(bigStar.rectTransform, 1, 0.4f).setLoopPingPong();
-            LeanTween.alpha(smallStar.rectTransform, 1, 0.4f).setLoopPingPong().setDelay(0.2f);
-            LeanTween.rotateZ(reindeer, -reindeer.transform.localRotation.eulerAngles.z, 10).setLoopClamp();
-            skeletonAnimation.gameObject.GetComponent<MeshRenderer>().sortingLayerName = "spine";
-            skeletonAnimation.gameObject.SetActive(true);
-            skeletonAnimation.AnimationName = "animation";
-            imgUserDraw.gameObject.SetActive(false);
-            chrimasSong.Play();
-            chrimasSong.loop = false;
-            Observable.Timeout<float>(Observable.Never<float>(), TimeSpan.FromSeconds(2)).Subscribe((float f) =>
-            { }, (Exception ex) =>
-            {
-                ScreenshotHelper.iCaptureScreen((Texture2D tex_)=>
-                {
-                    Utilities.Log("snap image width is {0}, height is {1}", tex_.width, tex_.height);
-                    var animPath = GFs.getMasterpieceDirPath() + nameNoExt + "_anim.png";
-                    File.WriteAllBytes(animPath, tex_.EncodeToPNG());                    
-                    ScreenshotHelper.iClear();
-                });
-            });
-            Observable.Timeout<float>(Observable.Never<float>(), TimeSpan.FromSeconds(15)).Subscribe((float f) =>
-             { }, (Exception ex) =>
-             {
-                 Everyplay.StopRecording();                 
-                 cancelGVidP = Observable.FromCoroutine(GetVideoPath).Subscribe((_) => { }, () =>
-                  {
-                      cancelSaveMP2 = Observable.FromMicroCoroutine(SaveMasterPiece2).Subscribe();
-                  });
-             });
-        });
-    }
 
     IDisposable cancelGVidP;
     IDisposable cancelSaveMP2;
-        
+
     private void OnDisable()
-    {        
+    {
         if (Everyplay.IsRecording() || Everyplay.IsPaused())
         {
             Utilities.Log("Here in Ondestroy: is recording? {0}, is paused ? {1}", Everyplay.IsRecording(), Everyplay.IsPaused());
@@ -540,7 +344,7 @@ public class DrawingScripts : MonoBehaviour
             scrTransGes.Type = TransformGesture.TransformType.Rotation | TransformGesture.TransformType.Scaling | TransformGesture.TransformType.Translation;
         }
 
-        if (drawMode == DRAWMODE.DRAW_MODEL || istest)
+        if (drawMode == DRAWMODE.DRAW_MODEL || GVs.isTest)
         {
             string imgPath;
             if (imgModelPath != null)
@@ -549,12 +353,18 @@ public class DrawingScripts : MonoBehaviour
             }
             else
             {
-                var categoryID = GVs.CATEGORY_LIST.data[3]._id;
-                imgPath = GFs.getAppDataDirPath() + GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID].dir + "/" + "C06T001.png";
+                var categoryID = GVs.CATEGORY_LIST.data[5]._id;                
+                imgPath = GFs.getAppDataDirPath() + GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID].dir + "/" + "C07T001.png";
                 Debug.Log(imgPath);
             }
 
             texModel = GFs.LoadPNGFromPath(imgPath);
+            if(GVs.isTest)
+            {
+                TextAsset asset = Resources.Load("satan") as TextAsset;                
+                texModel.LoadImage(asset.bytes);
+            }
+
             int w = texModel.width;
             int h = texModel.height;
             texModelW = w;
@@ -579,7 +389,7 @@ public class DrawingScripts : MonoBehaviour
             texModel.Compress(true);
         }
         else
-        {
+        {            
             texModelW = texModel.width;
             texModelH = texModel.height;
         }
@@ -650,7 +460,7 @@ public class DrawingScripts : MonoBehaviour
                 if (isRecording)
                 {
                     numberFrame++;
-                    if (numberFrame % FRAME_SKIP == 0)
+                    if (numberFrame % GVs.skipFrame == 0)
                     {
                         numberFrameSave++;
                         webcamVideoCapture.write(displayMat);
@@ -704,7 +514,7 @@ public class DrawingScripts : MonoBehaviour
         rimgmodel.GetComponent<Transformer>().enabled = false;
     }
     bool preserveTexture = false;
-    IEnumerator SaveMasterpiece()
+    IEnumerator CountDown()
     {
         if (webcamVideoCapture.writer != null && !webcamVideoCapture.writer.IsDisposed)
         {
@@ -750,8 +560,209 @@ public class DrawingScripts : MonoBehaviour
 
     OpenCVForUnity.Rect posPMat;
 
+    void isolateBoundary()
+    {
+        var offsetMin = rimgmodel.rectTransform.offsetMin;
+        var offsetMax = rimgmodel.rectTransform.offsetMax;
+        var left = offsetMin.x;
+        var bottom = -offsetMin.y + rimgcam.rectTransform.rect.size.y;
+        var top = -offsetMax.y;
+        var right = offsetMax.x + rimgcam.rectTransform.rect.size.x;
+        var width = right - left;
+        var height = bottom - top;
+        var center_x = left + width / 2;
+        var center_y = top + height / 2;
+        var scale = rimgmodel.transform.localScale.x;
+        var real_width = width * scale;
+        var real_height = height * scale;
+        var real_left = center_x - (real_width / 2);
+        var real_top = center_y - (real_height / 2);
+
+        var scal = cropRect.width / rimgcam.rectTransform.rect.size.x;
+        int x = (int)(real_left * scal);
+        int y = (int)(real_top * scal);
+        int w = (int)(real_width * scal);
+        int h = (int)(real_height * scal);
+
+        int x_end = x + w > cropRect.width ? cropRect.width : x + w;
+        int x_begin = x < 0 ? 0 : x;
+        int y_end = y + h > cropRect.height ? cropRect.height : y + h;
+        int y_begin = y < 0 ? 0 : y;
+
+        Mat mask = new Mat();
+        Imgproc.resize(image, mask, new Size(real_width * scal, real_height * scal));
+
+        List<Mat> channels = new List<Mat>();
+        Core.split(mask, channels);
+        channels[0] = channels[3];
+        channels[1] = channels[3];
+        channels[2] = channels[3];
+        channels[3] = channels[3];
+        Core.merge(channels, mask);
+        Mat cropBoundaryMat2 = new Mat();
+        Mat mask2 = mask.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y);
+
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(8, 8));
+        Imgproc.morphologyEx(mask2, mask2, Imgproc.MORPH_DILATE, kernel);
+
+        Mat cropBoundary = displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end);
+        cropBoundary.copyTo(cropBoundaryMat2, mask2);
+
+        var kernel2 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(70, 70));
+        Mat bg = new Mat();
+        Imgproc.morphologyEx(cropBoundary, bg, Imgproc.MORPH_CLOSE, kernel2);
+        var kernel3 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(50, 50));
+        Imgproc.morphologyEx(bg, bg, Imgproc.MORPH_CLOSE, kernel3);
+
+        Mat backgroundMat3 = displayMat.clone();
+        bg.copyTo(backgroundMat3.colRange(x_begin, x_end).rowRange(y_begin, y_end), mask2);
+        Imgproc.GaussianBlur(backgroundMat3, backgroundMat3, new Size(10, 10), 0);
+        Texture2D bgTture = new Texture2D(backgroundMat3.width(), backgroundMat3.height(), TextureFormat.BGRA32, false);
+        Utils.matToTexture2D(backgroundMat3, bgTture);
+        Imgproc.resize(cropBoundaryMat2, cropBoundaryMat2, new Size(texModelW, texModelH));
+
+        var txtASpine = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
+        Mat txtASpineM = new Mat(txtASpine.height, txtASpine.width, CvType.CV_8UC4);
+        Utils.texture2DToMat(txtASpine, txtASpineM);
+        cropBoundaryMat2.copyTo(txtASpineM.submat(0, cropBoundaryMat2.height(), 0, cropBoundaryMat2.width()));
+        Texture2D texture = new Texture2D(txtASpine.width, txtASpine.height, TextureFormat.RGBA32, false);
+        Utils.matToTexture2D(txtASpineM, texture);
+        skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texture;
+        //-----------------------------------------------------------------------------------------------------------------------                
+        rimgcam.texture = bgTture;
+        //Animation
+        imgUserDraw.gameObject.transform.position = goModel.transform.position;
+        imgUserDraw.rectTransform.sizeDelta = rimgmodel.rectTransform.rect.size;
+        Texture2D userDrawTexture = new Texture2D(cropBoundaryMat2.width(), cropBoundaryMat2.height(), TextureFormat.RGBA32, false);
+        Utils.matToTexture2D(cropBoundaryMat2, userDrawTexture);
+        imgUserDraw.texture = userDrawTexture;
+        imgUserDraw.gameObject.SetActive(true);
+        //---------------------------------
+        skeletonAnimation.gameObject.SetActive(true);
+        skeletonAnimation.gameObject.SetActive(false);
+        var sizeAnimation = skeletonAnimation.gameObject.GetComponent<MeshRenderer>().bounds.size;
+        var sizeAnimation2 = new Vector2(sizeAnimation.x, sizeAnimation.y);
+        Debug.Log(sizeAnimation);
+
+        var widthUserDraw = imgUserDraw.rectTransform.sizeDelta.x;
+        var scal_ = sizeAnimation.x / widthUserDraw;
+        var posAnimation = skeletonAnimation.gameObject.transform.position;
+        var newPos = new Vector3(posAnimation.x, posAnimation.y + sizeAnimation.y / 2f);
+
+        var seq = LeanTween.sequence();
+        seq.append(() =>
+        {
+            if (Everyplay.IsRecording() || Everyplay.IsPaused())
+            {
+                Everyplay.StopRecording();
+            }
+            Everyplay.StartRecording();
+            chrimasSong.Play();
+            chrimasSong.loop = false;
+            LeanTween.move(imgUserDraw.gameObject, newPos, 2f);
+            LeanTween.scale(imgUserDraw.gameObject, new Vector3(scal_, scal_, scal_), 2f);
+        });
+        seq.append(2);
+        seq.append(() =>
+        {
+            Utilities.Log("is recording0 ? {0}", Everyplay.IsRecording());
+            LeanTween.alpha(rimgcam.rectTransform, 0, 3f);
+            LeanTween.alpha(background.rectTransform, 1, 3f);
+        });
+        seq.append(3f);
+        seq.append(() =>
+        {
+            firework.gameObject.SetActive(true);
+            snowCircle.gameObject.SetActive(true);
+            snowFlower.gameObject.SetActive(true);
+
+            firework.GetComponent<ParticleSystem>().Play(true);
+            LeanTween.alpha(bigStar.rectTransform, 1, 0.4f).setLoopPingPong();
+            LeanTween.alpha(smallStar.rectTransform, 1, 0.4f).setLoopPingPong().setDelay(0.2f);
+            LeanTween.rotateZ(reindeer, -reindeer.transform.localRotation.eulerAngles.z, 10).setLoopClamp();
+            skeletonAnimation.gameObject.GetComponent<MeshRenderer>().sortingLayerName = "spine";
+            skeletonAnimation.gameObject.SetActive(true);
+            skeletonAnimation.AnimationName = "animation";
+            imgUserDraw.gameObject.SetActive(false);
+
+
+            Observable.Timeout<float>(Observable.Never<float>(), TimeSpan.FromSeconds(GVs.timeAni)).Subscribe((float f) =>
+            { }, (Exception ex) =>
+            {
+                Everyplay.StopRecording();
+                cancelGVidP = Observable.FromCoroutine(GetVideoPath).Subscribe((_) => { }, () =>
+                {
+                    ScreenshotHelper.iCaptureScreen((Texture2D tex_) =>
+                    {
+                        Utilities.Log("snap image width is {0}, height is {1}", tex_.width, tex_.height);
+                        var animPath = GFs.getMasterpieceDirPath() + nameNoExt + "_anim.png";
+                        File.WriteAllBytes(animPath, tex_.EncodeToPNG());
+                        Destroy(tex_);
+
+                        cancelSaveMP2 = Observable.FromMicroCoroutine(SaveMasterPiece2).Subscribe();
+                    });
+                });
+            });
+        });
+    }
+
+    IEnumerator GetVideoPath()
+    {
+        yield return null;
+        if (Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.IPhonePlayer)
+            yield break;
+        string everyplayDir = null;
+#if UNITY_IOS
+        var root = new DirectoryInfo(Application.persistentDataPath).Parent.FullName;
+        everyplayDir = root + "/tmp/Everyplay/session";
+#elif UNITY_ANDROID
+        var root = new DirectoryInfo(Application.temporaryCachePath).FullName;
+        everyplayDir = root + "/sessions";
+#endif
+        var files = new DirectoryInfo(everyplayDir).GetFiles("*.mp4", SearchOption.AllDirectories);
+        var videoLocation = "";
+        // Should only be one video, if there is one at all
+        foreach (var file in files)
+        {
+#if UNITY_ANDROID
+            //videoLocation = "file://" + file.FullName;
+            videoLocation = file.FullName;
+#else
+            videoLocation = file.FullName;
+#endif
+            Utilities.LogFormat("Videos Location is {0}", videoLocation);
+            //break;
+        }
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            WWW www = new WWW("file://" + videoLocation);
+            yield return www;
+        }
+        var mpdir = GFs.getMasterpieceDirPath();
+        var file_name = mpdir + nameNoExt + ".mp4";
+        //EveryplayLocalSave.SaveTo(file_name);        
+        yield return EveryplayLocalSave.SaveToAsync(file_name);
+        Utilities.Log("The path is {0}, is file exist ? {1}", file_name, File.Exists(file_name));
+        Utilities.Log("The original is {0}, is file exist ? {1}", videoLocation, File.Exists(videoLocation));
+        //if (Application.platform == RuntimePlatform.Android)
+        //{
+        //    Handheld.PlayFullScreenMovie(file_name);
+        //}
+        //else if (Application.platform == RuntimePlatform.IPhonePlayer)
+        //{
+        //    Handheld.PlayFullScreenMovie("file://" + file_name);
+        //}
+    }
+
     IEnumerator SaveMasterPiece2()
     {
+        pnSpec.SetActive(false);
+        firework.gameObject.SetActive(false);
+        snowCircle.gameObject.SetActive(false);
+        snowFlower.gameObject.SetActive(false);
+        skeletonAnimation.gameObject.SetActive(false);
+
+        Debug.Log("Here, xin chao tat cac moi nguoi tren tg nay");
         yield return null;
         var _numberFrameSave = numberFrameSave;
         goCam.GetComponent<RawImage>().texture = null;

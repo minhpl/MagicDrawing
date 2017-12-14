@@ -321,23 +321,72 @@ public class GFs
         const string IPHONE_DIR_NAME_MASTERPIECE = "masterpiece";
         const string PC_DIR_NAME_MASTERPIECE = "masterpiece";
 
+
+        string dir = "";
+
         if (Application.platform == RuntimePlatform.Android)
         {
-            return ANDROID_DIR_PATH_MASTERPIECE;
+            dir = ANDROID_DIR_PATH_MASTERPIECE;
         }
         else
         {
             var appPath = getAppDataDirPath();
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
-                return appPath + IPHONE_DIR_NAME_MASTERPIECE + "/" + perUserDir + "/";
+                dir = appPath + IPHONE_DIR_NAME_MASTERPIECE + "/" + perUserDir + "/";
             }
             else
             {
-                return appPath + PC_DIR_NAME_MASTERPIECE + "/" + perUserDir + "/";
+                dir = appPath + PC_DIR_NAME_MASTERPIECE + "/" + perUserDir + "/";
             }
         }
+
+        if (!Directory.Exists(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
+
+        return dir;
     }
+
+    public static string getMasterpieceDirPath2()
+    {
+        string perUserDir = GVs.CURRENT_USER_MODEL.id.ToString();
+
+        string ANDROID_DIR_PATH_MASTERPIECE = "data/data/" + Application.identifier + "/files/Masterpiece/" + perUserDir + "/";
+        const string IPHONE_DIR_NAME_MASTERPIECE = "masterpiece2";
+        const string PC_DIR_NAME_MASTERPIECE = "masterpiece";
+
+
+        string dir = "";
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            dir = ANDROID_DIR_PATH_MASTERPIECE;
+        }
+        else
+        {
+            var appPath = getAppDataDirPath();
+            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                dir = appPath + IPHONE_DIR_NAME_MASTERPIECE + "/" + perUserDir + "/";
+            }
+            else
+            {
+                dir = appPath + PC_DIR_NAME_MASTERPIECE + "/" + perUserDir + "/";
+            }
+        }
+
+        if (!Directory.Exists(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
+
+        return dir;
+    }
+
+
+
 
     public static string getAppDataDirPath()
     {

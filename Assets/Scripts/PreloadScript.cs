@@ -247,6 +247,9 @@ public class PreloadScript : MonoBehaviour
                         }
                     }       
 
+
+
+
                     GFs.SaveCategoryList();
 
                     var listCategory = GVs.CATEGORY_LIST.data;

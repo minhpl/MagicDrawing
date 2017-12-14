@@ -275,8 +275,7 @@ public class ResultScripts : MonoBehaviour
         var ratioCanvas = (float)canvasRect.width / canvasRect.height;
         ratioImage = ratioCanvas;
         var panelAspect = panel.GetComponent<AspectRatioFitter>();
-        panel.GetComponent<RectTransform>().sizeDelta = new Vector2(canvasWidth * 0.68f, 1);
-        panelAspect.aspectMode = AspectRatioFitter.AspectMode.WidthControlsHeight;
+        panelAspect.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
         panelAspect.aspectRatio = ratioCanvas;
 
         if (texture != null)

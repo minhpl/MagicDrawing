@@ -6,7 +6,10 @@ using UnityEngine;
 class GVs
 {
     public static bool CANCEL_DOWNLOAD = false;
-    public static bool DEBUG = false;
+    public static bool DEBUG = true;
+    public static int skipFrame = 1;
+    public static int timeAni = 2;
+    public static bool isTest = true;
     public static string LICENSE_CODE = "";
     public static string APP_PATH =
 #if UNITY_ANDROID

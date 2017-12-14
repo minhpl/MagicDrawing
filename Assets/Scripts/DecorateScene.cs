@@ -79,7 +79,8 @@ public class DecorateScene : MonoBehaviour
                 tempPanel.GetComponent<RectTransform>().anchorMin = Vector2.zero;
                 tempPanel.GetComponent<RectTransform>().offsetMax = Vector2.zero;
                 tempPanel.GetComponent<RectTransform>().offsetMin = Vector2.zero;
-                cam.gameObject.SetActive(true);
+                cam.gameObject.SetActive(true);                
+
                 ScreenshotHelper.iCaptureWithCamera(cam, (Texture2D tex_) =>
                 {
                     Mat resultMat = new Mat(tex_.height, tex_.width, CvType.CV_8UC4);
@@ -164,9 +165,17 @@ public class DecorateScene : MonoBehaviour
         if (texture != null)
         {
             rimg.texture = texture;
-
-            panel.GetComponent<AspectRatioFitter>().aspectRatio = (float)texture.width / (float)texture.height;
-
+            float rat = (float)texture.width / (float)texture.height;
+            Debug.LogFormat("Ratio here is {0}, texture width is {1}, texture height is {2}", rat, texture.width, texture.height);
+            panel.GetComponent<AspectRatioFitter>().enabled = true;
+            panel.GetComponent<AspectRatioFitter>().aspectRatio = rat;
+            panel.GetComponent<AspectRatioFitter>().enabled = false;
+        }
+        else
+        {
+            panel.GetComponent<AspectRatioFitter>().enabled = true;
+            panel.GetComponent<AspectRatioFitter>().aspectRatio = (float)Screen.width / (float)Screen.height;
+            panel.GetComponent<AspectRatioFitter>().enabled = false;
         }
         loadFramesList();
     }
@@ -208,8 +217,7 @@ public class DecorateScene : MonoBehaviour
                 khungAnh1.GetComponent<AspectRatioFitter>().aspectRatio = txImg.width / (float)txImg.height;
                 khungAnh2.GetComponent<AspectRatioFitter>().aspectRatio = txImg2.width / (float)txImg2.height;
                 khungAnh1.GetComponent<AspectRatioFitter>().enabled = true;
-                khungAnh2.GetComponent<AspectRatioFitter>().enabled = true;
-                
+                khungAnh2.GetComponent<AspectRatioFitter>().enabled = true;                
                 mode = MODE.FRAME;
             });
         }
