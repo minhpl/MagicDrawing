@@ -21,7 +21,6 @@ public class PreloadScript : MonoBehaviour
     IDisposable cancelCorountineQuitApplication;
 
     private const float PROGRESS_DOWNLOAD_AVARTAR_PERCENT = 0.03f;
-
     private void Awake()
     {
         cancelCorountineQuitApplication = GFs.BackButtonAndroidQuitApplication();
@@ -153,7 +152,6 @@ public class PreloadScript : MonoBehaviour
             Observable.FromCoroutine<float>(DownloadData)
             ).Subscribe((_) => { Debug.Log("herheeeeee"); }, () =>
             {
-                Debug.LogFormat("Calldownload logo function");
                 HTTPRequest.Instance.Download(GVs.DOWNLOAD_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_LOGO))), (d, process) =>
                 {
                     if (process == 1)
@@ -213,35 +211,8 @@ public class PreloadScript : MonoBehaviour
     });
 
 
-    //private void DownloadOtherApp()
-    //{
-    //    HTTPRequest.Instance.Request(GVs.GET_ALL_OTHER_APP_URL, JsonUtility.ToJson(new ReqModel()), (data) =>
-    //    {
-    //        try
-    //        {
-    //            GVs.OTHER_APP_LIST_MODEL = (JsonUtility.FromJson<OtherAppListModel>(data));
-    //            GFs.SaveOtherAppList();
-    //            text.text = "Cập nhật dữ liệu";
-    //            HTTPRequest.Instance.Download(GVs.DOWNLOAD_OTHER_URL, JsonUtility.ToJson(new ReqModel(new DownloadModel(DownloadModel.DOWNLOAD_OTHER_APP_ICON))), (data2, process) =>
-    //            {
-    //                UpdateProgressDownload(process, 0);
-    //                if (process == 1 || process == -404)
-    //                {
-    //                    DownLoadML();
-    //                }
-    //            });
-    //        }
-    //        catch (System.Exception e)
-    //        {
-    //            DownLoadML();
-    //            Debug.Log(e);
-    //        }
-    //    });
-    //}
-
     IEnumerator DownloadData(IObserver<float> ob)
     {
-        Utilities.Log("Waiting for downloading");
         Dictionary<string, TemplateDrawingList> templateListsAllCategory = new Dictionary<string, TemplateDrawingList>();
         List<IObservable<float>> ListStreamDownloadTemplate = new List<IObservable<float>>();
 
@@ -265,6 +236,17 @@ public class PreloadScript : MonoBehaviour
                 try
                 {
                     GVs.CATEGORY_LIST = JsonConvert.DeserializeObject<CategoryList>(data.ToString());
+                    var lsCat = GVs.CATEGORY_LIST.data;
+                    for (int i = 0; i < lsCat.Count; i++)
+                    {
+                        var cat = lsCat[i];
+                        if (cat._v == 1)
+                        {
+                            lsCat.RemoveAt(i);
+                            lsCat.Insert(0, cat);
+                        }
+                    }       
+
                     GFs.SaveCategoryList();
 
                     var listCategory = GVs.CATEGORY_LIST.data;

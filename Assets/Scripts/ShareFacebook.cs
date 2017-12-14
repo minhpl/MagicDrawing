@@ -22,15 +22,13 @@ public class ShareFacebook : MonoBehaviour
     public GameObject overlayProcessShareFB;
     public Button btnCancelUploadFB;
 
-    private IDisposable cancelStreamHideNotificationPanel;
-    private IObservable<float> streamHideNotificationPanel;
+    private IDisposable strUPFile;
     private float timeOutSeconds = 4f;
     public static string filePath;
     public enum mode { SHARE_VIDEO, SHARE_IMAGE};
     public static mode ShareMODE = mode.SHARE_VIDEO;
     void Awake()
-    {
-        
+    {        
         if (!FB.IsInitialized)
         {            
             FB.Init(InitCallback, OnHideUnity);
@@ -46,7 +44,7 @@ public class ShareFacebook : MonoBehaviour
             overlayProcessShareFB.SetActive(true);
             btnOk.gameObject.SetActive(false);
             btnCancel.gameObject.SetActive(false);
-            StartCoroutine(StartUpload());            
+            strUPFile = Observable.FromMicroCoroutine(StartUpload).Subscribe();          
         });
 
         btnCancel.onClick.AddListener(() =>
@@ -56,14 +54,7 @@ public class ShareFacebook : MonoBehaviour
 
         btnLogoutFacebook.onClick.AddListener(() =>
         {
-            panelInputShareFacebook.SetActive(false);
-            cancelCorountineLogOut = Observable.FromCoroutine(LogOut).Timeout(TimeSpan.FromSeconds(3)).Subscribe(_ => { }, _ =>
-            {
-                Debug.LogFormat("Error is: {0}", _.ToString());
-            }, ()=>
-            {
-                Debug.LogFormat("Logout successfull hehehe");
-            });            
+            panelInputShareFacebook.SetActive(false);          
         });
 
         btnCancelUploadFB.onClick.AddListener(() =>
@@ -73,10 +64,6 @@ public class ShareFacebook : MonoBehaviour
             Destroy(go);
         });
 
-        streamHideNotificationPanel = Observable.Create<float>((IObserver<float> observer) =>
-        {
-            return Disposable.Empty;
-        });
 
         var rimgPlayerShareFB = gameObjectPlayerShareFB.GetComponent<RawImage>();
         rimgPlayerShareFB.texture = ResultScripts.texture;
@@ -119,8 +106,6 @@ public class ShareFacebook : MonoBehaviour
             btnStopPlayerShareFB.gameObject.SetActive(false);
         }
     }
-
-    IDisposable cancelCorountineLogOut;
 
     IEnumerator LogOut()
     {
@@ -189,8 +174,7 @@ public class ShareFacebook : MonoBehaviour
     }   
 
     public void onLoggedInSuccess()
-    {
-        Debug.Log("here1");
+    {        
         FB.API("/me?fields=name", HttpMethod.GET, (IGraphResult a) =>
         {         
             var name = (string)a.ResultDictionary["name"];
@@ -229,11 +213,6 @@ public class ShareFacebook : MonoBehaviour
         var wwwForm = new WWWForm();
         wwwForm.AddBinaryData("filevideo", www.bytes, "Video.MOV", "multipart/form-data");
         var message = InputCommentFacebook.text;
-
-        if (!string.IsNullOrEmpty(message))
-        {
-            
-        }
 
         if (ShareMODE == mode.SHARE_VIDEO)
         {
@@ -277,9 +256,7 @@ public class ShareFacebook : MonoBehaviour
 
     private void OnDisable()
     {
-        if(cancelStreamHideNotificationPanel!=null)
-            cancelStreamHideNotificationPanel.Dispose();
-        if(cancelCorountineLogOut!=null)
-            cancelCorountineLogOut.Dispose();
+        if (strUPFile != null)
+            strUPFile.Dispose();
     }
 }

@@ -22,17 +22,14 @@ public class SnapImageSceneScripts : MonoBehaviour
     public Button btnSnap;
     public Button btnCancel;
     public Button btnContinue;
-    public IDisposable cancelCoroutineBackAndroid; 
+    public IDisposable cancelCoroutineBackAndroid;
 
-    private Texture2D textureKhungAnh;
     private Texture2D snapImage;
     IDisposable cancelMCoroutineSnap;
-    float oriWidth, oriHeight;
     Texture2D texRgbaMat;
 
     private void Awake()
-    {       
-        Debug.LogFormat("Original width is {0}, orginal height is {1}", oriWidth, oriHeight);
+    {
         GFs.LoadData();
         if (MakePersistentObject.Instance)
             MakePersistentObject.Instance.gameObject.SetActive(false);
@@ -55,10 +52,10 @@ public class SnapImageSceneScripts : MonoBehaviour
         });
 
         rawImgCam = goCam.GetComponent<RawImage>();
-        ShowCam();
-
+        ShowCam();            
     }
 
+        
     void ResizeAndFlipWebcamTexture()
     {
         webcamTex = wcHelper.GetWebCamTexture();
@@ -157,9 +154,6 @@ public class SnapImageSceneScripts : MonoBehaviour
             cancelMCoroutineSnap.Dispose();
         if (cancelCoroutineBackAndroid != null)
             cancelCoroutineBackAndroid.Dispose();
-
-        Destroy(textureKhungAnh);
-
     }
 
     public void OnChangeCameraButton()
@@ -176,138 +170,87 @@ public class SnapImageSceneScripts : MonoBehaviour
     }
 
     public void OnSnapBtnClicked()
-    {
+    {        
         cancelMCoroutineSnap = Observable.FromMicroCoroutine(Snap).Subscribe();
     }
 
     IEnumerator Snap()
     {
-        webcamTex.requestedWidth = 1920;
-        webcamTex.requestedHeight = 1920;
-        webcamTex.Play();
-        rawImgCam.texture = webcamTex;
-        int countNonZero = 0;
-        int numBlackFrame = 0;
-        int numberFrameSkip = 0;
+            webcamTex.requestedWidth = 1920;
+            webcamTex.requestedHeight = 1920;
+            webcamTex.Play();
+            rawImgCam.texture = webcamTex;
+            int countNonZero = 0;
+            int numBlackFrame = 0;
+            int numberFrameSkip = 0;
 
-        snapMat = new Mat(webcamTex.height, webcamTex.width, CvType.CV_8UC4);
-        Mat singleChannel = new Mat();
-        Color32[] buffers = new Color32[webcamTex.width * webcamTex.height];
-        rawImgCam.texture = null;
+            snapMat = new Mat(webcamTex.height, webcamTex.width, CvType.CV_8UC4);
+            Mat singleChannel = new Mat();
+            Color32[] buffers = new Color32[webcamTex.width * webcamTex.height];
+            rawImgCam.texture = null;
 
-        while (countNonZero == 0 || numberFrameSkip < 1)
-        {
-            Utils.webCamTextureToMat(webcamTex, snapMat, buffers);
-            Core.extractChannel(snapMat, singleChannel, 1);
-            countNonZero = Core.countNonZero(singleChannel);
-            if (countNonZero > 0)
+            while (countNonZero == 0 || numberFrameSkip < 1)
             {
-                numberFrameSkip++;
+                Utils.webCamTextureToMat(webcamTex, snapMat, buffers);
+                Core.extractChannel(snapMat, singleChannel, 1);
+                countNonZero = Core.countNonZero(singleChannel);
+                if (countNonZero > 0)
+                {
+                    numberFrameSkip++;
+                }
+                else
+                {
+                    numBlackFrame++;
+                }
+
+                Utilities.Log("Count non zero of mat is {0}", countNonZero);
+                yield return null;
+            }
+
+            singleChannel.Dispose();
+            snapMat.Dispose();
+
+            Mat rgbaMat = wcHelper.GetMat();
+
+            rawImgCam.rectTransform.localScale = new Vector3(1, 1, 1);
+            rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, 0);
+            rawImgCam.rectTransform.sizeDelta = new Vector2(0, 0);
+
+            var widthCam = rgbaMat.width();
+            var heightCam = rgbaMat.height();
+            var ratCamWH = widthCam / (float)heightCam;            
+            var wDis = rawImgCam.rectTransform.rect.width;
+            var hDis = rawImgCam.rectTransform.rect.height;
+            var ratDis = wDis / (float)hDis;
+
+            var newWidth = 0f;
+            var newHeight = 0f;
+
+            if (ratCamWH < ratDis)
+            {
+                newWidth = widthCam;
+                newHeight = newWidth / ratDis;
             }
             else
             {
-                numBlackFrame++;
+                newHeight = heightCam;
+                newWidth = newHeight * ratDis;
             }
 
-            Utilities.Log("Count non zero of mat is {0}", countNonZero);
-            yield return null;
-        }
 
-        singleChannel.Dispose();
-        snapMat.Dispose();
+            var deltaWidthMat = (int)(widthCam - newWidth);
+            var deltaHeightMat = (int)(heightCam - newHeight);
+            var matDisW = widthCam - deltaWidthMat;
+            var matDisH = heightCam - deltaHeightMat;
 
-        Mat rgbaMat = wcHelper.GetMat();
+            var rect = new OpenCVForUnity.Rect(deltaWidthMat / 2, deltaHeightMat / 2, matDisW, matDisH);
+            snapMat = rgbaMat.submat(rect);
 
-        rawImgCam.rectTransform.localScale = new Vector3(1, 1, 1);
-        rawImgCam.rectTransform.localEulerAngles = new Vector3(0, 0, 0);
-        rawImgCam.rectTransform.sizeDelta = new Vector2(0, 0);
-
-        var widthCam = rgbaMat.width();
-        var heightCam = rgbaMat.height();
-        var ratCamWH = widthCam / (float)heightCam;
-        var wDis = rawImgCam.rectTransform.rect.width;
-        var hDis = rawImgCam.rectTransform.rect.height;
-        var ratDis = wDis / (float)hDis;
-
-        var newWidth = 0f;
-        var newHeight = 0f;
-
-        if (ratCamWH < ratDis)
-        {
-            newWidth = widthCam;
-            newHeight = newWidth / ratDis;
-        }
-        else
-        {
-            newHeight = heightCam;
-            newWidth = newHeight * ratDis;
-        }
-
-
-        var deltaWidthMat = (int)(widthCam - newWidth);
-        var deltaHeightMat = (int)(heightCam - newHeight);
-        var matDisW = widthCam - deltaWidthMat;
-        var matDisH = heightCam - deltaHeightMat;
-
-        var rect = new OpenCVForUnity.Rect(deltaWidthMat / 2, deltaHeightMat / 2, matDisW, matDisH);
-        snapMat = rgbaMat.submat(rect);
-
-        Destroy(texRgbaMat);
-        texRgbaMat = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.RGBA32, false);
-        Utils.matToTexture2D(snapMat, texRgbaMat);
-        rawImgCam.texture = texRgbaMat;
+            Destroy(texRgbaMat);
+            texRgbaMat = new Texture2D(snapMat.width(), snapMat.height(), TextureFormat.RGBA32, false);
+            Utils.matToTexture2D(snapMat, texRgbaMat);
+            rawImgCam.texture = texRgbaMat;  
     }
-
-    public void chapMat()
-    {
-        //if (mode == SnapMode.FRAME)
-
-        //var width = khungAnh.GetComponent<RectTransform>().rect.width;
-        //var height = khungAnh.GetComponent<RectTransform>().rect.height;
-
-        //var rectTransform = khungAnh.GetComponent<RectTransform>();
-        //var offsetMin = rectTransform.offsetMin;
-        //var offsetMax = rectTransform.offsetMax;
-
-        //var left = offsetMin.x;
-        //var right = orilWidth + offsetMax.x;
-        //var top = -offsetMax.y;
-        //var bottom = oriHeight - offsetMin.y;
-        //var centerX = (left + right) / 2;
-        //var centerY = (top + bottom) / 2;
-
-        //var aw = right - left;
-        //var ah = bottom - top;
-        //var scale = rectTransform.localScale.x;
-        //var rotate = rectTransform.localRotation.eulerAngles.z;
-        //var real_width = aw * width;
-        //var real_height = ah * height;
-
-        //var x = centerX - real_width / 2;
-        //var y = centerY - real_height / 2;
-
-        //var _scale = snapMat.width() / orilWidth;
-        //int x_ = (int)(x * _scale);
-        //int y_ = (int)(y * _scale);
-        //int w_ = (int)(real_width * _scale);
-        //int h_ = (int)(real_height * _scale);
-
-        //int x_begin = x_ < 0 ? 0 : x_;
-        //int y_begin = y_ < 0 ? 0 : y_;
-        //int x_end = x_begin + w_ > snapMat.width() ? snapMat.width() : x_begin + w_;
-        //int y_end = y_begin + h_ > snapMat.height() ? snapMat.height() : y_begin + h_;
-
-
-        //Mat khungMat = new Mat(textureKhungAnh.height, textureKhungAnh.width, CvType.CV_8UC4);
-        //Utils.texture2DToMat(textureKhungAnh, khungMat);
-        //Imgproc.resize(khungMat, khungMat, new Size(w_, h_));
-
-        //Debug.LogFormat("left = {0}, right = {1}, top = {2}, botton = {3}", left, right, top, bottom);
-        //Debug.LogFormat("aw = {0}, ah = {1}", aw, ah);
-        //Debug.Log("minCorner : "+ offsetMin);
-        //Debug.Log("maxCorner : " + offsetMax);
-    }
-
 
     public void OnContinueBtnClicked()
     {
@@ -333,6 +276,7 @@ public class SnapImageSceneScripts : MonoBehaviour
             HistoryNGUIScripts.AddHistoryItem(new HistoryModel(MPModelPath, MPModelPath, HistoryModel.IMAGETYPE.SNAP));
             GVs.SCENE_MANAGER.loadDrawingScene();
         }
+
     }
 
     public void OnCancelBtnClicked()

@@ -164,9 +164,7 @@ public class ResultScripts : MonoBehaviour
             var isVideoExist = File.Exists(videoPath);
             Debug.LogFormat("is video exist ?? {0}", isVideoExist);
             var shareFacebook = GetComponent<ShareFacebook>();
-            pnlShareFB.gameObject.SetActive(true);
-
-
+            
             if (!FB.IsInitialized)
             {
                 FB.Init(shareFacebook.InitCallback, shareFacebook.OnHideUnity);
@@ -180,6 +178,7 @@ public class ResultScripts : MonoBehaviour
             if (FB.IsLoggedIn)
             {
                 shareFacebook.onLoggedInSuccess();
+                pnlShareFB.gameObject.SetActive(true);
             }
             else
             {
@@ -195,7 +194,7 @@ public class ResultScripts : MonoBehaviour
             Debug.LogFormat("After call logout, isloggedIn = {0}", FB.IsLoggedIn);
         });
 
-        if (mode == MODE.REWATCH_RESULT)
+        if (mode == MODE.REWATCH_RESULT || mode == MODE.ANIM)
         {
             tit.text = title;
             rimgTitle.gameObject.SetActive(false);

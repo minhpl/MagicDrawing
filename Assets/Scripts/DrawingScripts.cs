@@ -38,7 +38,6 @@ public class DrawingScripts : MonoBehaviour
     public GameObject Pnl_Tool;
     public AudioSource audioSource;
     public Image img_progress_cutvideo;
-    public RawImage rigm_watermark;
     public Button getPosSize;
     public Toggle btnTurnRecord;
     public Toggle btnStopRecord;
@@ -193,6 +192,7 @@ public class DrawingScripts : MonoBehaviour
             else
             {
                 IDisposable cancelCorountineSnapImage = Observable.FromCoroutine(SaveMasterpiece).Subscribe();
+                backBtn.gameObject.SetActive(false);
             }
         });
         cancelBtn.onClick.AddListener(() =>
@@ -219,17 +219,8 @@ public class DrawingScripts : MonoBehaviour
         });
     }
 
-
     void Start()
     {
-        ScreenshotHelper.iSetMainOnCapturedCallback((Sprite sprite) =>
-        {
-            string save_path = new FilePathName().SaveTextureAs(sprite.texture, FilePathName.SaveFormat.PNG);
-            var animPath = GFs.getMasterpieceDirPath() + nameNoExt + "_anim.png";
-            File.Move(save_path, animPath);
-            ScreenshotHelper.iClear();
-        });
-
         var size = skeletonAnimation.GetComponent<MeshRenderer>().bounds.size;
         rimgcam = goCam.GetComponent<RawImage>();
         rimgmodel = goModel.GetComponent<RawImage>();
@@ -271,23 +262,25 @@ public class DrawingScripts : MonoBehaviour
             Utilities.LogFormat("Videos Location is {0}", videoLocation);
             //break;
         }
-        WWW www = new WWW("file://" + videoLocation);
-        yield return www;        
+        if(Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            WWW www = new WWW("file://" + videoLocation);
+            yield return www;
+        }       
         var mpdir = GFs.getMasterpieceDirPath();
         var file_name = mpdir + nameNoExt + ".mp4";
-        EveryplayLocalSave.SaveTo(file_name);        
-        //yield return new WaitForSeconds(2);        
+        //EveryplayLocalSave.SaveTo(file_name);        
+        yield return EveryplayLocalSave.SaveToAsync(file_name);        
         Utilities.Log("The path is {0}, is file exist ? {1}", file_name, File.Exists(file_name));
         Utilities.Log("The original is {0}, is file exist ? {1}", videoLocation, File.Exists(videoLocation));
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            Handheld.PlayFullScreenMovie(file_name);            
-        }
-        else if (Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            Utilities.Log("Is file exist ?? {0}", File.Exists(file_name));
-            Handheld.PlayFullScreenMovie("file://" + file_name);
-        }
+        //if (Application.platform == RuntimePlatform.Android)
+        //{
+        //    Handheld.PlayFullScreenMovie(file_name);            
+        //}
+        //else if (Application.platform == RuntimePlatform.IPhonePlayer)
+        //{
+        //    Handheld.PlayFullScreenMovie("file://" + file_name);
+        //}
     }
 
     int texModelW;
@@ -353,13 +346,13 @@ public class DrawingScripts : MonoBehaviour
         Utils.matToTexture2D(backgroundMat3, bgTture);    
         Imgproc.resize(cropBoundaryMat2, cropBoundaryMat2, new Size(texModelW, texModelH));
         
-        var textureAtlasSpine = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
-        Mat textureAtlasSpineMat = new Mat(textureAtlasSpine.height, textureAtlasSpine.width, CvType.CV_8UC4);
-        Utils.texture2DToMat(textureAtlasSpine, textureAtlasSpineMat);
-        cropBoundaryMat2.copyTo(textureAtlasSpineMat.submat(0, cropBoundaryMat2.height(), 0, cropBoundaryMat2.width()));
-        Texture2D texture = new Texture2D(textureAtlasSpine.width, textureAtlasSpine.height, TextureFormat.ARGB32, false);
-        Utils.matToTexture2D(textureAtlasSpineMat, texture);
-        skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texture;
+        var txtASpine = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
+        Mat txtASpineM = new Mat(txtASpine.height, txtASpine.width, CvType.CV_8UC4);
+        Utils.texture2DToMat(txtASpine, txtASpineM);
+        cropBoundaryMat2.copyTo(txtASpineM.submat(0, cropBoundaryMat2.height(), 0, cropBoundaryMat2.width()));                
+        Texture2D texture = new Texture2D(txtASpine.width, txtASpine.height, TextureFormat.RGBA32, false);
+        Utils.matToTexture2D(txtASpineM, texture);                
+        skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texture;        
         //-----------------------------------------------------------------------------------------------------------------------                
         rimgcam.texture = bgTture;
         //Animation
@@ -411,6 +404,7 @@ public class DrawingScripts : MonoBehaviour
             LeanTween.alpha(bigStar.rectTransform, 1, 0.4f).setLoopPingPong();
             LeanTween.alpha(smallStar.rectTransform, 1, 0.4f).setLoopPingPong().setDelay(0.2f);
             LeanTween.rotateZ(reindeer, -reindeer.transform.localRotation.eulerAngles.z, 10).setLoopClamp();
+            skeletonAnimation.gameObject.GetComponent<MeshRenderer>().sortingLayerName = "spine";
             skeletonAnimation.gameObject.SetActive(true);
             skeletonAnimation.AnimationName = "animation";
             imgUserDraw.gameObject.SetActive(false);
@@ -419,16 +413,21 @@ public class DrawingScripts : MonoBehaviour
             Observable.Timeout<float>(Observable.Never<float>(), TimeSpan.FromSeconds(2)).Subscribe((float f) =>
             { }, (Exception ex) =>
             {
-                ScreenshotHelper.iCaptureScreen();
+                ScreenshotHelper.iCaptureScreen((Texture2D tex_)=>
+                {
+                    Utilities.Log("snap image width is {0}, height is {1}", tex_.width, tex_.height);
+                    var animPath = GFs.getMasterpieceDirPath() + nameNoExt + "_anim.png";
+                    File.WriteAllBytes(animPath, tex_.EncodeToPNG());                    
+                    ScreenshotHelper.iClear();
+                });
             });
-            Observable.Timeout<float>(Observable.Never<float>(), TimeSpan.FromSeconds(5)).Subscribe((float f) =>
+            Observable.Timeout<float>(Observable.Never<float>(), TimeSpan.FromSeconds(15)).Subscribe((float f) =>
              { }, (Exception ex) =>
              {
-                 Everyplay.StopRecording();
-                 Utilities.Log("is recording ? {0}", Everyplay.IsRecording());
+                 Everyplay.StopRecording();                 
                  cancelGVidP = Observable.FromCoroutine(GetVideoPath).Subscribe((_) => { }, () =>
                   {
-                      //cancelSaveMP2 = Observable.FromMicroCoroutine(SaveMasterPiece2).Subscribe();
+                      cancelSaveMP2 = Observable.FromMicroCoroutine(SaveMasterPiece2).Subscribe();
                   });
              });
         });
@@ -749,6 +748,8 @@ public class DrawingScripts : MonoBehaviour
         }
     }
 
+    OpenCVForUnity.Rect posPMat;
+
     IEnumerator SaveMasterPiece2()
     {
         yield return null;
@@ -760,29 +761,27 @@ public class DrawingScripts : MonoBehaviour
         GFs.load_APP_PATH_VAR();
         var logoPath = GFs.getlogoPath();
         Texture2D txtWMark = GFs.LoadPNGFromPath(logoPath);
-        rigm_watermark.texture = txtWMark;
         Mat logo = new Mat(txtWMark.height, txtWMark.width, CvType.CV_8UC4);
         var width = resultMat.width();
         int newWidthlogo = (int)(width / 5f);
         int newHeightlogo = (int)(logo.height() * (newWidthlogo / (float)logo.width()));
-        Utils.texture2DToMat(txtWMark, logo);
-        Destroy(txtWMark);        
-        Imgproc.resize(logo, logo, new Size(newWidthlogo, newHeightlogo));        
-        var rect = resultMat.submat(new OpenCVForUnity.Rect(10, resultMat.height() - logo.height() - 10, logo.width(), logo.height()));
+        Utils.texture2DToMat(txtWMark, logo);        
+        Imgproc.resize(logo, logo, new Size(newWidthlogo, newHeightlogo));
+        posPMat = new OpenCVForUnity.Rect(10, resultMat.height() - logo.height() - 10, logo.width(), logo.height());
+        var rect = resultMat.submat(posPMat);
         Mat maskCopyMask = new Mat(logo.height(), logo.width(), CvType.CV_8UC1);
         Core.extractChannel(logo, maskCopyMask, 3);
         maskCopyMask = maskCopyMask - new Scalar(230);
         logo.copyTo(rect, maskCopyMask);
-        Utils.matToTexture2D(resultMat, resultTexture);
-        ResultScripts.texture = resultTexture;
-
-        Imgcodecs.imwrite("E:\\b.png", maskCopyMask);
+        Imgproc.cvtColor(logo, logo, Imgproc.COLOR_RGBA2BGR); //3 channel for frames of video
+        Utils.matToTexture2D(resultMat, resultTexture);       
         var masterPieceDirPath = GFs.getMasterpieceDirPath();
-        var imagePath = masterPieceDirPath + nameMasterPiece;                
+        var imagePath = masterPieceDirPath + nameMasterPiece;
+        File.WriteAllBytes(imagePath, resultTexture.EncodeToPNG());
 
-        DecorateScene.texture = resultTexture;
+        DecorateScene.texture = texCamDisplay;
         DecorateScene.imagePath = imagePath;
-        ResultScripts.texture = texCamDisplay;
+        ResultScripts.texture = resultTexture;
         ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;
         ResultScripts.imagePath = imagePath;
         if (webcamVideoCapture != null)
@@ -838,25 +837,21 @@ public class DrawingScripts : MonoBehaviour
                             if (count != ratioFloor)
                             {
                                 count2++;
-                                rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logo.height() - 10, logo.width(), logo.height()));
-                                logo.copyTo(rect, maskCopyMask);
-                                Imgcodecs.imwrite(string.Format("E:\\A{0}.png", count2++), frame);
-                                Debug.Log("fffff");
+                                rect = frame.submat(posPMat);
+                                logo.copyTo(rect, maskCopyMask);                                
+                                
                                 writer.write(frame);
                             }
                             else
                             {
                                 ratioFloor = (int)Math.Floor(ratio + du);
-                                du = ratio + du - ratioFloor;
-                                Debug.Log(j);
-                                Debug.LogFormat("ratio Floor is {0}", ratioFloor);
+                                du = ratio + du - ratioFloor;                                
                                 count = 0;
                             }
 
                             if (count2 >= maxNumberFrame)
                                 break;
-                        }
-                        Debug.LogFormat("J = {0}", j);
+                        }                        
                     }
                     else
                     {
@@ -877,38 +872,30 @@ public class DrawingScripts : MonoBehaviour
                             if (count == ratioFloor)
                             {
                                 count2++;
-                                rect = frame.submat(new OpenCVForUnity.Rect(10, frame.height() - logo.height() - 10, logo.width(), logo.height()));
+                                rect = frame.submat(posPMat);
                                 logo.copyTo(rect, maskCopyMask);
-                                Imgcodecs.imwrite(string.Format("E:\\A{0}.png", count2++), frame);
-                                Debug.Log("fffff");
                                 writer.write(frame);
                                 ratioFloor = (int)Math.Floor(ratio + du);
                                 du = ratio + du - ratioFloor;
-                                count = 0;
-                                Debug.LogFormat("ratioFloor is {0}", ratioFloor);
+                                count = 0;                                
                             }
 
                             if (count2 >= maxNumberFrame)
                                 break;
-                        }
-                        Debug.LogFormat("J = {0}", j);
-                    }
-                    Debug.LogFormat("Number frame of new video is {0}", count2);
-
+                        }                        
+                    }                    
                 }
                 else
                 {
                     for (; ; )
                     {
-                        cap.read(frame);
-                        Debug.LogFormat("Frame width is {0}, height is {1}", frame.width(), frame.height());
+                        cap.read(frame);                        
                         if (frame.empty())
                         {
                             break;
                         }
-                        var rect2 = frame.submat(new OpenCVForUnity.Rect(10, resultMat.height() - logo.height() - 10, logo.width(), logo.height()));
-                        logo.copyTo(rect2, maskCopyMask);
-                        Imgcodecs.imwrite(string.Format("E:\\A{0}.png", ++iii), frame);
+                        rect = frame.submat(posPMat);
+                        logo.copyTo(rect, maskCopyMask);                        
                         writer.write(frame);
                     }
 

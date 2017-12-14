@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AvataScript : MonoBehaviour
 {
-
     public List<UITexture> avatas;
     // Use this for initialization
     void Start()

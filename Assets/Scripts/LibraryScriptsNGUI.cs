@@ -10,16 +10,15 @@ public class LibraryScriptsNGUI : MonoBehaviour
 {
     public GameObject imageItem;
     public GameObject scrollView;
-
     public Text TextTitle;
-    public GameObject uiRoot_ScrollView;
+    public UIButton satan;
+
     const int deScale = 0;
     const bool USE_PACK = false;
     const int clone = 1;
     public static TemplateDrawingList templateDrawingList;
     private static string title;
     public Button BtnBack;
-    public UIButton itemSatan;
 
     public enum MODE { CATEGORY, TEMPLATE, SPECIAL };
     public static MODE mode;
@@ -72,10 +71,6 @@ public class LibraryScriptsNGUI : MonoBehaviour
         {
             TextTitle.text = title;
         }
-        else if(mode == MODE.SPECIAL)
-        {
-            TextTitle.text = "Giáng Sinh";
-        }
 
         MainThreadDispatcher.StartUpdateMicroCoroutine(Load());
     }
@@ -83,11 +78,6 @@ public class LibraryScriptsNGUI : MonoBehaviour
     IEnumerator Load()
     {
         Debug.Log(mode == MODE.SPECIAL);
-        List<Texture2D> LstTexture = new List<Texture2D>();
-        List<GameObject> LstGameObject = new List<GameObject>();
-        List<int> numRectIn2048 = new List<int>();
-
-
         UITexture rimageOri = imageItem.transform.Find("icon").GetComponent<UITexture>();
         int widthOri = rimageOri.width;
         int heightOri = rimageOri.height;
@@ -107,6 +97,12 @@ public class LibraryScriptsNGUI : MonoBehaviour
 
         if (mode == MODE.CATEGORY || mode == MODE.TEMPLATE)
         {
+            int nSpecTpl = 0;
+            if(mode == MODE.TEMPLATE && title.Trim()=="Giáng sinh")
+            {
+                nSpecTpl = 1; //1 satan
+            }
+
             for (int j = 0; j < clone; j++)
                 for (int i = 0; i < imageCount; i++)
                 {
@@ -114,7 +110,9 @@ public class LibraryScriptsNGUI : MonoBehaviour
                     {
                         if (imageItem == null) break;
                         GameObject go = Instantiate(imageItem) as GameObject;
-                        go.transform.GetComponent<TweenAlpha>().delay = 0.035f * i + 0.5f;
+                        var c = go.GetComponent<UITexture>().color;
+                        go.GetComponent<UITexture>().color = new Color(c.r, c.g, c.b, 0);
+                        go.transform.GetComponent<TweenAlpha>().delay = 0.035f * (i+nSpecTpl) + 0.5f;
                         go.transform.SetParent(imageItem.transform.parent.transform);
                         go.transform.localScale = imageItem.transform.localScale;
                         UITexture rimage = go.transform.Find("icon").GetComponent<UITexture>();
@@ -124,7 +122,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         TemplateDrawing template = null;
                         if (mode == MODE.CATEGORY)
                         {
-                            category = categorys[i];
+                            category = categorys[i];                            
                             texture = GFs.LoadPNGFromPath(categoryDirPath + category.image);
                             text.text = category.name;
                         }
@@ -134,7 +132,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
                             var dirPath = app_path + templateDrawingList.dir + "/";
                             texture = GFs.LoadPNGFromPath(dirPath + "/" + template.thumb);
                         }
-                        go.SetActive(true);
+                        
                         rimage.mainTexture = texture;
 
                         float width = texture.width;
@@ -170,12 +168,15 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         {
                             if (mode == MODE.CATEGORY)
                             {
-
                                 var categoryID = category._id;
                                 TemplateDrawingList templateDrawingList = GVs.TEMPLATE_LIST_ALL_CATEGORY[categoryID];
                                 LibraryScriptsNGUI.templateDrawingList = templateDrawingList;
                                 LibraryScriptsNGUI.mode = MODE.TEMPLATE;
                                 title = category.name;
+                                if (category.name.Trim() == "Giáng sinh")
+                                {
+
+                                }
                                 GVs.SCENE_MANAGER.loadTemplateNGUIScene();
                             }
                             else
@@ -189,8 +190,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
                                 GVs.SCENE_MANAGER.loadDrawingScene();
                             }
                         }));
-                        LstGameObject.Add(go);
-                        LstTexture.Add(texture);
+                        go.SetActive(true);
                     }
                     catch (Exception e)
                     {
@@ -198,41 +198,34 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         Debug.LogErrorFormat("Stacktrace is {0}", e.StackTrace.ToString());
                     }
                 }
-            imageItem.GetComponent<TweenAlpha>().delay = 0.5f;
-            if (mode == MODE.CATEGORY)
+            if (satan != null && title.Trim() == "Giáng sinh")
             {
-                imageItem.gameObject.SetActive(true);
-                imageItem.GetComponent<UIButton>().onClick.Add(new EventDelegate(()=>
+                satan.GetComponent<TweenAlpha>().delay = 0.035f * (0) + 0.5f;
+                var c = satan.GetComponent<UITexture>().color;
+                satan.GetComponent<UITexture>().color = new Color(c.r, c.g, c.b, 0);
+                satan.gameObject.SetActive(true);
+                satan.onClick.Clear();
+                satan.onClick.Add(new EventDelegate(() =>
                 {
-                    LibraryScriptsNGUI.mode = MODE.SPECIAL;
-                    GVs.SCENE_MANAGER.loadLibrarySpecialScene();
+                    TextAsset asset = Resources.Load("satan") as TextAsset;
+                    Texture2D tex = new Texture2D(2, 2, TextureFormat.BGRA32, false);
+                    tex.LoadImage(asset.bytes);
+                    Mat mat = new Mat(tex.height, tex.width, CvType.CV_8UC4);
+                    Utils.texture2DToMat(tex, mat);
+                    DrawingScripts.texModel = tex;
+                    DrawingScripts.image = mat;
+                    DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_SPECIAL;
+                    GVs.SCENE_MANAGER.loadDrawingScene();
                 }));
             }
+
+            Destroy(imageItem);            
             scrollView.GetComponent<UIGrid>().Reposition();            
-        }
-        else 
-        {
-            itemSatan.gameObject.SetActive(true);
-            itemSatan.onClick.Clear();
-            itemSatan.onClick.Add(new EventDelegate(() =>
-            {                
-                TextAsset asset = Resources.Load("satan") as TextAsset;
-                Texture2D tex = new Texture2D(2, 2, TextureFormat.BGRA32, false);
-                tex.LoadImage(asset.bytes);
-                Mat mat = new Mat(tex.height, tex.width, CvType.CV_8UC4);
-                Utils.texture2DToMat(tex,mat);                
-                DrawingScripts.texModel = tex;
-                DrawingScripts.image = mat;
-                DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_SPECIAL;
-                GVs.SCENE_MANAGER.loadDrawingScene();
-            }));
-        }
+        }        
     }
 
-    bool ondisable = false;
     private void OnDisable()
     {
-        ondisable = true;
         if (cancelCoroutineBackBtnAndroid != null)
             cancelCoroutineBackBtnAndroid.Dispose();
     }
