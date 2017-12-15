@@ -53,8 +53,19 @@ public class DrawingScripts : MonoBehaviour
     public ParticleSystem snowCircle;
     public ParticleSystem snowFlower;
     public UIPlayTween[] popupPlayTween;
-    public SkeletonAnimation skeletonAnimation;
+    public SkeletonAnimation satanSpine;
+    public SkeletonAnimation clownSpine;
     public ScreenTransformGesture scrTransGes;
+
+    private Texture2D texEdges;
+    public static Texture2D texModel;
+    private Texture2D texCam;
+    private Texture2D texCamDisplay;
+    Texture2D paperTxt;
+    Texture2D texture;
+    Texture2D areaUDrawTex;
+    Texture2D txtWMark;
+
 
     private Threshold threshold;
     private AdaptiveThreshold athreshold;
@@ -62,11 +73,7 @@ public class DrawingScripts : MonoBehaviour
     public static Mat image;
     public static string imgModelPath = null;
     private Color32[] colorsBuffer;
-    private Texture2D texEdges;
     private Mat edges;
-    public static Texture2D texModel;
-    private Texture2D texCam;
-    private Texture2D texCamDisplay;
     RawImage rimgcam;
     RawImage rimgmodel;
     Utilities utilities;
@@ -81,6 +88,8 @@ public class DrawingScripts : MonoBehaviour
     //private float opaque = 0.4f;
     public enum DRAWMODE { DRAW_MODEL, DRAW_IMAGE, DRAW_SPECIAL };
     public static DRAWMODE drawMode = DRAWMODE.DRAW_SPECIAL;
+    public enum SPINE { SATAN, CLOWN };
+    public static SPINE spineMode = SPINE.SATAN;
     public enum FILTERMODE { LINE, BLEND };
     public static FILTERMODE filtermode = FILTERMODE.LINE;
     private System.Diagnostics.Stopwatch CountVidRec;
@@ -190,8 +199,7 @@ public class DrawingScripts : MonoBehaviour
             }
             else
             {
-                IDisposable cancelCorountineSnapImage = Observable.FromCoroutine(CountDown).Subscribe();
-                backBtn.gameObject.SetActive(false);
+                IDisposable cancelCorountineSnapImage = Observable.FromCoroutine(CountDown).Subscribe();                
             }
         });
         cancelBtn.onClick.AddListener(() =>
@@ -220,7 +228,7 @@ public class DrawingScripts : MonoBehaviour
 
     void Start()
     {
-        var size = skeletonAnimation.GetComponent<MeshRenderer>().bounds.size;
+        var size = satanSpine.GetComponent<MeshRenderer>().bounds.size;
         rimgcam = goCam.GetComponent<RawImage>();
         rimgmodel = goModel.GetComponent<RawImage>();
         rimgmodel.color = new Color(255, 255, 255, opaque);
@@ -257,6 +265,7 @@ public class DrawingScripts : MonoBehaviour
             cancelSaveMP2.Dispose();
         wcHelper.Stop();
         wcHelper.Dispose();
+        Destroy(wcHelper.GetWebCamTexture());
         if (cancelCorountineTurnOffTouchInput != null)
             cancelCorountineTurnOffTouchInput.Dispose();
         if (cancelCorountineBlinkTime != null)
@@ -269,13 +278,18 @@ public class DrawingScripts : MonoBehaviour
         image.Dispose();
         edges.Dispose();
         image = null;
-        if (!preserveTexture)
-        {
-            Destroy(texCam);
-        }
+        Destroy(texCam);
         Destroy(texEdges);
         Destroy(texModel);
         Destroy(wcHelper);
+        if(!preTexCam)
+            Destroy(texCamDisplay);
+
+        Destroy(paperTxt);
+        Destroy(texture);
+        Destroy(areaUDrawTex);
+        Destroy(txtWMark);
+
         if (webcamVideoCapture != null)
         {
             webcamVideoCapture.filePath = null;
@@ -361,8 +375,15 @@ public class DrawingScripts : MonoBehaviour
             texModel = GFs.LoadPNGFromPath(imgPath);
             if(GVs.isTest)
             {
-                TextAsset asset = Resources.Load("satan") as TextAsset;                
-                texModel.LoadImage(asset.bytes);
+                if(spineMode == SPINE.SATAN)
+                {
+                    TextAsset asset = Resources.Load("satan") as TextAsset;
+                    texModel.LoadImage(asset.bytes);
+                }else if(spineMode == SPINE.CLOWN)
+                {
+                    TextAsset asset = Resources.Load("clown") as TextAsset;
+                    texModel.LoadImage(asset.bytes);
+                }                
             }
 
             int w = texModel.width;
@@ -513,7 +534,7 @@ public class DrawingScripts : MonoBehaviour
         rimgmodel.GetComponent<ScreenTransformGesture>().enabled = false;
         rimgmodel.GetComponent<Transformer>().enabled = false;
     }
-    bool preserveTexture = false;
+
     IEnumerator CountDown()
     {
         if (webcamVideoCapture.writer != null && !webcamVideoCapture.writer.IsDisposed)
@@ -523,7 +544,7 @@ public class DrawingScripts : MonoBehaviour
         wcHelper.Play();
         Pnl_Snap.SetActive(true);
         Pnl_Tool.SetActive(false);
-        // backBtn.gameObject.SetActive(false);
+        backBtn.gameObject.SetActive(false);
         goModel.SetActive(false);
         float periods = 1f;
         yield return new WaitForSeconds(periods);
@@ -559,6 +580,8 @@ public class DrawingScripts : MonoBehaviour
     }
 
     OpenCVForUnity.Rect posPMat;
+
+    
 
     void isolateBoundary()
     {
@@ -599,55 +622,65 @@ public class DrawingScripts : MonoBehaviour
         channels[2] = channels[3];
         channels[3] = channels[3];
         Core.merge(channels, mask);
-        Mat cropBoundaryMat2 = new Mat();
+        Mat areaUDraw = new Mat();   // Vùng người dùng vẽ trong biên lấy nét
         Mat mask2 = mask.colRange(x_begin - x, x_end - x).rowRange(y_begin - y, y_end - y);
 
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(8, 8));
-        Imgproc.morphologyEx(mask2, mask2, Imgproc.MORPH_DILATE, kernel);
+        Mat kerDilate = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(4, 4));  // kernel làm giãn n
+        Imgproc.morphologyEx(mask2, mask2, Imgproc.MORPH_DILATE, kerDilate);
 
-        Mat cropBoundary = displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end);
-        cropBoundary.copyTo(cropBoundaryMat2, mask2);
+        Mat rectUDraw = displayMat.colRange(x_begin, x_end).rowRange(y_begin, y_end);  //Vùng chữ nhật người dùng vẽ
+        rectUDraw.copyTo(areaUDraw, mask2);
 
         var kernel2 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(70, 70));
-        Mat bg = new Mat();
-        Imgproc.morphologyEx(cropBoundary, bg, Imgproc.MORPH_CLOSE, kernel2);
+        Mat rUDrawTp = new Mat();
+        Imgproc.morphologyEx(rectUDraw, rUDrawTp, Imgproc.MORPH_CLOSE, kernel2);
         var kernel3 = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(50, 50));
-        Imgproc.morphologyEx(bg, bg, Imgproc.MORPH_CLOSE, kernel3);
+        Imgproc.morphologyEx(rUDrawTp, rUDrawTp, Imgproc.MORPH_CLOSE, kernel3);
 
-        Mat backgroundMat3 = displayMat.clone();
-        bg.copyTo(backgroundMat3.colRange(x_begin, x_end).rowRange(y_begin, y_end), mask2);
-        Imgproc.GaussianBlur(backgroundMat3, backgroundMat3, new Size(10, 10), 0);
-        Texture2D bgTture = new Texture2D(backgroundMat3.width(), backgroundMat3.height(), TextureFormat.BGRA32, false);
-        Utils.matToTexture2D(backgroundMat3, bgTture);
-        Imgproc.resize(cropBoundaryMat2, cropBoundaryMat2, new Size(texModelW, texModelH));
+        Mat paperMat = displayMat.clone();        
+        rUDrawTp.copyTo(paperMat.colRange(x_begin, x_end).rowRange(y_begin, y_end), mask2);        
+        
+        Imgproc.GaussianBlur(paperMat, paperMat, new Size(10, 10), 0);
+        paperTxt = new Texture2D(paperMat.width(), paperMat.height(), TextureFormat.BGRA32, false);  // bản vẽ 
+        Utils.matToTexture2D(paperMat, paperTxt);
+        Imgproc.resize(areaUDraw, areaUDraw, new Size(texModelW, texModelH));
 
-        var txtASpine = (Texture2D)skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
+        SkeletonAnimation spine = null;
+        if (spineMode == SPINE.SATAN)
+        {        
+             spine = satanSpine;
+        }
+        else if (spineMode == SPINE.CLOWN)
+        {
+            spine = clownSpine;
+        }        
+
+        var txtASpine = (Texture2D)spine.gameObject.GetComponent<MeshRenderer>().material.mainTexture;
         Mat txtASpineM = new Mat(txtASpine.height, txtASpine.width, CvType.CV_8UC4);
         Utils.texture2DToMat(txtASpine, txtASpineM);
-        cropBoundaryMat2.copyTo(txtASpineM.submat(0, cropBoundaryMat2.height(), 0, cropBoundaryMat2.width()));
-        Texture2D texture = new Texture2D(txtASpine.width, txtASpine.height, TextureFormat.RGBA32, false);
+        areaUDraw.copyTo(txtASpineM.submat(0, areaUDraw.height(), 0, areaUDraw.width()));
+        texture = new Texture2D(txtASpine.width, txtASpine.height, TextureFormat.RGBA32, false);
         Utils.matToTexture2D(txtASpineM, texture);
-        skeletonAnimation.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texture;
+        spine.gameObject.GetComponent<MeshRenderer>().material.mainTexture = texture;
+
         //-----------------------------------------------------------------------------------------------------------------------                
-        rimgcam.texture = bgTture;
+        rimgcam.texture = paperTxt;
         //Animation
         imgUserDraw.gameObject.transform.position = goModel.transform.position;
         imgUserDraw.rectTransform.sizeDelta = rimgmodel.rectTransform.rect.size;
-        Texture2D userDrawTexture = new Texture2D(cropBoundaryMat2.width(), cropBoundaryMat2.height(), TextureFormat.RGBA32, false);
-        Utils.matToTexture2D(cropBoundaryMat2, userDrawTexture);
-        imgUserDraw.texture = userDrawTexture;
+        imgUserDraw.rectTransform.localScale = rimgmodel.rectTransform.localScale;
+        areaUDrawTex = new Texture2D(areaUDraw.width(), areaUDraw.height(), TextureFormat.RGBA32, false);
+        Utils.matToTexture2D(areaUDraw, areaUDrawTex);
+        imgUserDraw.texture = areaUDrawTex;
         imgUserDraw.gameObject.SetActive(true);
         //---------------------------------
-        skeletonAnimation.gameObject.SetActive(true);
-        skeletonAnimation.gameObject.SetActive(false);
-        var sizeAnimation = skeletonAnimation.gameObject.GetComponent<MeshRenderer>().bounds.size;
-        var sizeAnimation2 = new Vector2(sizeAnimation.x, sizeAnimation.y);
-        Debug.Log(sizeAnimation);
+        var sizeSpine = spine.gameObject.GetComponent<MeshRenderer>().bounds.size;
+        var sizeAnimation2 = new Vector2(sizeSpine.x, sizeSpine.y);        
 
         var widthUserDraw = imgUserDraw.rectTransform.sizeDelta.x;
-        var scal_ = sizeAnimation.x / widthUserDraw;
-        var posAnimation = skeletonAnimation.gameObject.transform.position;
-        var newPos = new Vector3(posAnimation.x, posAnimation.y + sizeAnimation.y / 2f);
+        var scal_ = sizeSpine.x / widthUserDraw;
+        var posSpine = spine.gameObject.transform.position;
+        var newPos = new Vector3(posSpine.x, posSpine.y + sizeSpine.y / 2f);
 
         var seq = LeanTween.sequence();
         seq.append(() =>
@@ -660,6 +693,7 @@ public class DrawingScripts : MonoBehaviour
             chrimasSong.Play();
             chrimasSong.loop = false;
             LeanTween.move(imgUserDraw.gameObject, newPos, 2f);
+            Debug.Log(imgUserDraw.GetComponent<RectTransform>().localScale);
             LeanTween.scale(imgUserDraw.gameObject, new Vector3(scal_, scal_, scal_), 2f);
         });
         seq.append(2);
@@ -680,11 +714,11 @@ public class DrawingScripts : MonoBehaviour
             LeanTween.alpha(bigStar.rectTransform, 1, 0.4f).setLoopPingPong();
             LeanTween.alpha(smallStar.rectTransform, 1, 0.4f).setLoopPingPong().setDelay(0.2f);
             LeanTween.rotateZ(reindeer, -reindeer.transform.localRotation.eulerAngles.z, 10).setLoopClamp();
-            skeletonAnimation.gameObject.GetComponent<MeshRenderer>().sortingLayerName = "spine";
-            skeletonAnimation.gameObject.SetActive(true);
-            skeletonAnimation.AnimationName = "animation";
+            spine.gameObject.GetComponent<MeshRenderer>().sortingOrder = 10;
+            spine.gameObject.SetActive(true);
+            spine.AnimationName = "animation";
+            spine.loop = true;
             imgUserDraw.gameObject.SetActive(false);
-
 
             Observable.Timeout<float>(Observable.Never<float>(), TimeSpan.FromSeconds(GVs.timeAni)).Subscribe((float f) =>
             { }, (Exception ex) =>
@@ -692,13 +726,21 @@ public class DrawingScripts : MonoBehaviour
                 Everyplay.StopRecording();
                 cancelGVidP = Observable.FromCoroutine(GetVideoPath).Subscribe((_) => { }, () =>
                 {
+                    spine.gameObject.SetActive(false);
                     ScreenshotHelper.iCaptureScreen((Texture2D tex_) =>
                     {
                         Utilities.Log("snap image width is {0}, height is {1}", tex_.width, tex_.height);
                         var animPath = GFs.getMasterpieceDirPath() + nameNoExt + "_anim.png";
                         File.WriteAllBytes(animPath, tex_.EncodeToPNG());
+                        if (tex_.width > GVs.lwidthThumb)
+                        {
+                            int nh = (int)(GVs.lwidthThumb * ((float)tex_.height / (float)tex_.width));
+                            TextureScale.Bilinear(tex_, GVs.lwidthThumb, nh);
+                            var thumb = GFs.getMasterpieceDirPath() + nameNoExt + "_anim_thumb.png";
+                            File.WriteAllBytes(thumb, tex_.EncodeToPNG());
+                        }
+                        
                         Destroy(tex_);
-
                         cancelSaveMP2 = Observable.FromMicroCoroutine(SaveMasterPiece2).Subscribe();
                     });
                 });
@@ -754,13 +796,15 @@ public class DrawingScripts : MonoBehaviour
         //}
     }
 
+    bool preTexCam = false;
+
     IEnumerator SaveMasterPiece2()
     {
         pnSpec.SetActive(false);
         firework.gameObject.SetActive(false);
         snowCircle.gameObject.SetActive(false);
         snowFlower.gameObject.SetActive(false);
-        skeletonAnimation.gameObject.SetActive(false);
+        satanSpine.gameObject.SetActive(false);
 
         Debug.Log("Here, xin chao tat cac moi nguoi tren tg nay");
         yield return null;
@@ -771,7 +815,7 @@ public class DrawingScripts : MonoBehaviour
         Texture2D resultTexture = new Texture2D(cropRect.width, cropRect.height, TextureFormat.BGRA32, false);
         GFs.load_APP_PATH_VAR();
         var logoPath = GFs.getlogoPath();
-        Texture2D txtWMark = GFs.LoadPNGFromPath(logoPath);
+        txtWMark = GFs.LoadPNGFromPath(logoPath);
         Mat logo = new Mat(txtWMark.height, txtWMark.width, CvType.CV_8UC4);
         var width = resultMat.width();
         int newWidthlogo = (int)(width / 5f);
@@ -785,14 +829,14 @@ public class DrawingScripts : MonoBehaviour
         maskCopyMask = maskCopyMask - new Scalar(230);
         logo.copyTo(rect, maskCopyMask);
         Imgproc.cvtColor(logo, logo, Imgproc.COLOR_RGBA2BGR); //3 channel for frames of video
-        Utils.matToTexture2D(resultMat, resultTexture);       
+    
         var masterPieceDirPath = GFs.getMasterpieceDirPath();
         var imagePath = masterPieceDirPath + nameMasterPiece;
-        File.WriteAllBytes(imagePath, resultTexture.EncodeToPNG());
 
+        Destroy(resultTexture);
         DecorateScene.texture = texCamDisplay;
         DecorateScene.imagePath = imagePath;
-        ResultScripts.texture = resultTexture;
+        ResultScripts.texture = texCamDisplay;
         ResultScripts.mode = ResultScripts.MODE.FISRT_RESULT;
         ResultScripts.imagePath = imagePath;
         if (webcamVideoCapture != null)
@@ -924,6 +968,7 @@ public class DrawingScripts : MonoBehaviour
             .ObserveOnMainThread().Subscribe(_ =>
             {
                 img_progress_cutvideo.gameObject.SetActive(false);
+                preTexCam = true;
                 GVs.SCENE_MANAGER.loadDecorateScene();
             });
     }

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a7c2c832bc443c84191aa96b6a99ac96
-timeCreated: 1513270385
+timeCreated: 1513308832
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -125,9 +125,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1
-        width: 201
-        height: 199
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,10 +138,10 @@ TextureImporter:
       name: 831_1
       rect:
         serializedVersion: 2
-        x: 207
-        y: 5
-        width: 187
-        height: 195
+        x: 200
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,10 +152,10 @@ TextureImporter:
       name: 831_2
       rect:
         serializedVersion: 2
-        x: 415
-        y: 16
-        width: 169
-        height: 168
+        x: 400
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,10 +166,10 @@ TextureImporter:
       name: 831_3
       rect:
         serializedVersion: 2
-        x: 620
-        y: 22
-        width: 158
-        height: 156
+        x: 600
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,10 +180,10 @@ TextureImporter:
       name: 831_4
       rect:
         serializedVersion: 2
-        x: 808
-        y: 10
-        width: 183
-        height: 180
+        x: 800
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,9 +194,9 @@ TextureImporter:
       name: 831_5
       rect:
         serializedVersion: 2
-        x: 1197
+        x: 1000
         y: 0
-        width: 404
+        width: 200
         height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -208,12 +208,12 @@ TextureImporter:
       name: 831_6
       rect:
         serializedVersion: 2
-        x: 1197
+        x: 1200
         y: 0
-        width: 404
+        width: 200
         height: 200
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -222,10 +222,10 @@ TextureImporter:
       name: 831_7
       rect:
         serializedVersion: 2
-        x: 1601
-        y: 2
-        width: 196
-        height: 196
+        x: 1400
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -236,10 +236,10 @@ TextureImporter:
       name: 831_8
       rect:
         serializedVersion: 2
-        x: 1810
-        y: 10
-        width: 182
-        height: 180
+        x: 1600
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -250,10 +250,10 @@ TextureImporter:
       name: 831_9
       rect:
         serializedVersion: 2
-        x: 2023
-        y: 22
-        width: 157
-        height: 156
+        x: 1800
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -264,10 +264,10 @@ TextureImporter:
       name: 831_10
       rect:
         serializedVersion: 2
-        x: 2215
-        y: 11
-        width: 171
-        height: 177
+        x: 2000
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -278,10 +278,10 @@ TextureImporter:
       name: 831_11
       rect:
         serializedVersion: 2
-        x: 2401
-        y: 5
-        width: 193
-        height: 191
+        x: 2200
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -292,10 +292,10 @@ TextureImporter:
       name: 831_12
       rect:
         serializedVersion: 2
-        x: 2999
-        y: 1
-        width: 202
-        height: 199
+        x: 2400
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -306,9 +306,9 @@ TextureImporter:
       name: 831_13
       rect:
         serializedVersion: 2
-        x: 2598
+        x: 2600
         y: 0
-        width: 203
+        width: 200
         height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -320,12 +320,12 @@ TextureImporter:
       name: 831_14
       rect:
         serializedVersion: 2
-        x: 2999
-        y: 1
-        width: 202
-        height: 199
+        x: 2800
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -334,10 +334,10 @@ TextureImporter:
       name: 831_15
       rect:
         serializedVersion: 2
-        x: 3207
-        y: 5
-        width: 187
-        height: 195
+        x: 3000
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -348,10 +348,10 @@ TextureImporter:
       name: 831_16
       rect:
         serializedVersion: 2
-        x: 3415
-        y: 16
-        width: 169
-        height: 168
+        x: 3200
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -362,10 +362,10 @@ TextureImporter:
       name: 831_17
       rect:
         serializedVersion: 2
-        x: 3623
-        y: 22
-        width: 155
-        height: 156
+        x: 3400
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -376,10 +376,10 @@ TextureImporter:
       name: 831_18
       rect:
         serializedVersion: 2
-        x: 3808
-        y: 10
-        width: 183
-        height: 180
+        x: 3600
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -390,9 +390,9 @@ TextureImporter:
       name: 831_19
       rect:
         serializedVersion: 2
-        x: 4197
+        x: 3800
         y: 0
-        width: 404
+        width: 200
         height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -404,12 +404,12 @@ TextureImporter:
       name: 831_20
       rect:
         serializedVersion: 2
-        x: 4197
+        x: 4000
         y: 0
-        width: 404
+        width: 200
         height: 200
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -418,10 +418,10 @@ TextureImporter:
       name: 831_21
       rect:
         serializedVersion: 2
-        x: 4601
-        y: 2
-        width: 196
-        height: 196
+        x: 4200
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -432,10 +432,10 @@ TextureImporter:
       name: 831_22
       rect:
         serializedVersion: 2
-        x: 4810
-        y: 10
-        width: 182
-        height: 180
+        x: 4400
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -446,10 +446,10 @@ TextureImporter:
       name: 831_23
       rect:
         serializedVersion: 2
-        x: 5023
-        y: 22
-        width: 157
-        height: 156
+        x: 4600
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -460,10 +460,10 @@ TextureImporter:
       name: 831_24
       rect:
         serializedVersion: 2
-        x: 5215
-        y: 11
-        width: 171
-        height: 177
+        x: 4800
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -474,10 +474,10 @@ TextureImporter:
       name: 831_25
       rect:
         serializedVersion: 2
-        x: 5401
-        y: 5
-        width: 193
-        height: 191
+        x: 5000
+        y: 0
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -488,9 +488,9 @@ TextureImporter:
       name: 831_26
       rect:
         serializedVersion: 2
-        x: 5796
+        x: 5200
         y: 0
-        width: 204
+        width: 200
         height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -502,12 +502,12 @@ TextureImporter:
       name: 831_27
       rect:
         serializedVersion: 2
-        x: 5796
+        x: 5400
         y: 0
-        width: 204
+        width: 200
         height: 200
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -516,12 +516,26 @@ TextureImporter:
       name: 831_28
       rect:
         serializedVersion: 2
-        x: 1227
+        x: 5600
         y: 0
-        width: 2158
+        width: 200
         height: 200
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 831_29
+      rect:
+        serializedVersion: 2
+        x: 5800
+        y: 0
+        width: 200
+        height: 200
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

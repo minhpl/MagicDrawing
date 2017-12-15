@@ -12,7 +12,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
     public GameObject scrollView;
     public Text TextTitle;
     public UIButton satan;
-
+    public UIButton clown;
     const int deScale = 0;
     const bool USE_PACK = false;
     const int clone = 1;
@@ -21,7 +21,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
     public Button BtnBack;
 
     public enum MODE { CATEGORY, TEMPLATE, SPECIAL };
-    public static MODE mode;
+    public static MODE mode;        
     private IDisposable cancelCoroutineBackBtnAndroid;
 
     void Awake()
@@ -98,7 +98,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
         if (mode == MODE.CATEGORY || mode == MODE.TEMPLATE)
         {
             int nSpecTpl = 0;
-            if(mode == MODE.TEMPLATE && title.Trim()=="Giáng sinh")
+            if (mode == MODE.TEMPLATE && title.Trim() == "Giáng sinh")
             {
                 nSpecTpl = 1; //1 satan
             }
@@ -112,7 +112,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         GameObject go = Instantiate(imageItem) as GameObject;
                         var c = go.GetComponent<UITexture>().color;
                         go.GetComponent<UITexture>().color = new Color(c.r, c.g, c.b, 0);
-                        go.transform.GetComponent<TweenAlpha>().delay = 0.035f * (i+nSpecTpl) + 0.5f;
+                        go.transform.GetComponent<TweenAlpha>().delay = 0.035f * (i + nSpecTpl) + 0.5f;
                         go.transform.SetParent(imageItem.transform.parent.transform);
                         go.transform.localScale = imageItem.transform.localScale;
                         UITexture rimage = go.transform.Find("icon").GetComponent<UITexture>();
@@ -122,7 +122,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         TemplateDrawing template = null;
                         if (mode == MODE.CATEGORY)
                         {
-                            category = categorys[i];                            
+                            category = categorys[i];
                             texture = GFs.LoadPNGFromPath(categoryDirPath + category.image);
                             text.text = category.name;
                         }
@@ -132,7 +132,7 @@ public class LibraryScriptsNGUI : MonoBehaviour
                             var dirPath = app_path + templateDrawingList.dir + "/";
                             texture = GFs.LoadPNGFromPath(dirPath + "/" + template.thumb);
                         }
-                        
+
                         rimage.mainTexture = texture;
 
                         float width = texture.width;
@@ -198,30 +198,55 @@ public class LibraryScriptsNGUI : MonoBehaviour
                         Debug.LogErrorFormat("Stacktrace is {0}", e.StackTrace.ToString());
                     }
                 }
-            if (satan != null && title.Trim() == "Giáng sinh")
+            if (title != null && title.Trim() == "Giáng sinh")
             {
-                satan.GetComponent<TweenAlpha>().delay = 0.035f * (0) + 0.5f;
-                var c = satan.GetComponent<UITexture>().color;
-                satan.GetComponent<UITexture>().color = new Color(c.r, c.g, c.b, 0);
-                satan.gameObject.SetActive(true);
-                satan.onClick.Clear();
-                satan.onClick.Add(new EventDelegate(() =>
+                if (satan != null)
                 {
-                    TextAsset asset = Resources.Load("satan") as TextAsset;
-                    Texture2D tex = new Texture2D(2, 2, TextureFormat.BGRA32, false);
-                    tex.LoadImage(asset.bytes);
-                    Mat mat = new Mat(tex.height, tex.width, CvType.CV_8UC4);
-                    Utils.texture2DToMat(tex, mat);
-                    DrawingScripts.texModel = tex;
-                    DrawingScripts.image = mat;
-                    DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_SPECIAL;
-                    GVs.SCENE_MANAGER.loadDrawingScene();
-                }));
+                    satan.GetComponent<TweenAlpha>().delay = 0.035f * (0) + 0.5f;
+                    var c = satan.GetComponent<UITexture>().color;
+                    satan.GetComponent<UITexture>().color = new Color(c.r, c.g, c.b, 0);
+                    satan.gameObject.SetActive(true);
+                    satan.onClick.Clear();
+                    satan.onClick.Add(new EventDelegate(() =>
+                    {
+                        TextAsset asset = Resources.Load("satan") as TextAsset;
+                        Texture2D tex = new Texture2D(2, 2, TextureFormat.BGRA32, false);
+                        tex.LoadImage(asset.bytes);
+                        Mat mat = new Mat(tex.height, tex.width, CvType.CV_8UC4);
+                        Utils.texture2DToMat(tex, mat);
+                        DrawingScripts.texModel = tex;
+                        DrawingScripts.image = mat;
+                        DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_SPECIAL;
+                        DrawingScripts.spineMode = DrawingScripts.SPINE.SATAN;
+                        GVs.SCENE_MANAGER.loadDrawingScene();
+                    }));
+                }
+                if (clown != null)
+                {
+                    clown.GetComponent<TweenAlpha>().delay = 0.035f * (1) + 0.5f;
+                    var c = clown.GetComponent<UITexture>().color;
+                    clown.GetComponent<UITexture>().color = new Color(c.r, c.g, c.b, 0);
+                    clown.gameObject.SetActive(true);
+                    clown.onClick.Clear();
+                    clown.onClick.Add(new EventDelegate(() =>
+                    {
+                        Debug.Log("hehehehehe");
+                        TextAsset asset = Resources.Load("clown") as TextAsset;
+                        Texture2D tex = new Texture2D(2, 2, TextureFormat.BGRA32, false);
+                        tex.LoadImage(asset.bytes);
+                        Mat mat = new Mat(tex.height, tex.width, CvType.CV_8UC4);
+                        Utils.texture2DToMat(tex, mat);
+                        DrawingScripts.texModel = tex;
+                        DrawingScripts.image = mat;
+                        DrawingScripts.drawMode = DrawingScripts.DRAWMODE.DRAW_SPECIAL;
+                        DrawingScripts.spineMode = DrawingScripts.SPINE.CLOWN;
+                        GVs.SCENE_MANAGER.loadDrawingScene();
+                    }));
+                }
             }
-
-            Destroy(imageItem);            
-            scrollView.GetComponent<UIGrid>().Reposition();            
-        }        
+            Destroy(imageItem);
+            scrollView.GetComponent<UIGrid>().Reposition();
+        }
     }
 
     private void OnDisable()

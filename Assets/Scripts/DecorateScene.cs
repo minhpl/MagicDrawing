@@ -109,6 +109,14 @@ public class DecorateScene : MonoBehaviour
                     if (imagePath != null)
                     {
                         File.WriteAllBytes(imagePath, resultTexture.EncodeToPNG());
+
+                        int height = (int)(GVs.lwidthThumb * ((float)resultMat.height() / (float)resultMat.width()));
+                        Imgproc.resize(resultMat, resultMat, new Size(GVs.lwidthThumb, height));
+                        var masterPieceDirPath = GFs.getMasterpieceDirPath();   
+                        var nameNoExt = Path.GetFileNameWithoutExtension(imagePath);
+                        Imgproc.cvtColor(resultMat, resultMat, Imgproc.COLOR_RGBA2BGRA);
+                        var thumb = masterPieceDirPath + nameNoExt + "_thumb.png";
+                        Imgcodecs.imwrite(thumb, resultMat);
                     }
                     GVs.SCENE_MANAGER.loadResultScene();
                 });
@@ -146,6 +154,16 @@ public class DecorateScene : MonoBehaviour
                 if (imagePath != null)
                 {
                     File.WriteAllBytes(imagePath, resultTexture.EncodeToPNG());
+                    if (resultMat.width() > GVs.lwidthThumb)
+                    {
+                        int height = (int)(GVs.lwidthThumb * ((float)resultMat.height() / (float)resultMat.width()));
+                        Imgproc.resize(resultMat, resultMat, new Size(GVs.lwidthThumb, height));
+                        var masterPieceDirPath = GFs.getMasterpieceDirPath();   
+                        var nameNoExt = Path.GetFileNameWithoutExtension(imagePath);
+                        var thumb = masterPieceDirPath + nameNoExt + "_thumb.png";
+                        Imgproc.cvtColor(resultMat, resultMat, Imgproc.COLOR_RGBA2BGRA);
+                        Imgcodecs.imwrite(thumb, resultMat);
+                    }
                 }
                 GVs.SCENE_MANAGER.loadResultScene();
             }

@@ -52,53 +52,62 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour
         yield return null;
         dirPathMP = GFs.getMasterpieceDirPath();
         var imagefiles = Directory.GetFiles(dirPathMP, "*.*", SearchOption.TopDirectoryOnly)
-            .Where(s => s.EndsWith(".png"));
+            .Where(s => s.EndsWith(".png") && !s.EndsWith("thumb.png"));
         foreach (var f in imagefiles)
         {
-
             yield return null;
             GameObject go = Instantiate(item) as GameObject;
             go.transform.SetParent(item.transform.parent.transform);
             go.transform.localScale = item.transform.localScale;
             go.SetActive(true);
             uiGrid.Reposition();
-            Texture2D texture = GFs.LoadPNGFromPath(f);
+            
             GameObject masterpiece = go.transform.Find("icon").gameObject;
             var fileNameWithouExtension = Path.GetFileNameWithoutExtension(f);
+            var thumb = dirPathMP + fileNameWithouExtension + "_thumb.png";
+            Texture2D textureThumb = null;
+            bool haveThumb = false;
+            if (File.Exists(thumb))
+            {
+                Utilities.Log("HAVE THUMB, THUMB PATH IS {0}", thumb);
+                textureThumb = GFs.LoadPNGFromPath(thumb);
+                haveThumb = true;
+            }                
+            else
+            {
+                haveThumb = false;
+                textureThumb = GFs.LoadPNGFromPath(f);
+            }
+
             string videoPath = dirPathMP + fileNameWithouExtension + ".avi";
             if (!File.Exists(videoPath))
             {
                 videoPath = null;
             }
             var uiTexture = masterpiece.GetComponent<UITexture>();
-            var widthImg = texture.width;
-            var heightImg = texture.height;
-
-            Debug.Log(f);
+            
             go.GetComponent<UIButton>().onClick.Add(new EventDelegate(() =>
             {
-                string vidAnim = null;
+                Texture2D texture = null;
 
+                if (!haveThumb)
+                {
+                    texture = textureThumb;
+                }
+                else
+                {
+                    Utilities.Log("IMAGE Path is  {0}", f);
+                    texture = GFs.LoadPNGFromPath(f);
+                }
+
+                string vidAnim = null;
                 if (f.EndsWith("_anim.png"))
                 {
                     var length = f.Length - 9;
                     var pathNoExt = f.Substring(0, length);
                     vidAnim = pathNoExt + ".mp4";
-                    // if (Application.platform == RuntimePlatform.Android)
-                    // {
-                    //     vidAnim = pathNoExt + ".mp4";
-                    // }
-                    // else
-                    // {
-                    //     var nameNoExt = Path.GetFileNameWithoutExtension(f);
-                    //     nameNoExt = nameNoExt.Substring(0, nameNoExt.Length - 5);
-                    //     Utilities.Log("Name no ext is {0}", nameNoExt);
-                    //     vidAnim = GVs.GALLARY_IOS_PATH + nameNoExt + ".mp4";
-                    //     Utilities.Log("vidAnim is {0}", vidAnim);
-                    // }
                     ResultScripts.mode = ResultScripts.MODE.ANIM;
                     ResultScripts.texture = texture;
-
                     var datetime = DateTime.ParseExact(fileNameWithouExtension.Substring(0, fileNameWithouExtension.Length - 5), Utilities.customFmts, new CultureInfo(0x042A));
                     var datemonthyear = string.Format("{0}", datetime.Date.ToString("d-M-yyyy"));
                     Debug.Log(datemonthyear);
@@ -119,7 +128,7 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour
                 GVs.SCENE_MANAGER.loadResultScene();
             }));
 
-            uiTexture.mainTexture = texture;
+            uiTexture.mainTexture = textureThumb;
         }
         Destroy(item);
 
@@ -134,5 +143,22 @@ public class MasterpieceCreationNGUIScripts : MonoBehaviour
                 File.Delete(videoPath);
             }
         }
+
+        var thumbs = Directory.GetFiles(dirPathMP, "*.*", SearchOption.TopDirectoryOnly)
+            .Where(s => s.EndsWith("_thumb.png"));
+        foreach (var thumb in thumbs)
+        {
+            
+            var imgName = Path.GetFileNameWithoutExtension(thumb);
+            imgName = imgName.Substring(0, imgName.Length - 6);
+            var imageCorresponding = dirPathMP + imgName + ".png";
+            Debug.Log("Thumb is " + thumb);
+            Debug.Log("IMG CORESPODING: " + imageCorresponding);
+            if (!File.Exists(imageCorresponding))
+            {
+                File.Delete(thumb);
+            }
+        }
+
     }
 }
